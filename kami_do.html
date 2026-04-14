@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kami Do — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.15);
+
+    /* AEK / Kami Do — deep red-crimson and warm white; disciplined, spiritual */
+    --accent: #7a2020;
+    --accent-dim: #4a1010;
+    --accent-glow: rgba(122,32,32,0.1);
+    --accent-bright: #b04040;
+    --accent-warm: #c85050;
+    --gold: #c8962a;
+    --gold-dim: #8a6418;
+    --gold-glow: rgba(200,150,42,0.09);
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #7a7468;
+
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'IM Fell English', serif;
+    --display: 'Cinzel', serif;
+    --body: 'Exo 2', sans-serif;
+    --ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--black); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.7; }
+  body { background: var(--bg); min-height: 100vh; position: relative; overflow-x: hidden; }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 20%, rgba(122,32,32,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 42% 68%, rgba(200,150,42,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 68% 18%, rgba(122,32,32,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 65%, rgba(240,234,216,0.07) 0%, transparent 100%),
+      radial-gradient(1px 1px at 28% 88%, rgba(122,32,32,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 42%, rgba(200,150,42,0.08) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* TOPBAR */
+  .topbar { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 2rem; height: 48px; }
+  .topbar-logo { font-family: var(--display); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; color: var(--gold); text-decoration: none; margin-right: 2rem; }
+  .topbar-logo span { color: var(--text-dim); font-weight: 400; }
+  .topbar-nav { display: flex; align-items: center; flex: 1; }
+  .topbar-nav a { font-family: var(--ui); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 0 1.2rem; height: 48px; display: flex; align-items: center; border-right: 1px solid var(--border); transition: color 0.2s, background 0.2s; }
+  .topbar-nav a:first-child { border-left: 1px solid var(--border); }
+  .topbar-nav a:hover { color: var(--warm-white); background: rgba(255,255,255,0.03); }
+  .topbar-nav a.active { color: var(--gold); }
+  .topbar-era { font-family: var(--mono); font-size: 10px; color: var(--text-dim); margin-left: auto; letter-spacing: 0.08em; }
+
+  /* LAYOUT */
+  .page-wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* HERO */
+  .hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; position: relative; }
+  .hero::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 120px; height: 1px; background: var(--accent-bright); }
+  .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent-dim); text-transform: uppercase; margin-bottom: 1rem; }
+  .hero-eyebrow span { color: var(--text-dim); margin: 0 0.5em; }
+  .hero-title { font-family: var(--display); font-size: clamp(2.8rem, 6vw, 4.8rem); font-weight: 400; color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 0.3rem; }
+  .hero-kanji { font-size: 1rem; font-family: var(--mono); letter-spacing: 0.3em; color: var(--accent-bright); display: block; margin-bottom: 0.6rem; }
+  .hero-subtitle { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--silver); margin-bottom: 2rem; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); border: 1px solid var(--border); padding: 3px 10px; text-transform: uppercase; }
+  .tag.highlight { color: var(--accent-warm); border-color: var(--accent-dim); background: var(--accent-glow); }
+  .tag.gold { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
+
+  /* CONTENT GRID */
+  .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 3rem; align-items: start; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 3.5rem; }
+  .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .section-header::before { content: ''; display: block; width: 3px; height: 1.2em; background: var(--accent-bright); flex-shrink: 0; }
+  .section-title { font-family: var(--display); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-white); }
+  .section-id { font-family: var(--mono); font-size: 9px; color: var(--text-dim); margin-left: auto; }
+
+  /* PROSE */
+  .prose p { font-family: var(--body); font-size: 0.975rem; font-weight: 300; color: var(--text); line-height: 1.85; margin-bottom: 1.2em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .prose strong { font-weight: 600; color: var(--warm-white); }
+  .prose a { color: var(--accent-warm); text-decoration: none; border-bottom: 1px solid var(--accent-dim); transition: color 0.2s, border-color 0.2s; }
+  .prose a:hover { color: var(--warm-white); border-color: var(--warm-white); }
+
+  /* PULL QUOTE */
+  .pull-quote { border-left: 2px solid var(--accent-bright); padding: 1rem 1.5rem; margin: 2rem 0; background: var(--accent-glow); }
+  .pull-quote p { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--warm-white); line-height: 1.7; margin: 0 0 0.5rem; }
+  .pull-quote cite { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
+
+  /* PRINCIPLES BLOCK */
+  .principles-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent-bright); padding: 1.5rem; margin: 1.5rem 0; }
+  .principles-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .principle-row { padding: 0.6rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: baseline; }
+  .principle-row:last-child { border-bottom: none; }
+  .principle-term { font-family: var(--ui); font-size: 12px; font-weight: 600; color: var(--warm-white); width: 160px; flex-shrink: 0; letter-spacing: 0.05em; }
+  .principle-desc { font-family: var(--body); font-size: 0.875rem; font-weight: 300; color: var(--text); line-height: 1.55; }
+
+  /* TIMELINE */
+  .timeline { margin: 1.5rem 0; border-left: 2px solid var(--accent-dim); list-style: none; }
+  .timeline-item { position: relative; padding: 0 0 1.75rem 2rem; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before { content: ''; position: absolute; left: -5px; top: 6px; width: 8px; height: 8px; border: 1px solid var(--accent-bright); background: var(--bg); transform: rotate(45deg); }
+  .timeline-date { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; color: var(--accent-bright); text-transform: uppercase; margin-bottom: 0.3rem; }
+  .timeline-text { font-family: var(--body); font-size: 0.9rem; font-weight: 300; color: var(--text); line-height: 1.6; }
+  .timeline-text strong { font-weight: 500; color: var(--warm-white); }
+
+  /* ACCESS LABEL */
+  .access-label { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 12px; border: 1px solid; margin-bottom: 2.5rem; }
+  .access-label.fte { color: var(--gold-dim); border-color: var(--gold-dim); background: var(--gold-glow); }
+  .access-label::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* INFOBOX */
+  .infobox { background: var(--surface); border: 1px solid var(--border); position: sticky; top: 68px; }
+  .infobox-stripe { height: 3px; background: linear-gradient(90deg, var(--accent-dim) 0%, var(--accent-bright) 60%, var(--gold-dim) 100%); }
+  .infobox-header { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem; }
+  .infobox-title { font-family: var(--display); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.1em; color: var(--warm-white); margin-bottom: 0.2rem; }
+  .infobox-subtitle { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-dim); }
+  .info-row { display: flex; flex-direction: column; padding: 0.7rem 1.25rem; border-bottom: 1px solid var(--border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.2rem; }
+  .info-value { font-family: var(--body); font-size: 0.875rem; color: var(--warm-white); font-weight: 300; }
+  .info-value.mono { font-family: var(--mono); font-size: 11px; color: var(--silver); }
+  .info-value.italic { font-family: var(--serif); font-style: italic; font-size: 0.95rem; }
+  .info-value a { color: var(--accent-warm); text-decoration: none; border-bottom: 1px solid var(--accent-dim); }
+
+  /* RELATED LIST */
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1.25rem; text-decoration: none; transition: background 0.15s; }
+  .related-list a:hover { background: rgba(255,255,255,0.03); }
+  .related-list .rel-icon { font-family: var(--mono); font-size: 10px; color: var(--accent-dim); flex-shrink: 0; }
+  .related-list .rel-name { font-family: var(--ui); font-size: 13px; font-weight: 500; color: var(--silver); letter-spacing: 0.05em; }
+  .related-list .rel-type { font-family: var(--mono); font-size: 9px; color: var(--text-dim); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* MATRIX FOOTER */
+  .matrix-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .matrix-ref { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .matrix-ref span { color: var(--accent-dim); }
+
+  @media (max-width: 800px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .infobox { position: static; order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-logo" href="#">✴ SOLARNET <span>/ Archive</span></a>
+  <div class="topbar-nav">
+    <a href="#">Browse</a>
+    <a href="#" class="active">Culture</a>
+    <a href="#">Factions</a>
+    <a href="#">Characters</a>
+    <a href="#">Theology</a>
+    <a href="#">Technology</a>
+  </div>
+  <div class="topbar-era">FTE · SY 0 – SY 138</div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <div class="hero-eyebrow">Archive <span>›</span> Culture <span>›</span> Martial Arts <span>›</span> Kami Do</div>
+    <h1 class="hero-title">Kami Do</h1>
+    <span class="hero-kanji">神道 · The Way of Spirit</span>
+    <p class="hero-subtitle">Zero-gravity martial art and holistic discipline of the Army of Eastern Kamijing</p>
+    <div class="hero-tags">
+      <span class="tag highlight">Martial Art</span>
+      <span class="tag highlight">Culture</span>
+      <span class="tag gold">Army of Eastern Kamijing</span>
+      <span class="tag">Spacer Culture</span>
+      <span class="tag">Foundation Period</span>
+      <span class="tag">First Trilogy Era</span>
+    </div>
+  </header>
+
+  <div class="content-grid">
+    <main class="main-content">
+
+      <div class="access-label fte">Level I Access · First Trilogy Era Record</div>
+
+      <!-- OVERVIEW -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Overview</h2>
+          <span class="section-id">CM-KAMI-DO</span>
+        </div>
+        <div class="prose">
+          <p>
+            <em>Kami Do</em> — the Way of Spirit — is a martial art developed by <a href="#">Akira Ueshiba</a> for practice and combat in zero-gravity environments. Drawing its foundational philosophy and technical vocabulary from <em>Aikido</em>, Kami Do adapts the circular redirection of an opponent's momentum to conditions where neither combatant has fixed footing, where mass and trajectory govern the encounter rather than leverage and stance. It is, in structural terms, what Aikido would have had to become to remain viable in space — and in spiritual terms, a continuation of a lineage of practice stretching from Morihei Ueshiba through his descendants to the platforms of the Main Belt.
+          </p>
+          <p>
+            Kami Do is also, in the FTE record, considerably more than a fighting style. The <a href="#">Army of Eastern Kamijing</a> developed it over decades into a holistic discipline — a way of life, not merely a martial curriculum. And beyond the AEK's institutional walls, basic Kami Do principles escaped the formal tradition entirely, passing from spacer to spacer through oral transmission, becoming part of the informal cultural inheritance of Belt and Rim life. A practice that began in an academy on Kamijing is woven, by the time of the Solar War, into how a significant portion of the outer system thinks about the body, space, and the self in motion.
+          </p>
+        </div>
+      </section>
+
+      <!-- ORIGINS -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Origins — Akira Ueshiba &amp; the Ueshiba Line</h2>
+        </div>
+        <div class="prose">
+          <p>
+            Kami Do cannot be understood without its founder, and Akira Ueshiba cannot be understood without his lineage. He was born in SY 62 on <a href="#">Kamijing</a> to second-generation Japanese colonists — himself a direct blood descendant of <strong>Morihei Ueshiba</strong>, the founder of Aikido and a teacher of the <em>Ōmoto-kyō</em> tradition of Old Earth Japan. The art was in his inheritance before he ever began to practice it.
+          </p>
+          <p>
+            He was given a liberal education by his parents and read widely in Old Earth literature. While young, he was drawn to the oral teachings of <a href="#">Faithful</a> missionaries from the Rim — and both he and his parents converted. This convergence of Aikido's spiritual lineage, the Ōmoto-kyō influence already carried by the Ueshiba family, and the Faith of the outer system's religious culture gave Kami Do its distinctive character: not merely a fighting system, but a practice oriented toward the spirit of the practitioner and their relationship to the space through which they move.
+          </p>
+          <p>
+            At the age of seventeen — in the early SY 80s — Akira began developing Kami Do, working through the problem of what effective zero-gravity martial practice would require: new principles of momentum, of positioning without ground, of engagement at distances and angles that terrestrial combat philosophy had never needed to account for. He began teaching a small group of students. By SY 92, his first cohort had graduated and been bestowed with the authority to teach themselves. That same year, Akira and his newly commissioned teachers opened a formal academy on Kamijing. Within two years, it had several hundred students.
+          </p>
+        </div>
+      </section>
+
+      <!-- THE ART -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">The Art — Principles &amp; Practice</h2>
+        </div>
+        <div class="prose">
+          <p>
+            Kami Do's technical foundation is the redirected circle — the core Aikido principle that a defender does not meet force with force but with curvature, absorbing an attack's momentum and returning it along a new vector. In zero gravity, this principle becomes not merely effective but necessary: without ground friction, a direct block or collision distributes force unpredictably to both parties. Kami Do practitioners learn to read the geometry of an opponent's trajectory and become, rather than obstacles, deflections.
+          </p>
+        </div>
+
+        <div class="principles-block">
+          <div class="principles-label">Core Principles — Kami Do</div>
+          <div class="principle-row">
+            <span class="principle-term">Circular redirection</span>
+            <span class="principle-desc">The foundational Aikido principle adapted for vacuum: an opponent's momentum is not resisted but redirected along a curved path, returning their own force to them along a new vector</span>
+          </div>
+          <div class="principle-row">
+            <span class="principle-term">Groundless stance</span>
+            <span class="principle-desc">Engagement without fixed footing; the practitioner learns to treat mass and trajectory as the governing variables rather than leverage and weight distribution</span>
+          </div>
+          <div class="principle-row">
+            <span class="principle-term">Economy of motion</span>
+            <span class="principle-desc">In zero gravity, unnecessary movement dissipates into drift; Kami Do demands minimal, precise action — every motion is deliberate and conserved</span>
+          </div>
+          <div class="principle-row">
+            <span class="principle-term">Spirit discipline</span>
+            <span class="principle-desc">Per the art's name and lineage: Kami Do is not only physical. The AEK expanded it explicitly into a holistic spiritual discipline, integrating Faith practice, Zen influence, and the Ōmoto-kyō inheritance of the Ueshiba line</span>
+          </div>
+          <div class="principle-row">
+            <span class="principle-term">Non-violence first</span>
+            <span class="principle-desc">Consistent with Aikido's foundational ethic: Kami Do is designed to resolve conflict with minimum harm — control and redirection over destruction</span>
+          </div>
+        </div>
+
+        <div class="prose">
+          <p>
+            The AEK's development of Kami Do into a holistic discipline extended the art beyond combat technique into physical conditioning, meditative practice, and a philosophy of spacer life — how to move through vacuum not only in a fight but in daily existence, how to carry the body lightly, how to remain oriented in an environment that offers no natural up or down. <a href="#">Wu Kenshu</a>, who mastered Kami Do at forty-four and was subsequently commissioned as Logistics Daimyo, brought Zen practice deeply into the art's spiritual life, shaping the AEK's culture under his later Warlordship.
+          </p>
+        </div>
+      </section>
+
+      <!-- HISTORY & SPREAD -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">History &amp; Spread</h2>
+        </div>
+
+        <ul class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-date">Early SY 80s</div>
+            <div class="timeline-text">Akira Ueshiba, age 17, begins developing Kami Do on Kamijing. Small initial student group.</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-date">SY 92</div>
+            <div class="timeline-text">First cohort graduates and receives teaching credentials. <strong>Formal Kami Do academy established on Kamijing.</strong> Within two years: several hundred students enrolled.</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-date">SY 97 — Freitaika Rebellion</div>
+            <div class="timeline-text">The academy functions as a highly disciplined militia, helping de-escalate the crisis. The Second Confederate Congress charters the group as the <strong>Army of Eastern Kamijing</strong>. Kami Do becomes the AEK's institutional martial and spiritual foundation.</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-date">Post-SY 97</div>
+            <div class="timeline-text">AEK develops Kami Do into a full holistic discipline — a way of life — integrating Zen, Faith practice, and the Ōmoto-kyō lineage of the Ueshiba family. Basic principles begin spreading beyond the AEK into general spacer culture through oral transmission.</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-date">SY 129–138 — Solar War</div>
+            <div class="timeline-text">Kami Do is the AEK's combat discipline across all major Solar War engagements. Wu Kenshu, who mastered it at forty-four, commands AEK forces and later the full Protectorate military. Akira Ueshiba, aged 67, rejoins the field and dies in the kamikaze assault that breaks the Siege of Mars.</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-date">Post-Solar War</div>
+            <div class="timeline-text">The AEK fragments after Wu Kenshu's ritual suicide following the Siege. Kami Do's formal institutional transmission disperses with the army, but the art's spread into spacer oral tradition ensures it outlives any single institution.</div>
+          </li>
+        </ul>
+
+        <div class="pull-quote">
+          <p>Kami Do did not stay on Kamijing. It couldn't have — it was a practice built for everywhere there is no ground, and most of space is exactly that. The AEK codified it. The spacers who learned fragments of it from AEK veterans carried it further than any academy could reach.</p>
+          <cite>HELENA-Prime · Archival Commentary</cite>
+        </div>
+      </section>
+
+      <!-- BEYOND THE AEK -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Beyond the AEK — Spacer Transmission</h2>
+        </div>
+        <div class="prose">
+          <p>
+            Some of the basic principles of Kami Do escaped AEK tradition entirely, passed along from spacer to spacer outside any formal institutional structure. This oral transmission is consistent with how most practical knowledge moves through spacer culture — not through academies and credentials, but through the person next to you on a long haul who knows something you don't.
+          </p>
+          <p>
+            What spacers inherited from this diffusion was not the full holistic discipline the AEK practiced. It was the core principles: circular redirection, economy of motion, groundless engagement. Practical knowledge for environments where a misjudged shove in a pressurized corridor can send both parties into walls, and where a fight without gravity has physics the aggressor may not have fully considered. Not philosophy — technique. The kind that gets passed on because it works.
+          </p>
+          <p>
+            By the time of the Solar War, Kami Do-influenced movement was present throughout the Belt and Rim in degrees ranging from formal AEK practice to half-remembered drills picked up from a crewmate two assignments ago. The art that Akira Ueshiba developed at seventeen in a Kamijing academy had, in this diffuse form, become part of what it meant to move like a spacer.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="infobox">
+        <div class="infobox-stripe"></div>
+        <div class="infobox-header">
+          <div class="infobox-title">Kami Do</div>
+          <div class="infobox-subtitle">神道 · The Way of Spirit</div>
+        </div>
+        <div class="infobox-body">
+          <div class="info-row">
+            <span class="info-label">Category</span>
+            <span class="info-value">Martial Art · Holistic Discipline</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Translation</span>
+            <span class="info-value italic">The Way of Spirit</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Founded</span>
+            <span class="info-value mono">Early SY 80s — Kamijing, Main Belt</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Founder</span>
+            <span class="info-value"><a href="#">Akira Ueshiba</a></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Lineage</span>
+            <span class="info-value">Aikido · Ōmoto-kyō · <a href="#">Faith</a> (Rim tradition)</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Design environment</span>
+            <span class="info-value">Zero-gravity · vacuum-adjacent combat conditions</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Core technique</span>
+            <span class="info-value">Circular momentum redirection; groundless engagement</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Institutional home</span>
+            <span class="info-value"><a href="#">Army of Eastern Kamijing</a> — holistic discipline and way of life</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Distribution</span>
+            <span class="info-value">AEK formal tradition; spacer oral transmission throughout Belt and Rim</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Notable practitioners</span>
+            <span class="info-value"><a href="#">Akira Ueshiba</a> · <a href="#">Wu Kenshu</a></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Archive Ref</span>
+            <span class="info-value mono">CM-KAMI-DO</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="infobox" style="margin-top: 1.5rem;">
+        <div class="infobox-header">
+          <div class="infobox-title">Related Entries</div>
+          <div class="infobox-subtitle">See also</div>
+        </div>
+        <ul class="related-list">
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Akira Ueshiba</span><span class="rel-type">Character</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Army of Eastern Kamijing</span><span class="rel-type">Faction</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Wu Kenshu</span><span class="rel-type">Character</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Kamijing</span><span class="rel-type">Location</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Faith</span><span class="rel-type">Theology</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Spacers</span><span class="rel-type">Culture</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Eastern Faith</span><span class="rel-type">Theology</span></a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="matrix-footer">
+    <span class="matrix-ref">Continuity Matrix <span>CM-KAMI-DO</span></span>
+    <span class="matrix-ref">Status <span>Canonical · Consistent</span></span>
+    <span class="matrix-ref">Era <span>Foundation Period · First Trilogy Era</span></span>
+    <span class="matrix-ref">Authority <span>revan@solarmail.conf</span></span>
+    <span class="matrix-ref" style="margin-left: auto;">HELENA-Prime · SY 132.~</span>
+  </footer>
+
+</div>
+</body>
+</html>

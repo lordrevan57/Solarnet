@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.15);
+
+    /* Language / New School — Consortium academic blue, warm gold for Latin */
+    --accent: #3a5a7a;
+    --accent-dim: #22364a;
+    --accent-glow: rgba(58,90,122,0.1);
+    --accent-bright: #6a9abc;
+    --gold: #c8962a;
+    --gold-dim: #8a6418;
+    --gold-glow: rgba(200,150,42,0.1);
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #7a7468;
+
+    /* STE gate */
+    --gate-bg: #0a0c10;
+    --gate-border: rgba(90,112,160,0.3);
+    --gate-accent: #4a6899;
+    --gate-accent-dim: #2a3d5a;
+    --gate-glow: rgba(74,104,153,0.08);
+    --gate-text: #7a90aa;
+    --gate-text-dim: #3a4a5a;
+
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'IM Fell English', serif;
+    --display: 'Cinzel', serif;
+    --body: 'Exo 2', sans-serif;
+    --ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--black); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.7; }
+  body { background: var(--bg); min-height: 100vh; position: relative; overflow-x: hidden; }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 18%, rgba(58,90,122,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 70%, rgba(200,150,42,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 68% 15%, rgba(58,90,122,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 84% 62%, rgba(240,234,216,0.07) 0%, transparent 100%),
+      radial-gradient(1px 1px at 28% 88%, rgba(200,150,42,0.08) 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* TOPBAR */
+  .topbar { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 2rem; height: 48px; }
+  .topbar-logo { font-family: var(--display); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; color: var(--gold); text-decoration: none; margin-right: 2rem; }
+  .topbar-logo span { color: var(--text-dim); font-weight: 400; }
+  .topbar-nav { display: flex; align-items: center; flex: 1; }
+  .topbar-nav a { font-family: var(--ui); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; padding: 0 1.2rem; height: 48px; display: flex; align-items: center; border-right: 1px solid var(--border); transition: color 0.2s, background 0.2s; }
+  .topbar-nav a:first-child { border-left: 1px solid var(--border); }
+  .topbar-nav a:hover { color: var(--warm-white); background: rgba(255,255,255,0.03); }
+  .topbar-nav a.active { color: var(--gold); }
+  .topbar-era { font-family: var(--mono); font-size: 10px; color: var(--text-dim); margin-left: auto; letter-spacing: 0.08em; }
+
+  /* LAYOUT */
+  .page-wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  /* HERO */
+  .hero { padding: 4rem 0 3rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; position: relative; }
+  .hero::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 120px; height: 1px; background: var(--accent-bright); }
+  .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent-dim); text-transform: uppercase; margin-bottom: 1rem; }
+  .hero-eyebrow span { color: var(--text-dim); margin: 0 0.5em; }
+  .hero-title { font-family: var(--display); font-size: clamp(2.8rem, 6vw, 4.8rem); font-weight: 400; color: var(--warm-white); letter-spacing: 0.06em; line-height: 1.1; margin-bottom: 0.6rem; }
+  .hero-subtitle { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--silver); margin-bottom: 2rem; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); border: 1px solid var(--border); padding: 3px 10px; text-transform: uppercase; }
+  .tag.highlight { color: var(--accent-bright); border-color: var(--accent-dim); background: var(--accent-glow); }
+  .tag.gold { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
+
+  /* CONTENT GRID */
+  .content-grid { display: grid; grid-template-columns: 1fr 300px; gap: 3rem; align-items: start; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 3.5rem; }
+  .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .section-header::before { content: ''; display: block; width: 3px; height: 1.2em; background: var(--accent-bright); flex-shrink: 0; }
+  .section-title { font-family: var(--display); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-white); }
+  .section-id { font-family: var(--mono); font-size: 9px; color: var(--text-dim); margin-left: auto; }
+
+  /* PROSE */
+  .prose p { font-family: var(--body); font-size: 0.975rem; font-weight: 300; color: var(--text); line-height: 1.85; margin-bottom: 1.2em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .prose strong { font-weight: 600; color: var(--warm-white); }
+  .prose a { color: var(--accent-bright); text-decoration: none; border-bottom: 1px solid var(--accent-dim); transition: color 0.2s, border-color 0.2s; }
+  .prose a:hover { color: var(--warm-white); border-color: var(--warm-white); }
+
+  /* LANGUAGE CARD */
+  .lang-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .lang-card-header {
+    padding: 1rem 1.5rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 1.25rem;
+  }
+  .lang-name {
+    font-family: var(--display); font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.15em; color: var(--warm-white);
+  }
+  .lang-pronunciation {
+    font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.05em;
+  }
+  .lang-ips {
+    font-family: var(--ui); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent-bright); margin-left: auto;
+    border: 1px solid var(--accent-dim); padding: 2px 8px;
+    background: var(--accent-glow);
+  }
+  .lang-body { padding: 1.25rem 1.5rem; }
+  .lang-body p { font-family: var(--body); font-size: 0.9rem; font-weight: 300; color: var(--text); line-height: 1.75; margin-bottom: 0.9em; }
+  .lang-body p:last-child { margin-bottom: 0; }
+  .lang-body em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .lang-body a { color: var(--accent-bright); text-decoration: none; border-bottom: 1px solid var(--accent-dim); }
+
+  /* ANGLATIN STRIPE */
+  .lang-card.anglatin .lang-card-header { border-left: 3px solid #6a9abc; }
+  .lang-card.cyrillic .lang-card-header { border-left: 3px solid #aa6060; }
+  .lang-card.asiatic .lang-card-header { border-left: 3px solid #6aaa80; }
+  .lang-card.solari .lang-card-header { border-left: 3px solid var(--gold); }
+
+  /* VOCAB TABLE */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    margin: 1rem 0;
+  }
+  .vocab-item {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .vocab-item:nth-last-child(-n+3) { border-bottom: none; }
+  .vocab-word { font-family: var(--mono); font-size: 11px; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 2px; }
+  .vocab-def { font-family: var(--body); font-size: 11px; font-weight: 300; color: var(--text-dim); }
+
+  /* SOLARI PHRASES */
+  .phrase-list { list-style: none; margin: 0.75rem 0; }
+  .phrase-list li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-family: var(--body); font-size: 0.875rem; font-weight: 300; color: var(--text); line-height: 1.5; }
+  .phrase-list li:last-child { border-bottom: none; }
+  .phrase-list .phrase { font-family: var(--mono); font-size: 11px; color: var(--gold); margin-right: 0.75rem; }
+
+  /* PULL QUOTE */
+  .pull-quote { border-left: 2px solid var(--accent-bright); padding: 1rem 1.5rem; margin: 2rem 0; background: var(--accent-glow); }
+  .pull-quote p { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--warm-white); line-height: 1.7; margin: 0 0 0.5rem; }
+  .pull-quote cite { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; }
+
+  /* ACCESS LABELS */
+  .access-label { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 4px 12px; border: 1px solid; margin-bottom: 2.5rem; }
+  .access-label.fte { color: var(--gold-dim); border-color: var(--gold-dim); background: var(--gold-glow); }
+  .access-label.ste { color: var(--gate-accent); border-color: var(--gate-accent-dim); background: var(--gate-glow); }
+  .access-label::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* STE GATE */
+  .gate-section { position: relative; border: 1px solid var(--gate-border); background: var(--gate-bg); margin-bottom: 2rem; overflow: hidden; }
+  .gate-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: rgba(74,104,153,0.06); border-bottom: 1px solid var(--gate-border); }
+  .gate-header::before { content: ''; display: block; width: 3px; height: 1.2em; background: var(--gate-accent); flex-shrink: 0; }
+  .gate-header-title { font-family: var(--display); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gate-text); }
+  .gate-header-badge { margin-left: auto; font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gate-accent); border: 1px solid var(--gate-accent-dim); padding: 2px 8px; background: var(--gate-glow); }
+  .gate-content { padding: 2rem 1.5rem; position: relative; min-height: 140px; }
+  .gate-content-inner { filter: blur(3px); opacity: 0.3; pointer-events: none; user-select: none; }
+  .gate-content-inner .gate-prose p { font-family: var(--body); font-size: 0.975rem; font-weight: 300; color: var(--gate-text); line-height: 1.8; margin-bottom: 1.2em; }
+  .gate-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; background: linear-gradient(to bottom, transparent 0%, rgba(10,12,16,0.65) 35%, rgba(10,12,16,0.88) 100%); z-index: 2; }
+  .gate-lock-icon { font-size: 1.4rem; opacity: 0.45; color: var(--gate-accent); line-height: 1; }
+  .gate-lock-text { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gate-accent); text-align: center; }
+  .gate-lock-sub { font-family: var(--ui); font-size: 12px; font-weight: 300; color: var(--gate-text-dim); text-align: center; letter-spacing: 0.05em; max-width: 300px; line-height: 1.5; }
+  .gate-section::after { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(74,104,153,0.025) 2px, rgba(74,104,153,0.025) 4px); pointer-events: none; z-index: 1; }
+
+  /* INFOBOX */
+  .infobox { background: var(--surface); border: 1px solid var(--border); position: sticky; top: 68px; }
+  .infobox-stripe { height: 3px; background: linear-gradient(90deg, #6a9abc 0%, var(--gold) 40%, #6aaa80 70%, #aa6060 100%); }
+  .infobox-header { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem; }
+  .infobox-title { font-family: var(--display); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.1em; color: var(--warm-white); margin-bottom: 0.2rem; }
+  .infobox-subtitle { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-dim); }
+  .info-row { display: flex; flex-direction: column; padding: 0.7rem 1.25rem; border-bottom: 1px solid var(--border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.2rem; }
+  .info-value { font-family: var(--body); font-size: 0.875rem; color: var(--warm-white); font-weight: 300; }
+  .info-value.mono { font-family: var(--mono); font-size: 11px; color: var(--silver); }
+  .info-value a { color: var(--accent-bright); text-decoration: none; border-bottom: 1px solid var(--accent-dim); }
+  .info-row.gated .info-label { color: var(--gate-text-dim); }
+  .info-row.gated .info-value { color: var(--gate-text-dim); filter: blur(2.5px); user-select: none; font-size: 0.8rem; }
+
+  /* RELATED LIST */
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1.25rem; text-decoration: none; transition: background 0.15s; }
+  .related-list a:hover { background: rgba(255,255,255,0.03); }
+  .related-list .rel-icon { font-family: var(--mono); font-size: 10px; color: var(--accent-dim); flex-shrink: 0; }
+  .related-list .rel-name { font-family: var(--ui); font-size: 13px; font-weight: 500; color: var(--silver); letter-spacing: 0.05em; }
+  .related-list .rel-type { font-family: var(--mono); font-size: 9px; color: var(--text-dim); margin-left: auto; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* MATRIX FOOTER */
+  .matrix-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .matrix-ref { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .matrix-ref span { color: var(--accent-dim); }
+
+  @media (max-width: 800px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .infobox { position: static; order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-logo" href="#">✴ SOLARNET <span>/ Archive</span></a>
+  <div class="topbar-nav">
+    <a href="#">Browse</a>
+    <a href="#" class="active">Culture</a>
+    <a href="#">Factions</a>
+    <a href="#">Technology</a>
+    <a href="#">Theology</a>
+    <a href="#">Characters</a>
+  </div>
+  <div class="topbar-era">FTE · SY 0 – SY 138</div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <div class="hero-eyebrow">Archive <span>›</span> Culture <span>›</span> Language</div>
+    <h1 class="hero-title">Language</h1>
+    <p class="hero-subtitle">The four great tongues of Sol System — and the one that belongs to everyone</p>
+    <div class="hero-tags">
+      <span class="tag highlight">Culture</span>
+      <span class="tag highlight">Linguistics</span>
+      <span class="tag gold">New School</span>
+      <span class="tag">Consortium</span>
+      <span class="tag">First Trilogy Era</span>
+      <span class="tag">Multi-Era</span>
+    </div>
+  </header>
+
+  <div class="content-grid">
+    <main class="main-content">
+
+      <div class="access-label fte">Level I Access · First Trilogy Era Record</div>
+
+      <!-- OVERVIEW -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Overview</h2>
+          <span class="section-id">CM-LANG-0001</span>
+        </div>
+        <div class="prose">
+          <p>
+            During the First Trilogy Era, four great languages are present in Sol System. All four evolved through a centuries-long process of <em>dedialectization</em> — the natural compression of regional linguistic diversity into unified, interoperable tongues driven by trade, migration, and the collapse of geographic isolation as humanity spread through the solar system. Three of the four were subsequently formalized and codified by the <a href="#">New School</a> in the early Standard Era, becoming the official languages of the <a href="#">Consortium</a>'s three IPS Spheres. The fourth — <em>Solari</em> — arose independently, belongs to no institution, and is older than any of the others in its codified form.
+          </p>
+          <p>
+            Learning at least one of the three Consortium languages beyond one's local dialect is compulsory for all Consortium citizens. The New School coined the names <em>Anglatin</em>, <em>Cyrillic</em>, and <em>Asiatic</em> as part of its broader program of linguistic standardization — a program inseparable from its political function as the intellectual apparatus of Consortium hegemony. The naming itself is a form of authority: to name a language is to define its boundaries, and to define its boundaries is to decide who is inside them.
+          </p>
+        </div>
+
+        <div class="pull-quote">
+          <p>The New School codified three languages and called it unity. Solari already existed and called itself nothing. Both positions contain a truth about what language is actually for.</p>
+          <cite>HELENA-Prime · Archival Commentary</cite>
+        </div>
+      </section>
+
+      <!-- THE FOUR LANGUAGES -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">The Four Great Languages</h2>
+        </div>
+
+        <!-- ANGLATIN -->
+        <div class="lang-card anglatin">
+          <div class="lang-card-header">
+            <span class="lang-name">Anglatin</span>
+            <span class="lang-pronunciation">/aɪndʒleətin/</span>
+            <span class="lang-ips">American IPS</span>
+          </div>
+          <div class="lang-body">
+            <p>
+              The primary language of the American <a href="#">Integrated Production Sphere</a> and its official language of business. Anglatin is the unified synthesis of English, Romance languages, and revivalist Latin, with contributing elements from Dutch, German, Gaelic, Scandinavian, and Dravidian. It uses an extended Latin alphabet and is built around a core vocabulary of approximately <strong>1,000 words</strong> designed to allow any speaker to be understood internationally while still accommodating local dialect variation.
+            </p>
+            <p>
+              The Latin revival that Anglatin embodies was not spontaneous. During the <a href="#">Second Renaissance</a>, Latin was resurrected from purely academic use to common parlance — the first time in more than two thousand years it had functioned as a living language. The <a href="#">New School</a>'s linguist <a href="#">Silvinus Herminus Januarius</a> was a critical figure in this revival. Anglatin is the primary artifact of that project: a language that consciously connects the Standard Era to Roman antiquity as part of the Consortium's Romano-centric historical self-image.
+            </p>
+
+            <p style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.75rem; margin-top: 0.5rem;">Selected Vocabulary</p>
+            <div class="vocab-grid">
+              <div class="vocab-item"><div class="vocab-word">die</div><div class="vocab-def">the</div></div>
+              <div class="vocab-item"><div class="vocab-word">de</div><div class="vocab-def">of</div></div>
+              <div class="vocab-item"><div class="vocab-word">liber</div><div class="vocab-def">book</div></div>
+              <div class="vocab-item"><div class="vocab-word">ja</div><div class="vocab-def">yes</div></div>
+              <div class="vocab-item"><div class="vocab-word">no</div><div class="vocab-def">no</div></div>
+              <div class="vocab-item"><div class="vocab-word">a-</div><div class="vocab-def">negation prefix</div></div>
+              <div class="vocab-item"><div class="vocab-word">esa</div><div class="vocab-def">is</div></div>
+              <div class="vocab-item"><div class="vocab-word">Terra</div><div class="vocab-def">Earth</div></div>
+              <div class="vocab-item"><div class="vocab-word">avec</div><div class="vocab-def">with</div></div>
+              <div class="vocab-item"><div class="vocab-word">para</div><div class="vocab-def">for</div></div>
+            </div>
+
+            <p style="margin-top: 0.75rem;">
+              The alphabet extends the Latin base with additional characters: Æ, Ç, Ñ, ß, Ü — each drawn from one of the contributing language families, representing the merger that produced Anglatin rather than disguising it.
+            </p>
+          </div>
+        </div>
+
+        <!-- CYRILLIC -->
+        <div class="lang-card cyrillic">
+          <div class="lang-card-header">
+            <span class="lang-name">Cyrillic</span>
+            <span class="lang-pronunciation">Soviet Standard</span>
+            <span class="lang-ips">Soviet IPS</span>
+          </div>
+          <div class="lang-body">
+            <p>
+              The official language of the Soviet <a href="#">IPS</a> Sphere. A blend of Russian, Ukrainian, Greek, and various Eastern European languages, codified under the New School's standardization program. It retains the Cyrillic alphabet as its writing system — a deliberate continuity with Soviet cultural identity, positioning the USSR's linguistic tradition as the organizing principle of its unity language rather than adopting a neutral script.
+            </p>
+          </div>
+        </div>
+
+        <!-- ASIATIC -->
+        <div class="lang-card asiatic">
+          <div class="lang-card-header">
+            <span class="lang-name">Asiatic</span>
+            <span class="lang-pronunciation">People's Standard</span>
+            <span class="lang-ips">People's Republic IPS</span>
+          </div>
+          <div class="lang-body">
+            <p>
+              The official language of the People's Republic <a href="#">IPS</a> Sphere. A blend of simplified Chinese, Japanese, Korean, Vietnamese, Cambodian, Malay, and other Sino-Pacific elements — the most linguistically diverse of the three unity languages by number of contributing systems. Asiatic uses the <strong>Hangul alphabet</strong> as its writing system: a choice that privileges none of the contributing East Asian scripts over others, providing a more genuinely neutral orthographic basis than either of the other Consortium languages achieved.
+            </p>
+          </div>
+        </div>
+
+        <!-- SOLARI -->
+        <div class="lang-card solari">
+          <div class="lang-card-header">
+            <span class="lang-name">Solari</span>
+            <span class="lang-pronunciation">The Common Tongue</span>
+            <span class="lang-ips">All Sol System</span>
+          </div>
+          <div class="lang-body">
+            <p>
+              Solari is the free and ever-evolving common trade language of Sol System. It is the mishmash — the honest word — of Anglatin, Cyrillic, and Asiatic that arose naturally from the contact between their speakers across the Belt, the Rim, and the spacer corridors connecting them. It predates the SY 1 codification of any of the three standard Consortium languages and was not designed by anyone. It is what happens when people need to talk to each other and no institution is in the room.
+            </p>
+            <p>
+              <strong>Basic Solari</strong> is a formalized shorthand of approximately a thousand common words, sufficient to allow spacers from any world of origin to communicate across IPS lines. It functions as the lingua franca of the outer system — the language of the Belt and Rim — and is the working language of commerce, negotiation, and daily life anywhere the Consortium's three unity tongues do not natively reach.
+            </p>
+            <p>
+              Solari's alphabet borrows characters from all contributing systems: Latin letters sit alongside Cyrillic equivalents and Hangul vowels, with Chinese numerals running in parallel. It is a writing system that looks like what it is — a collaborative improvisation. During the <a href="#">Third Trilogy Era</a>, Solari contributes to and evolves into Galactic Standard. That future is not yet visible from the FTE.
+            </p>
+
+            <p style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.75rem; margin-top: 0.5rem;">Common Phrases &amp; Terms</p>
+            <ul class="phrase-list">
+              <li><span class="phrase">frakk</span> General expletive — spacer profanity, origin uncertain</li>
+              <li><span class="phrase">tanj</span> "There ain't no justice" — ironic fatalism, common among Belters</li>
+              <li><span class="phrase">nerf</span> Mild expletive / general negative exclamation</li>
+              <li><span class="phrase">[static click]</span> Nonverbal "no" — simulates radio static; used when verbal response is impractical or emphatic silence is preferred</li>
+              <li><span class="phrase">Neil and Yuri</span> Euphemism for "first" or "number one" — honoring the first American and Soviet space pioneers; deeply embedded in spacer oral tradition</li>
+            </ul>
+
+            <p style="margin-top: 0.75rem; font-family: var(--body); font-size: 0.875rem; font-weight: 300; color: var(--text); line-height: 1.6;">
+              Solari grammar characteristically converts adjectives into nouns for emphasis or slang: <em>"They're a lunar,"</em> <em>"Have you seen any new stirrings,"</em> <em>"Your kid looks like a carbon scrubber."</em> The construction reflects a culture that values economy of speech and expects listeners to fill in context.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE NEW SCHOOL'S ROLE -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">The New School &amp; Dedialectization</h2>
+        </div>
+        <div class="prose">
+          <p>
+            The <a href="#">New School</a> — the academic philosophy originating at New Athens in SY 37 and functioning as the de facto intellectual apparatus of the Consortium — codified Anglatin, Cyrillic, and Asiatic from the centuries-long organic trend toward linguistic compression that predated it. Dedialectization was already happening; the New School formalized it, named the products, and made learning at least one Consortium language beyond one's local dialect compulsory for all Consortium citizens.
+          </p>
+          <p>
+            The standardization was not politically neutral. The New School used its linguistic authority as a propaganda instrument, deliberately suppressing what it termed "Old Earth" terminology in favor of Consortium-preferred replacements — most visibly the substitution of <em>Terra</em> for <em>Earth</em>, a shift that frames the planet as a classical Roman referent rather than the home of the people it is being renamed for. Language, for the New School, was always also history, and history was always the Consortium's to write.
+          </p>
+        </div>
+      </section>
+
+      <!-- STE GATE: EL'YONIC -->
+      <div class="access-label ste">Level II Access · Second Trilogy Era Record</div>
+
+      <div class="gate-section">
+        <div class="gate-header">
+          <span class="gate-header-title">El'yonic — The Language Beyond Sol</span>
+          <span class="gate-header-badge">STE Access Required</span>
+        </div>
+        <div class="gate-content">
+          <div class="gate-content-inner">
+            <div class="gate-prose">
+              <p>The El'yon possess a language of their own derived from the single language of the First Empire — the Aion'ari'yon tongue that predates written history in Sol System by an epoch that makes the concept of "old" inadequate. El'yonic is primarily a psychic language: the El'yon communicate with one another through thought, feeling, and intuition, reserving vocalization almost exclusively for communication with mortal and less evolved races. When spoken aloud, El'yonic has creative power — it is not possible to lie in it, and when spoken aloud, the creation it names becomes physical.</p>
+              <p>El'yonic's spoken vocabulary substantially influenced ancient Sumerian, and through Sumerian, several of Earth's subsequent language lineages. The three Consortium unity languages and Solari carry, embedded in their etymological roots, traces of a language spoken before humanity knew what language was. The dedialectization the New School formalized was, in this deeper register, not the compression of human linguistic diversity but the convergence of human language toward something that was always already underneath it.</p>
+            </div>
+          </div>
+          <div class="gate-overlay">
+            <div class="gate-lock-icon">⌖</div>
+            <div class="gate-lock-text">Second Trilogy Era Access Required</div>
+            <div class="gate-lock-sub">This record contains linguistic history not available to FTE Solarnet users. STE archive credentials required.</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="infobox">
+        <div class="infobox-stripe"></div>
+        <div class="infobox-header">
+          <div class="infobox-title">Language — Sol System</div>
+          <div class="infobox-subtitle">FTE Linguistic Record</div>
+        </div>
+        <div class="infobox-body">
+          <div class="info-row">
+            <span class="info-label">Category</span>
+            <span class="info-value">Culture · Linguistics</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Era</span>
+            <span class="info-value">Foundation Period — First Trilogy Era</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Process</span>
+            <span class="info-value italic">Dedialectization — centuries-long compression of regional dialects into unified tongues</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Codifying authority</span>
+            <span class="info-value"><a href="#">New School</a> — early Standard Era</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Anglatin</span>
+            <span class="info-value">American IPS · Latin alphabet · ~1,000 core words</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Cyrillic</span>
+            <span class="info-value">Soviet IPS · Cyrillic alphabet</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Asiatic</span>
+            <span class="info-value">People's Republic IPS · Hangul alphabet</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Solari</span>
+            <span class="info-value">All Sol System · hybrid alphabet · predates codification · lingua franca of spacer culture</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Latin revival</span>
+            <span class="info-value">Second Renaissance — from academic to common parlance after 2,000+ years</span>
+          </div>
+          <div class="info-row gated">
+            <span class="info-label">El'yonic ⌖</span>
+            <span class="info-value">Derived from First Empire · psychic language · STE record</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Archive Ref</span>
+            <span class="info-value mono">CM-LANG-0001 · CM-ANGLATIN-001</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="infobox" style="margin-top: 1.5rem;">
+        <div class="infobox-header">
+          <div class="infobox-title">Related Entries</div>
+          <div class="infobox-subtitle">See also</div>
+        </div>
+        <ul class="related-list">
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">New School</span><span class="rel-type">Institution</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Consortium</span><span class="rel-type">Faction</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Integrated Production Sphere</span><span class="rel-type">Economics</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Spacers</span><span class="rel-type">Culture</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Standard Calendar</span><span class="rel-type">Culture</span></a></li>
+          <li><a href="#"><span class="rel-icon">→</span><span class="rel-name">Second Renaissance</span><span class="rel-type">Era</span></a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="matrix-footer">
+    <span class="matrix-ref">Continuity Matrix <span>CM-LANG-0001 · CM-ANGLATIN-001</span></span>
+    <span class="matrix-ref">Status <span>Canonical · Consistent</span></span>
+    <span class="matrix-ref">Era <span>Foundation Period · First Trilogy Era · Multi-Era</span></span>
+    <span class="matrix-ref">Authority <span>revan@solarmail.conf</span></span>
+    <span class="matrix-ref" style="margin-left: auto;">HELENA-Prime · SY 132.~</span>
+  </footer>
+
+</div>
+</body>
+</html>
