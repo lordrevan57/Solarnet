@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — First Trilogy Era</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg: #04080c;
+  --solar-teal: #58c8a8;
+  --solar-teal-dim: rgba(88,200,168,0.15);
+  --solar-teal-glow: rgba(88,200,168,0.06);
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+  --gold: #e8a020;
+  --gold-dim: rgba(232,160,32,0.15);
+  --navy: #0a0f1a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: #ccd4f0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── GRID BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(88,200,168,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,200,168,0.015) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV BAR ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(4,8,12,0.95);
+  border-bottom: 1px solid rgba(88,200,168,0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  height: 44px;
+  gap: 0;
+}
+
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--solar-teal);
+  margin-right: 32px;
+  text-decoration: none;
+}
+
+.nav-item {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(88,200,168,0.3);
+  padding: 0 14px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav-item:hover { color: var(--solar-teal); }
+.nav-item.active {
+  color: var(--solar-teal);
+  border-bottom-color: var(--solar-teal);
+}
+
+.nav-right {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(88,200,168,0.2);
+  letter-spacing: 0.12em;
+}
+
+/* ── HEADER ── */
+.archive-header {
+  position: relative;
+  z-index: 1;
+  padding: 56px 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(88,200,168,0.06);
+}
+
+.archive-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: rgba(88,200,168,0.4);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.archive-title {
+  font-family: var(--font-title);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #e8dfc8;
+  margin-bottom: 10px;
+}
+
+.archive-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(232,223,200,0.45);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* SY clock */
+.sy-clock {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgba(88,200,168,0.35);
+  letter-spacing: 0.15em;
+}
+
+/* ── SEARCH + FILTER BAR ── */
+.archive-controls {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(88,200,168,0.04);
+}
+
+.search-input {
+  flex: 1;
+  max-width: 380px;
+  background: rgba(88,200,168,0.03);
+  border: 1px solid rgba(88,200,168,0.12);
+  color: rgba(88,200,168,0.8);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  letter-spacing: 0.08em;
+}
+.search-input::placeholder { color: rgba(88,200,168,0.2); }
+.search-input:focus { border-color: rgba(88,200,168,0.35); }
+
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  padding: 7px 14px;
+  border: 1px solid rgba(88,200,168,0.12);
+  background: transparent;
+  color: rgba(88,200,168,0.3);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: rgba(88,200,168,0.4);
+  color: var(--solar-teal);
+  background: rgba(88,200,168,0.04);
+}
+
+.entry-count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(88,200,168,0.2);
+  letter-spacing: 0.12em;
+}
+
+/* ── MAIN LAYOUT ── */
+.archive-body {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: sticky;
+  top: 68px;
+}
+
+.sidebar-section {
+  margin-bottom: 28px;
+}
+
+.sidebar-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  color: rgba(88,200,168,0.25);
+  text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(88,200,168,0.06);
+  margin-bottom: 10px;
+}
+
+.sidebar-link {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(88,200,168,0.25);
+  text-decoration: none;
+  padding: 4px 0 4px 10px;
+  border-left: 1px solid transparent;
+  transition: all 0.12s;
+  cursor: pointer;
+}
+.sidebar-link:hover, .sidebar-link.active {
+  color: var(--solar-teal);
+  border-left-color: var(--solar-teal);
+}
+
+/* ── ARCHIVE CONTENT ── */
+.archive-main {}
+
+/* Category section */
+.cat-section {
+  margin-bottom: 40px;
+}
+
+.cat-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(88,200,168,0.07);
+}
+
+.cat-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+.cat-count {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: rgba(88,200,168,0.2);
+  letter-spacing: 0.12em;
+}
+
+/* Category color variants */
+.cat-factions .cat-label { color: rgba(232,160,32,0.6); }
+.cat-factions { --cat-color: rgba(232,160,32,0.5); --cat-bg: rgba(232,160,32,0.03); --cat-border: rgba(232,160,32,0.1); }
+
+.cat-characters .cat-label { color: rgba(88,200,168,0.6); }
+.cat-characters { --cat-color: rgba(88,200,168,0.5); --cat-bg: rgba(88,200,168,0.03); --cat-border: rgba(88,200,168,0.1); }
+
+.cat-theology .cat-label { color: rgba(160,130,220,0.7); }
+.cat-theology { --cat-color: rgba(160,130,220,0.5); --cat-bg: rgba(160,130,220,0.03); --cat-border: rgba(160,130,220,0.1); }
+
+.cat-events .cat-label { color: rgba(200,90,90,0.7); }
+.cat-events { --cat-color: rgba(200,90,90,0.5); --cat-bg: rgba(200,90,90,0.03); --cat-border: rgba(200,90,90,0.1); }
+
+.cat-locations .cat-label { color: rgba(74,159,212,0.7); }
+.cat-locations { --cat-color: rgba(74,159,212,0.5); --cat-bg: rgba(74,159,212,0.03); --cat-border: rgba(74,159,212,0.1); }
+
+.cat-technology .cat-label { color: rgba(140,200,140,0.7); }
+.cat-technology { --cat-color: rgba(140,200,140,0.5); --cat-bg: rgba(140,200,140,0.03); --cat-border: rgba(140,200,140,0.1); }
+
+.cat-history .cat-label { color: rgba(200,170,100,0.7); }
+.cat-history { --cat-color: rgba(200,170,100,0.5); --cat-bg: rgba(200,170,100,0.03); --cat-border: rgba(200,170,100,0.1); }
+
+.cat-culture .cat-label { color: rgba(200,140,180,0.7); }
+.cat-culture { --cat-color: rgba(200,140,180,0.5); --cat-bg: rgba(200,140,180,0.03); --cat-border: rgba(200,140,180,0.1); }
+
+/* Entry grid */
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px;
+}
+
+/* Archive entry tile */
+.entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--cat-border, rgba(88,200,168,0.08));
+  background: var(--cat-bg, rgba(88,200,168,0.02));
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  transition: all 0.12s;
+  cursor: pointer;
+}
+
+.entry:hover {
+  border-left-color: var(--cat-color, var(--solar-teal));
+  background: rgba(88,200,168,0.05);
+}
+
+.entry-name {
+  font-size: 12px;
+  color: rgba(204,212,240,0.7);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.entry.live .entry-name {
+  color: rgba(204,212,240,0.9);
+  font-weight: 600;
+}
+
+/* LIVE badge */
+.entry-badge {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  flex-shrink: 0;
+  padding: 2px 5px;
+  text-transform: uppercase;
+}
+
+.entry.live .entry-badge {
+  color: var(--cat-color, var(--solar-teal));
+  border: 1px solid var(--cat-border, rgba(88,200,168,0.2));
+  background: var(--cat-bg, rgba(88,200,168,0.04));
+}
+
+.entry.stub .entry-name { color: rgba(204,212,240,0.3); }
+.entry.stub .entry-badge {
+  color: rgba(88,200,168,0.12);
+  border: 1px solid rgba(88,200,168,0.06);
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  z-index: 50;
+  background: rgba(4,8,12,0.97);
+  border-top: 1px solid rgba(88,200,168,0.06);
+  padding: 0 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.status-item {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: rgba(88,200,168,0.2);
+  text-transform: uppercase;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.status-dot.green { background: var(--solar-teal); box-shadow: 0 0 4px var(--solar-teal); }
+.status-dot.amber { background: var(--gold); }
+
+/* hide/show filtering */
+.entry.hidden { display: none; }
+.cat-section.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">✴ SOLARNET</a>
+  <a class="nav-item" href="#">Home</a>
+  <a class="nav-item" href="#">Inbox</a>
+  <a class="nav-item" href="#">HELENA</a>
+  <a class="nav-item active">Archive</a>
+  <a class="nav-item" href="#">Node Directory</a>
+  <a class="nav-item" href="#">Bulletin Board</a>
+  <div class="nav-right" id="nav-clock">SY —</div>
+</nav>
+
+<!-- HEADER -->
+<div class="archive-header">
+  <div class="archive-eyebrow">✴ Solarnet Archive · Custodial Index · First Trilogy Era</div>
+  <div class="archive-title">The Archive</div>
+  <div class="archive-sub">All indexed records of the First Trilogy Era. Compiled and maintained by HELENA-Prime from SY 3 onward. Entries marked <strong style="color:rgba(88,200,168,0.7);font-style:normal;">LIVE</strong> are fully rendered archive pages. All others are indexed records pending full rendering.</div>
+  <div class="sy-clock">Archive status as of <span id="header-clock">SY —</span> · <span id="live-count">4</span> pages live · <span id="stub-count">—</span> indexed</div>
+</div>
+
+<!-- CONTROLS -->
+<div class="archive-controls">
+  <input class="search-input" type="text" placeholder="Search archive..." id="searchInput" oninput="filterEntries()">
+  <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+  <button class="filter-btn" onclick="setFilter('live', this)">Live Pages</button>
+  <button class="filter-btn" onclick="setFilter('stub', this)">Indexed Only</button>
+  <div class="entry-count" id="entryCount"></div>
+</div>
+
+<!-- BODY -->
+<div class="archive-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Categories</div>
+      <a class="sidebar-link active" onclick="scrollTo('factions')">Factions & Institutions</a>
+      <a class="sidebar-link" onclick="scrollTo('characters')">Characters</a>
+      <a class="sidebar-link" onclick="scrollTo('theology')">Theology & Philosophy</a>
+      <a class="sidebar-link" onclick="scrollTo('events')">Events & Conflicts</a>
+      <a class="sidebar-link" onclick="scrollTo('locations')">Locations</a>
+      <a class="sidebar-link" onclick="scrollTo('technology')">Technology & Equipment</a>
+      <a class="sidebar-link" onclick="scrollTo('history')">History & Politics</a>
+      <a class="sidebar-link" onclick="scrollTo('culture')">Culture & Society</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Access Level</div>
+      <div class="sidebar-link active">Level I — Open</div>
+      <div class="sidebar-link" style="opacity:0.35;cursor:default;">Level II — Restricted</div>
+      <div class="sidebar-link" style="opacity:0.2;cursor:default;">Level III — Classified</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Archive</div>
+      <a class="sidebar-link" href="https://thesolarpedia.fandom.com/wiki/Main_Page" target="_blank">Full Solarpedia Index ↗</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="archive-main" id="archiveMain">
+
+    <!-- FACTIONS & INSTITUTIONS -->
+    <section class="cat-section cat-factions" id="factions">
+      <div class="cat-header">
+        <div class="cat-label">Factions &amp; Institutions</div>
+        <div class="cat-count" id="count-factions"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry live" href="Academy.html"><span class="entry-name">Academy</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="BAF.html"><span class="entry-name">Belt Army Faction</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="CONPOL.html"><span class="entry-name">CONPOL</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="alliance.html"><span class="entry-name">Alliance</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="aek.html"><span class="entry-name">Army of Eastern Kamijing</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="asteroidal.html"><span class="entry-name">Asteroidal Industries, Inc.</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="confederacy.html"><span class="entry-name">Confederacy</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="consortium.html"><span class="entry-name">Consortium</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="consortium_healthcare.html"><span class="entry-name">Consortium Healthcare</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="cdnp.html"><span class="entry-name">Consortium Defense Network</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Consulate" target="_blank"><span class="entry-name">Consulate</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="free_mars.html"><span class="entry-name">Free Mars</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="free_martian_militia.html"><span class="entry-name">Free Martian Militia</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="freebooters.html"><span class="entry-name">Freebooters</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="freitaika_free_forces.html"><span class="entry-name">Freitaika Free Forces</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="fury_of_nerio.html"><span class="entry-name">Fury of Nerio</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="mercurian_solar.html"><span class="entry-name">Mercurian Solar, Inc.</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Protectorate" target="_blank"><span class="entry-name">Protectorate</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Red_Star_Line" target="_blank"><span class="entry-name">Red Star Line</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Resistors" target="_blank"><span class="entry-name">Resistors</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Technocracy" target="_blank"><span class="entry-name">Technocracy</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/United_Earth" target="_blank"><span class="entry-name">United Earth</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/United_States_Space_Marines" target="_blank"><span class="entry-name">USSM</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Venusian_Industries,_Inc" target="_blank"><span class="entry-name">Venusian Industries, Inc.</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/World_Congress" target="_blank"><span class="entry-name">World Congress</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- CHARACTERS -->
+    <section class="cat-section cat-characters" id="characters">
+      <div class="cat-header">
+        <div class="cat-label">Characters</div>
+        <div class="cat-count" id="count-characters"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry live" href="adele_lylat.html"><span class="entry-name">Adele Lylat</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="burt_mcalister.html"><span class="entry-name">Burt McAlister</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="carrington_joseph.html"><span class="entry-name">Carrington Joseph</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="akira_ueshiba.html"><span class="entry-name">Akira Ueshiba</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="alexandre_skjorn.html"><span class="entry-name">Alexandré Skjörn</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="alexis_dsauvignon.html"><span class="entry-name">Alexis D'Sauvignon</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="feingold.html"><span class="entry-name">Arthur Feingold</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="cera_nicks.html"><span class="entry-name">Cera Nicks</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="colonel_razmarov.html"><span class="entry-name">Colonel Razmarov</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="elijah_rasmussen.html"><span class="entry-name">Elijah Rasmussen</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="hadyn_von_dehlin.html"><span class="entry-name">Haydn von Dehlin</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="helena.html"><span class="entry-name">HELENA-Prime</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="jaymeson_nicks.html"><span class="entry-name">Jaymeson Nicks</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="johann_yun_baker.html"><span class="entry-name">Johann Yun Baker</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Justinian_Tyr" target="_blank"><span class="entry-name">Justinian Tyr</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="marcus_cato_scaevola.html"><span class="entry-name">Marcus Cato Scaevola</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="moriyoshi_mirimoto.html"><span class="entry-name">Moriyoshi Mirimoto</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Nic_Cruze" target="_blank"><span class="entry-name">Nic Cruze</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Nikolai_McAdden" target="_blank"><span class="entry-name">Nikolai McAdden</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Nikolaisha_Varkosky" target="_blank"><span class="entry-name">Nikolaisha Varkosky</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Odysseus_Norm" target="_blank"><span class="entry-name">Odysseus Norm</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Osman_Kristj%C3%A1n" target="_blank"><span class="entry-name">Osman Kristján</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Rudolph_Carlson" target="_blank"><span class="entry-name">Rudolph Carlson</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="sebastian_myrcenae_mcrae.html"><span class="entry-name">Sebastian Myrcenae McRae</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Septimus_Severus_Gaiaus_Quintus" target="_blank"><span class="entry-name">Septimus Severus Gaiaus Quintus</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Silvinus_Herminus_Januarius" target="_blank"><span class="entry-name">Silvinus Herminus Januarius</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/S%C3%B8ren_Grimmerson" target="_blank"><span class="entry-name">Søren Grimmerson</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Steinric_Deir" target="_blank"><span class="entry-name">Steinric Deir</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Wilhelm_F._Keigel" target="_blank"><span class="entry-name">Wilhelm F. Keigel</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="william_henry_robinson.html"><span class="entry-name">William Henry Robinson</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Wu_Kenshu" target="_blank"><span class="entry-name">Wu Kenshu</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Yeltsana_Bravka" target="_blank"><span class="entry-name">Yeltsana Bravka</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- THEOLOGY & PHILOSOPHY -->
+    <section class="cat-section cat-theology" id="theology">
+      <div class="cat-header">
+        <div class="cat-label">Theology &amp; Philosophy</div>
+        <div class="cat-count" id="count-theology"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry live" href="Breath.html"><span class="entry-name">Breath</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="the_architect.html"><span class="entry-name">Architect</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="architecture.html"><span class="entry-name">Architecture</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="constitutional_anarchism.html"><span class="entry-name">Constitutional Anarchism</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="empirical_verse.html"><span class="entry-name">Empirical Verse</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="empyrean_verse.html"><span class="entry-name">Empyrean Verse</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="faith.html"><span class="entry-name">Faith</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="city_of_man.html"><span class="entry-name">City of Man</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="makers_mannatene.html"><span class="entry-name">Makers</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="monarchist_state.html"><span class="entry-name">Minarchist State</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/New_School" target="_blank"><span class="entry-name">New School</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Sentience" target="_blank"><span class="entry-name">Sentience</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Terran_Humanism" target="_blank"><span class="entry-name">Terran Humanism</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Transhuman" target="_blank"><span class="entry-name">Transhuman</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- EVENTS & CONFLICTS -->
+    <section class="cat-section cat-events" id="events">
+      <div class="cat-header">
+        <div class="cat-label">Events &amp; Conflicts</div>
+        <div class="cat-count" id="count-events"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Apollo-Soyuz_Landing" target="_blank"><span class="entry-name">Apollo-Soyuz Landing</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="apollo_soyuz_program.html"><span class="entry-name">Apollo-Soyuz Program</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="apollo_soyuz_20.html"><span class="entry-name">Apollo-Soyuz 20</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="earth_prosperity_initiative.html"><span class="entry-name">Earth Prosperity Initiative</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="freitaika_rebellion.html"><span class="entry-name">Freitaika Rebellion</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="japanese_uprising.html"><span class="entry-name">Japanese Uprising</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Second_Renaissance" target="_blank"><span class="entry-name">Second Renaissance</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/The_Solar_War" target="_blank"><span class="entry-name">The Solar War</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Zero_Day" target="_blank"><span class="entry-name">Zero Day</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Zero_Day_Accords" target="_blank"><span class="entry-name">Zero Day Accords</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- LOCATIONS -->
+    <section class="cat-section cat-locations" id="locations">
+      <div class="cat-header">
+        <div class="cat-label">Locations</div>
+        <div class="cat-count" id="count-locations"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Aenaeus" target="_blank"><span class="entry-name">Aenaeus</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="apollo_minor.html"><span class="entry-name">Apollo Minor</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="city_of_man.html"><span class="entry-name">City of Man</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="dosijing.html"><span class="entry-name">Dosijing</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="freeport.html"><span class="entry-name">Freeport</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="freitaika.html"><span class="entry-name">Freitaika</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="ganymede.html"><span class="entry-name">Ganymede</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="io.html"><span class="entry-name">Io</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="callisto.html"><span class="entry-name">Callisto</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="j_station_1.html"><span class="entry-name">J-Station 1</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="kamijing.html"><span class="entry-name">Kamijing</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="mars.html"><span class="entry-name">Mars</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/New_Athens" target="_blank"><span class="entry-name">New Athens</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/New_Earth" target="_blank"><span class="entry-name">New Earth</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="europa.html"><span class="entry-name">Noveautrea (Europa)</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Old_Earth" target="_blank"><span class="entry-name">Old Earth</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Sol" target="_blank"><span class="entry-name">Sol</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Sol_System" target="_blank"><span class="entry-name">Sol System</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Spacer_Bar" target="_blank"><span class="entry-name">Spacer Bar</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Station_42" target="_blank"><span class="entry-name">Station 42</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Titan" target="_blank"><span class="entry-name">Titan</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Umbresias" target="_blank"><span class="entry-name">Umbresias</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Veragrad" target="_blank"><span class="entry-name">Veragrad</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- TECHNOLOGY & EQUIPMENT -->
+    <section class="cat-section cat-technology" id="technology">
+      <div class="cat-header">
+        <div class="cat-label">Technology &amp; Equipment</div>
+        <div class="cat-count" id="count-technology"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry live" href="alterra.html"><span class="entry-name">Alterra</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="archaeotechnician.html"><span class="entry-name">Archaeotechnician</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Aural_Implant" target="_blank"><span class="entry-name">Aural Implant</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="chemstick.html"><span class="entry-name">Chemstick</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="cracker.html"><span class="entry-name">Cracker</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="cycler.html"><span class="entry-name">Cycler</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="electrostaff.html"><span class="entry-name">Electrostaff</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="integrated_production_sphere.html"><span class="entry-name">Integrated Production Sphere</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="interplanetary_transport_network.html"><span class="entry-name">Interplanetary Transport Network</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="magneboots.html"><span class="entry-name">Magneboots</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="magnegun.html"><span class="entry-name">Magnegun</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/PET_Call" target="_blank"><span class="entry-name">PET Call</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Psychic_Radio" target="_blank"><span class="entry-name">Psychic Radio</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Sabatier_Reactor" target="_blank"><span class="entry-name">Sabatier Reactor</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="skyhook.html"><span class="entry-name">Skyhook</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Solarnet" target="_blank"><span class="entry-name">Solarnet</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Spacecraft" target="_blank"><span class="entry-name">Spacecraft</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Teslablade" target="_blank"><span class="entry-name">Teslablade</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Vacsuit" target="_blank"><span class="entry-name">Vacsuit</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/X-11_Black_Cat_Thunderbird" target="_blank"><span class="entry-name">X-11 Black Cat Thunderbird</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- HISTORY & POLITICS -->
+    <section class="cat-section cat-history" id="history">
+      <div class="cat-header">
+        <div class="cat-label">History &amp; Politics</div>
+        <div class="cat-count" id="count-history"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry live" href="articles.html"><span class="entry-name">Articles of Solar Confederation</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="charter.html"><span class="entry-name">Charter</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="destiny.html"><span class="entry-name">Destiny</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="humanity.html"><span class="entry-name">Humanity</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="heracliad.html"><span class="entry-name">Heracliad</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="solverse_economics.html"><span class="entry-name">Solverse Economics</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="mineral_bonds.html"><span class="entry-name">Mineral Bonds</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Progress" target="_blank"><span class="entry-name">Progress</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Soviet_Union" target="_blank"><span class="entry-name">Soviet Union</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Space_Age" target="_blank"><span class="entry-name">Space Age</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="standard_calendar.html"><span class="entry-name">Standard Calendar</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Timeline_of_Solverse" target="_blank"><span class="entry-name">Timeline of Solverse</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/United_States" target="_blank"><span class="entry-name">United States</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+    <!-- CULTURE & SOCIETY -->
+    <section class="cat-section cat-culture" id="culture">
+      <div class="cat-header">
+        <div class="cat-label">Culture &amp; Society</div>
+        <div class="cat-count" id="count-culture"></div>
+      </div>
+      <div class="entry-grid">
+        <a class="entry live" href="aerowings.html"><span class="entry-name">Aerowings</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="anglatin.html"><span class="entry-name">Anglatin</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="carmen.html"><span class="entry-name">Carmen</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="exploratory.html"><span class="entry-name">Explorator</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="gravity_ball.html"><span class="entry-name">Gravity Ball</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="grounder.html"><span class="entry-name">Grounder</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="kami_do.html"><span class="entry-name">Kami Do</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="language.html"><span class="entry-name">Language</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="solari_language.html"><span class="entry-name">Solari Language</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="mannatene.html"><span class="entry-name">Mannatene</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Marriage" target="_blank"><span class="entry-name">Marriage</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Paranoophrine" target="_blank"><span class="entry-name">Paranoophrine</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Refresher" target="_blank"><span class="entry-name">Refresher</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Solari" target="_blank"><span class="entry-name">Solari</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Solarnet" target="_blank"><span class="entry-name">Solarnet</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry live" href="spacer.html"><span class="entry-name">Spacer</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="spacer_edc_kits.html"><span class="entry-name">Spacer EDC Kits</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="spacer_hygiene.html"><span class="entry-name">Spacer Hygiene</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="deco_futurism.html"><span class="entry-name">Deco Futurism</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="agrarium.html"><span class="entry-name">Agrarium</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="social_taxonomy.html"><span class="entry-name">Social Taxonomy</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="space_tourism.html"><span class="entry-name">Space Tourism</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry live" href="solar_sounds_corpus.html"><span class="entry-name">Solar Sounds Corpus</span><span class="entry-badge">LIVE</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Spacewalk" target="_blank"><span class="entry-name">Spacewalk</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Synthehol" target="_blank"><span class="entry-name">Synthehol</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/The_Defiant" target="_blank"><span class="entry-name">The Defiant</span><span class="entry-badge">INDEX</span></a>
+        <a class="entry stub" href="https://thesolarpedia.fandom.com/wiki/Venusian_Injuns" target="_blank"><span class="entry-name">Venusian Injuns</span><span class="entry-badge">INDEX</span></a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-item"><span class="status-dot green"></span>Archive Online</div>
+  <div class="status-item"><span class="status-dot green"></span>HELENA-Prime Active</div>
+  <div class="status-item"><span class="status-dot amber"></span>4 Pages Live · Remainder Indexed</div>
+  <div class="status-item" style="margin-left:auto;" id="status-clock">SY —</div>
+</div>
+
+<script>
+// ── SY CLOCK ──
+const EPOCH_MS = new Date('2026-01-12T00:00:00Z').getTime();
+const SY_EPOCH = 132.0;
+const SY_PER_DAY = 0.01;
+
+function calcSY() {
+  const now = Date.now();
+  const daysSinceEpoch = (now - EPOCH_MS) / (1000 * 60 * 60 * 24);
+  return SY_EPOCH + daysSinceEpoch * SY_PER_DAY;
+}
+
+function formatSY(sy) {
+  return 'SY ' + sy.toFixed(2);
+}
+
+function updateClocks() {
+  const sy = calcSY();
+  const label = formatSY(sy);
+  const navEl = document.getElementById('nav-clock');
+  const headerEl = document.getElementById('header-clock');
+  const statusEl = document.getElementById('status-clock');
+  if (navEl) navEl.textContent = label;
+  if (headerEl) headerEl.textContent = label;
+  if (statusEl) statusEl.textContent = label;
+}
+
+updateClocks();
+setInterval(updateClocks, 60000);
+
+// ── COUNT ENTRIES PER CATEGORY ──
+function countEntries() {
+  const sections = document.querySelectorAll('.cat-section');
+  let totalLive = 0, totalStub = 0;
+  sections.forEach(sec => {
+    const live = sec.querySelectorAll('.entry.live').length;
+    const stub = sec.querySelectorAll('.entry.stub').length;
+    const total = live + stub;
+    totalLive += live;
+    totalStub += stub;
+    const countEl = sec.querySelector('[id^="count-"]');
+    if (countEl) countEl.textContent = total + ' entries' + (live > 0 ? ' · ' + live + ' live' : '');
+  });
+  const liveEl = document.getElementById('live-count');
+  const stubEl = document.getElementById('stub-count');
+  if (liveEl) liveEl.textContent = totalLive;
+  if (stubEl) stubEl.textContent = (totalLive + totalStub);
+  updateEntryCount();
+}
+
+// ── SEARCH + FILTER ──
+let currentFilter = 'all';
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterEntries();
+}
+
+function filterEntries() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll('.cat-section').forEach(sec => {
+    let secVisible = 0;
+    sec.querySelectorAll('.entry').forEach(entry => {
+      const name = entry.querySelector('.entry-name').textContent.toLowerCase();
+      const isLive = entry.classList.contains('live');
+      const matchFilter = currentFilter === 'all'
+        || (currentFilter === 'live' && isLive)
+        || (currentFilter === 'stub' && !isLive);
+      const matchSearch = !query || name.includes(query);
+      if (matchFilter && matchSearch) {
+        entry.classList.remove('hidden');
+        secVisible++;
+        visible++;
+      } else {
+        entry.classList.add('hidden');
+      }
+    });
+    sec.classList.toggle('hidden', secVisible === 0);
+  });
+  document.getElementById('entryCount').textContent = visible + ' entries shown';
+}
+
+function updateEntryCount() {
+  const total = document.querySelectorAll('.entry').length;
+  document.getElementById('entryCount').textContent = total + ' entries';
+}
+
+// ── SIDEBAR SCROLL ──
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  }
+}
+
+// ── INIT ──
+countEntries();
+</script>
+</body>
+</html>
