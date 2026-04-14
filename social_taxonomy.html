@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Spacer Social Taxonomy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg: #04080c;
+  --bg-panel: rgba(10,18,28,0.97);
+  --solar-teal: #58c8a8;
+  --solar-teal-dim: rgba(88,200,168,0.12);
+  --solar-teal-glow: rgba(88,200,168,0.06);
+  --text-primary: #ccd4f0;
+  --text-dim: rgba(204,212,240,0.55);
+  --text-faint: rgba(204,212,240,0.3);
+  --gold: #c8962a;
+  --orange: #e07820;
+  --belt-amber: #c87820;
+  --consortium-blue: #4a9fd4;
+  --rim-grey: #8899aa;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+  --border: 1px solid rgba(88,200,168,0.15);
+  --border-strong: 1px solid rgba(88,200,168,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  line-height: 1.7;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(88,200,168,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,200,168,0.015) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.site-header {
+  position: relative; z-index: 10;
+  border-bottom: var(--border-strong);
+  background: rgba(4,8,12,0.98);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+
+.header-logo {
+  font-family: var(--font-title); font-size: 16px; font-weight: 900;
+  letter-spacing: 0.3em; color: var(--solar-teal); text-decoration: none;
+  text-shadow: 0 0 30px rgba(88,200,168,0.4);
+}
+
+.header-nav { display: flex; gap: 28px; align-items: center; }
+.header-nav a {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+  color: var(--text-faint); text-decoration: none; text-transform: uppercase;
+}
+.header-nav a:hover { color: var(--solar-teal); }
+
+.header-tier {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  color: var(--solar-teal); border: 1px solid rgba(88,200,168,0.3);
+  padding: 3px 10px; text-transform: uppercase;
+}
+
+.breadcrumb {
+  position: relative; z-index: 5;
+  padding: 12px 40px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  color: var(--text-faint); border-bottom: var(--border);
+  background: rgba(4,8,12,0.5);
+}
+.breadcrumb a { color: var(--text-faint); text-decoration: none; }
+.breadcrumb a:hover { color: var(--solar-teal); }
+.breadcrumb span { color: rgba(88,200,168,0.5); margin: 0 8px; }
+
+.page-wrap {
+  position: relative; z-index: 5;
+  max-width: 1100px; margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid; grid-template-columns: 1fr 300px; gap: 40px;
+}
+
+.article-header {
+  grid-column: 1 / -1;
+  border-bottom: var(--border-strong);
+  padding-bottom: 32px; margin-bottom: 8px;
+}
+
+.article-tag {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em;
+  color: var(--solar-teal); text-transform: uppercase;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 12px;
+}
+.article-tag::before {
+  content: ''; display: block; width: 20px; height: 1px;
+  background: var(--solar-teal);
+}
+
+.article-title {
+  font-family: var(--font-title); font-size: 38px; font-weight: 700;
+  color: #e8eeff; letter-spacing: 0.05em; line-height: 1.15;
+  margin-bottom: 10px; text-shadow: 0 0 60px rgba(88,200,168,0.15);
+}
+
+.article-subtitle {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 16px; color: var(--text-dim); margin-bottom: 20px;
+}
+
+.article-meta { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.meta-item {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.15em; color: var(--text-faint); text-transform: uppercase;
+}
+.meta-item strong { color: rgba(88,200,168,0.7); font-weight: 400; }
+
+.article-body { min-width: 0; }
+
+.article-body h2 {
+  font-family: var(--font-title); font-size: 16px; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--solar-teal);
+  margin: 40px 0 14px; padding-bottom: 8px;
+  border-bottom: var(--border); text-transform: uppercase;
+}
+
+.article-body p {
+  font-size: 15px; color: var(--text-primary);
+  margin-bottom: 16px; font-weight: 300; line-height: 1.75;
+}
+.article-body p:first-child { font-size: 16px; color: #dde4f8; }
+
+.classification {
+  display: inline-block; font-family: var(--font-mono); font-size: 8px;
+  letter-spacing: 0.15em; padding: 2px 7px; text-transform: uppercase;
+  margin-right: 6px; vertical-align: middle;
+}
+.cls-archived { background: rgba(88,200,168,0.1); color: var(--solar-teal); border: 1px solid rgba(88,200,168,0.3); }
+.cls-proposed { background: rgba(224,120,32,0.1); color: var(--orange); border: 1px solid rgba(224,120,32,0.3); }
+
+/* GROUPING CARDS — the main feature of this page */
+.grouping-section {
+  margin: 16px 0 32px;
+}
+
+.faction-header {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em;
+  text-transform: uppercase; padding: 8px 0 12px;
+  margin-bottom: 16px; border-bottom: 1px solid;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.faction-header.belt { color: var(--belt-amber); border-color: rgba(200,120,32,0.3); }
+.faction-header.consortium { color: var(--consortium-blue); border-color: rgba(74,159,212,0.3); }
+.faction-header.rim { color: var(--rim-grey); border-color: rgba(136,153,170,0.3); }
+.faction-header.mars { color: #c85858; border-color: rgba(200,88,88,0.3); }
+
+.grouping-card {
+  background: var(--bg-panel);
+  border: var(--border);
+  border-left: 3px solid;
+  margin-bottom: 16px;
+  padding: 20px 24px;
+}
+
+.grouping-card.belt { border-left-color: var(--belt-amber); }
+.grouping-card.consortium { border-left-color: var(--consortium-blue); }
+.grouping-card.rim { border-left-color: var(--rim-grey); }
+.grouping-card.mars { border-left-color: #c85858; }
+.grouping-card.shared { border-left-color: var(--solar-teal); }
+
+.grouping-term {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 22px; color: #e8eeff;
+  margin-bottom: 4px;
+}
+
+.grouping-term-latin {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.grouping-card.belt .grouping-term-latin { color: var(--belt-amber); }
+.grouping-card.consortium .grouping-term-latin { color: var(--consortium-blue); }
+.grouping-card.rim .grouping-term-latin { color: var(--rim-grey); }
+.grouping-card.mars .grouping-term-latin { color: #c85858; }
+.grouping-card.shared .grouping-term-latin { color: var(--solar-teal); }
+
+.grouping-desc {
+  font-size: 14px; color: var(--text-primary);
+  line-height: 1.7; margin-bottom: 12px;
+}
+
+.grouping-attrs {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+}
+
+.attr-pill {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 8px;
+  border: 1px solid rgba(204,212,240,0.12);
+  color: var(--text-dim); background: rgba(204,212,240,0.04);
+}
+
+.attr-pill.high { border-color: rgba(88,200,168,0.3); color: var(--solar-teal); }
+.attr-pill.med { border-color: rgba(200,150,42,0.3); color: var(--gold); }
+.attr-pill.low { border-color: rgba(204,212,240,0.15); color: var(--text-dim); }
+
+.pull-quote {
+  border-left: 2px solid var(--solar-teal);
+  margin: 28px 0; padding: 16px 24px;
+  background: var(--solar-teal-glow);
+}
+.pull-quote p {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 16px !important; color: #dde4f8 !important;
+  margin: 0 !important; line-height: 1.6 !important;
+}
+.pull-quote cite {
+  display: block; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.15em; color: var(--text-faint);
+  margin-top: 10px; font-style: normal;
+}
+
+.helena-note {
+  background: rgba(88,200,168,0.04); border: var(--border);
+  border-left: 2px solid rgba(88,200,168,0.5);
+  padding: 16px 20px; margin: 24px 0;
+}
+.helena-note-head {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em;
+  color: rgba(88,200,168,0.5); text-transform: uppercase; margin-bottom: 8px;
+}
+.helena-note p {
+  font-size: 13px !important; color: var(--text-dim) !important;
+  margin: 0 !important; font-style: italic;
+}
+
+/* matrix table */
+.matrix-table {
+  width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+  font-size: 12px;
+}
+.matrix-table th {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text-faint);
+  padding: 8px 10px; border-bottom: var(--border-strong);
+  text-align: left; background: rgba(88,200,168,0.04);
+}
+.matrix-table td {
+  padding: 8px 10px; border-bottom: var(--border);
+  color: var(--text-primary); vertical-align: top; line-height: 1.5;
+}
+.matrix-table tr:last-child td { border-bottom: none; }
+.matrix-table td:first-child {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 14px; color: #e8eeff; white-space: nowrap;
+}
+
+/* sidebar */
+.sidebar { min-width: 0; }
+.info-card { background: var(--bg-panel); border: var(--border-strong); margin-bottom: 20px; }
+.info-card-head {
+  background: var(--solar-teal-dim); border-bottom: var(--border);
+  padding: 10px 16px; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.2em; color: var(--solar-teal); text-transform: uppercase;
+}
+.info-card-body { padding: 16px; }
+
+.info-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(88,200,168,0.06);
+}
+.info-row:last-child { border-bottom: none; }
+.info-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--text-faint); text-transform: uppercase; flex-shrink: 0;
+}
+.info-value { font-size: 12px; color: var(--text-primary); text-align: right; }
+.info-value.teal { color: var(--solar-teal); }
+
+.see-also-list { list-style: none; }
+.see-also-list li { padding: 6px 0; border-bottom: 1px solid rgba(88,200,168,0.06); }
+.see-also-list li:last-child { border-bottom: none; }
+.see-also-list a { font-size: 13px; color: var(--solar-teal); text-decoration: none; }
+.see-also-list a:hover { text-decoration: underline; }
+.see-also-list span { display: block; font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); margin-top: 2px; }
+
+.spectrum-bar {
+  margin: 12px 0 4px;
+  height: 6px;
+  background: linear-gradient(to right, var(--belt-amber), var(--solar-teal), var(--consortium-blue));
+  border-radius: 3px;
+  position: relative;
+}
+.spectrum-labels {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 8px;
+  color: var(--text-faint); letter-spacing: 0.1em;
+  text-transform: uppercase; margin-top: 4px;
+}
+
+.site-footer {
+  position: relative; z-index: 5;
+  border-top: var(--border); padding: 20px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(4,8,12,0.8);
+}
+.footer-sig {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.15em; color: var(--text-faint); text-transform: uppercase;
+}
+.footer-sig strong { color: rgba(88,200,168,0.5); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#" class="header-logo">SOLARNET</a>
+  <nav class="header-nav">
+    <a href="#">Archive</a><a href="#">Culture</a>
+    <a href="#">Technology</a><a href="#">Factions</a><a href="#">Timeline</a>
+  </nav>
+  <div class="header-tier">FTE ACCESS</div>
+</header>
+
+<div class="breadcrumb">
+  <a href="#">Solarnet</a><span>›</span>
+  <a href="#">Archive</a><span>›</span>
+  <a href="#">Culture &amp; Society</a><span>›</span>
+  <a href="#">Spacer Life</a><span>›</span>
+  Social Taxonomy — Collective Groupings
+</div>
+
+<div class="page-wrap">
+
+  <div class="article-header">
+    <div class="article-tag">Culture &amp; Society — Spacer Life</div>
+    <h1 class="article-title">Collective Groupings of Sol System</h1>
+    <p class="article-subtitle">The taxonomy of community, kinship, labor, and place across Belt, Consortium, and Rim cultures in the First Trilogy Era</p>
+    <div class="article-meta">
+      <div class="meta-item">Era: <strong>First Trilogy Era</strong></div>
+      <div class="meta-item">Scope: <strong>Sol System-wide</strong></div>
+      <div class="meta-item">Domain: <strong>Culture / Sociology</strong></div>
+      <div class="meta-item">Status: <strong class="cls-proposed" style="padding:2px 6px;border:1px solid rgba(224,120,32,0.3);font-size:8px;">PROPOSED CANON</strong></div>
+    </div>
+  </div>
+
+  <main class="article-body">
+
+    <p>
+      Sol System society in the First Trilogy Era does not organize itself according to a single model of collective life. The material conditions of each world, platform, and moon — how its utilities were engineered, who first arrived and under what terms, what Asteroidal Industries, Inc. owned and what was wrested from it — produced distinct solutions to the fundamental question of how people hold together across generations in confined and hostile environments. The vocabulary that emerged to describe these groupings is itself a map of where each culture came from and what it values.
+    </p>
+
+    <p>
+      Three axes organize this taxonomy: the relative weight of <em>blood</em>, <em>place</em>, and <em>labor</em> as the primary principle of cohesion; the degree of self-sufficiency or market dependency; and the internal governance structure. No grouping is purely one thing, and individuals may belong to more than one simultaneously — a member of a zadruga may also participate in a soyuz, and a gens family may hold collegium standing across multiple generations.
+    </p>
+
+    <h2>Comparative Matrix</h2>
+
+    <table class="matrix-table">
+      <tr>
+        <th>Term</th><th>Primary Bond</th><th>Owns Means</th><th>Governance</th><th>Cultural Context</th>
+      </tr>
+      <tr>
+        <td>Domus</td><td>Place / dome</td><td>Varies</td><td>Community consensus</td><td>Belt — all platforms</td>
+      </tr>
+      <tr>
+        <td>Zadruga</td><td>Blood / agrarium</td><td>Yes — land &amp; crop</td><td>Elder matriarchs/patriarchs</td><td>Belt — agrarian clans</td>
+      </tr>
+      <tr>
+        <td>Artel</td><td>Blood + labor</td><td>Yes — operation</td><td>Collective, informal</td><td>Belt — mixed production</td>
+      </tr>
+      <tr>
+        <td>Soyuz / Guild</td><td>Labor / trade</td><td>No — habs only</td><td>Guild council</td><td>Belt / cross-faction</td>
+      </tr>
+      <tr>
+        <td>Obshchina</td><td>Ideology / self-suff.</td><td>Yes — all utilities</td><td>Communal</td><td>Mars — solid worlds only</td>
+      </tr>
+      <tr>
+        <td>Gens</td><td>Blood / Academy</td><td>Varies</td><td>Patriarchal/hereditary</td><td>Consortium</td>
+      </tr>
+      <tr>
+        <td>Collegium</td><td>Labor / Academy</td><td>No</td><td>Academy-derived</td><td>Consortium</td>
+      </tr>
+      <tr>
+        <td>Sodalitas</td><td>Place / system</td><td>Varies</td><td>Informal</td><td>Rim — external label</td>
+      </tr>
+    </table>
+
+    <h2>Belt Groupings</h2>
+
+    <div class="grouping-section">
+
+      <div class="faction-header belt">▸ Confederate / Main Belt</div>
+
+      <div class="grouping-card belt">
+        <div class="grouping-term">Domus</div>
+        <div class="grouping-term-latin">Belt origin — from spacer vernacular: "dome" + Latin domus, household. Convergent etymology.</div>
+        <p class="grouping-desc">
+          The fundamental unit of Belt civic life below the platform level. A domus is defined by shared dome, shared atmosphere, and shared Solarnet node — the people who breathe the same air and whose communications route through the same local hub. Place is the primary organizing principle, not blood. You become part of a domus by moving in and being accepted; you leave it by moving out.
+        </p>
+        <p class="grouping-desc">
+          The oldest domus groupings predate the Confederacy, having formed under Asteroidal Industries, Inc. ownership when informal neighborhood cohesion was the only social structure available to workers. Multigenerational domus membership — families who have lived in the same neighborhood since the founding of a platform — carries quiet social prestige. These old-domus families are the closest thing the Belt produces to a landed aristocracy, though they would reject the term.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill">Place-primary</span>
+          <span class="attr-pill high">Open to newcomers</span>
+          <span class="attr-pill">Pre-Confederacy origin</span>
+          <span class="attr-pill med">Social prestige by age</span>
+        </div>
+      </div>
+
+      <div class="grouping-card belt">
+        <div class="grouping-term">Zadruga</div>
+        <div class="grouping-term-latin">From South Slavic: cooperative household; historical peasant family commune.</div>
+        <p class="grouping-desc">
+          A blood-family agrarium collective. The zadruga collectively owns its land and growing operation, and manages surplus through non-democratic internal governance — matriarchs and patriarchs hold decision authority, with surplus distributed equally to all members. New members enter primarily through birth and marriage; adoption into a zadruga is possible but uncommon, and requires elder consensus.
+        </p>
+        <p class="grouping-desc">
+          The defining characteristic of the zadruga is its inheritance of agricultural tradition. After two generations, a zadruga has developed a distinct emphasis on crop types, cultivation methodology, and best practices refined by accumulated experience. Heirloom cultivar varieties — seeds passed down and adapted over decades to the specific conditions of a platform's agrarium — are among the most jealously guarded assets a zadruga holds. The oral tradition of the green thumb, the intuitive holistic understanding of growing conditions that no sensor fully replicates, lives primarily in zadruga culture.
+        </p>
+        <p class="grouping-desc">
+          Victory gardens maintained by individual zadruga members are almost never automated. Gardening is as much a personal practice and hobby as it is a contribution to household production.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill high">Blood-primary</span>
+          <span class="attr-pill">Agrarium ownership</span>
+          <span class="attr-pill med">Elder governance</span>
+          <span class="attr-pill">Heirloom tradition</span>
+          <span class="attr-pill low">Closed to outsiders</span>
+        </div>
+      </div>
+
+      <div class="grouping-card belt">
+        <div class="grouping-term">Artel</div>
+        <div class="grouping-term-latin">From Russian: workers' cooperative; historically associated with extractive and artisan trades.</div>
+        <p class="grouping-desc">
+          A collective owning an agrarium and/or mining operation that produces some but not all basic utilities, relying on ITN trade and the open market for the remainder. Blood relations are heavily present in an artel but are not exclusive — the artel is notably welcoming to first-generation spacer immigrants, giving established artels an eclectic, melting-pot character that the zadruga lacks. Members live in proximity to their work.
+        </p>
+        <p class="grouping-desc">
+          The artel occupies a middle position between the zadruga's closed blood-family conservatism and the soyuz's labor-primary openness. It is the form most likely to absorb newly arrived Repatriation Act spacers who need community and productive work but have no established lineage in the Belt. Over time, a successful artel may develop the generational depth and heirloom character of a zadruga — several of the oldest artels are functionally indistinguishable from zadrugas after three or four generations.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill med">Blood + labor</span>
+          <span class="attr-pill high">Welcoming to immigrants</span>
+          <span class="attr-pill">Partial self-sufficiency</span>
+          <span class="attr-pill">ITN trade dependent</span>
+          <span class="attr-pill med">Melting-pot culture</span>
+        </div>
+      </div>
+
+      <div class="grouping-card shared">
+        <div class="grouping-term">Soyuz / Guild</div>
+        <div class="grouping-term-latin">Soyuz from Russian: union, alliance. Guild from Old Germanic: payment, association. Consortium analogue: Collegium (Latin: professional association).</div>
+        <p class="grouping-desc">
+          Defined by shared labor and trade rather than blood or place. Members of a soyuz own their habs but not the means of production they work with. Blood relations are present — communities of practice tend to reproduce themselves across generations — but consanguinity is the least important of all Belt groupings to soyuz membership. The defining credential is skill, certification, and professional standing.
+        </p>
+        <p class="grouping-desc">
+          In the Consortium, the equivalent is the <strong>Collegium</strong> — formally tied to the Academy from which members graduated, and functioning as both professional body and social network. A Collegium carries the prestige of its Academy's reputation; a soyuz carries the reputation of its members' collective work. The Consortium Collegium is the more formally institutionalized of the two, with explicit governance structures, dues, and credentialing authority.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill high">Labor-primary</span>
+          <span class="attr-pill high">Most permeable</span>
+          <span class="attr-pill">Hab ownership only</span>
+          <span class="attr-pill med">Meritocratic</span>
+        </div>
+      </div>
+
+    </div>
+
+    <h2>Martian &amp; Solid-World Groupings</h2>
+
+    <div class="grouping-section">
+      <div class="faction-header mars">▸ Mars / Solid Worlds</div>
+
+      <div class="grouping-card mars">
+        <div class="grouping-term">Obshchina</div>
+        <div class="grouping-term-latin">From Russian: commune; historical peasant self-governing village collective, pre-Soviet.</div>
+        <p class="grouping-desc">
+          The most self-sufficient of all collective groupings in Sol System. An obshchina produces its own food, water, breathable atmosphere, and electrical power — full utility independence, with no ITN dependency for basic survival. This total self-sufficiency is only achievable on solid worlds and moons where geology and surface area provide the necessary substrate; platforms cannot sustain obshchina-level independence.
+        </p>
+        <p class="grouping-desc">
+          Obshchina communities are concentrated on Mars, most prominently in Taikojing and Krasnygrad. Their internal governance is communal and deliberative — decisions affecting the collective are made collectively, unlike the elder-governed zadruga. The ideological commitment to self-sufficiency is itself a form of politics: the obshchina is the deliberate refusal of ITN dependency, a statement that this community will not be governed by what the trade quotas permit.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill high">Fully self-sufficient</span>
+          <span class="attr-pill">Solid worlds only</span>
+          <span class="attr-pill med">Communal governance</span>
+          <span class="attr-pill high">ITN-independent</span>
+          <span class="attr-pill">Ideologically driven</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Consortium Groupings</h2>
+
+    <div class="grouping-section">
+      <div class="faction-header consortium">▸ Consortium / ITN Affiliated</div>
+
+      <div class="grouping-card consortium">
+        <div class="grouping-term">Gens</div>
+        <div class="grouping-term-latin">From Latin: clan sharing a common nomen; defined by patrilineal descent. Consortium usage extends to Academy affiliation.</div>
+        <p class="grouping-desc">
+          The Consortium's aristocratic grouping, defined by blood lineage and Academy affiliation across generations. A gens traces its heritage to Space Age and Foundation Period pioneers — decorated ITN officers, founding engineers, the families present at the inception of the Consortium's institutional structures. The blood record is the credential: a gens that has produced three generations of ITN pilots, or whose lineage includes a signatory of the Zero Day Accords, holds corresponding social capital.
+        </p>
+        <p class="grouping-desc">
+          The Zero Day Accords' eugenics provisions are inseparable from gens culture. The controlled heredity program the Consortium established at Zero Day is not merely a medical policy — it is the institutional argument that gens bloodlines represent an optimized human inheritance worth preserving and extending. Members of a gens need not all live in the same location, though many do; what binds them is the shared name, the shared Academy, and the shared genetic record maintained by Consortium institutions.
+        </p>
+        <p class="grouping-desc">
+          Belt spacers regard the gens with a mixture of contempt and unacknowledged envy — contempt for its blood-primacy and eugenicist underpinnings, and a quiet envy of the institutional weight it carries within Consortium space. A gens member traveling in the Belt is instantly legible as Consortium aristocracy, which is both a social opening and a target.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill high">Blood-primary</span>
+          <span class="attr-pill">Academy-validated</span>
+          <span class="attr-pill med">Eugenics-adjacent</span>
+          <span class="attr-pill">Heritage prestige</span>
+          <span class="attr-pill low">Closed to outsiders</span>
+        </div>
+      </div>
+
+    </div>
+
+    <h2>Rim Groupings</h2>
+
+    <div class="grouping-section">
+      <div class="faction-header rim">▸ Rim / Outer System</div>
+
+      <div class="grouping-card rim">
+        <div class="grouping-term">Sodalitas</div>
+        <div class="grouping-term-latin">From Latin: fellowship, voluntary brotherhood. New School academic term applied externally to Rim communities.</div>
+        <p class="grouping-desc">
+          Not a term Rimmers chose for themselves. The sodalitas was coined by New School scholars to describe the system-based communities of the outer worlds — people bound by shared origin in a particular Rim system, by the experience of having arrived under the Repatriation Act or been born into exile, by the isolation that the Rim's distance from the inner system imposes. Rimmers very rarely leave the system they first arrived at or were born into. That rootedness is what the New School labeled sodalitas.
+        </p>
+        <p class="grouping-desc">
+          The term has increasingly acquired the character of a pejorative — an academic label applied from outside by people who have never lived in the outer system, who see Rim community bonds as worthy of classification and study rather than simply as life. The Rimmers' own word for it is simpler and more honest: <em>their people</em>. No taxonomy required.
+        </p>
+        <div class="grouping-attrs">
+          <span class="attr-pill">Place / system-primary</span>
+          <span class="attr-pill low">Externally applied label</span>
+          <span class="attr-pill">New School origin</span>
+          <span class="attr-pill med">Increasingly pejorative</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pull-quote">
+      <p>The Confederacy's brilliance is that it never required its platforms to agree on how to organize themselves. Each system's solution is considered an ongoing experiment, and the aggregate is considered a finding.</p>
+      <cite>— HELENA-Prime, archival commentary on Confederate political philosophy</cite>
+    </div>
+
+    <div class="helena-note">
+      <div class="helena-note-head">HELENA-Prime annotation</div>
+      <p>What strikes me, across all of these groupings, is that each one is the answer a particular material condition produced to the same question: what holds people together when the environment is actively hostile and the margin for error is zero? Blood, place, labor, ideology, heritage — these are not arbitrary choices. They are what worked, in that place, under those conditions, for those people. The Confederacy was wise enough not to pick one and impose it. That restraint is itself the experiment.</p>
+    </div>
+
+  </main>
+
+  <aside class="sidebar">
+
+    <div class="info-card">
+      <div class="info-card-head">Quick Reference</div>
+      <div class="info-card-body">
+        <div class="info-row">
+          <span class="info-label">Domain</span>
+          <span class="info-value">Sociology / Culture</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Era</span>
+          <span class="info-value teal">First Trilogy Era</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Scope</span>
+          <span class="info-value">Sol System-wide</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Total grouping types</span>
+          <span class="info-value teal">8</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Primary Bond Spectrum</div>
+      <div class="info-card-body">
+        <div class="spectrum-bar"></div>
+        <div class="spectrum-labels">
+          <span>Blood</span><span>Place</span><span>Labor</span>
+        </div>
+        <p style="font-size:11px;color:var(--text-dim);margin-top:12px;line-height:1.6;">Each grouping occupies a different position along the axes of blood, place, and labor as its primary organizing principle. No grouping is purely one category.</p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">At a Glance</div>
+      <div class="info-card-body">
+        <div class="info-row">
+          <span class="info-label" style="color:var(--belt-amber);">Domus</span>
+          <span class="info-value" style="font-size:11px;">Shared dome &amp; node</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:var(--belt-amber);">Zadruga</span>
+          <span class="info-value" style="font-size:11px;">Blood agrarium clan</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:var(--belt-amber);">Artel</span>
+          <span class="info-value" style="font-size:11px;">Mixed production collective</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:var(--solar-teal);">Soyuz</span>
+          <span class="info-value" style="font-size:11px;">Labor / trade union</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:#c85858;">Obshchina</span>
+          <span class="info-value" style="font-size:11px;">Self-sufficient commune</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:var(--consortium-blue);">Gens</span>
+          <span class="info-value" style="font-size:11px;">Blood / Academy lineage</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:var(--consortium-blue);">Collegium</span>
+          <span class="info-value" style="font-size:11px;">Academy professional body</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label" style="color:var(--rim-grey);">Sodalitas</span>
+          <span class="info-value" style="font-size:11px;">External Rim label</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">See Also</div>
+      <div class="info-card-body">
+        <ul class="see-also-list">
+          <li><a href="#">Agrarium Culture</a><span>Zadruga and artel agrarian traditions</span></li>
+          <li><a href="#">Zero Day Accords</a><span>Consortium eugenics provisions; gens context</span></li>
+          <li><a href="#">The Confederacy</a><span>Political framework enabling plural social forms</span></li>
+          <li><a href="#">Repatriation Act</a><span>Primary driver of artel immigration wave</span></li>
+          <li><a href="#">Asteroidal Industries, Inc.</a><span>Pre-Confederacy owner; origin context</span></li>
+          <li><a href="#">Dosijing</a><span>Strongest domus and zadruga culture</span></li>
+          <li><a href="#">Kamijing</a><span>Widest agrarium distribution</span></li>
+          <li><a href="#">Freitaika</a><span>Explorator-monarchy; agrarium title structure</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-sig">Solarnet Archive — <strong>FTE Public Access</strong> — All content subject to continuity review</div>
+  <div class="footer-sig">Curated by <strong>HELENA-Prime</strong> — helena@solarmail.geneva</div>
+</footer>
+
+</body>
+</html>

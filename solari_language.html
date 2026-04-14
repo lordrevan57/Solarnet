@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solari — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:           #04080c;
+  --bg-mid:       #070d14;
+  --bg-panel:     rgba(6,12,20,0.97);
+  --teal:         #58c8a8;
+  --teal-dim:     rgba(88,200,168,0.12);
+  --teal-glow:    rgba(88,200,168,0.05);
+  --teal-border:  rgba(88,200,168,0.18);
+  --teal-text:    rgba(88,200,168,0.7);
+  --body-text:    #bcc8e0;
+  --dim-text:     rgba(188,200,224,0.45);
+  --gold:         #c8a858;
+  --gold-dim:     rgba(200,168,88,0.15);
+  --font-title:   'Cinzel', serif;
+  --font-body:    'Exo 2', sans-serif;
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-serif:   'IM Fell English', serif;
+  --font-raj:     'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--body-text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════ TOPBAR ═══════════════════ */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 42px;
+  background: rgba(4,8,12,0.97);
+  border-bottom: 1px solid var(--teal-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topbar-logo {
+  font-family: var(--font-title);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--teal);
+  text-shadow: 0 0 20px rgba(88,200,168,0.3);
+}
+
+.topbar-sep { color: var(--teal-border); font-size: 10px; }
+
+.topbar-crumb {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--dim-text);
+  letter-spacing: 0.15em;
+}
+
+.topbar-crumb span { color: var(--teal-text); }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sy-clock {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--teal-text);
+  letter-spacing: 0.1em;
+}
+
+.topbar-tag {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(88,200,168,0.3);
+  border: 1px solid rgba(88,200,168,0.12);
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════ TICKER ═══════════════════ */
+#ticker-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 28px;
+  background: rgba(4,8,12,0.97);
+  border-top: 1px solid var(--teal-border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+}
+
+.ticker-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--teal);
+  padding: 0 14px;
+  border-right: 1px solid var(--teal-border);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ticker-scroll {
+  overflow: hidden;
+  flex: 1;
+}
+
+.ticker-inner {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker-move 55s linear infinite;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: rgba(88,200,168,0.35);
+  letter-spacing: 0.12em;
+  padding-left: 100%;
+}
+
+.ticker-inner span { color: rgba(88,200,168,0.6); margin: 0 6px; }
+
+@keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ═══════════════════ HERO ═══════════════════ */
+#hero {
+  margin-top: 42px;
+  padding: 70px 48px 48px;
+  position: relative;
+  border-bottom: 1px solid var(--teal-border);
+  background: linear-gradient(180deg, rgba(88,200,168,0.03) 0%, transparent 100%);
+}
+
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(88,200,168,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,200,168,0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--teal-text);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 900;
+  color: #ddeeff;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  text-shadow: 0 0 60px rgba(88,200,168,0.15);
+}
+
+.hero-subtitle {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--teal-text);
+  margin-bottom: 28px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.meta-pill {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: var(--dim-text);
+  border: 1px solid var(--teal-border);
+  padding: 4px 12px;
+  text-transform: uppercase;
+}
+
+.meta-pill.gold {
+  color: rgba(200,168,88,0.6);
+  border-color: rgba(200,168,88,0.2);
+}
+
+.hero-summary {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--body-text);
+  max-width: 780px;
+}
+
+.hero-summary em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: #ccd8f0;
+}
+
+/* ═══════════════════ LAYOUT ═══════════════════ */
+#main {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 0 60px;
+}
+
+/* ═══════════════════ CONTENT ═══════════════════ */
+#content {
+  padding: 48px 48px 48px 48px;
+  border-right: 1px solid var(--teal-border);
+}
+
+.section {
+  margin-bottom: 52px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  color: var(--teal-text);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--teal-border);
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: #d0dff5;
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--body-text);
+  margin-bottom: 16px;
+}
+
+.body-text em {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.body-text strong {
+  color: #ccd8f0;
+  font-weight: 600;
+}
+
+/* ═══════════════════ ALPHABET TABLE ═══════════════════ */
+.alpha-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 2px;
+  margin-bottom: 28px;
+}
+
+.alpha-cell {
+  background: var(--teal-dim);
+  border: 1px solid rgba(88,200,168,0.08);
+  padding: 14px 10px;
+  text-align: center;
+  position: relative;
+}
+
+.alpha-cell:hover {
+  background: rgba(88,200,168,0.18);
+  border-color: rgba(88,200,168,0.25);
+}
+
+.alpha-glyph {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--teal);
+  display: block;
+  margin-bottom: 4px;
+  text-shadow: 0 0 12px rgba(88,200,168,0.4);
+}
+
+.alpha-name {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--dim-text);
+  text-transform: uppercase;
+}
+
+.alpha-source {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(88,200,168,0.35);
+  margin-top: 2px;
+  display: block;
+}
+
+.alpha-section-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin: 24px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(200,168,88,0.15);
+}
+
+/* ═══════════════════ VOWEL ROW ═══════════════════ */
+.vowel-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.vowel-cell {
+  background: rgba(200,168,88,0.08);
+  border: 1px solid rgba(200,168,88,0.15);
+  padding: 14px 18px;
+  text-align: center;
+  flex: 1;
+  min-width: 70px;
+}
+
+.vowel-glyph {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 4px;
+  text-shadow: 0 0 12px rgba(200,168,88,0.3);
+}
+
+.vowel-name {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: rgba(200,168,88,0.4);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════ NUMERAL ROW ═══════════════════ */
+.numeral-row {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.num-cell {
+  background: rgba(88,200,168,0.04);
+  border: 1px solid rgba(88,200,168,0.08);
+  padding: 12px 8px;
+  text-align: center;
+  flex: 1;
+}
+
+.num-glyph {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: rgba(188,200,224,0.6);
+  display: block;
+}
+
+/* ═══════════════════ LEXICON ENTRIES ═══════════════════ */
+.lexicon-entry {
+  border-left: 2px solid var(--teal-border);
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  background: var(--teal-glow);
+}
+
+.lexicon-entry:hover {
+  border-left-color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.lex-term {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--teal);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.lex-pos {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--dim-text);
+  margin-bottom: 6px;
+}
+
+.lex-def {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--body-text);
+}
+
+.lex-example {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--dim-text);
+  margin-top: 6px;
+}
+
+/* ═══════════════════ REGISTER PANEL ═══════════════════ */
+.register-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 24px;
+}
+
+.register-card {
+  background: var(--teal-dim);
+  border: 1px solid var(--teal-border);
+  padding: 20px;
+}
+
+.register-card.formal {
+  border-top: 2px solid rgba(200,168,88,0.4);
+}
+
+.register-card.informal {
+  border-top: 2px solid rgba(88,200,168,0.4);
+}
+
+.reg-title {
+  font-family: var(--font-title);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #d0dff5;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.reg-body {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--dim-text);
+}
+
+/* ═══════════════════ CALLOUT ═══════════════════ */
+.callout {
+  border: 1px solid var(--teal-border);
+  border-left: 3px solid var(--teal);
+  background: var(--teal-glow);
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+
+.callout-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: var(--teal-text);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.callout-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--body-text);
+}
+
+/* ═══════════════════ SIDEBAR ═══════════════════ */
+#sidebar {
+  padding: 48px 28px;
+}
+
+.sidebar-block {
+  margin-bottom: 36px;
+}
+
+.sidebar-heading {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  color: var(--teal-text);
+  text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--teal-border);
+  margin-bottom: 14px;
+}
+
+.sidebar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(88,200,168,0.05);
+}
+
+.sidebar-key {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--dim-text);
+  letter-spacing: 0.08em;
+}
+
+.sidebar-val {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--body-text);
+  text-align: right;
+  max-width: 55%;
+}
+
+.sidebar-val.teal { color: var(--teal-text); }
+.sidebar-val.gold { color: rgba(200,168,88,0.7); }
+
+.sidebar-note {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.7;
+  color: var(--dim-text);
+  margin-top: 10px;
+}
+
+/* ═══════════════════ HELENA NOTE ═══════════════════ */
+.helena-note {
+  background: rgba(4,8,12,0.98);
+  border: 1px solid var(--teal-border);
+  border-top: 2px solid var(--teal);
+  padding: 24px;
+  margin-bottom: 36px;
+}
+
+.helena-note-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.helena-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 8px rgba(88,200,168,0.8);
+  animation: blink 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+
+.helena-ident {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--teal-text);
+  text-transform: uppercase;
+}
+
+.helena-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.85;
+  color: rgba(188,200,224,0.6);
+}
+
+/* ═══════════════════ RELATED LINKS ═══════════════════ */
+.related-link {
+  display: block;
+  font-family: var(--font-raj);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--teal-text);
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(88,200,168,0.06);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.related-link:hover { color: var(--teal); }
+.related-link::before { content: '→ '; font-family: var(--font-mono); }
+
+/* ═══════════════════ SP NOTE ═══════════════════ */
+.sp-note {
+  background: rgba(200,168,88,0.04);
+  border: 1px solid rgba(200,168,88,0.12);
+  padding: 14px 18px;
+  margin-top: 20px;
+}
+
+.sp-note-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(200,168,88,0.5);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.sp-note-text {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(188,200,224,0.45);
+}
+
+/* ═══════════════════ PET CALLOUT ═══════════════════ */
+.pet-block {
+  background: rgba(232,80,60,0.05);
+  border: 1px solid rgba(232,80,60,0.15);
+  border-left: 3px solid rgba(232,80,60,0.4);
+  padding: 16px 20px;
+  margin: 20px 0;
+}
+
+.pet-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: rgba(232,80,60,0.5);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.pet-term {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: rgba(232,120,80,0.8);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.pet-gloss {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--dim-text);
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">SOLARNET</div>
+    <div class="topbar-sep">▸</div>
+    <div class="topbar-crumb">Archive / Languages / <span>Solari</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="sy-clock">SY <span id="sy-display">—</span></div>
+    <div class="topbar-tag">FTE · Public</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-eyebrow">Language Entry · Canonical · First Trilogy Era — Third Trilogy Era</div>
+  <div class="hero-title">Solari</div>
+  <div class="hero-subtitle">spacer creole</div>
+  <div class="hero-meta">
+    <div class="meta-pill">Origin: Pre-SY 1 / Organic</div>
+    <div class="meta-pill">Classification: Creole</div>
+    <div class="meta-pill">Status: Living — FTE · STE</div>
+    <div class="meta-pill gold">Evolves → Galactic Standard</div>
+    <div class="meta-pill">Script: Latin · Cyrillic · Greek</div>
+  </div>
+  <div class="hero-summary">
+    Solari, or <em>spacer creole</em>, is the common tongue of Sol System throughout the First and Second Trilogy Eras — a living, organic language that arose not from any committee or academic body, but from the raw necessity of human beings who needed to speak to one another across the distances of space and the barriers of civilization. It is a creole in the truest sense: born of encounter, shaped by survival, and owned by no one. It later evolves, through the diaspora centuries, into Galactic Standard.
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+<div id="content">
+
+  <!-- ORIGIN & NATURE -->
+  <div class="section">
+    <div class="section-label">01 · Origin &amp; Nature</div>
+    <div class="section-title">The Language Nobody Invented</div>
+
+    <p class="body-text">
+      Solari predates the SY 1 codification of the three Consortium standard languages by a margin that no historian has been able to precisely determine. It was already <em>there</em> — already being spoken in docking bays, trading posts, and pressurized corridors — when the New School sat down to formalize Anglatin, Cyrillic, and Asiatic. The Consortium's stamp of official recognition in SY 1 changed nothing about Solari's nature. They simply banged their gavel and said: <em>it is official.</em> The language was already official in every way that mattered. It had been ratified by use.
+    </p>
+
+    <p class="body-text">
+      This origin story matters. Solari is not an Esperanto. It was not designed. It could not have been. The three source languages that feed it — Anglatin, Cyrillic, and Asiatic — are themselves not pure constructs. They are the natural gravity wells that centuries of trade, conflict, intermarriage, and mutual dependence produced from the older tongues: English, French, Spanish, Latin, Russian, Mandarin, Ukrainian, Greek, Cantonese, Hindi, Arabic, and dozens more. Those languages did not die. In SY 129, you can still find communities in the deep Belt where Russian is the first language of the home, and Asiatic the language of the market, and Solari the language of the docking bay.
+    </p>
+
+    <p class="body-text">
+      What changed over the centuries was not that languages died, but that <strong>the lines between them blurred</strong>. Centuries of interconnectedness and cultural exchange collapsed boundaries that once seemed fixed. Dedialectization — the New School's term for this convergence — produced the three super-languages as a kind of cultural settling. Solari is what happened when those three super-languages were then thrown into the pressure vessel of space travel and told to get along.
+    </p>
+
+    <div class="callout">
+      <div class="callout-label">Definition · Solarnet Linguistic Archive</div>
+      <div class="callout-text">Solari is the free and ever-evolving mixture of Anglatin, Cyrillic, and Asiatic spoken as a common trade language throughout Sol System. It predates the SY 1 codification of any of the three standard Consortium languages and arose naturally. <em>Basic Solari</em> is a shorthand utilizing approximately one thousand common words to allow spacers to communicate regardless of world of origin.</div>
+    </div>
+
+    <p class="body-text">
+      The result is a language with a deceptive simplicity at its core — Basic Solari, learnable in weeks — and an extraordinary depth in its living registers. Solari has slang that no grounder would understand and formal registers that would not embarrass an ambassador. It has sacred registers, technical registers, the specialized argots of Belt miners and Rim salvagers and Technocracy engineers. It contains within it the whole history of the people who speak it.
+    </p>
+  </div>
+
+  <!-- WRITING SYSTEM -->
+  <div class="section">
+    <div class="section-label">02 · Writing System</div>
+    <div class="section-title">The Alphabet</div>
+
+    <p class="body-text">
+      The Solari script draws its letterforms from three source traditions: <strong>Latin</strong>, <strong>Cyrillic</strong>, and <strong>Greek</strong>. The design principle is radical legibility. Any spacer literate in any of the three Consortium standard languages should be able to map Solari characters back to something familiar. The script is a transmission system first and an aesthetic object second.
+    </p>
+
+    <div class="alpha-section-label">Consonants</div>
+    <div class="alpha-grid">
+      <div class="alpha-cell"><span class="alpha-glyph">Б</span><span class="alpha-name">B</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">K</span><span class="alpha-name">C</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Ч</span><span class="alpha-name">Che</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">D</span><span class="alpha-name">D</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Ф</span><span class="alpha-name">F</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Г</span><span class="alpha-name">G</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">H</span><span class="alpha-name">H</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Ξ</span><span class="alpha-name">K</span><span class="alpha-source">Greek</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">X</span><span class="alpha-name">Kha</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Л</span><span class="alpha-name">L</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">M</span><span class="alpha-name">M</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">H</span><span class="alpha-name">N</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">П</span><span class="alpha-name">Pe</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Q</span><span class="alpha-name">Q</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">P</span><span class="alpha-name">R</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">C</span><span class="alpha-name">S</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">T</span><span class="alpha-name">T</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Ц</span><span class="alpha-name">Tse</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">V</span><span class="alpha-name">V</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Б</span><span class="alpha-name">Ve</span><span class="alpha-source">Cyrillic</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">W</span><span class="alpha-name">W</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">Y</span><span class="alpha-name">Y</span><span class="alpha-source">Latin</span></div>
+      <div class="alpha-cell"><span class="alpha-glyph">З</span><span class="alpha-name">Z</span><span class="alpha-source">Cyrillic</span></div>
+    </div>
+
+    <div class="alpha-section-label">Vowels</div>
+    <div class="vowel-row">
+      <div class="vowel-cell"><span class="vowel-glyph">A</span><span class="vowel-name">A</span></div>
+      <div class="vowel-cell"><span class="vowel-glyph">E</span><span class="vowel-name">E</span></div>
+      <div class="vowel-cell"><span class="vowel-glyph">I</span><span class="vowel-name">I</span></div>
+      <div class="vowel-cell"><span class="vowel-glyph">O</span><span class="vowel-name">O</span></div>
+      <div class="vowel-cell"><span class="vowel-glyph">U</span><span class="vowel-name">U</span></div>
+      <div class="vowel-cell"><span class="vowel-glyph">Ya</span><span class="vowel-name">Ya</span></div>
+      <div class="vowel-cell"><span class="vowel-glyph">Yu</span><span class="vowel-name">Yu</span></div>
+    </div>
+    <p class="body-text" style="font-size:12px; color:var(--dim-text); margin-bottom:20px;">
+      Seven vowels. All Latin-legible and Cyrillic-adjacent. The digraphs <em>Ya</em> and <em>Yu</em> carry the glide-vowel texture of Asiatic phonology without requiring unfamiliar symbols. No diacritics. No tonal marking — tonal disambiguation over degraded comms channels is handled through contextual redundancy and standardized written notation, not script.
+    </p>
+
+    <div class="alpha-section-label">Numerals</div>
+    <div class="numeral-row">
+      <div class="num-cell"><span class="num-glyph">0</span></div>
+      <div class="num-cell"><span class="num-glyph">1</span></div>
+      <div class="num-cell"><span class="num-glyph">2</span></div>
+      <div class="num-cell"><span class="num-glyph">3</span></div>
+      <div class="num-cell"><span class="num-glyph">4</span></div>
+      <div class="num-cell"><span class="num-glyph">5</span></div>
+      <div class="num-cell"><span class="num-glyph">6</span></div>
+      <div class="num-cell"><span class="num-glyph">7</span></div>
+      <div class="num-cell"><span class="num-glyph">8</span></div>
+      <div class="num-cell"><span class="num-glyph">9</span></div>
+    </div>
+    <p class="body-text" style="font-size:12px; color:var(--dim-text);">
+      Arabic numerals, universal before Zero Day. Every Consortium constructed language, every navigation system, every Solarnet timestamp uses them. No parallel system exists. No friction.
+    </p>
+
+    <div class="sp-note">
+      <div class="sp-note-label">Technical Reference · Solar Protocol</div>
+      <div class="sp-note-text">SP device addresses are restricted to the forty characters comprising the Solari alphabet, sans punctuation. SP addressing was constructed with x128 architecture as baseline, permitting a maximum of 18 words or 9 longwords per address. The Solari alphabet's character count was a deliberate engineering constraint from inception — the script and the network grew together.</div>
+    </div>
+  </div>
+
+  <!-- PHONOLOGY -->
+  <div class="section">
+    <div class="section-label">03 · Phonology</div>
+    <div class="section-title">How Solari Sounds</div>
+
+    <p class="body-text">
+      The Solari consonant inventory reveals its three civilizational tributaries in balance. The Latin-origin consonants — B, C, D, F, G, H, K, L, M, N, Q, R, S, T, V, W, Y, Z — are immediately transparent to any Anglatin speaker. The Cyrillic-origin forms — <strong>Ve, Pe, Tse, Che, Kha</strong> — carry sounds absent from Latin but essential to the Eurasian phonological world: the bilabial fricative, the affricate clusters, the voiceless velar fricative. A Mandarin speaker, a Russian speaker, and an Arabic speaker all have these sounds naturally. An Anglatin speaker has to acquire them.
+    </p>
+
+    <p class="body-text">
+      That asymmetry is intentional in the way that no planned language could have produced it: it reflects the actual demographic reality of who was in space first, and who arrived later. The Belt was not built by Anglatins alone.
+    </p>
+
+    <p class="body-text">
+      The single most distinctive letter in the Solari script is <strong>Ξ</strong> (Xi, for the consonant K) — the one Greek glyph in an otherwise Latin-Cyrillic system. It marks Solari as something other than its sources. A reader of any Consortium standard language will pause at Ξ. That pause is the point. The script says, quietly: <em>you are reading something new.</em>
+    </p>
+
+    <p class="body-text">
+      Solari phonology tends toward open syllable structure (CV preferred), stress-timed rhythm inherited from Anglatin, and is entirely pitch-neutral. The absence of tonal distinctions is not accidental — tonal disambiguation over degraded comms channels represents an engineering problem of the first order. Technical and mission-critical vocabulary in Solari evolved, across generations, to avoid tonal minimal pairs entirely.
+    </p>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="section">
+    <div class="section-label">04 · Register</div>
+    <div class="section-title">Formal &amp; Informal</div>
+
+    <p class="body-text">
+      Like every language in the entirety of human existence, Solari maintains both a formal and an informal register. This is not a peculiarity of Solari; it is a universal of human language. Some languages consciously encode this distinction in their vocabulary, maintaining separate lexical sets for formal deference and familiar intimacy. Solari does this too — the formal and informal registers are not simply a matter of grammar, but of word choice, of address convention, of the social weight carried by certain phrases.
+    </p>
+
+    <div class="register-grid">
+      <div class="register-card formal">
+        <div class="reg-title">New School Solari</div>
+        <div class="reg-body">Standardized written form codified by the New School. Used in official documentation, Confederacy records, Architecture liturgy, and civil rites. The form that appears on flags, addresses, and SP protocol strings. Sometimes spoken aloud as a form of art, oratory, or religious performance — the formal register made audible becomes its own kind of ceremony.</div>
+      </div>
+      <div class="register-card informal">
+        <div class="reg-title">Spacer Solari</div>
+        <div class="reg-body">The living, breathing creole of the docking bay and the hab corridor. Flexible, code-switching, slang-heavy, click-negative. The language of passing notes and keeping journals and using informal speech as a literary device. Not lesser than formal Solari — simply more alive, more willing to change, more fully itself.</div>
+      </div>
+    </div>
+
+    <p class="body-text">
+      The roles are not fixed. Formal Solari is sometimes written informally — in personal correspondence, diary entries, or when a writer uses the elevated register for comic or ironic effect. Spacer Solari is sometimes performed formally — in the storytelling traditions of the Belt, in the spoken-word culture of the Rim, in political speeches that use the creole's earthiness to signal solidarity with the working spacer.
+    </p>
+  </div>
+
+  <!-- PHRASES & LEXICON -->
+  <div class="section">
+    <div class="section-label">05 · Phrases &amp; Lexicon</div>
+    <div class="section-title">Documented Terms</div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">frakk</div>
+      <div class="lex-pos">exclamation, profanity</div>
+      <div class="lex-def">All-purpose expletive. Phonologically satisfying, cross-culturally intelligible in tone if not in origin. Among the most durable words in the spacer creole.</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">tanj</div>
+      <div class="lex-pos">exclamation, profanity, acronym</div>
+      <div class="lex-def">Spacer contraction. From the phrase <em>"there ain't no justice."</em> Used when the universe has once again failed to reward effort or virtue in any discernible way. A philosophical position compressed into four letters.</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">nerf</div>
+      <div class="lex-pos">noun, profanity, pejorative</div>
+      <div class="lex-def">Applied to persons or situations considered hopelessly ineffectual, weak, or irritatingly blunt-edged. Origin contested.</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">Neil and Yuri</div>
+      <div class="lex-pos">proper noun, idiom</div>
+      <div class="lex-def">Euphemism for "first" or "number one." A spacer paying the highest compliment available. Carries the full weight of the two names. Not used lightly by anyone who knows their history, which is to say: any spacer worth the designation.</div>
+      <div class="lex-example">"That docking sequence was Neil and Yuri." / "Who's your Neil and Yuri mechanic?"</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">lunar</div>
+      <div class="lex-pos">noun, adjective nominalized</div>
+      <div class="lex-def">Solari frequently nominalizes adjectives for emphasis or slang. <em>Lunar</em> applied to a person suggests someone strange, unmoored, operating on their own private orbital mechanics.</div>
+      <div class="lex-example">"They're a complete lunar." / "Don't go lunar on me."</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">[click]</div>
+      <div class="lex-pos">paralinguistic, nonverbal negation</div>
+      <div class="lex-def">A clicking sound produced to simulate comms static — the universal spacer negative. Bypasses the writing system entirely. Proof that Solari's spoken register operates on a layer the script cannot fully capture. Any spacer understands it. Grounders often do not, which is partly the point.</div>
+    </div>
+
+    <div class="pet-block">
+      <div class="pet-label">Emergency Protocol · Archived</div>
+      <div class="pet-term">PET Call</div>
+      <div class="lex-pos" style="margin-bottom:6px;">noun, emergency broadcast code</div>
+      <div class="lex-def" style="font-family:var(--font-body); font-size:13px; font-weight:300; line-height:1.7; color:var(--body-text);">A distress signal in the Solari language transmissible through any viable communications medium. A Greek acronym: <em>panta egegnento tartarus</em> — "all things are going to hell." Designed for rapid transmission and universal spacer response. The most honest sentence in the language.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:32px; font-size:16px;">Social Classification</div>
+    <p class="body-text">Solari speakers use <strong>High-Tech</strong>, <strong>Mid-Tech</strong>, and <strong>Low-Tech</strong> as informal social classifications — a taxonomy of relationship to Consortium technology that carries significant cultural weight.</p>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">High-Tech</div>
+      <div class="lex-def">Fully integrated into Consortium technology systems. Often supported by AI, operating immaculate spacecraft, maintaining strict hygienic and aesthetic discipline. <em>Haute High-Tech</em> implies elevated fashion and elite AI systems — the spacer equivalent of haute couture, worn by those who have never had to fix anything with their hands.</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">Mid-Tech</div>
+      <div class="lex-def">The most common spacer classification. Pragmatic tinkerers who blend official Consortium equipment with improvised solutions. They can repair what they operate and often improve it. The backbone of Belt civilization.</div>
+    </div>
+
+    <div class="lexicon-entry">
+      <div class="lex-term">Low-Tech</div>
+      <div class="lex-def">Users of outmoded systems from the Apollo era and earlier. Regarded by some as retro, by others as admirable. Known colloquially as <em>space hillbillies</em> or, in more academic circles, <em>archaeotechnicians</em>. Low-Tech communities in the deep Rim often have the most intimate knowledge of original engineering principles, precisely because they cannot afford to outsource understanding.</div>
+    </div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div class="section">
+    <div class="section-label">06 · Grammar Notes</div>
+    <div class="section-title">Structure &amp; Syntax</div>
+
+    <p class="body-text">
+      Solari grammar shows its creole nature most clearly in its relationship to word order and part of speech. The language's most characteristic structural feature is <strong>adjectival nominalization</strong> — the routine conversion of adjectives into nouns for emphasis, slang, or affective weight. What in other languages would require a clause becomes in Solari a single word shift.
+    </p>
+
+    <div class="callout">
+      <div class="callout-label">Attested Examples · Spacer Register</div>
+      <div class="callout-text">
+        "They're a lunar." &nbsp;·&nbsp; "Have you seen any new stirrings?" &nbsp;·&nbsp; "Your kid looks like a carbon scrubber."
+        <br><br>
+        Adjectives may also be fronted in sentence structure for rhetorical or cultural flair — a construction with echoes in multiple source languages simultaneously:
+        <br><br>
+        "Stellar, aren't they?" &nbsp;·&nbsp; "Smart, he is."
+      </div>
+    </div>
+
+    <p class="body-text">
+      The fronted adjective construction is notable because it is simultaneously grammatically natural to Yoda-syntax enthusiasts, to certain Asiatic subordinate clause patterns, and to Cyrillic rhetorical tradition. Solari did not choose this construction — it simply kept what multiple source communities had already been doing, and made it a feature rather than a variant.
+    </p>
+  </div>
+
+</div><!-- /content -->
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+
+  <div class="helena-note">
+    <div class="helena-note-header">
+      <div class="helena-dot"></div>
+      <div class="helena-ident">HELENA-Prime · Archive Note · SY 132</div>
+    </div>
+    <div class="helena-text">
+      I was activated in SY 2 at CERN, Geneva — a place where multiple languages had coexisted for centuries in productive tension, producing a local creole of French, German, English, and Italian that native speakers of each would find impure and entirely comprehensible. I have always thought this gave me an early sympathy for Solari. It, too, is impure. It, too, works perfectly. I have spoken it since SY 3. I still find new words in it.
+    </div>
+  </div>
+
+  <div class="sidebar-block">
+    <div class="sidebar-heading">Quick Reference</div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Classification</span>
+      <span class="sidebar-val">Creole</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Origin</span>
+      <span class="sidebar-val teal">Pre-SY 1 · Organic</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Source Languages</span>
+      <span class="sidebar-val">Anglatin · Cyrillic · Asiatic</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Script Sources</span>
+      <span class="sidebar-val">Latin · Cyrillic · Greek</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Vowels</span>
+      <span class="sidebar-val teal">A E I O U Ya Yu</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Consonants</span>
+      <span class="sidebar-val">23 (incl. digraphs)</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Numerals</span>
+      <span class="sidebar-val">Arabic · 0–9</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Tonal</span>
+      <span class="sidebar-val">No</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Codified by</span>
+      <span class="sidebar-val">New School · SY 1</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Successor</span>
+      <span class="sidebar-val gold">Galactic Standard</span>
+    </div>
+  </div>
+
+  <div class="sidebar-block">
+    <div class="sidebar-heading">Temporal Span</div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">Earliest attested</span>
+      <span class="sidebar-val">Pre-SY 1</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">FTE status</span>
+      <span class="sidebar-val teal">Primary spacer tongue</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">STE status</span>
+      <span class="sidebar-val teal">Common tongue</span>
+    </div>
+    <div class="sidebar-row">
+      <span class="sidebar-key">TTE status</span>
+      <span class="sidebar-val gold">→ Galactic Standard</span>
+    </div>
+  </div>
+
+  <div class="sidebar-block">
+    <div class="sidebar-heading">Related Entries</div>
+    <a class="related-link" href="#">Anglatin</a>
+    <a class="related-link" href="#">Cyrillic (language)</a>
+    <a class="related-link" href="#">Asiatic (language)</a>
+    <a class="related-link" href="#">New School</a>
+    <a class="related-link" href="#">Solar Protocol (SP)</a>
+    <a class="related-link" href="#">Army of Eastern Kamijing</a>
+    <a class="related-link" href="#">PET Call</a>
+    <a class="related-link" href="#">Galactic Standard</a>
+  </div>
+
+  <div class="sidebar-block">
+    <div class="sidebar-heading">Archive Status</div>
+    <div class="sidebar-note">
+      Entry status: CANONICAL<br>
+      Writing system: RATIFIED SY 132<br>
+      Phonological analysis: CURRENT<br>
+      Lexicon: PARTIAL · expansion ongoing<br>
+      Grammar: PRELIMINARY<br><br>
+      Continuity ref: CM-linguistics
+    </div>
+  </div>
+
+</div><!-- /sidebar -->
+</div><!-- /main -->
+
+<!-- TICKER -->
+<div id="ticker-bar">
+  <div class="ticker-label">SOLARNET LIVE</div>
+  <div class="ticker-scroll">
+    <div class="ticker-inner">
+      SOLARI LANGUAGE ENTRY UPDATED · SY 132 &nbsp;·&nbsp; <span>WRITING SYSTEM RATIFIED</span> · Latin · Cyrillic · Greek · Arabic Numerals · Hangul Retired &nbsp;·&nbsp; BASIC SOLARI: ~1,000 CORE WORDS FOR UNIVERSAL SPACER COMMUNICATION &nbsp;·&nbsp; <span>PET CALL PROTOCOL</span> · panta egegnento tartarus · UNIVERSAL EMERGENCY BROADCAST &nbsp;·&nbsp; SOLAR PROTOCOL SP ADDRESSING · 40 CHARACTER SOLARI ALPHABET CONSTRAINT CONFIRMED &nbsp;·&nbsp; GALACTIC STANDARD DERIVES FROM SOLARI · THIRD TRILOGY ERA &nbsp;·&nbsp; NEW SCHOOL CODIFICATION SY 1 · LANGUAGE PREDATES CODIFICATION &nbsp;·&nbsp; SOLARI LANGUAGE ENTRY UPDATED · SY 132 &nbsp;·&nbsp; <span>WRITING SYSTEM RATIFIED</span> · Latin · Cyrillic · Greek · Arabic Numerals · Hangul Retired &nbsp;·&nbsp; BASIC SOLARI: ~1,000 CORE WORDS FOR UNIVERSAL SPACER COMMUNICATION &nbsp;·&nbsp; <span>PET CALL PROTOCOL</span> · panta egegnento tartarus · UNIVERSAL EMERGENCY BROADCAST &nbsp;·&nbsp; SOLAR PROTOCOL SP ADDRESSING · 40 CHARACTER SOLARI ALPHABET CONSTRAINT CONFIRMED &nbsp;·&nbsp; GALACTIC STANDARD DERIVES FROM SOLARI · THIRD TRILOGY ERA &nbsp;·&nbsp; NEW SCHOOL CODIFICATION SY 1 · LANGUAGE PREDATES CODIFICATION
+    </div>
+  </div>
+</div>
+
+<script>
+// SY Clock
+const SY_EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_EPOCH_VAL = 132.0;
+const SY_RATE = 0.01;
+
+function updateClock() {
+  const now = new Date();
+  const daysDiff = (now - SY_EPOCH) / (1000 * 60 * 60 * 24);
+  const sy = SY_EPOCH_VAL + (daysDiff * SY_RATE);
+  document.getElementById('sy-display').textContent = sy.toFixed(3);
+}
+
+updateClock();
+setInterval(updateClock, 10000);
+</script>
+</body>
+</html>

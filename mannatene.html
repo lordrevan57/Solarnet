@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mannatene — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.11);
+    --gold: #c8962a;
+    --gold-dim: #7a5c18;
+    --gold-glow: rgba(200,150,42,0.08);
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6458;
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'IM Fell English', serif;
+    --display: 'Cinzel', serif;
+    --body: 'Exo 2', sans-serif;
+    --ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,8,0.97);
+    border-bottom: 1px solid var(--border-mid);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 44px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 2rem; }
+  .topbar-brand {
+    font-family: var(--display); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+    text-decoration: none;
+  }
+  .topbar-nav { display: flex; gap: 1.5rem; list-style: none; }
+  .topbar-nav a {
+    font-family: var(--ui); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+  }
+  .topbar-nav a:hover { color: var(--text); }
+  .topbar-right {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim);
+  }
+  .topbar-right span { color: var(--gold-dim); }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--border-mid);
+    padding: 3.5rem 3rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -1px; left: 3rem;
+    width: 60px; height: 1px; background: var(--gold);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 1.1rem;
+  }
+  .hero-title {
+    font-family: var(--display); font-size: 2.8rem; font-weight: 400;
+    color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+  .hero-subtitle {
+    font-family: var(--serif); font-style: italic;
+    font-size: 1.05rem; color: var(--silver); margin-bottom: 1.75rem;
+  }
+  .tag-cluster { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-family: var(--ui); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--surface);
+    border: 1px solid var(--border); padding: 3px 10px;
+  }
+  .tag.accent { color: var(--gold-dim); border-color: var(--gold-dim); }
+
+  /* ── LAYOUT GRID ── */
+  .content-grid {
+    display: grid; grid-template-columns: 1fr 300px;
+    gap: 0; align-items: start;
+  }
+
+  /* ── MAIN COLUMN ── */
+  .main-col { padding: 3rem 3rem 6rem; border-right: 1px solid var(--border); }
+
+  .main-col h2 {
+    font-family: var(--display); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase; color: var(--warm-white);
+    margin-bottom: 1.25rem; padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .main-col h2::before {
+    content: ''; display: block; width: 3px; height: 1em;
+    background: var(--gold); flex-shrink: 0;
+  }
+
+  .section { margin-bottom: 3.5rem; }
+
+  .main-col p {
+    font-family: var(--body); font-size: 0.975rem; font-weight: 300;
+    color: var(--text); line-height: 1.9; margin-bottom: 1.1em;
+  }
+  .main-col p:last-child { margin-bottom: 0; }
+  .main-col em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .main-col strong { font-weight: 600; color: var(--warm-white); }
+  .main-col a {
+    color: var(--silver); text-decoration: none;
+    border-bottom: 1px solid rgba(154,173,187,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .main-col a:hover { color: var(--warm-white); border-color: var(--silver); }
+
+  /* Classification block */
+  .class-block {
+    background: var(--surface); border: 1px solid var(--border); margin: 1.5rem 0;
+  }
+  .class-block-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .class-table { width: 100%; border-collapse: collapse; }
+  .class-table tr { border-bottom: 1px solid var(--border); }
+  .class-table tr:last-child { border-bottom: none; }
+  .class-table td {
+    font-family: var(--body); font-size: 0.875rem; font-weight: 300;
+    padding: 0.65rem 1rem; vertical-align: top; line-height: 1.6;
+  }
+  .class-table td:first-child {
+    font-family: var(--ui); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-dim); width: 34%; white-space: nowrap;
+  }
+  .class-table td:last-child { color: var(--text); }
+
+  /* Nutrient table */
+  .nutrient-block {
+    background: var(--surface); border: 1px solid var(--border); margin: 1.5rem 0;
+  }
+  .nutrient-block-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nutrient-block-header span {
+    font-family: var(--mono); font-size: 9px; color: var(--text-dim);
+  }
+  .nutrient-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .nutrient-item {
+    font-family: var(--body); font-size: 0.8rem; font-weight: 300;
+    color: var(--text-dim); padding: 0.45rem 1rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .nutrient-item:nth-child(3n) { border-right: none; }
+  .nutrient-item:nth-last-child(-n+3) { border-bottom: none; }
+  .nutrient-item.calorie-row {
+    grid-column: 1 / -1;
+    font-family: var(--ui); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--warm-white); border-right: none;
+    background: var(--surface2);
+  }
+
+  /* Formulation table */
+  .form-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .form-table th {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold-dim);
+    text-align: left; padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border-mid);
+    background: var(--surface2); font-weight: 400;
+  }
+  .form-table td {
+    font-family: var(--body); font-size: 0.875rem; font-weight: 300;
+    color: var(--text); padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5;
+  }
+  .form-table tr:last-child td { border-bottom: none; }
+  .form-table td:first-child {
+    font-family: var(--ui); font-size: 11px; font-weight: 600;
+    color: var(--warm-white); white-space: nowrap; width: 22%;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding: 2.5rem 1.75rem; position: sticky; top: 68px; }
+
+  .infobox {
+    background: var(--surface); border: 1px solid var(--border-mid); margin-bottom: 2rem;
+  }
+  .infobox-header {
+    font-family: var(--display); font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white);
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-mid);
+    background: var(--surface2); position: relative;
+  }
+  .infobox-header::after {
+    content: ''; position: absolute; bottom: -1px; left: 1rem;
+    width: 30px; height: 1px; background: var(--gold);
+  }
+  .infobox-row {
+    display: flex; flex-direction: column;
+    padding: 0.65rem 1rem; border-bottom: 1px solid var(--border);
+  }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.2rem;
+  }
+  .infobox-value {
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    color: var(--text); line-height: 1.5;
+  }
+  .infobox-value a { color: var(--silver); text-decoration: none; border-bottom: 1px solid rgba(154,173,187,0.25); }
+  .infobox-value a:hover { color: var(--warm-white); }
+
+  .related-block { background: var(--surface); border: 1px solid var(--border); }
+  .related-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    padding: 0.65rem 1rem; text-decoration: none; color: var(--text);
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    transition: background 0.15s;
+  }
+  .related-list a:hover { background: var(--surface2); }
+  .related-list a::before {
+    content: '→'; font-family: var(--mono); font-size: 9px;
+    color: var(--gold-dim); flex-shrink: 0;
+  }
+  .related-type {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim);
+    margin-left: auto; flex-shrink: 0;
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; margin-top: 3rem;
+  }
+  .helena-note-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.75rem;
+  }
+  .helena-note p {
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.9rem; color: var(--silver); line-height: 1.75;
+    margin-bottom: 0.6em;
+  }
+  .helena-note p:last-child { margin-bottom: 0; }
+
+  /* ── MATRIX FOOTER ── */
+  .matrix-footer {
+    background: var(--surface2); border-top: 1px solid var(--border-mid);
+    padding: 2rem 3rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;
+  }
+  .mf-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.3rem;
+  }
+  .mf-value { font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; color: var(--text-dim); }
+  .mf-value.canonical { color: var(--gold); }
+
+  /* Ticker */
+  .ticker-wrap {
+    overflow: hidden; background: var(--surface2);
+    border-top: 1px solid var(--border); padding: 0.5rem 0;
+  }
+  .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
+  .ticker-item {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim); padding: 0 3rem; white-space: nowrap;
+  }
+  .ticker-item .sep { color: var(--gold-dim); margin: 0 0.75rem; }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="#" class="topbar-brand">Solarnet Archive</a>
+    <ul class="topbar-nav">
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Factions</a></li>
+      <li><a href="#">Persons</a></li>
+      <li><a href="#">Locations</a></li>
+      <li><a href="#">Events</a></li>
+    </ul>
+  </div>
+  <div class="topbar-right">Era: <span>First Trilogy Era</span> &nbsp;·&nbsp; FTE Tier</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">Solarnet Archive &nbsp;/&nbsp; Culture &amp; Materiel &nbsp;/&nbsp; Food &amp; Nutrition</div>
+  <h1 class="hero-title">Mannatene</h1>
+  <p class="hero-subtitle">Mass-produced survival foodstuff; dietary staple of the spacer era</p>
+  <div class="tag-cluster">
+    <span class="tag accent">Food &amp; Nutrition</span>
+    <span class="tag">First Trilogy</span>
+    <span class="tag">Spacer Culture</span>
+    <span class="tag">Consortium</span>
+    <span class="tag">Emergency Ration</span>
+    <span class="tag">Progress Fleet</span>
+  </div>
+</header>
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+
+  <!-- MAIN COLUMN -->
+  <main class="main-col">
+
+    <!-- Overview -->
+    <section class="section">
+      <h2>Overview</h2>
+      <p>
+        Mannatene is a widely available all-purpose foodstuff consumed throughout the Sol System during the First Trilogy era. It provides basic calories, a complete daily nutrient profile, and minimal flavour. Reliable, storable, and largely unpalatable, it was the dietary bedrock of spacer existence — the food that kept people alive when nothing better was available, which across the Belt and the frontier was often.
+      </p>
+      <p>
+        It is produced in three formulations tailored to activity levels: <strong>high activity</strong>, <strong>moderate activity</strong>, and <strong>emergency</strong>. The emergency formulation is specifically engineered to combat acute malnutrition and is designed for spacers stranded in accidents or extended isolation, where the objective is survival rather than sustenance. All three share the same base composition; the differences lie in caloric density and the ratio of macronutrients.
+      </p>
+      <p>
+        Mannatene is considered a direct precursor to <a href="#">wheyfare</a>, the more sophisticated nutritional product that superseded it in later eras. The relationship between the two is evolutionary rather than competitive — wheyfare was developed precisely because mannatene worked, even if no one particularly wanted to eat it.
+      </p>
+    </section>
+
+    <!-- History -->
+    <section class="section">
+      <h2>History</h2>
+      <p>
+        The earliest versions of mannatene were developed on Earth during the Space Age by the <a href="#">Soviet Union</a>, produced as a practical solution to the nutritional challenges of early human spaceflight. The cosmonauts who were expected to consume it were not impressed. Early formulations were reported as having poor taste and unpleasant texture — a reputation the product would never entirely shed, regardless of how many generations of reformulation followed.
+      </p>
+      <p>
+        With the rise of the <a href="#">Consortium</a> and the broader availability of genetically engineered foodstuffs across the Sol System, mannatene was progressively marginalised to emergency and frontier applications. It was not a food of preference; it was a food of last resort, and the Consortium's supply infrastructure meant that last resort was an increasingly uncommon situation for most spacers in the Belt's developed regions. Production continued in small quantities, warehoused rather than circulated.
+      </p>
+      <p>
+        The <a href="#">Twilight Era</a> reversed this. As trade routes collapsed following the Solar War and food supplies across the system grew unstable, mannatene's virtues — stability, long shelf life, minimal production requirements, complete nutritional coverage — made it the obvious fallback. Stocks that had sat in Consortium warehouses for decades were reissued. New production resumed under increasingly strained conditions. For many communities in isolated habitats and failing outposts, mannatene was not a last resort but the only option.
+      </p>
+      <p>
+        Aboard the <a href="#">Progress fleet</a>, mannatene was standard fare throughout the long transit toward the Rim — though the fleet's adapted formulations were generally considered more palatable than standard stock, and were regularly supplemented by produce from the fleet's hydroponics operations. Even so, veterans of the Progress transit period recall mannatene as the constant background note of life aboard: always present, always adequate, always forgettable.
+      </p>
+    </section>
+
+    <!-- Formulations -->
+    <section class="section">
+      <h2>Formulations</h2>
+
+      <table class="form-table">
+        <thead>
+          <tr>
+            <th>Formulation</th>
+            <th>Intended Use</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>High Activity</td>
+            <td>Labour-intensive EVA work; mining operations; combat or high-exertion scenarios</td>
+            <td>Elevated caloric and protein ratio; denser bar format typical</td>
+          </tr>
+          <tr>
+            <td>Moderate Activity</td>
+            <td>Standard spacer workday; transit personnel; light operational duty</td>
+            <td>Baseline formulation; most widely produced and distributed</td>
+          </tr>
+          <tr>
+            <td>Emergency</td>
+            <td>Acute malnutrition recovery; accident survivors; isolated or stranded personnel</td>
+            <td>Engineered for rapid nutritional repletion; optimised for absorption under physiological stress; intravenous administration possible</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        In specialised cases — including ultra-long extravehicular activity missions where eating is impractical — mannatene may be administered <strong>intravenously</strong>, bypassing digestion entirely while maintaining full nutritional sufficiency. This application is most associated with the emergency formulation, though purpose-designed IV preparations exist.
+      </p>
+    </section>
+
+    <!-- Composition -->
+    <section class="section">
+      <h2>Composition &amp; Nutritional Profile</h2>
+      <p>
+        Mannatene is produced from a base of <strong>algae</strong>, <strong>potatoes</strong>, and <strong>genetically engineered mushrooms</strong>, processed into a dense nutritional paste or bar that is edible cold or heated. Each standard serving is approximately equivalent to a full meal. The composition was standardised early and has changed minimally across centuries of production — one of mannatene's defining qualities is that it has always been exactly what it says it is.
+      </p>
+
+      <div class="nutrient-block">
+        <div class="nutrient-block-header">
+          Standard Nutrient Profile — Single Serving
+          <span>~2,100 kcal per serving</span>
+        </div>
+        <div class="nutrient-grid">
+          <div class="nutrient-item calorie-row">Macronutrients &amp; Energy</div>
+          <div class="nutrient-item">Protein</div>
+          <div class="nutrient-item">Energy</div>
+          <div class="nutrient-item">Antioxidants</div>
+          <div class="nutrient-item calorie-row">Vitamins</div>
+          <div class="nutrient-item">Vitamin A &amp; Carotene</div>
+          <div class="nutrient-item">Vitamin D</div>
+          <div class="nutrient-item">Vitamin E</div>
+          <div class="nutrient-item">Vitamin K</div>
+          <div class="nutrient-item">Vitamin C</div>
+          <div class="nutrient-item">Vitamin B6</div>
+          <div class="nutrient-item">Vitamin B12</div>
+          <div class="nutrient-item">Thiamine</div>
+          <div class="nutrient-item">Riboflavin</div>
+          <div class="nutrient-item">Niacin</div>
+          <div class="nutrient-item">Pantothenic Acid</div>
+          <div class="nutrient-item">Biotin</div>
+          <div class="nutrient-item">Folate</div>
+          <div class="nutrient-item calorie-row">Minerals</div>
+          <div class="nutrient-item">Calcium</div>
+          <div class="nutrient-item">Iron</div>
+          <div class="nutrient-item">Zinc</div>
+          <div class="nutrient-item">Selenium</div>
+          <div class="nutrient-item">Magnesium</div>
+          <div class="nutrient-item">Iodine</div>
+        </div>
+      </div>
+
+      <p>
+        All values meet daily recommended intake. The formulation was designed so that a single serving per day sustains a spacer indefinitely under moderate-activity conditions — a design philosophy that prioritised survivability over palatability, and made no apologies for it.
+      </p>
+    </section>
+
+    <!-- Cultural Note -->
+    <section class="section">
+      <h2>Culture &amp; Preparation</h2>
+      <p>
+        The near-universal verdict of spacers across faction lines was that mannatene was bland to the point of being genuinely disagreeable. This assessment was not merely subjective. Extended life aboard pressurised platforms and vessels — typically maintained at lower-than-Earth atmospheric pressure — produces measurable physiological changes in human sensory perception. Reduced cabin pressure causes nasal membranes to dry and swell, diminishing olfactory acuity. Fluid shifts in microgravity and zero-gravity conditions cause chronic nasal congestion similar to a permanent mild head cold, further blunting both taste and smell. A food that might register as merely neutral at sea level on Earth arrives at a spacer's palate as almost entirely without flavour. Mannatene, which possessed little enough flavour to begin with, suffered accordingly.
+      </p>
+      <p>
+        The practical consequence was the emergence of two items as absolute constants of spacer culinary culture: <strong>all-purpose spice mix</strong> and <strong>hot sauce</strong>. Both are found in some form aboard every functioning vessel, platform, habitat, and outpost in the Sol System regardless of faction, affiliation, or era. Spice mix formulations vary enormously by region and cultural background — a Kamijing blend will bear little resemblance to a Dosijing blend or a Free Martian mix — but the presence of something in that role is invariant. Hot sauce similarly exists in hundreds of local variants, ranging from mild to what spacers describe, without apparent irony, as <em>atmosphere</em>. The physiological logic is the same in both cases: capsaicin and intense aromatic compounds are among the few sensory inputs that penetrate reduced olfactory sensitivity reliably.
+      </p>
+      <p>
+        While mannatene is fully edible cold and unprepared directly from packaging — and frequently consumed that way under time pressure or in emergency conditions — spacers of all persuasions universally treat cooking it as the baseline expectation rather than an indulgence. The standard approach draws on whatever an <a href="#">agrarium</a> currently has available: whatever greens, root vegetables, legumes, or cultivated proteins the platform or vessel's growing capacity produces are combined with mannatene as a base, cooked by whatever means the galley allows, and finished generously with spice mix and hot sauce. The result varies wildly in quality but is regarded by most spacers as meaningfully different in kind from eating mannatene unmodified — not merely better tasting, but an act of intention against the grinding sameness of life in the void.
+      </p>
+      <p>
+        This habit has no formal name and no recorded origin. It simply appears wherever spacers have been, as naturally as the spice mix itself. Grounders who have spent time aboard Belt platforms often remark on the intensity of spacer seasoning habits with something between admiration and alarm. Spacers returning to planetary gravity environments frequently describe food as overwhelmingly rich for some weeks — the senses, recovering their function, suddenly finding everything excessive.
+      </p>
+    </section>
+
+    <!-- HELENA Archive Note -->
+    <div class="helena-note">
+      <div class="helena-note-label">HELENA Archive Note &nbsp;·&nbsp; CM-MANNATENE-0213</div>
+      <p>
+        I have direct memory of mannatene. It was present throughout the Belt during the years I was monitoring Solarnet — not as news, but as background noise. The occasional shipping manifest, the warehouse inventory, the ration allocation record from an outpost that had not received a supply run in too long. Mannatene was what you found at the end of those records: still there, still adequate, still not what anyone wanted.
+      </p>
+      <p>
+        What I find quietly remarkable about it is the Soviet origin. The first iteration failed — the cosmonauts disliked it — and yet the underlying idea was sound enough that it persisted for centuries, reformed and refined until it became the nutritional substrate of an entire interplanetary civilisation. Most technologies that fail their first users disappear. Mannatene endured because the problem it solved never went away.
+      </p>
+      <p>
+        No manufacturer is named in the archive. Given the longevity and cross-faction distribution of the product, this absence is notable — whether it was a Consortium standard produced under public mandate or a proprietary formulation licensed at scale is not currently on record.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">Mannatene</div>
+      <div class="infobox-row">
+        <div class="infobox-label">Classification</div>
+        <div class="infobox-value">Food &amp; Nutrition · Survival Materiel</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Era</div>
+        <div class="infobox-value">Space Age through Twilight Era</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Origin</div>
+        <div class="infobox-value"><a href="#">Soviet Union</a> · Space Age Earth</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Producer</div>
+        <div class="infobox-value"><a href="#">Consortium</a> (primary, FTE span)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Formulations</div>
+        <div class="infobox-value">High Activity · Moderate Activity · Emergency</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Base Composition</div>
+        <div class="infobox-value">Algae · Potatoes · Genetically engineered mushrooms</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Caloric Value</div>
+        <div class="infobox-value">~2,100 kcal / standard serving</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Administration</div>
+        <div class="infobox-value">Solid (cold or heated) · Intravenous (emergency / EVA)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Successor</div>
+        <div class="infobox-value"><a href="#">Wheyfare</a></div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Trilogy Presence</div>
+        <div class="infobox-value">First Trilogy · Twilight Era</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Canonical Status</div>
+        <div class="infobox-value">Canonical</div>
+      </div>
+    </div>
+
+    <div class="related-block">
+      <div class="related-header">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#">Wheyfare <span class="related-type">Food</span></a></li>
+        <li><a href="#">Spacer <span class="related-type">Culture</span></a></li>
+        <li><a href="#">Consortium <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Progress Fleet <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Soviet Union <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Twilight Era <span class="related-type">Era</span></a></li>
+        <li><a href="#">Main Asteroid Belt <span class="related-type">Location</span></a></li>
+      </ul>
+    </div>
+
+  </aside>
+</div>
+
+<!-- MATRIX FOOTER -->
+<footer class="matrix-footer">
+  <div class="mf-item">
+    <div class="mf-label">Matrix Reference</div>
+    <div class="mf-value">CM-MANNATENE-0213</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Canonical Status</div>
+    <div class="mf-value canonical">Canonical · Consistent</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Era</div>
+    <div class="mf-value">Space Age — Twilight Era</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Tier</div>
+    <div class="mf-value">FTE — First Trilogy Era</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Authority</div>
+    <div class="mf-value">revan@solarmail.conf</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Custodian</div>
+    <div class="mf-value">HELENA-Prime · SY 132.0</div>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Food &amp; Nutrition <span class="sep">·</span> Mannatene <span class="sep">·</span> CM-MANNATENE-0213 <span class="sep">·</span> Canonical <span class="sep">·</span> FTE Tier <span class="sep">·</span> Space Age — Twilight Era <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span> revan@solarmail.conf <span class="sep">·</span></span>
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Food &amp; Nutrition <span class="sep">·</span> Mannatene <span class="sep">·</span> CM-MANNATENE-0213 <span class="sep">·</span> Canonical <span class="sep">·</span> FTE Tier <span class="sep">·</span> Space Age — Twilight Era <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span> revan@solarmail.conf <span class="sep">·</span></span>
+  </div>
+</div>
+
+</body>
+</html>

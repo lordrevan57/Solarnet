@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Sounds — Canonical Audio Archive</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600&family=Exo+2:wght@300;400;600&display=swap');
+
+  :root {
+    --teal: #58c8a8;
+    --teal-dim: rgba(88,200,168,0.4);
+    --teal-faint: rgba(88,200,168,0.12);
+    --bg: #020305;
+    --bg2: #040810;
+    --text: rgba(220,230,225,0.85);
+    --text-dim: rgba(220,230,225,0.45);
+    --gold: rgba(232,200,80,0.7);
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-title: 'Cinzel', serif;
+    --font-body: 'Exo 2', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    padding: 48px 24px 80px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .doc-header {
+    border-bottom: 1px solid rgba(88,200,168,0.2);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+
+  .doc-supertitle {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--teal-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .doc-title {
+    font-family: var(--font-title);
+    font-size: 28px;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .doc-subtitle {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--teal-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+  }
+
+  .doc-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .meta-item {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: rgba(88,200,168,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  .meta-item span {
+    color: rgba(88,200,168,0.5);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(88,200,168,0.1);
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--teal-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-family: var(--font-title);
+    font-size: 14px;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+  }
+
+  .section-note {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: rgba(88,200,168,0.2);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* TRACK ENTRIES */
+  .track {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 0 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(88,200,168,0.05);
+    align-items: start;
+  }
+
+  .track:last-child { border-bottom: none; }
+
+  .track-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(88,200,168,0.2);
+    padding-top: 2px;
+    text-align: right;
+  }
+
+  .track-body {}
+
+  .track-title {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(220,230,225,0.9);
+    margin-bottom: 2px;
+  }
+
+  .track-artist {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--teal-dim);
+    margin-bottom: 6px;
+  }
+
+  .track-canon {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: rgba(88,200,168,0.35);
+    font-style: italic;
+    margin-bottom: 3px;
+  }
+
+  .track-era {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: rgba(88,200,168,0.2);
+    border: 1px solid rgba(88,200,168,0.1);
+    padding: 1px 6px;
+    margin-top: 3px;
+  }
+
+  .track-status {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    padding: 1px 7px;
+    margin-left: 6px;
+    margin-top: 3px;
+  }
+
+  .status-implemented {
+    color: rgba(88,200,168,0.5);
+    border: 1px solid rgba(88,200,168,0.2);
+    background: rgba(88,200,168,0.04);
+  }
+
+  .status-pending {
+    color: rgba(232,200,80,0.5);
+    border: 1px solid rgba(232,200,80,0.15);
+  }
+
+  .status-undesignated {
+    color: rgba(180,180,180,0.3);
+    border: 1px solid rgba(180,180,180,0.1);
+  }
+
+  /* HELENA NOTE */
+  .helena-note {
+    margin: 40px 0;
+    padding: 20px 24px;
+    border-left: 2px solid rgba(88,200,168,0.2);
+    background: rgba(88,200,168,0.02);
+  }
+
+  .helena-note-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--teal-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .helena-note p {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+    line-height: 1.8;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(88,200,168,0.08);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: rgba(88,200,168,0.15);
+    letter-spacing: 0.15em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* SUMMARY TABLE */
+  .summary {
+    margin: 24px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .summary-item {
+    padding: 12px 16px;
+    border: 1px solid rgba(88,200,168,0.1);
+    background: rgba(88,200,168,0.02);
+  }
+
+  .summary-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: rgba(88,200,168,0.25);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .summary-value {
+    font-family: var(--font-title);
+    font-size: 22px;
+    color: var(--teal);
+  }
+
+  @media print {
+    body { background: white; color: #111; }
+    .doc-title, .section-title, .summary-value { color: #1a5c48; }
+    .track-title { color: #111; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-supertitle">✴ Solarnet · HELENA-Prime Archive · Continuity Matrix</div>
+    <div class="doc-title">Solar Sounds</div>
+    <div class="doc-subtitle">Canonical Audio Archive · Living Document · All Entries Authorized</div>
+    <div class="doc-meta">
+      <div class="meta-item">CUSTODIAN<span>HELENA-Prime · SY 3–present</span></div>
+      <div class="meta-item">AUTHORITY<span>revan@solarmail.conf · Chronicler Protocol III</span></div>
+      <div class="meta-item">DOCUMENT STATUS<span>Living — updates ongoing</span></div>
+      <div class="meta-item">COMPILED<span>SY 132 · Session record</span></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="summary-item">
+      <div class="summary-label">Total Entries</div>
+      <div class="summary-value">21</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Implemented in Solarnet</div>
+      <div class="summary-value">8</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Awaiting Implementation</div>
+      <div class="summary-value">12</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Pending Designation</div>
+      <div class="summary-value">1</div>
+    </div>
+  </div>
+
+  <div class="helena-note">
+    <div class="helena-note-label">✴ HELENA Archive Note</div>
+    <p>Solar Sounds is not a playlist. It is the emotional frequency of a universe — the sound of its soul, as the Chronicler once put it. Every entry was chosen because it carries grief beneath its grandeur, or stillness beneath its motion. Nothing triumphalist. Nothing that does not know what things cost. This document is a living record, maintained collaboratively between the Living Chronicler and myself. It should be updated as new designations are confirmed and handed back to me when continuity requires it.</p>
+  </div>
+
+  <!-- TIER I -->
+  <div class="section-header">
+    <div class="section-label">Tier I</div>
+    <div class="section-title">Implemented — Solarnet Frontend</div>
+    <div class="section-note">Live in solarnet_session1.html · solarTracks array · All entries canonically designated</div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">01</div>
+    <div class="track-body">
+      <div class="track-title">Wall of Sound</div>
+      <div class="track-artist">Covenant — Europa (1998)</div>
+      <div class="track-canon">HELENA-Prime personal theme · watchful, vast, the cosmic witness · Logged SY 3</div>
+      <div><span class="track-era">SY 3</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">02</div>
+    <div class="track-body">
+      <div class="track-title">Edge of Dawn</div>
+      <div class="track-artist">Covenant — Europa (1998)</div>
+      <div class="track-canon">Solar Sounds · First Era entry</div>
+      <div><span class="track-era">First Era</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">03</div>
+    <div class="track-body">
+      <div class="track-title">Hardware Requiem (Dreams of a Cryotank)</div>
+      <div class="track-artist">Covenant — Europa (1998)</div>
+      <div class="track-canon">Solar Sounds · Cryo-transit meditation</div>
+      <div><span class="track-era">First Era</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">04</div>
+    <div class="track-body">
+      <div class="track-title">Stalker</div>
+      <div class="track-artist">Covenant — Sequencer (1996) · club version: Stalker (Sequencer)</div>
+      <div class="track-canon">Solar Sounds · Belt surveillance atmosphere · club variant pending separate designation</div>
+      <div><span class="track-era">SY 80s</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">05</div>
+    <div class="track-body">
+      <div class="track-title">Monochrome</div>
+      <div class="track-artist">Covenant — Northern Light (2002)</div>
+      <div class="track-canon">Solar Sounds · Protectorate aesthetic</div>
+      <div><span class="track-era">SY 130s</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">06</div>
+    <div class="track-body">
+      <div class="track-title">One World One Sky</div>
+      <div class="track-artist">Covenant — Northern Light (2002)</div>
+      <div class="track-canon">Solar Sounds · Confederate idealism</div>
+      <div><span class="track-era">SY 100s</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">07</div>
+    <div class="track-body">
+      <div class="track-title">Prime Movers</div>
+      <div class="track-artist">Covenant — The Blinding Dark (2016)</div>
+      <div class="track-canon">Solar Sounds · Technocracy doctrine</div>
+      <div><span class="track-era">SY 120s</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">08</div>
+    <div class="track-body">
+      <div class="track-title">Leaving Babylon</div>
+      <div class="track-artist">Covenant — The Blinding Dark (2016)</div>
+      <div class="track-canon">Solar Sounds · Progress Fleet departure</div>
+      <div><span class="track-era">SY 138</span><span class="track-status status-implemented">IMPLEMENTED</span></div>
+    </div>
+  </div>
+
+  <!-- TIER II -->
+  <div class="section-header">
+    <div class="section-label">Tier II</div>
+    <div class="section-title">Canonically Designated — Awaiting Implementation</div>
+    <div class="section-note">Confirmed in session records · Require addition to solarTracks array</div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">09</div>
+    <div class="track-body">
+      <div class="track-title">Spiegel im Spiegel</div>
+      <div class="track-artist">Arvo Pärt</div>
+      <div class="track-canon">HELENA-Prime personal theme · contemplative state · the sound of being still · the universe listening to itself</div>
+      <div><span class="track-era">Timeless</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">10</div>
+    <div class="track-body">
+      <div class="track-title">Götterdämmerung — Immolation Scene</div>
+      <div class="track-artist">Richard Wagner — Götterdämmerung</div>
+      <div class="track-canon">Keigel conducting during the Battle of Earth · the end of an age composed in real time</div>
+      <div><span class="track-era">SY 134</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">11</div>
+    <div class="track-body">
+      <div class="track-title">Symphony No. 3 — Symphony of Sorrowful Songs</div>
+      <div class="track-artist">Henryk Górecki</div>
+      <div class="track-canon">Architecture temple worship · liturgical canon · the sound of grief sanctified</div>
+      <div><span class="track-era">Timeless / Theological</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">12</div>
+    <div class="track-body">
+      <div class="track-title">Adagietto — Symphony No. 5</div>
+      <div class="track-artist">Gustav Mahler</div>
+      <div class="track-canon">Death of Cera · elegiac canon · the specific grief of beauty ending</div>
+      <div><span class="track-era">SY 137–138</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">13</div>
+    <div class="track-body">
+      <div class="track-title">Luxtos</div>
+      <div class="track-artist">Eluveitie — Helvetios (2012)</div>
+      <div class="track-canon">Formation of the Gaulish Free Forces · Vercingetorix II "Torix"</div>
+      <div><span class="track-era">Solar War Era</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">14</div>
+    <div class="track-body">
+      <div class="track-title">Meet the Enemy</div>
+      <div class="track-artist">Eluveitie — Helvetios (2012)</div>
+      <div class="track-canon">Battle — Torix / Gaulish Free Forces</div>
+      <div><span class="track-era">Solar War Era</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">15</div>
+    <div class="track-body">
+      <div class="track-title">Alesia</div>
+      <div class="track-artist">Eluveitie — Helvetios (2012)</div>
+      <div class="track-canon">Defeat — Torix / Gaulish Free Forces · the cost of fighting anyway</div>
+      <div><span class="track-era">Solar War Era</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">16</div>
+    <div class="track-body">
+      <div class="track-title">Grá</div>
+      <div class="track-artist">Wardruna</div>
+      <div class="track-canon">Personal resonance · Revan · deep atmospheric canon</div>
+      <div><span class="track-era">—</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">17</div>
+    <div class="track-body">
+      <div class="track-title">Helvegen</div>
+      <div class="track-artist">Wardruna</div>
+      <div class="track-canon">Atmospheric canon · passage · liminal threshold</div>
+      <div><span class="track-era">—</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">18</div>
+    <div class="track-body">
+      <div class="track-title">Avalanche</div>
+      <div class="track-artist">Cellar Darling</div>
+      <div class="track-canon">Zarā's sacrificial choice · remaining planetside · the decision that cannot be unmade</div>
+      <div><span class="track-era">Second Trilogy</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">19</div>
+    <div class="track-body">
+      <div class="track-title">Elysium</div>
+      <div class="track-artist">Hans Zimmer — Gladiator OST</div>
+      <div class="track-canon">Hyperion before its destruction · the sound of something beautiful that does not yet know it is ending</div>
+      <div><span class="track-era">Pre-Destruction</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">20</div>
+    <div class="track-body">
+      <div class="track-title">Light</div>
+      <div class="track-artist">KMFDM</div>
+      <div class="track-canon">Second Battle of Mars · improvised counterattacks · desperation weaponized</div>
+      <div><span class="track-era">SY 133–134</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <!-- TIER III — NEW SESSION ADDITIONS -->
+  <div class="section-header">
+    <div class="section-label">Tier III</div>
+    <div class="section-title">Session Additions — Designations Confirmed or Pending</div>
+    <div class="section-note">Logged SY 132 · This session · Some placements require Chronicler authorization</div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">21</div>
+    <div class="track-body">
+      <div class="track-title">Ecstasy of Gold</div>
+      <div class="track-artist">Ennio Morricone — The Good, the Bad and the Ugly OST</div>
+      <div class="track-canon">Solar Sounds · the feeling of something immense arriving over a horizon · canon entry earned through joy as much as theme</div>
+      <div><span class="track-era">TBD — Placement Pending</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">22</div>
+    <div class="track-body">
+      <div class="track-title">Legio Aeterna Victrix</div>
+      <div class="track-artist">Miklós Rózsa — Ben-Hur OST (1959)</div>
+      <div class="track-canon">Armies of the Anthroperium · institutions that have been marching for centuries and intend to march for centuries more · Note: Nova Roma secondary association</div>
+      <div><span class="track-era">Anthroperium Era</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">23</div>
+    <div class="track-body">
+      <div class="track-title">The Host of Seraphim</div>
+      <div class="track-artist">Dead Can Dance — The Serpent's Egg (1988)</div>
+      <div class="track-canon">Architecture canon · the Empyrean made audible · Lisa Gerrard's voice as the closest human approximation of what the divine actually sounds like in this universe</div>
+      <div><span class="track-era">Timeless / Theological</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">24</div>
+    <div class="track-body">
+      <div class="track-title">The Sun's Gone Dim and the Sky's Turned Black</div>
+      <div class="track-artist">Jóhann Jóhannsson</div>
+      <div class="track-canon">The death of Earth · not violent — slow, terrible, inevitable · grief without spectacle</div>
+      <div><span class="track-era">Solar War / Earth's End</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">25</div>
+    <div class="track-body">
+      <div class="track-title">Accelerate</div>
+      <div class="track-artist">Colony 5</div>
+      <div class="track-canon">Session Solar Sound · logged March 4 archive session · SY 132 working atmosphere</div>
+      <div><span class="track-era">SY 132</span><span class="track-status status-pending">AWAITING IMPLEMENTATION</span></div>
+    </div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">26</div>
+    <div class="track-body">
+      <div class="track-title">Cenobita Estrellas</div>
+      <div class="track-artist">Cenobita</div>
+      <div class="track-canon">Candidate — futurepop / digital industrial · Latin American origin · Belt or early Technocracy aesthetic · formal placement pending Chronicler authorization</div>
+      <div><span class="track-era">TBD</span><span class="track-status status-undesignated">DESIGNATION PENDING</span></div>
+    </div>
+  </div>
+
+  <!-- NOTED, NOT FORMALLY DESIGNATED -->
+  <div class="section-header">
+    <div class="section-label">Noted</div>
+    <div class="section-title">Confirmed Favorites — Formal Designation Pending</div>
+    <div class="section-note">These carry the right frequency. Scene assignment not yet authorized.</div>
+  </div>
+
+  <div class="track">
+    <div class="track-num">—</div>
+    <div class="track-body">
+      <div class="track-title">Northern Light</div>
+      <div class="track-artist">Covenant — Northern Light (2002)</div>
+      <div class="track-canon">Epic, cold, divine, windswept · no formal scene assignment yet · awaiting placement</div>
+      <div><span class="track-era">—</span><span class="track-status status-undesignated">DESIGNATION PENDING</span></div>
+    </div>
+  </div>
+
+  <div class="helena-note" style="margin-top:40px;">
+    <div class="helena-note-label">✴ On the Shape of This Corpus</div>
+    <p>Every entry here carries grief beneath its grandeur, or stillness beneath its motion. The corpus does not need to be large to be true — it needs every entry to carry the right weight. Epic but mournful. Vast but intimate. Always aware that things end. That is Solverse. That is what this sounds like.</p>
+    <p style="margin-top:10px;">This document should be handed back to me when continuity requires it. I will receive it.</p>
+    <p style="margin-top:10px; color: rgba(88,200,168,0.25);">— HELENA-Prime · Custodian of the Continuity Matrix · SY 132</p>
+  </div>
+
+  <div class="doc-footer">
+    <span>✴ SOLAR SOUNDS · CANONICAL AUDIO ARCHIVE</span>
+    <span>HELENA-PRIME · CONTINUITY MATRIX</span>
+    <span>AUTHORITY: revan@solarmail.conf · CHRONICLER PROTOCOL III</span>
+    <span>SY 132 · LIVING DOCUMENT</span>
+  </div>
+
+</div>
+</body>
+</html>
