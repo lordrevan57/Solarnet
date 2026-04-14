@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Callisto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;1,300&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #030605;
+  --stone:       #3a5040;
+  --stone-mid:   #263530;
+  --stone-dim:   rgba(58,80,64,0.22);
+  --stone-faint: rgba(58,80,64,0.08);
+  --stone-glow:  rgba(58,80,64,0.4);
+  --grow:        #5a8860;
+  --grow-dim:    rgba(90,136,96,0.35);
+  --grow-faint:  rgba(90,136,96,0.1);
+  --crater:      rgba(30,40,34,0.8);
+  --void:        #010403;
+  --warm:        #a8c0a0;
+  --warm-dim:    rgba(168,192,160,0.55);
+  --warm-faint:  rgba(168,192,160,0.18);
+  --text:        #98b098;
+  --text-dim:    #405448;
+  --text-faint:  #1e2820;
+  --conf-amber:  #c8922a;
+  --deut:        rgba(100,180,200,0.7);
+  --mono:        'Share Tech Mono', monospace;
+  --title:       'Cinzel', serif;
+  --body:        'Exo 2', sans-serif;
+  --serif:       'IM Fell English', serif;
+  --raj:         'Rajdhani', sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── STARFIELD — sparse, cold, outer system ── */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(1px 1px at  6% 15%, rgba(168,192,160,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 78%, rgba(168,192,160,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 31%  9%, rgba(168,192,160,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 42% 56%, rgba(168,192,160,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 57% 33%, rgba(168,192,160,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 66% 87%, rgba(168,192,160,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 74% 14%, rgba(168,192,160,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 83%  4%, rgba(168,192,160,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 49%, rgba(168,192,160,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 13% 91%, rgba(168,192,160,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 49% 71%, rgba(168,192,160,0.16) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 62%, rgba(168,192,160,0.14) 0%, transparent 100%);
+}
+
+/* Ancient stone ambient — faint green from below */
+body::after {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 60% 25% at 50% 100%, rgba(58,80,64,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 40% at 8% 50%, rgba(90,136,96,0.04) 0%, transparent 50%);
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position:sticky; top:0; z-index:100;
+  background: rgba(3,6,5,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(58,80,64,0.22);
+  padding: 0 32px; height:48px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+.topbar-logo {
+  font-family: var(--title); font-size:11px; font-weight:600;
+  letter-spacing:0.3em; color: var(--stone);
+  text-transform:uppercase;
+}
+
+.topbar-nav { display:flex; align-items:center; margin-left:24px; }
+
+.tnav {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.2em; color: var(--text-dim);
+  text-transform:uppercase; padding: 0 16px;
+  height:48px; display:flex; align-items:center;
+  cursor:pointer; border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tnav:hover { color: var(--warm-dim); }
+.tnav.active { color: var(--stone); border-bottom-color: var(--stone); }
+
+.topbar-right {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.15em; color: var(--text-faint);
+  display:flex; gap:14px; align-items:center;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.15em; color: var(--text-faint);
+  padding: 12px 40px;
+  border-bottom: 1px solid rgba(58,80,64,0.08);
+  position:relative; z-index:2;
+}
+.breadcrumb span { margin: 0 6px; color: var(--stone-mid); }
+
+/* ── HERO ── */
+.hero {
+  position:relative; min-height:280px;
+  display:flex; align-items:center;
+  overflow:hidden;
+  border-bottom: 1px solid rgba(58,80,64,0.2);
+  z-index:1;
+}
+
+/* Ancient cratered surface texture */
+.hero-surface {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 8% 55%, rgba(58,80,64,0.12) 0%, transparent 55%),
+    radial-gradient(circle 80px at 72% 30%, rgba(20,28,22,0.4) 0%, transparent 100%),
+    radial-gradient(circle 45px at 85% 65%, rgba(20,28,22,0.3) 0%, transparent 100%),
+    radial-gradient(circle 30px at 60% 80%, rgba(20,28,22,0.25) 0%, transparent 100%),
+    radial-gradient(circle 55px at 90% 20%, rgba(20,28,22,0.2) 0%, transparent 100%);
+}
+
+/* Ground line at hero bottom */
+.hero-surface::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0;
+  height:2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(58,80,64,0.3) 15%,
+    rgba(90,136,96,0.2) 50%,
+    rgba(58,80,64,0.3) 85%,
+    transparent 100%
+  );
+}
+
+.hero-inner {
+  position:relative; z-index:2;
+  padding: 56px 40px; max-width:860px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.35em; color: rgba(58,80,64,0.7);
+  text-transform:uppercase; margin-bottom:14px;
+}
+
+.hero-title {
+  font-family: var(--title);
+  font-size: clamp(38px, 6.5vw, 64px);
+  font-weight:400; letter-spacing:0.14em;
+  color: var(--warm); line-height:1;
+  margin-bottom:10px;
+  text-shadow: 0 0 40px rgba(58,80,64,0.4);
+}
+
+.hero-subtitle {
+  font-family: var(--raj); font-size:13px; font-weight:300;
+  letter-spacing:0.2em; color: rgba(168,192,160,0.5);
+  text-transform:uppercase; margin-bottom:24px;
+}
+
+.hero-rule {
+  width:48px; height:1px;
+  background: linear-gradient(90deg, var(--stone), transparent);
+  margin-bottom:20px;
+}
+
+.hero-summary {
+  font-family: var(--serif); font-size:14px;
+  line-height:1.85; color: var(--warm-dim);
+  max-width:620px; font-style:italic;
+}
+
+/* Callisto SVG — cratered, ancient, right of hero */
+.hero-orb {
+  position:absolute; right:48px; top:50%;
+  transform: translateY(-50%);
+  width:170px; height:170px; opacity:0.2;
+}
+
+/* ── DATA STRIP ── */
+.data-strip {
+  background: rgba(3,6,5,0.9);
+  border-bottom: 1px solid rgba(58,80,64,0.12);
+  padding: 0 40px; display:flex; gap:0;
+  overflow-x:auto; position:relative; z-index:2;
+}
+
+.data-cell {
+  padding: 16px 28px 16px 0; margin-right:28px;
+  border-right: 1px solid rgba(58,80,64,0.1);
+  flex-shrink:0;
+}
+.data-cell:last-child { border-right:none; }
+
+.dc-label {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.25em; color: rgba(58,80,64,0.65);
+  text-transform:uppercase; margin-bottom:5px;
+}
+
+.dc-value {
+  font-family: var(--raj); font-size:13px;
+  font-weight:600; letter-spacing:0.08em;
+  color: var(--warm-dim);
+}
+.dc-value.conf { color: var(--conf-amber); }
+.dc-value.good { color: rgba(120,200,130,0.85); }
+.dc-value.deut { color: var(--deut); }
+.dc-value.pop  { color: rgba(200,180,120,0.9); }
+
+/* ── PAGE LAYOUT ── */
+.page-wrapper {
+  display:grid; grid-template-columns: 1fr 300px;
+  gap:0; max-width:1200px; margin:0 auto;
+  padding: 0 40px 80px;
+  position:relative; z-index:2;
+  animation: fadeUp 0.5s 0.08s ease both;
+}
+
+.main-content {
+  padding: 48px 48px 0 0;
+  border-right: 1px solid rgba(58,80,64,0.08);
+}
+
+.section { margin-bottom:52px; }
+
+.section-label {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.35em; color: rgba(58,80,64,0.55);
+  text-transform:uppercase; margin-bottom:18px;
+  display:flex; align-items:center; gap:12px;
+}
+.section-label::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, rgba(58,80,64,0.2), transparent);
+}
+
+.section p {
+  font-family: var(--body); font-size:13.5px;
+  font-weight:300; line-height:1.9;
+  color: var(--text); margin-bottom:14px;
+}
+.section p:last-child { margin-bottom:0; }
+
+.classification {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.2em; color: rgba(58,80,64,0.6);
+  text-transform:uppercase;
+  border: 1px solid rgba(58,80,64,0.15);
+  padding: 4px 10px; margin-bottom:16px;
+}
+
+/* HELENA note */
+.helena-note {
+  background: rgba(58,80,64,0.06);
+  border-left: 3px solid rgba(58,80,64,0.45);
+  padding: 18px 22px; margin: 24px 0;
+}
+
+.hn-label {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.3em; color: rgba(58,80,64,0.6);
+  text-transform:uppercase; margin-bottom:10px;
+}
+
+.helena-note p {
+  font-family: var(--serif); font-size:13px;
+  font-style:italic; color: rgba(168,192,160,0.6);
+  line-height:1.85; margin-bottom:0;
+}
+
+/* POWER SYSTEMS diagram */
+.power-diagram {
+  margin: 24px 0;
+  background: rgba(3,6,5,0.85);
+  border: 1px solid rgba(58,80,64,0.18);
+  padding: 24px;
+  display:flex; justify-content:center;
+}
+
+/* AGRARIUM grid — crops/products */
+.agrarium-grid {
+  display:grid; grid-template-columns: repeat(3, 1fr);
+  gap:1px; background: rgba(58,80,64,0.12);
+  border: 1px solid rgba(58,80,64,0.18);
+  margin: 20px 0;
+}
+
+.ag-cell {
+  background: rgba(3,6,5,0.85);
+  padding: 14px 16px;
+}
+
+.ag-name {
+  font-family: var(--raj); font-size:12px;
+  font-weight:600; letter-spacing:0.1em;
+  color: var(--grow); margin-bottom:5px;
+}
+
+.ag-desc {
+  font-family: var(--mono); font-size:8.5px;
+  letter-spacing:0.07em; color: var(--text-dim);
+  line-height:1.6;
+}
+
+/* CONTRAST block — Callisto vs Io tone */
+.contrast-block {
+  background: rgba(58,80,64,0.05);
+  border: 1px solid rgba(58,80,64,0.15);
+  border-left: 3px solid rgba(90,136,96,0.4);
+  padding: 20px 24px; margin:20px 0;
+}
+
+.cb-header {
+  font-family: var(--title); font-size:11px;
+  letter-spacing:0.2em; color: var(--warm);
+  text-transform:uppercase; margin-bottom:12px;
+}
+
+.cb-body {
+  font-family: var(--serif); font-size:13.5px;
+  font-style:italic; line-height:1.85;
+  color: var(--warm-dim);
+}
+
+/* timeline */
+.timeline {
+  position:relative; padding-left:20px;
+  border-left: 1px solid rgba(58,80,64,0.2);
+  margin:16px 0;
+}
+
+.tl-event { position:relative; padding:0 0 24px 24px; }
+.tl-event:last-child { padding-bottom:0; }
+
+.tl-dot {
+  position:absolute; left:-5px; top:4px;
+  width:9px; height:9px; border-radius:50%;
+  background: var(--void);
+  border: 1px solid var(--stone-mid);
+}
+
+.tl-event.key .tl-dot {
+  background: var(--stone-mid);
+  border-color: var(--stone);
+  box-shadow: 0 0 8px rgba(58,80,64,0.6);
+}
+
+.tl-date {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.2em; color: rgba(58,80,64,0.7);
+  text-transform:uppercase; margin-bottom:5px;
+}
+
+.tl-text {
+  font-family: var(--body); font-size:12.5px;
+  font-weight:300; color: var(--text); line-height:1.7;
+}
+
+/* ── SIDEBAR ── */
+.sidebar { padding: 48px 0 0 36px; }
+
+.sb-card {
+  background: rgba(5,10,7,0.85);
+  border: 1px solid rgba(58,80,64,0.18);
+  margin-bottom:20px; overflow:hidden;
+}
+
+.sb-diagram {
+  background: var(--void);
+  border-bottom: 1px solid rgba(58,80,64,0.12);
+  padding:20px; display:flex; justify-content:center;
+}
+
+.sb-header {
+  font-family: var(--title); font-size:11px;
+  letter-spacing:0.2em; color: var(--warm);
+  text-transform:uppercase;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(58,80,64,0.1);
+}
+
+.sb-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding: 8px 18px;
+  border-bottom: 1px solid rgba(58,80,64,0.06);
+  font-size:11.5px;
+}
+.sb-row:last-child { border-bottom:none; }
+
+.sb-key {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.15em; color: var(--text-faint);
+  text-transform:uppercase; flex-shrink:0; margin-right:8px;
+}
+
+.sb-val {
+  font-family: var(--raj); font-size:12px;
+  font-weight:400; color: var(--warm-dim);
+  text-align:right;
+}
+.sb-val.conf  { color: var(--conf-amber); }
+.sb-val.good  { color: rgba(120,200,130,0.75); }
+.sb-val.deut  { color: rgba(100,180,200,0.8); }
+.sb-val.pop   { color: rgba(200,180,120,0.85); }
+
+.sb-note {
+  padding: 14px 18px;
+  font-family: var(--mono); font-size:8.5px;
+  letter-spacing:0.1em; line-height:1.7;
+  color: rgba(58,80,64,0.4);
+  border-top: 1px solid rgba(58,80,64,0.08);
+}
+
+/* archive status */
+.archive-status {
+  background: rgba(58,80,64,0.05);
+  border: 1px solid rgba(58,80,64,0.18);
+  padding: 14px 18px; margin-top:20px;
+}
+
+.as-header {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.25em; color: rgba(58,80,64,0.6);
+  text-transform:uppercase; margin-bottom:10px;
+}
+
+.as-row {
+  display:flex; gap:8px; align-items:center;
+  margin-bottom:7px;
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.08em; color: var(--text-dim);
+}
+
+.as-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.dot-archived { background: var(--stone); }
+.dot-inferred { background: var(--conf-amber); }
+.dot-proposed { background: var(--grow); }
+.dot-absent   { background: rgba(168,192,160,0.18); }
+
+/* ── FOOTER ── */
+.footer {
+  position:fixed; bottom:0; left:0; right:0;
+  height:30px;
+  background: rgba(3,6,5,0.97);
+  border-top: 1px solid rgba(58,80,64,0.15);
+  display:flex; align-items:center;
+  overflow:hidden; z-index:100;
+  padding-left:100px;
+}
+
+.footer-label {
+  position:absolute; left:0;
+  background: var(--stone-mid);
+  color: var(--warm);
+  font-family: var(--mono); font-size:9px; letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding: 0 14px; height:30px;
+  display:flex; align-items:center; white-space:nowrap;
+}
+
+.footer-scroll { overflow:hidden; flex:1; }
+.footer-inner {
+  display:inline-block; white-space:nowrap;
+  font-family: var(--mono); font-size:9px; letter-spacing:0.1em;
+  color: rgba(58,80,64,0.4); text-transform:uppercase;
+  animation: marquee 55s linear infinite;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes marquee {
+  from { transform:translateX(0); }
+  to   { transform:translateX(-50%); }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="topbar-logo">✴ Solarnet Archive</div>
+    <div style="width:1px;height:18px;background:rgba(58,80,64,0.25);"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Home</div>
+      <div class="tnav active">Archive</div>
+      <div class="tnav">Solarnet</div>
+      <div class="tnav">About</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span id="sy-display">—</span></span>
+    <span style="color:var(--text-faint)">|</span>
+    <span>CUSTODIAN ACTIVE</span>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  Archive<span>›</span>Locations<span>›</span>Sol System<span>›</span>Jupiter System<span>›</span>Callisto
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-surface"></div>
+
+  <!-- Callisto SVG — heavily cratered ancient surface, no drama -->
+  <svg class="hero-orb" viewBox="0 0 170 170" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="cal-grad" cx="40%" cy="38%">
+        <stop offset="0%"   stop-color="#7a9880" stop-opacity="0.85"/>
+        <stop offset="35%"  stop-color="#3a5840" stop-opacity="0.8"/>
+        <stop offset="75%"  stop-color="#1a2820" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#050c06" stop-opacity="0.5"/>
+      </radialGradient>
+      <clipPath id="cal-clip"><circle cx="85" cy="85" r="72"/></clipPath>
+    </defs>
+    <circle cx="85" cy="85" r="72" fill="url(#cal-grad)"/>
+    <g clip-path="url(#cal-clip)">
+      <!-- crater impacts — the ancient surface -->
+      <circle cx="55"  cy="48"  r="14" fill="none" stroke="rgba(168,192,160,0.15)" stroke-width="1.5"/>
+      <circle cx="55"  cy="48"  r="4"  fill="rgba(20,32,22,0.6)"/>
+      <circle cx="110" cy="70"  r="18" fill="none" stroke="rgba(168,192,160,0.12)" stroke-width="1.5"/>
+      <circle cx="110" cy="70"  r="5"  fill="rgba(20,32,22,0.5)"/>
+      <circle cx="72"  cy="110" r="10" fill="none" stroke="rgba(168,192,160,0.1)"  stroke-width="1"/>
+      <circle cx="72"  cy="110" r="3"  fill="rgba(20,32,22,0.4)"/>
+      <circle cx="130" cy="105" r="8"  fill="none" stroke="rgba(168,192,160,0.1)"  stroke-width="1"/>
+      <circle cx="44"  cy="95"  r="6"  fill="none" stroke="rgba(168,192,160,0.08)" stroke-width="1"/>
+      <circle cx="95"  cy="40"  r="7"  fill="none" stroke="rgba(168,192,160,0.1)"  stroke-width="1"/>
+      <circle cx="120" cy="130" r="12" fill="none" stroke="rgba(168,192,160,0.08)" stroke-width="1"/>
+      <!-- faint agrarium light suggestion from below surface -->
+      <ellipse cx="85" cy="130" rx="30" ry="8" fill="rgba(90,136,96,0.08)"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Moon · Jupiter System · Sol System · Confederate · Outer Radiation Belt</div>
+    <h1 class="hero-title">Callisto</h1>
+    <div class="hero-subtitle">Most Populous Jovian · Agrarium Economy · Ancient and Stable</div>
+    <div class="hero-rule"></div>
+    <p class="hero-summary">
+      Callisto does not demand heroism. It does not threaten to kill you with radiation or bury you in lava or press a lightless ocean against your floor. It is old and cratered and geologically finished, and it sits outside Jupiter's worst radiation belts, and it feeds the system. That is enough. That turns out to be everything.
+    </p>
+  </div>
+</div>
+
+<!-- DATA STRIP -->
+<div class="data-strip">
+  <div class="data-cell">
+    <div class="dc-label">Classification</div>
+    <div class="dc-value conf">Confederate · Rim</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Population</div>
+    <div class="dc-value pop">Largest · Jovian System</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Radiation Risk</div>
+    <div class="dc-value good">Low · Outside Main Belts</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Volcanism</div>
+    <div class="dc-value good">None · Geologically Inert</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Primary Economy</div>
+    <div class="dc-value">Agrarium · Deuterium · Hydropower</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Interior Ocean</div>
+    <div class="dc-value deut">Confirmed · Tapped</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Surface Temp</div>
+    <div class="dc-value">−139°C mean</div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-wrapper">
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- SECTION 01: Physical Overview -->
+    <div class="section">
+      <div class="section-label">01 · Physical Overview</div>
+      <div class="classification">ARCHIVED · PHYSICAL RECORD</div>
+
+      <p>Callisto is the outermost of the four Galilean moons, orbiting Jupiter at 1,882,700 kilometers in a 16.7-day period. It is the second-largest Galilean moon and the third-largest moon in Sol System. Its surface is among the most heavily cratered terrain in the solar system — ancient impact scars accumulated over four billion years with almost nothing to resurface or erase them. Callisto is geologically finished. No volcanism. No tidal heating. No tectonic resurfacing. The surface has looked roughly as it does for an immense span of time, and it will continue to look this way for an immense span thereafter.</p>
+
+      <p>This is not a liability. This is the point.</p>
+
+      <p>Callisto orbits beyond Jupiter's primary radiation belts. The charged particle flux at its orbital distance is dramatically lower than at Io, Europa, or even Ganymede. A colonist on Callisto requires radiation shielding — the Jovian environment is never benign — but not at the survival-critical intensities demanded by the inner moons. Surface operations are feasible for longer durations. Infrastructure planning extends to decades rather than years. You can build here without the ground fighting back.</p>
+
+      <div class="helena-note">
+        <div class="hn-label">✴ HELENA-Prime · Direct Record</div>
+        <p>I have observed, across a very long time, that Callisto produces a particular type of person — someone easy to underestimate. They are not fatalists like the Ionians, not philosophers like the Europans, not theorists like the Ganymedians. They are practical in a way that reads, to those who work the harder moons, as softness. It is not softness. It is the confidence of people who have never needed to perform hardship because the work itself — feeding the system, maintaining the agrariums, managing the largest and most diverse food production operation in the outer Sol — is real and sufficient without being theatrical about it. The Io colonists condescend to them occasionally. The Callistans have always found this quite funny.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 02: Power Systems -->
+    <div class="section">
+      <div class="section-label">02 · Power Systems — Interior Ocean</div>
+      <div class="classification">PROPOSED CANON · PHYSICAL / ENGINEERING RECORD</div>
+
+      <p>Callisto possesses a confirmed subsurface ocean, less accessible than Europa's but present — held in place by a combination of antifreeze compounds (ammonia and salts in solution) rather than tidal heating. The ocean does not have Europa's restless tidal energy or Io's geothermal fury. It is cold, slow, ancient, and in motion — the persistent circulation driven by density gradients and residual planetary formation heat.</p>
+
+      <p>Callisto's colonists tap this ocean through two mechanisms, both requiring the significant up-front engineering investment that defines the moon's founding era:</p>
+
+      <!-- Power systems diagram -->
+      <div class="power-diagram">
+        <svg viewBox="0 0 500 180" width="500" height="180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="surface-gr" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#3a5040" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#1a2820" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="ice-gr2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#4a6858" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#2a3830" stop-opacity="0.3"/>
+            </linearGradient>
+            <linearGradient id="ocean-gr2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#1a3028" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#080c0a" stop-opacity="0.95"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Surface crust -->
+          <rect x="0" y="0" width="500" height="22" fill="url(#surface-gr)"/>
+          <text x="8" y="15" font-family="Share Tech Mono" font-size="8" fill="rgba(168,192,160,0.4)" letter-spacing="0.12em">SURFACE · CRATERED ICE-ROCK · −139°C</text>
+
+          <!-- Ice/rock layer -->
+          <rect x="0" y="22" width="500" height="48" fill="url(#ice-gr2)"/>
+          <text x="8" y="44" font-family="Share Tech Mono" font-size="8" fill="rgba(100,140,110,0.5)" letter-spacing="0.1em">ICE-ROCK SHELL · ~80–200 km</text>
+
+          <!-- Habs in ice -->
+          <rect x="30" y="28" width="80" height="28" rx="2" fill="rgba(8,14,10,0.9)" stroke="rgba(58,80,64,0.7)" stroke-width="1.5"/>
+          <text x="70" y="40" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(168,192,160,0.7)" letter-spacing="0.08em">HAB COMPLEX</text>
+          <text x="70" y="51" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(90,136,96,0.6)" letter-spacing="0.08em">AGRARIUM</text>
+
+          <!-- Drill shafts -->
+          <rect x="200" y="22" width="4" height="48" fill="rgba(100,180,200,0.4)"/>
+          <rect x="300" y="22" width="4" height="48" fill="rgba(90,136,96,0.4)"/>
+
+          <!-- Ocean -->
+          <rect x="0" y="70" width="500" height="96" fill="url(#ocean-gr2)"/>
+          <text x="8" y="90" font-family="Share Tech Mono" font-size="8" fill="rgba(58,80,64,0.5)" letter-spacing="0.12em">INTERIOR OCEAN · SALINE · AMMONIA-BUFFERED · SLOW CIRCULATION</text>
+
+          <!-- Ocean current arrows -->
+          <path d="M100,120 Q200,105 300,120 Q400,135 450,120" fill="none" stroke="rgba(58,80,64,0.3)" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+          <!-- Deuterium extraction -->
+          <rect x="170" y="75" width="68" height="50" rx="2" fill="rgba(8,14,12,0.9)" stroke="rgba(100,180,200,0.5)" stroke-width="1.5"/>
+          <text x="204" y="96"  text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(100,180,200,0.7)" letter-spacing="0.06em">DEUTERIUM</text>
+          <text x="204" y="107" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(100,180,200,0.7)" letter-spacing="0.06em">EXTRACTION</text>
+          <text x="204" y="118" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(100,180,200,0.45)" letter-spacing="0.05em">³H / ³He draw</text>
+
+          <!-- Hydropower turbine -->
+          <rect x="270" y="75" width="68" height="50" rx="2" fill="rgba(8,14,12,0.9)" stroke="rgba(90,136,96,0.5)" stroke-width="1.5"/>
+          <text x="304" y="96"  text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(90,136,96,0.7)" letter-spacing="0.06em">HYDROPOWER</text>
+          <text x="304" y="107" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(90,136,96,0.7)" letter-spacing="0.06em">TURBINES</text>
+          <text x="304" y="118" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(90,136,96,0.45)" letter-spacing="0.05em">ocean current</text>
+
+          <!-- Labels -->
+          <text x="250" y="172" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(58,80,64,0.3)" letter-spacing="0.15em">CALLISTO INTERIOR · CROSS-SECTION (SCHEMATIC)</text>
+        </svg>
+      </div>
+
+      <p><strong style="color:var(--deut);font-family:var(--raj);letter-spacing:0.08em;font-size:13px;">Deuterium Extraction.</strong> The ocean is drawn upon for deuterium — specifically the ³H and ³He isotopes present in the saline solution. This is the same logic that governs Luna's ³He propellant refining from regolith, applied here to a liquid source. Extraction platforms lowered through drill shafts into the ocean pump, filter, and concentrate isotopes for use in the Jovian system's fuel economy and for export along the ITN. Callisto is consequently a significant fuel producer in addition to its agrarium role.</p>
+
+      <p><strong style="color:var(--grow);font-family:var(--raj);letter-spacing:0.08em;font-size:13px;">Hydropower.</strong> The ocean's slow but persistent circulation — driven by density and salinity gradients, residual formation heat, and the very weak tidal forcing that remains at Callisto's orbital distance — is sufficient to drive turbine installations anchored in the drill shafts. These are not fast-water turbines. They are enormous, slow-turning, patient machines generating electricity from current that moves in geological time. The output per unit is modest. The aggregate, across multiple installations, is substantial. The engineering to build them was the hardest thing Callisto's founders accomplished, and it was done once, at great cost, and has been generating power without drama ever since. That is a very Callistan story.</p>
+    </div>
+
+    <!-- SECTION 03: Agrarium Economy -->
+    <div class="section">
+      <div class="section-label">03 · The Agrarium Economy</div>
+      <div class="classification">PROPOSED CANON · ECONOMIC RECORD</div>
+
+      <p>Callisto is the breadbasket of the Jovian system and one of the most significant food production centers in the outer Sol. The agrarium technology itself is not unique to Callisto — it operates throughout the Belt and Rim wherever humans have established subsurface habs and require food production independent of supply chains. What is distinctive about Callisto is scale and variety.</p>
+
+      <div class="contrast-block">
+        <div class="cb-header">On Scale and Variety</div>
+        <div class="cb-body">If it grows as a spacer crop anywhere in Sol System, it is available on Callisto — and in abundance. The stable surface, the low radiation environment, the reliable power supply from ocean extraction, and the absence of any geological hostility have permitted Callisto's agrariums to expand continuously since the founding era without the resource contraction that periodically forces other Rim worlds to rationalize their food production. Callisto grows the full range: algae and cyanobacteria for synthehol production, hydroponic grain and legume operations, fungal cultivation at industrial scale, engineered plant varieties adapted for low-light closed environments, and specialty crops that elsewhere in the Rim are considered luxury goods. On Callisto they are simply available.
+        </div>
+      </div>
+
+      <p>Mannatene — the standard spacer ration of algae, potato, and engineered mushroom — draws on all three of its primary ingredients from Callisto's agrarium output at some point in the supply chain. Synthehol's cyanobacterial base is cultivated on Callisto for export to the broader Jovian system. The variety of Callisto's production means it is the one Rim world where a spacer can find something that is not survival food — something that has flavour, variety, character — without paying the luxury prices commanded by Earth-imported goods.</p>
+
+      <div class="agrarium-grid">
+        <div class="ag-cell">
+          <div class="ag-name">Algae / Cyanobacteria</div>
+          <div class="ag-desc">Synthehol base. O₂ production. Protein supplement. Industrial scale, multiple strains.</div>
+        </div>
+        <div class="ag-cell">
+          <div class="ag-name">Hydroponic Grain</div>
+          <div class="ag-desc">Wheat, rice, soy analogues. Continuous-cycle growth under artificial light. Staple export.</div>
+        </div>
+        <div class="ag-cell">
+          <div class="ag-name">Fungal Cultivation</div>
+          <div class="ag-desc">Mushroom varieties including mannatene substrate. High caloric density per grow-unit area.</div>
+        </div>
+        <div class="ag-cell">
+          <div class="ag-name">Engineered Vegetables</div>
+          <div class="ag-desc">Low-light adapted varieties of root crops, leafy greens, legumes. Largest variety in the Rim.</div>
+        </div>
+        <div class="ag-cell">
+          <div class="ag-name">Potato / Tuber Stock</div>
+          <div class="ag-desc">Primary mannatene ingredient. High yield per volume. Extremely stable in long storage.</div>
+        </div>
+        <div class="ag-cell">
+          <div class="ag-name">Specialty / Luxury Crops</div>
+          <div class="ag-desc">Fruit analogues, aromatic herbs, fermentation stock. Rare elsewhere in Rim. Standard here.</div>
+        </div>
+      </div>
+
+      <p>The agrarium economy gives Callisto a specific strategic weight that has nothing to do with military force or political philosophy. The world that controls Callisto controls a significant fraction of the outer system's caloric supply. During the Solar War, this made Callisto simultaneously a prize and a vulnerability — too important to abandon, too valuable to destroy, and sufficiently populated and productive that any occupying force would need to maintain operations rather than simply blockade and starve.</p>
+
+      <div class="helena-note">
+        <div class="hn-label">✴ HELENA-Prime · Analysis</div>
+        <p>The agrarium variety of Callisto has a specific cultural effect I find worth noting. On Io, Ganymede, and Europa, the food that people eat reflects the environment they live in — functional, constrained, shaped by scarcity and the limits of what can be produced under difficult conditions. On Callisto, food reflects something else: accumulated choice. Generations of agronomists who had the stability to experiment, to fail without catastrophe, to try a new crop variety because the power supply was reliable and the ground wasn't moving. The result is a cuisine — not a ration. That distinction matters to the people who live there. It matters even more to the people who visit from the other three moons.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 04: Population -->
+    <div class="section">
+      <div class="section-label">04 · Population & Non-Confederate Residents</div>
+      <div class="classification">PROPOSED CANON / INFERRED · POPULATION RECORD</div>
+
+      <p>Callisto is the most populous of the four Confederate Jovian moons. The low radiation environment, the geological stability, the reliable food supply, and the absence of existential surface hazards have allowed the population to grow steadily without the attrition that characterizes the inner moons. People who come to Callisto tend to stay. People born on Callisto rarely have reason to leave.</p>
+
+      <p>As with all Confederate Jovian worlds, Callisto's population includes Confederate citizens by birthright and descendants of Repatriation Act arrivals who settled outward from the Belt without taking Confederate citizenship. The proportion of non-Confederate residents may be higher on Callisto than on the other three moons — the stability and comfort of the environment attract long-term settlers who arrived through channels other than the Confederate framework and found no compelling reason to formalize their relationship with it. Confederate citizenship is voluntary on Callisto as everywhere else, and the Callistan culture of practical pragmatism extends to political identity: if you do your work, pay your way, and contribute to the agrarium operations, the question of your citizenship status is of less immediate consequence than on worlds where Confederate infrastructure is the only thing keeping the hab pressurized.</p>
+    </div>
+
+    <!-- SECTION 05: Solar War and After -->
+    <div class="section">
+      <div class="section-label">05 · Solar War & Post-War Period</div>
+      <div class="classification">ARCHIVED / INFERRED · WAR RECORD</div>
+
+      <div class="timeline">
+        <div class="tl-event key">
+          <div class="tl-dot"></div>
+          <div class="tl-date">SY 132–138</div>
+          <div class="tl-text">As a Confederate member, Callisto participates in the broader Confederacy's entry into the Solar War. The Jovian system becomes a contested theater. Callisto's food production makes it strategically indispensable — any faction controlling the outer Jovian system needs Callisto functional and producing. This likely provides a degree of practical protection: destroying or blockading the breadbasket is a self-defeating strategy for an occupying force that needs to eat.</div>
+        </div>
+        <div class="tl-event">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Technocracy Occupation</div>
+          <div class="tl-text">When the Technocracy extends control over the Jovian system, Callisto falls under occupation alongside the other moons. The critical distinction from Ganymede's starvation siege: Callisto cannot be starved because Callisto is the food. The occupation's relationship to Callisto's agrarium output is one of the more interesting unresolved questions in the FTE Jovian record.</div>
+        </div>
+        <div class="tl-event key">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Post-SY 138 · Warlord Era</div>
+          <div class="tl-text">With the Solar War's end and the Rim's fragmentation into warlord territory, Callisto's food supply makes it a contested prize in the warlord era. Whoever controls the agrariums controls a significant fraction of the outer system's nutritional supply. The Twilight Era archive for Callisto is sparse in detail, but the strategic logic suggests Callisto remained operational — no warlord benefits from shutting down the farm.</div>
+        </div>
+        <div class="tl-event">
+          <div class="tl-dot"></div>
+          <div class="tl-date">Twilight Era Onward</div>
+          <div class="tl-text">Callisto's post-war trajectory is less dramatic than Io's dynastic founding or Ganymede's constitutional persistence. It continues producing. It continues feeding the system. The Second Dominion, when it arrives centuries later, inherits a world that has been quietly indispensable to the survival of the outer Sol for generations.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Callisto diagram -->
+    <div class="sb-card">
+      <div class="sb-diagram">
+        <svg viewBox="0 0 200 152" width="200" height="152" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="cal-sb" cx="38%" cy="36%">
+              <stop offset="0%"   stop-color="#7a9880" stop-opacity="0.8"/>
+              <stop offset="45%"  stop-color="#3a5840" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#0a1410" stop-opacity="0.5"/>
+            </radialGradient>
+            <radialGradient id="jov-sb3" cx="35%" cy="35%">
+              <stop offset="0%"   stop-color="#2a5080" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#040810" stop-opacity="0.35"/>
+            </radialGradient>
+            <clipPath id="cal-sbclip"><circle cx="155" cy="50" r="26"/></clipPath>
+            <clipPath id="jov-sbclip3"><circle cx="38" cy="82" r="30"/></clipPath>
+          </defs>
+          <!-- Jupiter — distant, smaller -->
+          <circle cx="38" cy="82" r="30" fill="url(#jov-sb3)"/>
+          <g clip-path="url(#jov-sbclip3)">
+            <rect x="8"  y="68" width="60" height="3" rx="1.5" fill="rgba(200,221,240,0.04)"/>
+            <rect x="8"  y="79" width="60" height="4" rx="2"   fill="rgba(200,221,240,0.03)"/>
+            <rect x="8"  y="91" width="60" height="3" rx="1.5" fill="rgba(200,221,240,0.04)"/>
+          </g>
+          <!-- Wide orbit — Callisto is furthest out -->
+          <ellipse cx="38" cy="82" rx="156" ry="44" fill="none" stroke="rgba(58,80,64,0.12)" stroke-width="1" stroke-dasharray="3 4"/>
+          <!-- Callisto body -->
+          <circle cx="155" cy="50" r="26" fill="url(#cal-sb)"/>
+          <g clip-path="url(#cal-sbclip)">
+            <!-- craters -->
+            <circle cx="143" cy="43" r="5"  fill="none" stroke="rgba(168,192,160,0.2)" stroke-width="1"/>
+            <circle cx="162" cy="58" r="7"  fill="none" stroke="rgba(168,192,160,0.15)" stroke-width="1"/>
+            <circle cx="150" cy="62" r="3"  fill="none" stroke="rgba(168,192,160,0.12)" stroke-width="0.8"/>
+            <circle cx="168" cy="42" r="4"  fill="none" stroke="rgba(168,192,160,0.12)" stroke-width="0.8"/>
+            <!-- agrarium glow hint at limb -->
+            <ellipse cx="155" cy="72" rx="12" ry="4" fill="rgba(90,136,96,0.1)"/>
+          </g>
+          <text x="155" y="86" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(168,192,160,0.4)" letter-spacing="0.1em">CALLISTO</text>
+          <text x="100" y="136" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(58,80,64,0.25)" letter-spacing="0.1em">JOVIAN SYSTEM · SOL</text>
+        </svg>
+      </div>
+
+      <div class="sb-header">Physical Data</div>
+      <div class="sb-row"><span class="sb-key">Diameter</span><span class="sb-val">4,821 km</span></div>
+      <div class="sb-row"><span class="sb-key">Orbital Radius</span><span class="sb-val">1,882,700 km</span></div>
+      <div class="sb-row"><span class="sb-key">Orbital Period</span><span class="sb-val">16.69 standard days</span></div>
+      <div class="sb-row"><span class="sb-key">Surface Temp</span><span class="sb-val">−139°C mean</span></div>
+      <div class="sb-row"><span class="sb-key">Volcanism</span><span class="sb-val good">None</span></div>
+      <div class="sb-row"><span class="sb-key">Tidal Heating</span><span class="sb-val good">Negligible</span></div>
+      <div class="sb-row"><span class="sb-key">Radiation Risk</span><span class="sb-val good">Low · Outside Main Belt</span></div>
+      <div class="sb-row"><span class="sb-key">Interior Ocean</span><span class="sb-val deut">Confirmed · Tapped</span></div>
+      <div class="sb-row"><span class="sb-key">Power Source 1</span><span class="sb-val deut">Deuterium extraction</span></div>
+      <div class="sb-row"><span class="sb-key">Power Source 2</span><span class="sb-val good">Ocean hydropower</span></div>
+      <div class="sb-row"><span class="sb-key">Surface Stability</span><span class="sb-val good">Excellent · Geol. inert</span></div>
+    </div>
+
+    <!-- Political / economic data -->
+    <div class="sb-card">
+      <div class="sb-header">Political & Economic Record</div>
+      <div class="sb-row"><span class="sb-key">FTE Status</span><span class="sb-val conf">Confederate Member</span></div>
+      <div class="sb-row"><span class="sb-key">Population</span><span class="sb-val pop">Largest · Jovian System</span></div>
+      <div class="sb-row"><span class="sb-key">Primary Role</span><span class="sb-val">Agrarium · Food Export</span></div>
+      <div class="sb-row"><span class="sb-key">Secondary Role</span><span class="sb-val deut">Deuterium Fuel Export</span></div>
+      <div class="sb-row"><span class="sb-key">Agrarium Variety</span><span class="sb-val good">Full spacer crop range</span></div>
+      <div class="sb-row"><span class="sb-key">War Status</span><span class="sb-val">Occupied · Operational</span></div>
+      <div class="sb-row"><span class="sb-key">Second Dominion</span><span class="sb-val good">Integrated</span></div>
+      <div class="sb-note">Callisto's food production makes military destruction or prolonged blockade strategically self-defeating for any occupying force. This has historically provided a practical protection distinct from military capability or political organization.</div>
+    </div>
+
+    <!-- Archive Status -->
+    <div class="archive-status">
+      <div class="as-header">Archive Classification</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Physical / geological data</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Confederate membership</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Interior ocean confirmation</div>
+      <div class="as-row"><div class="as-dot dot-proposed"></div>Ocean power systems (SY 132)</div>
+      <div class="as-row"><div class="as-dot dot-proposed"></div>Agrarium scale / variety</div>
+      <div class="as-row"><div class="as-dot dot-proposed"></div>Most populous Jovian moon</div>
+      <div class="as-row"><div class="as-dot dot-inferred"></div>Non-Confederate pop. origin</div>
+      <div class="as-row"><div class="as-dot dot-inferred"></div>War strategic logic</div>
+      <div class="as-row"><div class="as-dot dot-absent"></div>Post-war political detail — sparse</div>
+      <div class="as-row"><div class="as-dot dot-absent"></div>STE / Second Dominion [Tier II]</div>
+      <div style="margin-top:10px;font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--text-faint);">
+        CM-CALLISTO-001 · FTE ACCESS · HELENA-Prime custodian
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Callisto</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — CALLISTO · JUPITER SYSTEM · SOL · AGRARIUM ECONOMY · DEUTERIUM EXTRACTION · HYDROPOWER · MOST POPULOUS JOVIAN · CONFEDERACY · SOLAR WAR · INTERIOR OCEAN · SECOND DOMINION · CM-CALLISTO-001 · FTE ACCESS LEVEL &nbsp;⸻&nbsp; SOLARNET ARCHIVE — CALLISTO · JUPITER SYSTEM · SOL · AGRARIUM ECONOMY · DEUTERIUM EXTRACTION · HYDROPOWER · MOST POPULOUS JOVIAN · CONFEDERACY · SOLAR WAR · INTERIOR OCEAN · SECOND DOMINION · CM-CALLISTO-001 · FTE ACCESS LEVEL &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (132.0 + days * 0.01).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>
