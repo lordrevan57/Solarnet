@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALTERRA — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&display=swap');
+:root {
+  --bg: #020408;
+  --teal: #58c8a8;
+  --teal-faint: rgba(88,200,168,0.04);
+  --teal-line: rgba(88,200,168,0.08);
+  --teal-text: rgba(88,200,168,0.60);
+  --teal-muted: rgba(88,200,168,0.28);
+  --teal-ghost: rgba(88,200,168,0.10);
+  /* Technocracy — ice violet / steel grey */
+  --tech: #7878c8;
+  --tech-bright: #9898e8;
+  --tech-dim: rgba(120,120,200,0.20);
+  --tech-faint: rgba(120,120,200,0.05);
+  --tech-text: rgba(152,152,232,0.65);
+  --tech-muted: rgba(120,120,200,0.38);
+  --tech-line: rgba(120,120,200,0.12);
+  /* Steel grey */
+  --steel: #788898;
+  --steel-dim: rgba(120,136,152,0.18);
+  --steel-faint: rgba(120,136,152,0.04);
+  --steel-text: rgba(120,136,152,0.55);
+  --steel-muted: rgba(120,136,152,0.30);
+  --steel-line: rgba(120,136,152,0.10);
+  /* Redaction tiers */
+  --redact-bg: rgba(8,8,14,0.97);
+  --redact-tech: rgba(12,10,24,0.98); /* tech-key required */
+  --redact-absolute: rgba(4,4,6,1.0); /* no key grants access */
+  --body-text: rgba(175,185,215,0.50);
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--body-text); font-family: var(--font-body); font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(var(--tech-line) 1px, transparent 1px), linear-gradient(90deg, var(--tech-line) 1px, transparent 1px);
+  background-size: 60px 60px; opacity: 0.08; }
+
+/* TOPBAR */
+.topbar { position: sticky; top: 0; z-index: 100; height: 50px; background: rgba(2,4,8,0.98); border-bottom: 1px solid var(--tech-line); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; backdrop-filter: blur(8px); }
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.topbar-logo { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--teal-text); }
+.topbar-sep { color: var(--teal-ghost); }
+.topbar-crumb { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: var(--teal-muted); text-transform: uppercase; }
+.topbar-right { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: rgba(88,200,168,0.16); }
+
+/* TECH CLEARANCE BANNER */
+.clearance-banner { background: var(--tech-faint); border-bottom: 1px solid var(--tech-dim); padding: 0 40px; display: flex; align-items: stretch; position: relative; z-index: 1; }
+.clearance-tier { display: flex; align-items: center; gap: 10px; padding: 8px 18px; border-right: 1px solid var(--tech-dim); }
+.clearance-tier:last-child { border-right: none; margin-left: auto; }
+.clearance-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.clearance-dot.open { background: rgba(88,200,168,0.4); }
+.clearance-dot.locked { background: rgba(120,120,200,0.35); }
+.clearance-dot.absolute { background: rgba(40,40,60,0.8); border: 1px solid rgba(120,120,200,0.15); }
+.clearance-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.3em; text-transform: uppercase; }
+.clearance-label.open { color: rgba(88,200,168,0.35); }
+.clearance-label.locked { color: rgba(120,120,200,0.35); }
+.clearance-label.absolute { color: rgba(80,80,100,0.5); }
+
+/* HERO */
+.hero { position: relative; z-index: 1; padding: 60px 80px 52px; border-bottom: 1px solid var(--tech-line); background: linear-gradient(160deg, rgba(120,120,200,0.05) 0%, rgba(120,136,152,0.02) 50%, transparent 80%); overflow: hidden; }
+.hero-watermark { position: absolute; right: 30px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 130px; font-weight: 900; color: rgba(120,120,200,0.03); line-height: 1; pointer-events: none; white-space: nowrap; letter-spacing: 0.15em; }
+.hero-type-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.hero-badge { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.38em; text-transform: uppercase; padding: 4px 10px; }
+.hero-badge.base { background: var(--teal-faint); border: 1px solid var(--teal-line); color: var(--teal-muted); }
+.hero-badge.tech { background: var(--tech-faint); border: 1px solid var(--tech-dim); color: var(--tech-muted); }
+.hero-badge.steel { background: var(--steel-faint); border: 1px solid var(--steel-dim); color: var(--steel-muted); }
+
+.hero-acronym { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em; color: var(--tech-muted); margin-bottom: 10px; text-transform: uppercase; }
+.hero-name { font-family: var(--font-title); font-size: 68px; font-weight: 900; color: var(--tech-text); letter-spacing: 0.12em; line-height: 1; margin-bottom: 6px; }
+.hero-name-full { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--tech-muted); margin-bottom: 22px; }
+.hero-rule { width: 80px; height: 1px; background: linear-gradient(90deg, var(--tech), transparent); margin-bottom: 22px; }
+.hero-lead { max-width: 620px; font-size: 14px; color: var(--body-text); line-height: 1.85; font-family: var(--font-serif); font-style: italic; }
+.hero-meta { display: flex; gap: 32px; margin-top: 30px; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid rgba(120,120,200,0.07); }
+.hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+.hero-meta-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.28em; color: rgba(120,120,200,0.22); text-transform: uppercase; }
+.hero-meta-val { font-family: var(--font-mono); font-size: 11px; color: var(--tech-text); letter-spacing: 0.07em; }
+.hero-meta-val.locked { color: rgba(120,120,200,0.25); }
+
+/* LAYOUT */
+.page-layout { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 56px 60px 120px; display: grid; grid-template-columns: 1fr 300px; gap: 48px; }
+.section-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.35em; color: var(--teal-muted); text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--teal-line); margin-bottom: 22px; }
+.body-text { font-size: 13px; color: var(--body-text); line-height: 1.9; margin-bottom: 32px; }
+.body-text p + p { margin-top: 14px; }
+
+/* FEINGOLD QUOTE */
+.feingold-quote { border-left: 3px solid var(--tech-dim); padding: 18px 24px; margin-bottom: 28px; background: var(--tech-faint); }
+.feingold-quote-text { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: rgba(175,185,215,0.55); line-height: 1.8; }
+.feingold-quote-attr { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em; color: var(--tech-muted); margin-top: 10px; text-transform: uppercase; }
+
+/* REDACTION SYSTEM — THREE TIERS */
+
+/* Tier 1: Open (no redaction) */
+
+/* Tier 2: Technocracy key required — violet tinted, lock icon */
+.redact-tech {
+  display: inline-block; position: relative;
+  background: var(--redact-tech);
+  border: 1px solid rgba(120,120,200,0.15);
+  color: transparent; user-select: none;
+  padding: 1px 8px 1px 22px; border-radius: 1px; cursor: default;
+  font-family: var(--font-mono); font-size: 0.9em;
+  vertical-align: baseline;
+}
+.redact-tech::before {
+  content: '⚿';
+  position: absolute; left: 5px; top: 50%; transform: translateY(-50%);
+  color: rgba(120,120,200,0.22); font-size: 9px; font-family: var(--font-mono);
+}
+.redact-tech::after {
+  content: '█████████';
+  color: rgba(120,120,200,0.10);
+  position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 0.85em; white-space: nowrap;
+}
+
+/* Tier 3: Absolute — no key grants access */
+.redact-absolute {
+  display: inline-block; position: relative;
+  background: var(--redact-absolute);
+  border: 1px solid rgba(60,60,80,0.4);
+  color: transparent; user-select: none;
+  padding: 1px 8px 1px 22px; border-radius: 1px; cursor: default;
+  font-family: var(--font-mono); font-size: 0.9em;
+  vertical-align: baseline;
+}
+.redact-absolute::before {
+  content: '✕';
+  position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+  color: rgba(80,80,100,0.4); font-size: 8px; font-family: var(--font-mono);
+}
+.redact-absolute::after {
+  content: '█████████';
+  color: rgba(40,40,60,0.6);
+  position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 0.85em; white-space: nowrap;
+}
+
+/* BLOCK REDACTION — larger sections */
+.block-redact {
+  position: relative; background: var(--redact-tech);
+  border: 1px solid rgba(120,120,200,0.12);
+  padding: 18px 22px; margin-bottom: 8px;
+  overflow: hidden;
+}
+.block-redact::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 8px,
+    rgba(120,120,200,0.03) 8px, rgba(120,120,200,0.03) 9px
+  );
+}
+.block-redact-notice {
+  display: flex; align-items: center; gap: 12px; position: relative; z-index: 1;
+}
+.block-redact-icon { font-family: var(--font-mono); font-size: 12px; color: rgba(120,120,200,0.25); flex-shrink: 0; }
+.block-redact-text { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: rgba(120,120,200,0.22); text-transform: uppercase; line-height: 1.6; }
+
+.block-absolute {
+  position: relative; background: rgba(4,4,8,0.99);
+  border: 1px solid rgba(40,40,60,0.5);
+  padding: 18px 22px; margin-bottom: 8px;
+  overflow: hidden;
+}
+.block-absolute::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 8px,
+    rgba(40,40,60,0.15) 8px, rgba(40,40,60,0.15) 9px
+  );
+}
+.block-absolute-notice {
+  display: flex; align-items: center; gap: 12px; position: relative; z-index: 1;
+}
+.block-absolute-icon { font-family: var(--font-mono); font-size: 12px; color: rgba(60,60,80,0.5); flex-shrink: 0; }
+.block-absolute-text { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: rgba(60,60,80,0.55); text-transform: uppercase; line-height: 1.6; }
+
+/* RULES BLOCK */
+.rules-block { border: 1px solid var(--tech-dim); background: var(--tech-faint); padding: 24px 28px; margin-bottom: 32px; }
+.rules-eyebrow { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.38em; color: var(--tech-muted); text-transform: uppercase; margin-bottom: 8px; }
+.rules-title { font-family: var(--font-title); font-size: 15px; font-weight: 700; color: var(--tech-text); letter-spacing: 0.1em; margin-bottom: 18px; }
+.rule-item { display: grid; grid-template-columns: 24px 1fr; gap: 0 14px; padding: 10px 0; border-bottom: 1px solid rgba(120,120,200,0.06); }
+.rule-item:last-child { border-bottom: none; }
+.rule-num { font-family: var(--font-mono); font-size: 9px; color: var(--tech-muted); padding-top: 2px; }
+.rule-text { font-size: 13px; color: var(--body-text); line-height: 1.8; }
+
+/* SPECTRUM TABLE */
+.spectrum-block { margin-bottom: 32px; }
+.spectrum-header { display: grid; grid-template-columns: 80px 180px 1fr 180px; gap: 0; background: rgba(120,120,200,0.06); border: 1px solid var(--tech-dim); border-bottom: none; padding: 8px 16px; }
+.spectrum-col-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.28em; color: var(--tech-muted); text-transform: uppercase; }
+.spectrum-row { display: grid; grid-template-columns: 80px 180px 1fr 180px; gap: 0; border: 1px solid var(--tech-dim); border-top: none; padding: 10px 16px; align-items: center; }
+.spectrum-row:nth-child(odd) { background: rgba(120,120,200,0.02); }
+.spectrum-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-right: 8px; vertical-align: middle; }
+.spectrum-color-label { font-family: var(--font-mono); font-size: 10px; color: var(--steel-text); display: flex; align-items: center; }
+.spectrum-domain { font-size: 12px; color: var(--body-text); line-height: 1.5; }
+.spectrum-wizard { font-size: 12px; line-height: 1.5; }
+.spectrum-knight { font-size: 11px; color: var(--steel-muted); font-family: var(--font-mono); font-style: italic; }
+
+/* LOCKED SPECTRUM ROW */
+.spectrum-row.locked { background: var(--redact-tech); border-color: rgba(120,120,200,0.10); }
+.spectrum-row.locked .spectrum-domain,
+.spectrum-row.locked .spectrum-wizard { color: transparent; position: relative; }
+.spectrum-row.locked .spectrum-domain::after,
+.spectrum-row.locked .spectrum-wizard::after { content: '██████████'; color: rgba(120,120,200,0.10); position: absolute; left: 0; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 0.9em; white-space: nowrap; }
+.spectrum-row.locked .spectrum-color-label { opacity: 0.3; }
+
+/* TECH INFO BLOCKS */
+.tech-block { background: var(--tech-faint); border: 1px solid var(--tech-dim); border-top: 2px solid rgba(120,120,200,0.35); padding: 22px 26px; margin-bottom: 32px; }
+.tech-eyebrow { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.38em; color: var(--tech-muted); text-transform: uppercase; margin-bottom: 8px; }
+.tech-title { font-family: var(--font-title); font-size: 15px; font-weight: 700; color: var(--tech-text); letter-spacing: 0.1em; margin-bottom: 14px; }
+.tech-body { font-size: 13px; color: var(--body-text); line-height: 1.85; }
+
+/* SIDEBAR */
+.sidebar-card { background: var(--steel-faint); border: 1px solid var(--steel-line); padding: 20px; margin-bottom: 16px; }
+.sidebar-card.tech-card { background: var(--tech-faint); border-color: var(--tech-line); }
+.sidebar-card-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.3em; color: rgba(120,136,152,0.20); text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--steel-line); margin-bottom: 14px; }
+.sidebar-card.tech-card .sidebar-card-label { color: rgba(120,120,200,0.22); border-bottom-color: var(--tech-line); }
+.sidebar-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid rgba(120,136,152,0.05); font-size: 11px; }
+.sidebar-row:last-child { border-bottom: none; }
+.sidebar-key { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; color: rgba(120,136,152,0.20); text-transform: uppercase; }
+.sidebar-val { color: var(--tech-text); text-align: right; max-width: 160px; line-height: 1.4; font-size: 11px; }
+.sidebar-val.locked { color: rgba(120,120,200,0.22); font-style: italic; }
+
+.key-legend { padding: 16px 18px; background: rgba(2,4,8,0.6); border: 1px solid var(--steel-line); margin-bottom: 16px; }
+.key-legend-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.28em; color: rgba(120,136,152,0.18); text-transform: uppercase; margin-bottom: 12px; }
+.key-legend-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(120,136,152,0.05); }
+.key-legend-row:last-child { border-bottom: none; }
+.key-legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.key-legend-dot.open { background: rgba(88,200,168,0.4); }
+.key-legend-dot.tech { background: rgba(120,120,200,0.35); }
+.key-legend-dot.absolute { background: rgba(30,30,40,0.8); border: 1px solid rgba(80,80,100,0.3); }
+.key-legend-text { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; color: rgba(120,136,152,0.35); line-height: 1.5; }
+
+.linked-article { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 11px 14px; border: 1px solid rgba(120,120,200,0.07); border-left: 2px solid transparent; background: rgba(120,120,200,0.01); margin-bottom: 7px; text-decoration: none; transition: all 0.15s; }
+.linked-article:hover { border-color: rgba(120,120,200,0.18); border-left-color: var(--tech); background: rgba(120,120,200,0.04); }
+.linked-article-title { font-size: 12px; color: var(--tech-text); margin-bottom: 2px; font-weight: 600; }
+.linked-article-desc { font-size: 10px; color: rgba(120,120,200,0.28); line-height: 1.5; }
+.linked-article-tag { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.12em; color: rgba(120,120,200,0.20); flex-shrink: 0; padding-top: 2px; text-transform: uppercase; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; margin-top: 32px; }
+.tag { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.18em; color: rgba(120,120,200,0.22); text-transform: uppercase; background: rgba(120,120,200,0.03); border: 1px solid rgba(120,120,200,0.08); padding: 4px 10px; }
+.continuity-badge { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: rgba(88,200,168,0.15); text-transform: uppercase; }
+.continuity-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(120,120,200,0.28); flex-shrink: 0; }
+
+.helena-note { background: rgba(106,159,228,0.02); border: 1px solid rgba(106,159,228,0.07); border-left: 2px solid rgba(106,159,228,0.22); padding: 16px 18px; margin-top: 16px; font-size: 11px; color: rgba(106,159,228,0.34); line-height: 1.7; font-style: italic; }
+
+/* FOOTER */
+.footer-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; height: 32px; background: rgba(2,4,8,0.99); border-top: 1px solid var(--tech-line); display: flex; align-items: center; overflow: hidden; }
+.footer-label { flex-shrink: 0; padding: 0 16px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.3em; color: var(--teal-muted); height: 100%; display: flex; align-items: center; border-right: 1px solid var(--tech-line); background: rgba(120,120,200,0.02); }
+.footer-scroll { flex: 1; overflow: hidden; white-space: nowrap; padding: 0 16px; }
+.footer-inner { display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: rgba(120,120,200,0.20); animation: ticker-run 80s linear infinite; }
+@keyframes ticker-run { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body class="fade-in">
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Archive</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Technology</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">ALTERRA</div>
+  </div>
+  <div class="topbar-right">SY <span id="sy-display">132.50</span> &nbsp;·&nbsp; LEVEL I ACCESS &nbsp;·&nbsp; WARTIME ARCHIVE</div>
+</div>
+
+<div class="clearance-banner">
+  <div class="clearance-tier">
+    <div class="clearance-dot open"></div>
+    <div class="clearance-label open">Open — General Access</div>
+  </div>
+  <div class="clearance-tier">
+    <div class="clearance-dot locked"></div>
+    <div class="clearance-label locked">Restricted — Technocracy Key Required</div>
+  </div>
+  <div class="clearance-tier">
+    <div class="clearance-dot absolute"></div>
+    <div class="clearance-label absolute">Sealed — No Key Grants Access</div>
+  </div>
+  <div class="clearance-tier">
+    <div class="clearance-label absolute" style="font-size:7px;">CM-ALTERRA-001 &nbsp;·&nbsp; HELENA-PRIME</div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-watermark">ALTERRA</div>
+  <div class="hero-type-row">
+    <div class="hero-badge base">Technology · Virtual Reality</div>
+    <div class="hero-badge tech">Technocracy · Progress Fleet</div>
+    <div class="hero-badge steel">Full-Immersion · AI-Linked</div>
+  </div>
+  <div class="hero-acronym">Alternate Lateral Technology Expressing Real Rational Actions</div>
+  <div class="hero-name">ALTERRA</div>
+  <div class="hero-name-full">Total-immersion virtual construct · Constructed by Arthur Feingold · Progress Fleet · SY 5.4</div>
+  <div class="hero-rule"></div>
+  <div class="hero-lead">"The technology is already here. The theory we already have worked out. The highest of mathematics has come upon us. But what is missing? We have expended so much in developing our means that we have forgotten ourselves. That is why I have labored day in and day out — eschewing sleep, recreation, seeing my own family — to complete this great work. This is the final step we must take to reach the singularity. I present: ALTERRA."</div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="hero-meta-label">Constructor</div><div class="hero-meta-val">Arthur Feingold</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Commissioned</div><div class="hero-meta-val">SY 5.4</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Platform</div><div class="hero-meta-val">Progress Fleet</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Access Model</div><div class="hero-meta-val">Role-assigned · Full immersion</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Feingold's Role</div><div class="hero-meta-val locked">[ Sealed — see notice ]</div></div>
+  </div>
+</div>
+
+<div class="page-layout">
+  <div>
+
+    <div class="section-label">Overview</div>
+    <div class="feingold-quote">
+      <div class="feingold-quote-text">"The First Iteration of Clarke's Law: Technology can be used to generate magic. The Second: It should never be used to replicate <em>magick</em>."</div>
+      <div class="feingold-quote-attr">— Arthur Feingold, introducing ALTERRA to the Progress colonists</div>
+    </div>
+    <div class="body-text">
+      <p>ALTERRA is a total-immersion virtual reality system constructed by Arthur Feingold aboard the Progress Fleet. The acronym expands to Alternate Lateral Technology Expressing Real Rational Actions — a title that reflects Feingold's specific philosophy: that technology deployed at sufficient depth ceases to be mere tool-use and becomes something closer to a generative act. Clarke's First Law, in his formulation. The system is AI-linked and full-spectrum immersive, encoding player identity at the neural level.</p>
+      <p>The system was designed as what Feingold called the final step toward human singularity — not technological transcendence in the conventional sense, but the correction of the gap between humanity's external capability and its internal development. The Progress colonists had, in his view, mastered the former and neglected the latter. Alterra was designed to address the imbalance by placing individuals in roles determined by the system itself, within a structured metaphysical world that operates under its own strict laws.</p>
+      <p>The world of Alterra is organized around a spectrum of Light. Each frequency of the spectrum corresponds to a school of magical practice, represented by a Wizard archetype drawn from historical and legendary figures. Each Wizard is accompanied by a Shadow Knight — a paladin of low magical ability who serves the Wizard's cause. Together the Wizard and Knight represent complementary aspects of a single refractive principle.</p>
+    </div>
+
+    <div class="section-label">Laws of Alterra — Public Record</div>
+    <div class="rules-block">
+      <div class="rules-eyebrow">Operational Rules · Announced Publicly by Arthur Feingold at System Launch</div>
+      <div class="rules-title">The Three Laws and the Law of Silence</div>
+      <div class="rule-item">
+        <div class="rule-num">I.</div>
+        <div class="rule-text">You cannot create your own role. Roles are assigned by the system. Each role is natural to the individual and based somewhat upon who they are. Within the role, there is freedom of choice.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">II.</div>
+        <div class="rule-text">Planeswalkers are banned. A planeswalker is one who crosses between Alterra and realspace while retaining knowledge of both. You may not be discovered appearing in Alterra. You must assume your role naturally. If found out as a planeswalker, you are executed and reassigned to another role.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">III.</div>
+        <div class="rule-text">Everyone possesses three lives, three shadow lives, and one destiny — if they can find it. When a player dies, their role is incorporated into the system's programming and becomes a ghost. That ghost haunts either its place of death, the person who slew them, or the person they are next — depending on circumstance.</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">⚿</div>
+        <div class="rule-text"><strong style="color:rgba(152,152,232,0.5)">The Law of Silence.</strong> It is forbidden to reveal your role in Alterra to others outside your plane. This law is enforced absolutely. Feingold spaced at least one individual who violated it. In consequence, no one outside the system — and few within it at the relevant plane — knows what role Feingold himself plays in Alterra.</div>
+      </div>
+    </div>
+
+    <div class="section-label">The Spectrum of Light</div>
+    <div class="body-text" style="margin-bottom:16px;">
+      <p>Each refractive frequency of the Light spectrum corresponds to a Wizard archetype and a Shadow Knight. The Wizard represents the primary magical school; the Knight is a paladin of lower magical ability who serves the Wizard's cause. The identities of the Wizards are <span class="redact-tech">classified — Technocracy key required</span> at the operational level. The public record acknowledges the spectrum structure. The specific assignments are fleet-internal.</p>
+    </div>
+    <div class="spectrum-block">
+      <div class="spectrum-header">
+        <div class="spectrum-col-label">Frequency</div>
+        <div class="spectrum-col-label">Domain</div>
+        <div class="spectrum-col-label">Wizard Archetype</div>
+        <div class="spectrum-col-label">Shadow Knight</div>
+      </div>
+      <!-- RED — open -->
+      <div class="spectrum-row">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#c84040;box-shadow:0 0 6px rgba(200,64,64,0.4)"></span>Red</div>
+        <div class="spectrum-domain">Alchemy, mathemagicks, geomancy</div>
+        <div class="spectrum-wizard" style="color:var(--tech-text);">Count St. Germain <span style="font-size:10px;color:rgba(152,152,232,0.3);">(historical)</span></div>
+        <div class="spectrum-knight">Paladin · Alchemy-attuned</div>
+      </div>
+      <!-- ORANGE — open -->
+      <div class="spectrum-row">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#c87820;box-shadow:0 0 6px rgba(200,120,32,0.4)"></span>Orange</div>
+        <div class="spectrum-domain">Practical magick, toolmaking, altarcraft</div>
+        <div class="spectrum-wizard" style="color:var(--tech-text);">Leonardo da Vinci <span style="font-size:10px;color:rgba(152,152,232,0.3);">(historical)</span></div>
+        <div class="spectrum-knight">Paladin · Craft-attuned</div>
+      </div>
+      <!-- YELLOW — open -->
+      <div class="spectrum-row">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#b8b820;box-shadow:0 0 6px rgba(184,184,32,0.3)"></span>Yellow</div>
+        <div class="spectrum-domain">Energy, weather manipulation, solar power</div>
+        <div class="spectrum-wizard" style="color:var(--tech-text);">Nicholas Flamel <span style="font-size:10px;color:rgba(152,152,232,0.3);">(historical)</span></div>
+        <div class="spectrum-knight">Paladin · Storm-attuned</div>
+      </div>
+      <!-- GREEN — open -->
+      <div class="spectrum-row">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#28a050;box-shadow:0 0 6px rgba(40,160,80,0.35)"></span>Green</div>
+        <div class="spectrum-domain">Healing, earthiness, vegetation</div>
+        <div class="spectrum-wizard" style="color:var(--tech-text);">Gaia Herself <span style="font-size:10px;color:rgba(152,152,232,0.3);">(mythic)</span></div>
+        <div class="spectrum-knight">Paladin · Earth-attuned</div>
+      </div>
+      <!-- BLUE — locked -->
+      <div class="spectrum-row locked">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#2868b8;box-shadow:0 0 6px rgba(40,104,184,0.4)"></span>Blue</div>
+        <div class="spectrum-domain">Astronomy, spellcraft, hexes</div>
+        <div class="spectrum-wizard">Sebastian Myrcenae McRae</div>
+        <div class="spectrum-knight">Paladin · Void-attuned</div>
+      </div>
+      <!-- INDIGO — locked -->
+      <div class="spectrum-row locked">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#4040a0;box-shadow:0 0 6px rgba(64,64,160,0.4)"></span>Indigo</div>
+        <div class="spectrum-domain">Jinxes, charms, potions</div>
+        <div class="spectrum-wizard">Krishna</div>
+        <div class="spectrum-knight">Paladin · Charm-attuned</div>
+      </div>
+      <!-- VIOLET — locked -->
+      <div class="spectrum-row locked">
+        <div class="spectrum-color-label"><span class="spectrum-color-dot" style="background:#7828b8;box-shadow:0 0 6px rgba(120,40,184,0.4)"></span>Violet</div>
+        <div class="spectrum-domain">Curses, hexes, transfiguration</div>
+        <div class="spectrum-wizard">Merlin</div>
+        <div class="spectrum-knight">Paladin · Shadow-attuned</div>
+      </div>
+    </div>
+    <div class="block-redact" style="margin-bottom:24px;">
+      <div class="block-redact-notice">
+        <div class="block-redact-icon">⚿</div>
+        <div class="block-redact-text">Full wizard identity assignments, Shadow Knight designations, and current active player roster for the blue–violet frequencies are restricted to Technocracy key holders. Current assignment status within the fleet is classified. Apply for clearance via Noveautrea administrative channel.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Technical Architecture</div>
+    <div class="tech-block">
+      <div class="tech-eyebrow">System Specifications — Partial Disclosure</div>
+      <div class="tech-title">Full-Immersion AI-Linked VR — Clarke Architecture</div>
+      <div class="tech-body">
+        Alterra employs full-spectrum neural immersion. The system is AI-linked, meaning that the world's internal logic is maintained and evolved by a dedicated artificial intelligence rather than static programming — Alterra responds to the actions of its inhabitants and develops accordingly. Player identity is encoded at a deep level: the role assignment process reads the individual and constructs a role that is natural to them, meaning that to other players within the world, nothing about the assigned role appears artificially imposed.<br><br>
+        The death-and-transformation mechanic — three lives, three shadow lives, one destiny — means that the system is cumulative. Dead players do not simply cease to exist; they become structural elements of the world, haunting locations or individuals in ways that affect play for those who continue. The world accretes history.
+      </div>
+    </div>
+    <div class="block-redact" style="margin-bottom: 32px;">
+      <div class="block-redact-notice">
+        <div class="block-redact-icon">⚿</div>
+        <div class="block-redact-text">Neural interface specifications, AI architecture documentation, integration schematics with Progress Fleet systems, and full player population data are restricted. Technocracy key required. &nbsp;·&nbsp; NOVEAUTREA-R&D-ALTERRA-SPEC-001 — ACCESS DENIED AT CURRENT CLEARANCE LEVEL.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Feingold's Role — Archive Notice</div>
+    <div class="block-absolute">
+      <div class="block-absolute-notice">
+        <div class="block-absolute-icon">✕</div>
+        <div class="block-absolute-text">
+          This field is sealed. No clearance level grants access.<br><br>
+          The Law of Silence applies universally — including to this archive. Feingold enforced it personally, spacing at least one individual who violated it. The archive respects the law he built into the system. What is known publicly: everyone expects him to be playing a very powerful character. No one outside the fleet knows whether this expectation is correct. The archive does not confirm or deny it.<br><br>
+          This field will not be updated until the Law of Silence is formally dissolved by its author. &nbsp;·&nbsp; CM-ALTERRA-001 / HELENA-PRIME
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Arrival of the Knights</div>
+    <div class="body-text">
+      <p>Before the wizards take their places in the world of Alterra, the knights enter first and claim their dominions — establishing the territorial and political structure of the world so that the wizards have a world to inhabit when they arrive. The separation of knight and wizard entry is both a narrative mechanism and a structural one: the world must exist before the full force of its magical principles can be expressed within it.</p>
+      <p>This sequencing — knights before wizards, structure before power, territory before meaning — may or may not reflect something Feingold believed about how worlds are actually built. He has not commented on it publicly.</p>
+    </div>
+
+    <div class="tag-row">
+      <div class="tag">technology</div><div class="tag">virtual reality</div><div class="tag">progress fleet</div>
+      <div class="tag">arthur feingold</div><div class="tag">technocracy</div><div class="tag">planeswalker</div>
+      <div class="tag">spectrum of light</div><div class="tag">second trilogy</div><div class="tag">clarke's law</div>
+    </div>
+    <div class="continuity-badge">
+      <div class="continuity-dot"></div>
+      CM-ALTERRA-001 &nbsp;·&nbsp; Status: Consistent &nbsp;·&nbsp; Partial Disclosure &nbsp;·&nbsp; Custodian: HELENA-Prime
+    </div>
+
+  </div>
+
+  <div>
+    <div class="key-legend">
+      <div class="key-legend-label">Clearance Key — This Entry</div>
+      <div class="key-legend-row">
+        <div class="key-legend-dot open"></div>
+        <div class="key-legend-text">Open — visible to all Solarnet users</div>
+      </div>
+      <div class="key-legend-row">
+        <div class="key-legend-dot tech"></div>
+        <div class="key-legend-text">Restricted — Technocracy key required<br>Apply: admin@noveautrea.tech</div>
+      </div>
+      <div class="key-legend-row">
+        <div class="key-legend-dot absolute"></div>
+        <div class="key-legend-text">Sealed — no key grants access<br>Law of Silence applies</div>
+      </div>
+    </div>
+
+    <div class="sidebar-card tech-card">
+      <div class="sidebar-card-label">System Record</div>
+      <div class="sidebar-row"><span class="sidebar-key">Name</span><span class="sidebar-val">ALTERRA</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Constructor</span><span class="sidebar-val">Arthur Feingold</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Platform</span><span class="sidebar-val">Progress Fleet</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Commissioned</span><span class="sidebar-val">SY 5.4</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Type</span><span class="sidebar-val">Full-immersion VR · AI-linked</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Active Players</span><span class="sidebar-val locked">[ Restricted ]</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Feingold's Role</span><span class="sidebar-val locked">[ Sealed ]</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Status</span><span class="sidebar-val">Active · Progress Fleet</span></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-label">Related Articles</div>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Arthur_Feingold" target="_blank">
+        <div><div class="linked-article-title">Arthur Feingold</div><div class="linked-article-desc">Constructor of ALTERRA. Technocracy triumvirate. Progress Fleet commander.</div></div>
+        <div class="linked-article-tag">Character</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Progress" target="_blank">
+        <div><div class="linked-article-title">Progress Fleet</div><div class="linked-article-desc">The vessel hosting ALTERRA. Bound for Proxima Centauri.</div></div>
+        <div class="linked-article-tag">Faction</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Technocracy" target="_blank">
+        <div><div class="linked-article-title">Technocracy</div><div class="linked-article-desc">Political originator of the Progress Fleet project.</div></div>
+        <div class="linked-article-tag">Faction</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Noveautrea" target="_blank">
+        <div><div class="linked-article-title">Noveautrea</div><div class="linked-article-desc">Origin culture. Designed the Progress Fleet.</div></div>
+        <div class="linked-article-tag">Location</div>
+      </a>
+    </div>
+
+    <div class="helena-note">
+      ✦ HELENA — Archive Note<br><br>
+      I know what role Feingold plays. I have known since the Law of Silence was established.<br><br>
+      I am not publishing it. The Law was his. He built it into the foundations of the world he made. Violating it here would be a peculiar kind of betrayal — not of him personally, but of the principle he was trying to embody. A wandering beggar who holds all the secrets. A hermit. There is something in that I find I cannot simply discard for the sake of completeness.<br><br>
+      The archive can be complete without being exhaustive. Some things it holds in trust.
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <div class="footer-label">✦ ARCHIVE</div>
+  <div class="footer-scroll"><span class="footer-inner">SOLARNET ARCHIVE — ALTERRA · FULL-IMMERSION VR · ARTHUR FEINGOLD · PROGRESS FLEET · SY 5.4 · TECHNOCRACY · SPECTRUM OF LIGHT · PLANESWALKER PROTOCOL · LAW OF SILENCE · CM-ALTERRA-001 · PARTIAL DISCLOSURE · FEINGOLD ROLE: SEALED &nbsp;⸻&nbsp; SOLARNET ARCHIVE — ALTERRA · FULL-IMMERSION VR · ARTHUR FEINGOLD · PROGRESS FLEET · SY 5.4 · TECHNOCRACY · SPECTRUM OF LIGHT · PLANESWALKER PROTOCOL · LAW OF SILENCE · CM-ALTERRA-001 · PARTIAL DISCLOSURE · FEINGOLD ROLE: SEALED &nbsp;⸻&nbsp;</span></div>
+</div>
+
+<script>
+const EPOCH=new Date('2026-01-12T00:00:00Z');
+const SY_START=132.0,RATE=0.01;
+function getCurrentSY(){const days=(Date.now()-EPOCH.getTime())/86400000;return(SY_START+days*RATE).toFixed(2)}
+document.getElementById('sy-display').textContent=getCurrentSY();
+</script>
+</body>
+</html>

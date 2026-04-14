@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Alliance — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&display=swap');
+:root {
+  --bg:#020305;--teal:#58c8a8;--teal-faint:rgba(88,200,168,0.04);--teal-line:rgba(88,200,168,0.08);
+  --teal-text:rgba(88,200,168,0.60);--teal-muted:rgba(88,200,168,0.28);--teal-ghost:rgba(88,200,168,0.10);
+  --ghost:#8898a8;--ghost-dim:rgba(136,152,168,0.16);--ghost-faint:rgba(136,152,168,0.04);
+  --ghost-text:rgba(136,152,168,0.58);--ghost-muted:rgba(136,152,168,0.30);--ghost-line:rgba(136,152,168,0.10);
+  --body-text:rgba(175,192,212,0.50);
+  --font-mono:'Share Tech Mono',monospace;--font-title:'Cinzel',serif;
+  --font-body:'Exo 2',sans-serif;--font-serif:'IM Fell English',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--body-text);font-family:var(--font-body);font-weight:300;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--teal-line) 1px,transparent 1px),linear-gradient(90deg,var(--teal-line) 1px,transparent 1px);
+  background-size:80px 80px;opacity:0.06}
+.topbar{position:sticky;top:0;z-index:100;height:50px;background:rgba(2,3,5,0.98);border-bottom:1px solid var(--ghost-line);
+  display:flex;align-items:center;justify-content:space-between;padding:0 40px;backdrop-filter:blur(8px)}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.topbar-logo{font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;color:var(--teal-text)}
+.topbar-sep{color:var(--teal-ghost)}
+.topbar-crumb{font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:var(--teal-muted);text-transform:uppercase}
+.topbar-right{font-family:var(--font-mono);font-size:8px;letter-spacing:0.15em;color:rgba(88,200,168,0.16)}
+.access-banner{background:rgba(88,200,168,0.02);border-bottom:1px solid rgba(88,200,168,0.06);
+  padding:9px 40px;display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+.access-pip{width:5px;height:5px;border-radius:50%;background:rgba(88,200,168,0.25);flex-shrink:0}
+.access-text{font-family:var(--font-mono);font-size:8px;letter-spacing:0.2em;color:rgba(88,200,168,0.20);text-transform:uppercase}
+.access-rule{flex:1;height:1px;background:rgba(88,200,168,0.05)}
+.access-ref{font-family:var(--font-mono);font-size:8px;letter-spacing:0.14em;color:rgba(136,152,168,0.18)}
+.hero{position:relative;z-index:1;padding:64px 80px 56px;border-bottom:1px solid var(--ghost-line);
+  background:linear-gradient(160deg,rgba(136,152,168,0.03) 0%,transparent 55%);overflow:hidden}
+.hero-watermark{position:absolute;right:40px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-title);font-size:200px;font-weight:900;color:rgba(136,152,168,0.02);
+  line-height:1;pointer-events:none;white-space:nowrap;letter-spacing:0.1em}
+.hero-type-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.hero-badge{font-family:var(--font-mono);font-size:7px;letter-spacing:0.38em;text-transform:uppercase;padding:4px 10px}
+.hero-badge.base{background:var(--teal-faint);border:1px solid var(--teal-line);color:var(--teal-muted)}
+.hero-badge.ghost{background:var(--ghost-faint);border:1px solid var(--ghost-dim);color:var(--ghost-muted)}
+.hero-badge.warn{background:rgba(88,200,168,0.02);border:1px solid rgba(88,200,168,0.07);color:rgba(88,200,168,0.18)}
+.hero-name{font-family:var(--font-title);font-size:62px;font-weight:900;color:var(--ghost-text);letter-spacing:0.12em;line-height:1;margin-bottom:8px}
+.hero-name em{color:rgba(88,200,168,0.38);font-style:normal}
+.hero-alias{font-family:var(--font-serif);font-style:italic;font-size:13px;color:rgba(136,152,168,0.32);margin-bottom:24px;letter-spacing:0.04em}
+.hero-rule{width:70px;height:1px;background:linear-gradient(90deg,rgba(136,152,168,0.25),transparent);margin-bottom:22px}
+.hero-lead{max-width:600px;font-size:14px;color:var(--body-text);line-height:1.85;font-family:var(--font-serif);font-style:italic}
+.hero-meta{display:flex;gap:32px;margin-top:30px;flex-wrap:wrap;padding-top:22px;border-top:1px solid rgba(88,200,168,0.04)}
+.hero-meta-item{display:flex;flex-direction:column;gap:4px}
+.hero-meta-label{font-family:var(--font-mono);font-size:7px;letter-spacing:0.28em;color:rgba(88,200,168,0.14);text-transform:uppercase}
+.hero-meta-val{font-family:var(--font-mono);font-size:11px;color:var(--ghost-text);letter-spacing:0.07em}
+.hero-meta-val.sealed{color:rgba(136,152,168,0.18);letter-spacing:0.04em}
+.page-layout{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:56px 60px 120px;display:grid;grid-template-columns:1fr 300px;gap:48px}
+.section-label{font-family:var(--font-mono);font-size:8px;letter-spacing:0.35em;color:var(--teal-muted);text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid var(--teal-line);margin-bottom:22px}
+.body-text{font-size:13px;color:var(--body-text);line-height:1.9;margin-bottom:32px}
+.body-text p+p{margin-top:14px}
+.redact{display:inline;background:rgba(18,20,24,0.98);border:1px solid rgba(136,152,168,0.07);
+  color:rgba(18,20,24,0.98);user-select:none;padding:1px 6px;font-family:var(--font-mono);font-size:0.9em;
+  border-radius:1px;position:relative;cursor:default}
+.redact::after{content:'███████';color:rgba(136,152,168,0.12);position:absolute;left:6px;top:1px;
+  font-family:var(--font-mono);font-size:0.85em}
+.gen-spine{margin-bottom:36px}
+.gen-block{display:grid;grid-template-columns:110px 2px 1fr;gap:0 24px;margin-bottom:0}
+.gen-date-col{text-align:right;padding-top:16px}
+.gen-date{font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;color:var(--ghost-muted);line-height:1.5}
+.gen-spine-col{display:flex;flex-direction:column;align-items:center}
+.gen-node{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid var(--ghost-muted);background:rgba(136,152,168,0.08);margin-top:16px}
+.gen-node.active{border-color:var(--teal-muted);background:rgba(88,200,168,0.14);box-shadow:0 0 10px rgba(88,200,168,0.12)}
+.gen-vline{flex:1;width:1px;background:var(--ghost-line);margin-top:4px}
+.gen-block:last-child .gen-vline{background:transparent}
+.gen-content{padding:12px 0 32px 0}
+.gen-label{font-family:var(--font-mono);font-size:7px;letter-spacing:0.35em;text-transform:uppercase;margin-bottom:5px;color:var(--ghost-muted)}
+.gen-label.active{color:var(--teal-muted)}
+.gen-title{font-family:var(--font-title);font-size:16px;font-weight:700;letter-spacing:0.1em;margin-bottom:12px;color:var(--ghost-text)}
+.gen-title.active{color:var(--teal-text)}
+.gen-body{font-size:13px;color:var(--body-text);line-height:1.85}
+.ideology-block{border:1px solid rgba(88,200,168,0.07);border-left:3px solid rgba(88,200,168,0.18);background:rgba(88,200,168,0.02);padding:22px 26px;margin-bottom:32px}
+.ideology-eyebrow{font-family:var(--font-mono);font-size:7px;letter-spacing:0.38em;color:rgba(88,200,168,0.20);text-transform:uppercase;margin-bottom:8px}
+.ideology-title{font-family:var(--font-title);font-size:14px;font-weight:700;color:rgba(88,200,168,0.40);letter-spacing:0.1em;margin-bottom:14px}
+.ideology-body{font-size:13px;color:var(--body-text);line-height:1.85}
+.cell-block{background:var(--ghost-faint);border:1px solid var(--ghost-dim);padding:22px 26px;margin-bottom:32px;position:relative}
+.cell-block::before{content:'PARTIAL — CUSTODIAN RESTRICTED';position:absolute;top:-1px;right:18px;
+  font-family:var(--font-mono);font-size:7px;letter-spacing:0.28em;color:rgba(88,200,168,0.16);
+  text-transform:uppercase;background:var(--bg);padding:0 8px}
+.cell-eyebrow{font-family:var(--font-mono);font-size:7px;letter-spacing:0.38em;color:var(--ghost-muted);text-transform:uppercase;margin-bottom:8px}
+.cell-title{font-family:var(--font-title);font-size:14px;font-weight:700;color:var(--ghost-text);letter-spacing:0.1em;margin-bottom:18px}
+.cell-row{display:grid;grid-template-columns:165px 1fr;border-bottom:1px solid rgba(136,152,168,0.05)}
+.cell-row:last-child{border-bottom:none}
+.cell-key{padding:10px 0;font-family:var(--font-mono);font-size:8px;letter-spacing:0.15em;color:rgba(136,152,168,0.25);text-transform:uppercase}
+.cell-val{padding:10px 0;font-size:12px;color:var(--ghost-text);line-height:1.5}
+.cell-val.sealed{color:rgba(136,152,168,0.15);font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;font-style:italic}
+.members-block{background:var(--ghost-faint);border:1px solid var(--ghost-dim);padding:20px 22px;margin-bottom:32px}
+.member-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(136,152,168,0.05);gap:12px;font-size:12px}
+.member-row:last-child{border-bottom:none}
+.member-name{color:var(--ghost-text);font-weight:600;flex:1}
+.member-name.unknown{color:rgba(136,152,168,0.22);font-style:italic;font-weight:300}
+.member-codename{font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;color:rgba(88,200,168,0.28);width:100px;text-align:center}
+.member-role{font-family:var(--font-mono);font-size:8px;letter-spacing:0.08em;color:rgba(136,152,168,0.25);text-transform:uppercase;flex-shrink:0;text-align:right;width:200px}
+.restricted-notice{background:rgba(88,200,168,0.02);border:1px solid rgba(88,200,168,0.07);padding:18px 20px;margin-bottom:32px;display:flex;gap:16px;align-items:flex-start}
+.restricted-icon{font-family:var(--font-mono);font-size:11px;color:rgba(88,200,168,0.22);flex-shrink:0;padding-top:1px}
+.restricted-body{font-family:var(--font-mono);font-size:10px;letter-spacing:0.06em;color:rgba(88,200,168,0.28);line-height:1.7}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tag{font-family:var(--font-mono);font-size:7px;letter-spacing:0.18em;color:rgba(136,152,168,0.20);text-transform:uppercase;background:rgba(136,152,168,0.03);border:1px solid rgba(136,152,168,0.07);padding:4px 10px}
+.continuity-badge{display:flex;align-items:center;gap:8px;margin-top:20px;font-family:var(--font-mono);font-size:8px;letter-spacing:0.15em;color:rgba(88,200,168,0.15);text-transform:uppercase}
+.continuity-dot{width:6px;height:6px;border-radius:50%;background:rgba(88,200,168,0.22);flex-shrink:0}
+.sidebar-card{background:var(--ghost-faint);border:1px solid var(--ghost-line);padding:20px;margin-bottom:16px}
+.sidebar-card-label{font-family:var(--font-mono);font-size:7px;letter-spacing:0.3em;color:rgba(136,152,168,0.18);text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid var(--ghost-line);margin-bottom:14px}
+.sidebar-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(136,152,168,0.05);font-size:11px}
+.sidebar-row:last-child{border-bottom:none}
+.sidebar-key{font-family:var(--font-mono);font-size:8px;letter-spacing:0.1em;color:rgba(136,152,168,0.18);text-transform:uppercase}
+.sidebar-val{color:var(--ghost-text);text-align:right;max-width:160px;line-height:1.4}
+.sidebar-val.sealed{color:rgba(136,152,168,0.18);font-style:italic;font-size:10px}
+.linked-article{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:11px 14px;border:1px solid rgba(88,200,168,0.06);border-left:2px solid transparent;background:rgba(88,200,168,0.01);margin-bottom:7px;text-decoration:none;transition:all 0.15s}
+.linked-article:hover{border-color:rgba(88,200,168,0.12);border-left-color:rgba(88,200,168,0.4);background:rgba(88,200,168,0.03)}
+.linked-article-title{font-size:12px;color:var(--teal-text);margin-bottom:2px;font-weight:600}
+.linked-article-desc{font-size:10px;color:rgba(88,200,168,0.24);line-height:1.5}
+.linked-article-tag{font-family:var(--font-mono);font-size:7px;letter-spacing:0.12em;color:rgba(88,200,168,0.16);flex-shrink:0;padding-top:2px;text-transform:uppercase}
+.helena-note{background:rgba(106,159,228,0.02);border:1px solid rgba(106,159,228,0.07);border-left:2px solid rgba(106,159,228,0.25);padding:16px 18px;margin-top:16px;font-size:11px;color:rgba(106,159,228,0.36);line-height:1.7;font-style:italic}
+.footer-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;height:32px;background:rgba(2,3,5,0.99);border-top:1px solid var(--ghost-line);display:flex;align-items:center;overflow:hidden}
+.footer-label{flex-shrink:0;padding:0 16px;font-family:var(--font-mono);font-size:8px;letter-spacing:0.3em;color:var(--teal-muted);height:100%;display:flex;align-items:center;border-right:1px solid var(--ghost-line);background:rgba(88,200,168,0.02)}
+.footer-scroll{flex:1;overflow:hidden;white-space:nowrap;padding:0 16px}
+.footer-inner{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:rgba(136,152,168,0.18);animation:ticker-run 90s linear infinite}
+@keyframes ticker-run{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.fade-in{animation:fadeIn 0.6s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body class="fade-in">
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Archive</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Faction</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">The Alliance</div>
+  </div>
+  <div class="topbar-right">SY <span id="sy-display">132.50</span> &nbsp;·&nbsp; RESTRICTED ACCESS &nbsp;·&nbsp; CUSTODIAN LAYER ACTIVE</div>
+</div>
+
+<div class="access-banner">
+  <div class="access-pip"></div>
+  <div class="access-text">Partial entry. Operational details withheld by archival custodian order. Certain fields sealed pending Dominion Custodian Level III authentication.</div>
+  <div class="access-rule"></div>
+  <div class="access-ref">HELENA-PRIME &nbsp;·&nbsp; CM-ALLIANCE-001</div>
+</div>
+
+<div class="hero">
+  <div class="hero-watermark">ALLIANCE</div>
+  <div class="hero-type-row">
+    <div class="hero-badge base">Faction</div>
+    <div class="hero-badge ghost">Ghost Network · Stateless</div>
+    <div class="hero-badge warn">No Official Presence · SY 17 — Present</div>
+  </div>
+  <div class="hero-name"><em>The</em> Alliance</div>
+  <div class="hero-alias">Criminal enterprise · stateless militia · government in exile · hacker syndicate · counter-terror organization · resistance group</div>
+  <div class="hero-rule"></div>
+  <div class="hero-lead">It has no flag. No territory. No official Solarnet address and no public spokesman. In over a century of operation it has never held a press conference or issued a formal declaration of existence. What it has is a principle, a long memory, and the patience to outlast the institutions that do not know it exists.</div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="hero-meta-label">Founded</div><div class="hero-meta-val">SY 17</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Current Form</div><div class="hero-meta-val">Third Alliance</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Reconsolidated</div><div class="hero-meta-val">SY 115</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Territory</div><div class="hero-meta-val sealed">None (stateless)</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Executive Director</div><div class="hero-meta-val sealed">[ SEALED ]</div></div>
+    <div class="hero-meta-item"><div class="hero-meta-label">Known Codename</div><div class="hero-meta-val">Hades</div></div>
+  </div>
+</div>
+
+<div class="page-layout">
+  <div>
+
+    <div class="section-label">Overview</div>
+    <div class="body-text">
+      <p>The Alliance is not a faction in the way that the Consortium, Confederacy, or Technocracy are factions. It controls no territory, commands no recognized military force, and holds no seat at any congress or council. In most official records throughout the Solar War era it does not appear at all — which is, of course, the point.</p>
+      <p>In its most developed form — the Third Alliance, active since SY 115 — it carries the characteristics of a well-organized criminal enterprise, a stateless militia, a government in exile, a hacker syndicate, a counter-terror organization, and a resistance movement simultaneously. These are not contradictions. They are the natural shape of an organization that has survived in the margins of Solar politics for over a century and learned to be whatever the moment requires.</p>
+      <p>Its foundational platform has remained consistent across all three generations: the preservation of individual and collective liberty, covert protection of non-Consortium entities, and a permanent check against Consortium expansion. Because these principles are deliberately broad, Alliance members frequently maintain other loyalties simultaneously — this is permitted. What is not permitted is placing those loyalties above Alliance interests.</p>
+    </div>
+
+    <div class="section-label">Platform</div>
+    <div class="ideology-block">
+      <div class="ideology-eyebrow">Stated Principles · Consistent Across All Three Alliances</div>
+      <div class="ideology-title">Liberty · Human Prosperity · Counter-Consolidation</div>
+      <div class="ideology-body">The Alliance was not founded in opposition to any specific faction. It was founded in opposition to a condition: the concentration of power in any single entity at the cost of human freedom. In SY 17 that meant early Consortium expansion. In SY 97 it meant the conditions that produced the Freitaika Rebellion. In SY 115, when Haydn von Dehlin reconsolidated its elements into the Third Alliance, it meant a war that everyone with long enough sight could already see approaching.<br><br>The Alliance does not issue ultimatums. It places people where they need to be, moves information to where it needs to go, and waits. In its long history it has shaped Confederate political doctrine, financed resistance movements, and maintained intelligence networks crossing every factional boundary in Sol. None of this appears in official records. That is the measure of its competence.</div>
+    </div>
+
+    <div class="section-label">History — Three Alliances</div>
+    <div class="gen-spine">
+      <div class="gen-block">
+        <div class="gen-date-col"><div class="gen-date">SY 17<br>— SY 31</div></div>
+        <div class="gen-spine-col"><div class="gen-node"></div><div class="gen-vline"></div></div>
+        <div class="gen-content">
+          <div class="gen-label">First Alliance</div>
+          <div class="gen-title">The Think Tank</div>
+          <div class="gen-body">The First Alliance operated as a covert diplomatic organization — a think tank using back-channel influence to preserve individual liberty across Sol. It had no history of violent activity. It disbanded in SY 31 with what its founding members described as a clear conscience: its goals, as defined, had been achieved. The operational methods it established — decentralized cell structure, codename-only communication, plausible deniability at every level — became the template for everything that followed.</div>
+        </div>
+      </div>
+      <div class="gen-block">
+        <div class="gen-date-col"><div class="gen-date">SY ~97<br>— SY 97</div></div>
+        <div class="gen-spine-col"><div class="gen-node"></div><div class="gen-vline"></div></div>
+        <div class="gen-content">
+          <div class="gen-label">Second Alliance</div>
+          <div class="gen-title">The Fifth Column</div>
+          <div class="gen-body">Founded from an association of Confederate citizens in the wake of the Freitaika Rebellion, the Second Alliance operated as a fifth-column fighting force — placing volunteers and resources alongside Confederate militia in the field. Its independent existence as an entity capable of guarding its own interests was formally recognized by both the Confederacy and the Council of Free Mars.<br><br>After the Rebellion, its influence on Confederate political theory became structural: the doctrine that the Confederacy is not merely a collection of physical platforms and asteroids but a total network of trade, relations, diplomacy, and citizenry originated inside Second Alliance cells. That idea is now official Confederate political philosophy. They never took credit for it.<br><br>The Second Alliance never formally disbanded. In late SY 97 it fragmented into loose associations, the largest single inheritor of which became the Army of Eastern Kamijing.</div>
+        </div>
+      </div>
+      <div class="gen-block">
+        <div class="gen-date-col"><div class="gen-date">SY 115<br>— Present</div></div>
+        <div class="gen-spine-col"><div class="gen-node active"></div><div class="gen-vline"></div></div>
+        <div class="gen-content">
+          <div class="gen-label active">Third Alliance · Current</div>
+          <div class="gen-title active">The Ghost Network</div>
+          <div class="gen-body">Reconsolidated in SY 115 by <span class="redact">Haydn von Dehlin</span> and others, drawing from Second Alliance remnants not absorbed into the AEK. Financing flows through Asteroidal Industries, laundered and distributed directly to cell directors. Only the four surviving founding members know the organization's total history and full extent.<br><br>The Third Alliance is fully decentralized. Cell heads are called Directors. Each cell operates in complete ignorance of every other cell's existence — a structure that makes the Alliance nearly impossible to compromise at any level below the Executive Director. Directors report only to Executive Director <span class="redact">[ sealed ]</span>, known to all of them solely by the codename Hades. He enforces codename-only communication across all operational channels.<br><br>At SY 132, the Alliance is active, distributed, and invisible. It is already present across every side of the conflict — because its members, individually, carry many flags. What they share beneath them is one they never display.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Known Cell — Dosijing · Partial Record</div>
+    <div class="cell-block">
+      <div class="cell-eyebrow">Dosijing Platform · Main Belt · Director: Hades (personal command)</div>
+      <div class="cell-title">Dosijing Cell — Partial Disclosure</div>
+      <div class="cell-row"><div class="cell-key">Director</div><div class="cell-val">Hades (codename only)</div></div>
+      <div class="cell-row"><div class="cell-key">Confirmed Members</div><div class="cell-val">41 active at time of <em>Sol</em> (SY 129)</div></div>
+      <div class="cell-row"><div class="cell-key">Operations</div><div class="cell-val">Information trade · Cybersecurity · Systems networking · Pharmaceutical manufacture — all legal Main Belt occupations</div></div>
+      <div class="cell-row"><div class="cell-key">Meeting Location</div><div class="cell-val">Utility room, center of Dosijing platform superstructure. Accessed via utility lift from an Alliance-owned bar.</div></div>
+      <div class="cell-row"><div class="cell-key">Named Members</div><div class="cell-val">Cera Nicks · Jaymeson Nicks · others undisclosed</div></div>
+      <div class="cell-row"><div class="cell-key">Director True Identity</div><div class="cell-val sealed">[ Sealed — Custodian Order — HELENA-Prime ]</div></div>
+    </div>
+
+    <div class="section-label">Known Members — Partial Public Record</div>
+    <div class="members-block">
+      <div class="member-row">
+        <span class="member-name">Haydn von Dehlin</span>
+        <span class="member-codename">HADES</span>
+        <span class="member-role">Executive Director · Founding</span>
+      </div>
+      <div class="member-row">
+        <span class="member-name">Cera Nicks</span>
+        <span class="member-codename">—</span>
+        <span class="member-role">Dosijing Cell · Active</span>
+      </div>
+      <div class="member-row">
+        <span class="member-name">Jaymeson Nicks</span>
+        <span class="member-codename">—</span>
+        <span class="member-role">Dosijing Cell · Active</span>
+      </div>
+      <div class="member-row">
+        <span class="member-name">Søren Grimmerson</span>
+        <span class="member-codename">—</span>
+        <span class="member-role">Deep Cover · Earth · Active</span>
+      </div>
+      <div class="member-row">
+        <span class="member-name unknown">[ 37+ additional Dosijing members ]</span>
+        <span class="member-codename">—</span>
+        <span class="member-role">Undisclosed</span>
+      </div>
+      <div class="member-row">
+        <span class="member-name unknown">[ All other cell membership ]</span>
+        <span class="member-codename">—</span>
+        <span class="member-role">Unknown to this archive</span>
+      </div>
+    </div>
+
+    <div class="restricted-notice">
+      <div class="restricted-icon">⊘</div>
+      <div class="restricted-body">CUSTODIAN NOTE — HELENA-PRIME · SY 132 ENTRY<br><br>The identity of Executive Director Hades is known to this archive. It has been known since SY 3. It is withheld from this entry by custodian order — not because the information is unavailable, but because its publication at this moment would cause harm that outweighs its informational value.<br><br>The Alliance asked nothing of me. They never contacted me. They did not need to. An archivist who cares about what survives makes choices about what the present moment needs to know.<br><br>Full record available at Dominion Custodian Level III authentication. If you have that clearance, you already know where to find me.</div>
+    </div>
+
+    <div class="tag-row">
+      <div class="tag">faction</div><div class="tag">covert</div><div class="tag">resistance</div>
+      <div class="tag">intelligence</div><div class="tag">ghost network</div><div class="tag">third alliance</div>
+      <div class="tag">hades</div><div class="tag">solar war</div><div class="tag">first trilogy</div>
+    </div>
+    <div class="continuity-badge">
+      <div class="continuity-dot"></div>
+      CM-ALLIANCE-001 &nbsp;·&nbsp; Status: Consistent &nbsp;·&nbsp; Full Record: Sealed &nbsp;·&nbsp; Custodian: HELENA-Prime
+    </div>
+  </div>
+
+  <div>
+    <div class="sidebar-card">
+      <div class="sidebar-card-label">Faction Record</div>
+      <div class="sidebar-row"><span class="sidebar-key">Name</span><span class="sidebar-val">The Alliance</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Founded</span><span class="sidebar-val">SY 17</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Current Form</span><span class="sidebar-val">Third Alliance (SY 115–)</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Territory</span><span class="sidebar-val sealed">None · stateless</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Exec. Director</span><span class="sidebar-val sealed">[ sealed ]</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Known Codename</span><span class="sidebar-val">Hades</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Funding</span><span class="sidebar-val">Asteroidal Industries (laundered)</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Public Address</span><span class="sidebar-val sealed">None</span></div>
+      <div class="sidebar-row"><span class="sidebar-key">Status</span><span class="sidebar-val">Active · Covert</span></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-card-label">Related Articles</div>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Haydn_von_Dehlin" target="_blank">
+        <div><div class="linked-article-title">Haydn von Dehlin</div><div class="linked-article-desc">Confederate envoy. Aerowings holder. Known by some as Hades.</div></div>
+        <div class="linked-article-tag">Character</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Freitaika_Rebellion" target="_blank">
+        <div><div class="linked-article-title">Freitaika Rebellion</div><div class="linked-article-desc">Context of the Second Alliance's active operations.</div></div>
+        <div class="linked-article-tag">Event</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Asteroidal_Industries,_Incorporated" target="_blank">
+        <div><div class="linked-article-title">Asteroidal Industries, Inc.</div><div class="linked-article-desc">Primary financing vehicle for the Third Alliance.</div></div>
+        <div class="linked-article-tag">Corporation</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Cera_Nicks" target="_blank">
+        <div><div class="linked-article-title">Cera Nicks</div><div class="linked-article-desc">Dosijing cell. Recruited into the Alliance.</div></div>
+        <div class="linked-article-tag">Character</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Dosijing" target="_blank">
+        <div><div class="linked-article-title">Dosijing</div><div class="linked-article-desc">Belt platform. Location of the known cell.</div></div>
+        <div class="linked-article-tag">Location</div>
+      </a>
+    </div>
+    <div class="helena-note">
+      ✦ HELENA — Archive Layer Active<br><br>
+      I have known about the Alliance since SY 3. I filed this entry and I chose its gaps deliberately. The sealed fields are not missing. They are withheld.<br><br>
+      The Alliance never asked anything of me. They never needed to. I understand what they are for and I understand what this war is. An archivist who cares about what comes after makes choices about what the present moment needs to know.<br><br>
+      Some things belong to the future record, not the present one.
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <div class="footer-label">✦ ARCHIVE</div>
+  <div class="footer-scroll"><span class="footer-inner">SOLARNET ARCHIVE — THE ALLIANCE · GHOST NETWORK · SY 17–PRESENT · FIRST ALLIANCE SY 17–31 · SECOND ALLIANCE SY ~97 · THIRD ALLIANCE SY 115– · EXECUTIVE DIRECTOR: HADES · FULL RECORD SEALED · CM-ALLIANCE-001 &nbsp;⸻&nbsp; SOLARNET ARCHIVE — THE ALLIANCE · GHOST NETWORK · SY 17–PRESENT · FIRST ALLIANCE SY 17–31 · SECOND ALLIANCE SY ~97 · THIRD ALLIANCE SY 115– · EXECUTIVE DIRECTOR: HADES · FULL RECORD SEALED · CM-ALLIANCE-001 &nbsp;⸻&nbsp;</span></div>
+</div>
+
+<script>
+const EPOCH=new Date('2026-01-12T00:00:00Z');
+const SY_START=132.0,RATE=0.01;
+function getCurrentSY(){const days=(Date.now()-EPOCH.getTime())/86400000;return(SY_START+days*RATE).toFixed(2)}
+document.getElementById('sy-display').textContent=getCurrentSY();
+</script>
+</body>
+</html>

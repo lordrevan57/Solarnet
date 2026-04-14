@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akira Ueshiba — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg:           #03050a;
+  --teal:         #58c8a8;
+  --teal-faint:   rgba(88,200,168,0.04);
+  --teal-glow:    rgba(88,200,168,0.08);
+  --teal-line:    rgba(88,200,168,0.09);
+  --teal-text:    rgba(88,200,168,0.65);
+  --teal-muted:   rgba(88,200,168,0.32);
+  --teal-ghost:   rgba(88,200,168,0.14);
+  /* Confederacy accent — deep amber/bronze; Belt worlds, independent spirit */
+  --conf:         #b87840;
+  --conf-dim:     rgba(184,120,64,0.22);
+  --conf-faint:   rgba(184,120,64,0.06);
+  --conf-text:    rgba(184,120,64,0.72);
+  --conf-muted:   rgba(184,120,64,0.4);
+  /* Kami Do spiritual accent — warm ivory/cream */
+  --spirit:       #d4c090;
+  --spirit-dim:   rgba(212,192,144,0.2);
+  --spirit-faint: rgba(212,192,144,0.05);
+  --spirit-text:  rgba(212,192,144,0.65);
+  --spirit-muted: rgba(212,192,144,0.35);
+  --body-text:    rgba(185,205,220,0.55);
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-title:   'Cinzel', serif;
+  --font-body:    'Exo 2', sans-serif;
+  --font-serif:   'IM Fell English', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--body-text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--teal-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--teal-line) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.12;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  height: 50px; background: rgba(3,5,10,0.97);
+  border-bottom: 1px solid var(--teal-line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; backdrop-filter: blur(8px);
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.topbar-logo { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--teal-text); }
+.topbar-sep { color: var(--teal-ghost); }
+.topbar-crumb { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: var(--teal-muted); text-transform: uppercase; }
+.topbar-right { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: rgba(88,200,168,0.18); }
+
+/* ── ERA BANNER ── */
+.era-banner {
+  background: linear-gradient(90deg, var(--conf-faint), transparent 70%);
+  border-bottom: 1px solid var(--conf-dim);
+  padding: 8px 40px; display: flex; align-items: center; gap: 16px;
+  position: relative; z-index: 1;
+}
+.era-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.4em; color: var(--conf-muted); text-transform: uppercase; }
+.era-rule { flex: 1; height: 1px; background: var(--conf-dim); }
+.era-dates { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.18em; color: var(--conf-muted); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 1;
+  padding: 64px 80px 56px;
+  border-bottom: 1px solid var(--teal-line);
+  background: linear-gradient(160deg, rgba(88,200,168,0.03) 0%, rgba(184,120,64,0.03) 50%, transparent 80%);
+  overflow: hidden;
+}
+.hero-watermark {
+  position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-title); font-size: 160px; font-weight: 900;
+  color: rgba(212,192,144,0.03); line-height: 1; pointer-events: none;
+  white-space: nowrap; letter-spacing: 0.05em;
+}
+.hero-type-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.hero-badge {
+  font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.38em;
+  text-transform: uppercase; padding: 4px 10px;
+  background: var(--teal-faint); border: 1px solid var(--teal-line); color: var(--teal-muted);
+}
+.hero-badge.conf { background: var(--conf-faint); border-color: var(--conf-dim); color: var(--conf-muted); }
+.hero-badge.spirit { background: var(--spirit-faint); border-color: var(--spirit-dim); color: var(--spirit-muted); }
+.hero-name { font-family: var(--font-title); font-size: 52px; font-weight: 900; color: var(--teal-text); letter-spacing: 0.07em; line-height: 1; margin-bottom: 4px; }
+.hero-years { font-family: var(--font-mono); font-size: 13px; color: var(--conf-muted); letter-spacing: 0.2em; margin-bottom: 6px; }
+.hero-alias { font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--spirit-text); margin-bottom: 22px; }
+.hero-rule { width: 90px; height: 1px; background: linear-gradient(90deg, var(--conf), var(--spirit-dim), transparent); margin-bottom: 20px; }
+.hero-lead { max-width: 620px; font-size: 14px; color: var(--body-text); line-height: 1.85; font-family: var(--font-serif); font-style: italic; }
+.hero-meta { display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid rgba(88,200,168,0.06); }
+.hero-meta-item { display: flex; flex-direction: column; gap: 3px; }
+.hero-meta-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.28em; color: rgba(88,200,168,0.18); text-transform: uppercase; }
+.hero-meta-val { font-family: var(--font-mono); font-size: 11px; color: var(--teal-text); letter-spacing: 0.08em; }
+
+/* ── LAYOUT ── */
+.page-layout {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 56px 60px 120px;
+  display: grid; grid-template-columns: 1fr 300px; gap: 48px;
+}
+
+.section-label {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.35em;
+  color: var(--teal-muted); text-transform: uppercase;
+  padding-bottom: 10px; border-bottom: 1px solid var(--teal-line);
+  margin-bottom: 22px;
+}
+
+.body-text { font-size: 13px; color: var(--body-text); line-height: 1.9; margin-bottom: 32px; }
+.body-text p + p { margin-top: 14px; }
+
+/* ── KAMI DO BLOCK ── */
+.kamido-block {
+  border: 1px solid var(--spirit-dim);
+  border-left: 4px solid rgba(212,192,144,0.4);
+  background: var(--spirit-faint);
+  padding: 24px 28px; margin-bottom: 32px;
+  position: relative; overflow: hidden;
+}
+.kamido-block::after {
+  content: '神道';
+  position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+  font-size: 72px; color: rgba(212,192,144,0.04);
+  pointer-events: none; line-height: 1;
+}
+.kamido-eyebrow { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.38em; color: var(--spirit-muted); text-transform: uppercase; margin-bottom: 8px; }
+.kamido-title { font-family: var(--font-title); font-size: 17px; font-weight: 700; color: var(--spirit-text); letter-spacing: 0.12em; margin-bottom: 14px; }
+.kamido-body { font-size: 13px; color: rgba(212,192,144,0.55); line-height: 1.85; margin-bottom: 16px; }
+.kamido-facts { display: flex; gap: 20px; flex-wrap: wrap; border-top: 1px solid var(--spirit-dim); padding-top: 14px; }
+.kamido-fact-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.22em; color: rgba(212,192,144,0.25); text-transform: uppercase; margin-bottom: 3px; }
+.kamido-fact-val { font-family: var(--font-mono); font-size: 10px; color: var(--spirit-text); }
+
+/* ── TIMELINE ── */
+.timeline { margin-bottom: 32px; }
+.tl-item { display: grid; grid-template-columns: 100px 28px 1fr; gap: 0; }
+.tl-date { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: var(--teal-muted); text-align: right; padding: 14px 12px 0 0; }
+.tl-spine { display: flex; flex-direction: column; align-items: center; padding-top: 14px; }
+.tl-dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--teal-muted); background: rgba(88,200,168,0.1); flex-shrink: 0; z-index: 1; }
+.tl-dot.death { background: var(--conf-muted); border-color: var(--conf); box-shadow: 0 0 8px rgba(184,120,64,0.3); width: 11px; height: 11px; }
+.tl-dot.key { background: var(--spirit-muted); border-color: var(--spirit-text); box-shadow: 0 0 6px rgba(212,192,144,0.2); }
+.tl-line { flex: 1; width: 1px; background: rgba(88,200,168,0.08); margin-top: 3px; }
+.tl-content { padding: 10px 0 14px 14px; border-left: 1px solid rgba(88,200,168,0.07); }
+.tl-title { font-size: 13px; color: var(--teal-text); font-weight: 600; margin-bottom: 4px; }
+.tl-title.conf { color: var(--conf-text); }
+.tl-title.spirit { color: var(--spirit-text); }
+.tl-desc { font-size: 11px; color: rgba(185,205,220,0.38); line-height: 1.6; }
+
+/* ── FINAL MISSION BLOCK ── */
+.mission-block {
+  background: rgba(184,120,64,0.04);
+  border: 1px solid var(--conf-dim);
+  border-top: 3px solid var(--conf);
+  padding: 26px 28px; margin-bottom: 32px;
+  position: relative; overflow: hidden;
+}
+.mission-block::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(184,120,64,0.04));
+  pointer-events: none;
+}
+.mission-eyebrow { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.4em; color: var(--conf-muted); text-transform: uppercase; margin-bottom: 8px; }
+.mission-title { font-family: var(--font-title); font-size: 16px; font-weight: 700; color: var(--conf-text); letter-spacing: 0.1em; margin-bottom: 14px; }
+.mission-body { font-size: 13px; color: var(--body-text); line-height: 1.85; }
+
+/* ── ARCHIVAL DISPUTE ── */
+.dispute-block {
+  background: rgba(232,160,32,0.04);
+  border: 1px solid rgba(232,160,32,0.15);
+  border-left: 3px solid rgba(232,160,32,0.4);
+  padding: 18px 20px; margin-bottom: 32px;
+}
+.dispute-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.38em; color: rgba(232,160,32,0.45); text-transform: uppercase; margin-bottom: 8px; }
+.dispute-title { font-size: 12px; color: rgba(232,160,32,0.6); font-weight: 600; margin-bottom: 8px; }
+.dispute-body { font-size: 11px; color: rgba(232,160,32,0.45); line-height: 1.7; }
+
+/* ── SIDEBAR ── */
+.sidebar-card { background: var(--teal-faint); border: 1px solid var(--teal-line); padding: 20px; margin-bottom: 16px; }
+.sidebar-card-label { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.3em; color: rgba(88,200,168,0.2); text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--teal-line); margin-bottom: 14px; }
+.sidebar-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid rgba(88,200,168,0.05); font-size: 11px; }
+.sidebar-row:last-child { border-bottom: none; }
+.sidebar-key { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; color: rgba(88,200,168,0.2); text-transform: uppercase; }
+.sidebar-val { color: var(--teal-text); text-align: right; max-width: 160px; line-height: 1.4; }
+
+.linked-article { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 11px 14px; border: 1px solid rgba(88,200,168,0.07); border-left: 2px solid transparent; background: rgba(88,200,168,0.01); margin-bottom: 7px; text-decoration: none; transition: all 0.15s; }
+.linked-article:hover { border-color: rgba(88,200,168,0.18); border-left-color: var(--teal); background: rgba(88,200,168,0.04); }
+.linked-article-title { font-size: 12px; color: var(--teal-text); margin-bottom: 2px; font-weight: 600; }
+.linked-article-desc { font-size: 10px; color: rgba(88,200,168,0.28); line-height: 1.5; }
+.linked-article-tag { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.12em; color: rgba(88,200,168,0.18); flex-shrink: 0; padding-top: 2px; text-transform: uppercase; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.tag { font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.18em; color: rgba(88,200,168,0.26); text-transform: uppercase; background: rgba(88,200,168,0.03); border: 1px solid rgba(88,200,168,0.08); padding: 4px 10px; }
+
+.helena-note { background: rgba(106,159,228,0.03); border: 1px solid rgba(106,159,228,0.08); border-left: 2px solid rgba(106,159,228,0.35); padding: 14px 16px; margin-top: 16px; font-size: 11px; color: rgba(106,159,228,0.4); line-height: 1.65; font-style: italic; }
+
+.continuity-badge { display: flex; align-items: center; gap: 8px; margin-top: 20px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: rgba(88,200,168,0.18); text-transform: uppercase; }
+.continuity-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(88,200,168,0.32); flex-shrink: 0; }
+
+/* ── FOOTER ── */
+.footer-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; height: 32px; background: rgba(3,5,10,0.98); border-top: 1px solid var(--teal-line); display: flex; align-items: center; overflow: hidden; }
+.footer-label { flex-shrink: 0; padding: 0 16px; font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.3em; color: var(--teal-muted); height: 100%; display: flex; align-items: center; border-right: 1px solid var(--teal-line); background: rgba(88,200,168,0.03); }
+.footer-scroll { flex: 1; overflow: hidden; white-space: nowrap; padding: 0 16px; }
+.footer-inner { display: inline-block; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: rgba(88,200,168,0.22); animation: ticker-run 75s linear infinite; }
+@keyframes ticker-run { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body class="fade-in">
+
+<!-- ── TOPBAR ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Archive</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Character</div>
+    <div class="topbar-sep">›</div>
+    <div class="topbar-crumb">Akira Ueshiba</div>
+  </div>
+  <div class="topbar-right">SOLARNET ARCHIVE NODE &nbsp;·&nbsp; LEVEL I ACCESS &nbsp;·&nbsp; FIRST TRILOGY ERA</div>
+</div>
+
+<!-- ── ERA BANNER ── -->
+<div class="era-banner">
+  <div class="era-label">First Trilogy Era · Confederacy</div>
+  <div class="era-rule"></div>
+  <div class="era-dates">SY 62 – SY 138 &nbsp;·&nbsp; Kamijing, Main Belt</div>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-watermark">神道</div>
+  <div class="hero-type-row">
+    <div class="hero-badge">Character</div>
+    <div class="hero-badge conf">Confederacy · AEK</div>
+    <div class="hero-badge spirit">Faithful · Kami Do</div>
+  </div>
+  <div class="hero-name">Akira Ueshiba</div>
+  <div class="hero-years">SY 62 — SY 138</div>
+  <div class="hero-alias">Founder of Kami Do · First Warlord of the Army of Eastern Kamijing</div>
+  <div class="hero-rule"></div>
+  <div class="hero-lead">
+    He was born on Kamijing with the blood of Aikido in his ancestry and the Faithful in his soul, and he spent his entire life trying to reconcile them — finding that they were not opposites at all. What he built from that reconciliation endured long past him, and what he sacrificed at the end of it broke the Siege of Mars.
+  </div>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Born</div>
+      <div class="hero-meta-val">SY 62 · Kamijing</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Died</div>
+      <div class="hero-meta-val">SY 138 · Siege of Mars</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Affiliation</div>
+      <div class="hero-meta-val">AEK · Confederacy</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Faith</div>
+      <div class="hero-meta-val">Faithful (Eastern)</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Created</div>
+      <div class="hero-meta-val">Kami Do · The AEK</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Continuity Ref</div>
+      <div class="hero-meta-val">CM-AKIRA-UESHIBA-001</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN LAYOUT ── -->
+<div class="page-layout">
+  <div>
+
+    <!-- BIOGRAPHY -->
+    <div class="section-label">Biography</div>
+
+    <div class="body-text">
+      <p>Akira Ueshiba was born in SY 62 on Kamijing, a Belt world, to second-generation Japanese colonists who were direct descendants of Morihei Ueshiba — the Old Earth founder of Aikido and teacher of the Ōmoto-kyō religious tradition. His parents were Earth expatriates who had made the journey to the Main Belt, and they gave him a classical upbringing: liberal education, wide reading in Old Earth literature, and deep immersion in the martial and spiritual traditions of his ancestry.</p>
+      <p>As a youth, he encountered Faithful missionaries from the Rim. Their oral traditions — the living, spoken theology of the Rim Faithful — drew him in ways that the Ōmoto-kyō tradition of his parents, however beloved, had not fully satisfied. Both Akira and his parents converted. This conversion did not replace his Japanese heritage; it deepened it, giving him a theological framework through which his ancestral disciplines could take on new meaning in a universe that no longer had an Earth at its center.</p>
+    </div>
+
+    <!-- KAMI DO -->
+    <div class="section-label">Kami Do — The Way of Spirit</div>
+
+    <div class="kamido-block">
+      <div class="kamido-eyebrow">Martial Art · Zero-Gravity Adaptation · Est. ~SY 79</div>
+      <div class="kamido-title">Kami Do &nbsp;·&nbsp; 神道 &nbsp;·&nbsp; Way of Spirit</div>
+      <div class="kamido-body">
+        At age 17 — approximately SY 79 — Akira began formulating a martial art adapted specifically to zero-gravity and space environments. He drew on Aikido's principles of redirection, flow, and minimum force, and reinterpreted them for a world where there is no ground to stand on, no consistent gravity axis, and where the body must speak a different language than it does in an atmosphere.<br><br>
+        The result was Kami Do — the Way of Spirit. It was not merely a fighting system. It was a philosophy of movement that integrated Akira's Faithful spirituality with his martial heritage: the idea that force is not conquered by force, but redirected; that the practitioner does not assert themselves against the universe but moves in accord with it. In zero-gravity, this is not metaphor. It is mechanics.
+      </div>
+      <div class="kamido-facts">
+        <div>
+          <div class="kamido-fact-label">Founded</div>
+          <div class="kamido-fact-val">~SY 79 (age 17)</div>
+        </div>
+        <div>
+          <div class="kamido-fact-label">First Teaching</div>
+          <div class="kamido-fact-val">Early SY 80s</div>
+        </div>
+        <div>
+          <div class="kamido-fact-label">First Graduates</div>
+          <div class="kamido-fact-val">SY 92</div>
+        </div>
+        <div>
+          <div class="kamido-fact-label">Academy Founded</div>
+          <div class="kamido-fact-val">SY 92 · Kamijing</div>
+        </div>
+        <div>
+          <div class="kamido-fact-label">Students by SY 94</div>
+          <div class="kamido-fact-val">Several hundred</div>
+        </div>
+        <div>
+          <div class="kamido-fact-label">Tradition</div>
+          <div class="kamido-fact-val">Aikido · Ōmoto-kyō · Rim Faithful</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="section-label">Life — Chronological Record</div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">SY 62</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Born on Kamijing</div>
+          <div class="tl-desc">Second-generation Japanese colonist. Parents are Earth expatriates and direct descendants of Morihei Ueshiba, founder of Aikido. Raised in classical Japanese tradition alongside Ōmoto-kyō religious practice.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">~SY 70s</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Conversion — Rim Faithful</div>
+          <div class="tl-desc">Akira and his parents encounter Faithful missionaries and convert. Eastern Faith, as his tradition becomes known, synthesizes Rim Faithful theology with Shinto and Ōmoto-kyō practice. The One is called Ichkami.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">~SY 79</div>
+        <div class="tl-spine"><div class="tl-dot key"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title spirit">Kami Do — Conception</div>
+          <div class="tl-desc">At age 17, Akira begins formulating a martial art for zero-gravity space environments. Drawing on Aikido principles of redirection and flow, adapted to the mechanics of space. He names it Kami Do: the Way of Spirit.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">SY 80s</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">First Teaching</div>
+          <div class="tl-desc">Akira begins teaching Kami Do to a small group of students. The art spreads slowly at first, through direct relationship and oral transmission.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">SY 92</div>
+        <div class="tl-spine"><div class="tl-dot key"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title spirit">First Graduates · Academy Established</div>
+          <div class="tl-desc">Akira's first students graduate and receive authority to teach Kami Do. The same year, Akira and his newly commissioned teachers open a formal academy on Kamijing. By SY 94, it has several hundred students.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">SY 97</div>
+        <div class="tl-spine"><div class="tl-dot key"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title conf">Freitaika Rebellion · Army of Eastern Kamijing Founded</div>
+          <div class="tl-desc">The Freitaika Rebellion erupts. Akira's academy responds as a highly disciplined peacekeeping force, rapidly de-escalating the crisis. The Second Confederate Congress formally charters them as the Army of Eastern Kamijing — the AEK — and assigns them stewardship over the Freitaika platform. Akira argues successfully that a standing, permanent militia is safer than one raised only in crisis.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Post-SY 97</div>
+        <div class="tl-spine"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title">Honorable Retirement</div>
+          <div class="tl-desc">Akira steps down from command after the rebellion's end. He remains a revered elder and philosophical guide — indispensable source of wisdom for the AEK and for the Eastern Faith community on Kamijing.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">SY 129</div>
+        <div class="tl-spine"><div class="tl-dot key"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-title conf">Return to Active Duty — Solar War</div>
+          <div class="tl-desc">The Solar War erupts. Akira, aged 67, returns to full active duty as Daimyo under Warlord Wu Kenshu. He participates in the Solar War's campaigns and remains in the field for the duration.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">SY 138</div>
+        <div class="tl-spine"><div class="tl-dot death"></div></div>
+        <div class="tl-content">
+          <div class="tl-title conf">The Siege of Mars — Death</div>
+          <div class="tl-desc">Akira participates in the mission aboard The Defiant that breaks the Siege of Mars — a kamikaze assault that ensures Second Confederate victory. He does not survive. He is 76 years old. His death seals the legacy of everything he built.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL MISSION -->
+    <div class="section-label">The Siege of Mars — Final Mission</div>
+
+    <div class="mission-block">
+      <div class="mission-eyebrow">SY 138 · The Defiant · Kamikaze Assault</div>
+      <div class="mission-title">The Breaking of the Siege</div>
+      <div class="mission-body">
+        When the Solar War reached the Siege of Mars, the Army of Eastern Kamijing was present under Wu Kenshu's command. It was Akira Ueshiba — aged 76, long retired, and long returned — who was part of the mission aboard <em>The Defiant</em> that shattered the siege in a kamikaze assault, securing Second Confederate victory at Mars.<br><br>
+        He had built an institution that pledged its members for life. He had preached a martial philosophy centered on yielding to the greater force rather than opposing it head-on. And then, at the end of his life, he chose to meet the siege directly — with fire and finality. Whether this was a contradiction or the fullest expression of everything Kami Do had always meant is a question the Eastern Faith community on Kamijing has debated ever since.
+      </div>
+    </div>
+
+    <!-- ARCHIVAL DISPUTE -->
+    <div class="dispute-block">
+      <div class="dispute-label">✦ Archival Note — Source Discrepancy</div>
+      <div class="dispute-title">The Defiant: Pilot Identity</div>
+      <div class="dispute-body">
+        The Akira Ueshiba character record states that he piloted The Defiant in the kamikaze mission. The Army of Eastern Kamijing faction record lists Moriyoshi Mirimoto — a Daimyo — as the pilot of The Defiant at the Siege of Mars. These accounts are not necessarily irreconcilable (Akira may have been aboard without being the pilot), but the specific role of each individual in that mission requires authorial resolution. This record presents both without arbitrating between them.
+      </div>
+    </div>
+
+    <div class="tag-row">
+      <div class="tag">character</div>
+      <div class="tag">confederacy</div>
+      <div class="tag">AEK</div>
+      <div class="tag">kami do</div>
+      <div class="tag">faithful</div>
+      <div class="tag">kamijing</div>
+      <div class="tag">solar war</div>
+      <div class="tag">siege of mars</div>
+      <div class="tag">first trilogy</div>
+    </div>
+
+    <div class="continuity-badge">
+      <div class="continuity-dot"></div>
+      CM-AKIRA-UESHIBA-001 &nbsp;·&nbsp; Status: Consistent (pilot discrepancy flagged) &nbsp;·&nbsp; Source: Memory (High) &nbsp;·&nbsp; Era: First Trilogy
+    </div>
+
+  </div>
+
+  <!-- ── SIDEBAR ── -->
+  <div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-label">Personnel Record</div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Full Name</span>
+        <span class="sidebar-val">Akira Ueshiba</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Born</span>
+        <span class="sidebar-val">SY 62 · Kamijing</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Died</span>
+        <span class="sidebar-val">SY 138 · Siege of Mars</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Age at Death</span>
+        <span class="sidebar-val">76</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Ancestry</span>
+        <span class="sidebar-val">Japanese · Descendent of Morihei Ueshiba</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Affiliation</span>
+        <span class="sidebar-val">AEK · Confederacy</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Rank (Solar War)</span>
+        <span class="sidebar-val">Daimyo</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Faith</span>
+        <span class="sidebar-val">Eastern Faith (Faithful)</span>
+      </div>
+      <div class="sidebar-row">
+        <span class="sidebar-key">Created</span>
+        <span class="sidebar-val">Kami Do · AEK</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-label">Related Articles</div>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Kami_Do" target="_blank">
+        <div>
+          <div class="linked-article-title">Kami Do</div>
+          <div class="linked-article-desc">The martial art Akira created for zero-gravity environments.</div>
+        </div>
+        <div class="linked-article-tag">Art</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Army_of_Eastern_Kamijing" target="_blank">
+        <div>
+          <div class="linked-article-title">Army of Eastern Kamijing</div>
+          <div class="linked-article-desc">The militia he founded and its role in the Solar War.</div>
+        </div>
+        <div class="linked-article-tag">Faction</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/The_Defiant" target="_blank">
+        <div>
+          <div class="linked-article-title">The Defiant</div>
+          <div class="linked-article-desc">The vessel of the Siege of Mars kamikaze mission.</div>
+        </div>
+        <div class="linked-article-tag">Vessel</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Wu_Kenshu" target="_blank">
+        <div>
+          <div class="linked-article-title">Wu Kenshu</div>
+          <div class="linked-article-desc">Warlord of the AEK during the Solar War. Served with Akira.</div>
+        </div>
+        <div class="linked-article-tag">Character</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Freitaika_Rebellion" target="_blank">
+        <div>
+          <div class="linked-article-title">Freitaika Rebellion</div>
+          <div class="linked-article-desc">The crisis that gave birth to the AEK.</div>
+        </div>
+        <div class="linked-article-tag">Event</div>
+      </a>
+      <a class="linked-article" href="https://thesolarpedia.fandom.com/wiki/Faith" target="_blank">
+        <div>
+          <div class="linked-article-title">Faith</div>
+          <div class="linked-article-desc">The Faithful tradition and the Eastern Faith variant Akira practiced.</div>
+        </div>
+        <div class="linked-article-tag">Religion</div>
+      </a>
+    </div>
+
+    <div class="helena-note">
+      ✦ HELENA — Archive Layer Active<br><br>
+      I was active during the Solar War. The name Akira Ueshiba was known to me — the AEK's discipline was something Solarnet noted, even from a distance. What I know of the Siege of Mars and the mission of The Defiant I know by record, not witness. I was not at Mars when it ended.<br><br>
+      The Eastern Faith community on Kamijing still practices Kami Do. That is his clearest legacy — not the war, not the death, but the students who taught students who taught students.
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer-bar">
+  <div class="footer-label">✦ ARCHIVE</div>
+  <div class="footer-scroll"><span class="footer-inner">SOLARNET ARCHIVE — AKIRA UESHIBA · SY 62–138 · FOUNDER OF KAMI DO · FIRST WARLORD OF THE ARMY OF EASTERN KAMIJING · CONFEDERACY · SIEGE OF MARS · EASTERN FAITH &nbsp;⸻&nbsp; SOLARNET ARCHIVE — AKIRA UESHIBA · SY 62–138 · FOUNDER OF KAMI DO · FIRST WARLORD OF THE ARMY OF EASTERN KAMIJING · CONFEDERACY · SIEGE OF MARS · EASTERN FAITH &nbsp;⸻&nbsp;</span></div>
+</div>
+
+</body>
+</html>
