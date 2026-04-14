@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Spacer Hygiene & Bathing Culture</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg: #04080c;
+  --bg-panel: rgba(10,18,28,0.97);
+  --solar-teal: #58c8a8;
+  --solar-teal-dim: rgba(88,200,168,0.12);
+  --solar-teal-mid: rgba(88,200,168,0.25);
+  --solar-teal-glow: rgba(88,200,168,0.06);
+  --text-primary: #ccd4f0;
+  --text-dim: rgba(204,212,240,0.55);
+  --text-faint: rgba(204,212,240,0.3);
+  --gold: #c8962a;
+  --gold-dim: rgba(200,150,42,0.15);
+  --orange: #e07820;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+  --border: 1px solid rgba(88,200,168,0.15);
+  --border-strong: 1px solid rgba(88,200,168,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  line-height: 1.7;
+}
+
+/* ── BACKGROUND GRID ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(88,200,168,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,200,168,0.015) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: relative;
+  z-index: 10;
+  border-bottom: var(--border-strong);
+  background: rgba(4,8,12,0.98);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.header-logo {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  color: var(--solar-teal);
+  text-decoration: none;
+  text-shadow: 0 0 30px rgba(88,200,168,0.4);
+}
+
+.header-nav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.header-nav a {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.header-nav a:hover { color: var(--solar-teal); }
+
+.header-tier {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--solar-teal);
+  border: 1px solid rgba(88,200,168,0.3);
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  position: relative;
+  z-index: 5;
+  padding: 12px 40px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  border-bottom: var(--border);
+  background: rgba(4,8,12,0.5);
+}
+.breadcrumb a { color: var(--text-faint); text-decoration: none; }
+.breadcrumb a:hover { color: var(--solar-teal); }
+.breadcrumb span { color: rgba(88,200,168,0.5); margin: 0 8px; }
+
+/* ── MAIN LAYOUT ── */
+.page-wrap {
+  position: relative;
+  z-index: 5;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 40px;
+}
+
+/* ── ARTICLE HEADER ── */
+.article-header {
+  grid-column: 1 / -1;
+  border-bottom: var(--border-strong);
+  padding-bottom: 32px;
+  margin-bottom: 8px;
+}
+
+.article-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--solar-teal);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.article-tag::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--solar-teal);
+}
+
+.article-title {
+  font-family: var(--font-title);
+  font-size: 38px;
+  font-weight: 700;
+  color: #e8eeff;
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  text-shadow: 0 0 60px rgba(88,200,168,0.15);
+}
+
+.article-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.article-meta {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.meta-item strong {
+  color: rgba(88,200,168,0.7);
+  font-weight: 400;
+}
+
+/* ── BODY CONTENT ── */
+.article-body {
+  min-width: 0;
+}
+
+.article-body h2 {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--solar-teal);
+  margin: 40px 0 14px;
+  padding-bottom: 8px;
+  border-bottom: var(--border);
+  text-transform: uppercase;
+}
+
+.article-body h3 {
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: rgba(88,200,168,0.7);
+  margin: 28px 0 10px;
+  text-transform: uppercase;
+}
+
+.article-body p {
+  font-size: 15px;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+.article-body p:first-child {
+  font-size: 16px;
+  color: #dde4f8;
+}
+
+/* Classification badges */
+.classification {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  padding: 2px 7px;
+  text-transform: uppercase;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.cls-archived {
+  background: rgba(88,200,168,0.1);
+  color: var(--solar-teal);
+  border: 1px solid rgba(88,200,168,0.3);
+}
+
+.cls-inferred {
+  background: rgba(200,150,42,0.1);
+  color: var(--gold);
+  border: 1px solid rgba(200,150,42,0.3);
+}
+
+.cls-proposed {
+  background: rgba(224,120,32,0.1);
+  color: var(--orange);
+  border: 1px solid rgba(224,120,32,0.3);
+}
+
+/* Pull quote */
+.pull-quote {
+  border-left: 2px solid var(--solar-teal);
+  margin: 28px 0;
+  padding: 16px 24px;
+  background: var(--solar-teal-glow);
+}
+
+.pull-quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px !important;
+  color: #dde4f8 !important;
+  margin: 0 !important;
+  line-height: 1.6 !important;
+}
+
+.pull-quote cite {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  margin-top: 10px;
+  font-style: normal;
+}
+
+/* HELENA annotation */
+.helena-note {
+  background: rgba(88,200,168,0.04);
+  border: var(--border);
+  border-left: 2px solid rgba(88,200,168,0.5);
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+
+.helena-note-head {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(88,200,168,0.5);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.helena-note p {
+  font-size: 13px !important;
+  color: var(--text-dim) !important;
+  margin: 0 !important;
+  font-style: italic;
+}
+
+/* ── SIDEBAR ── */
+.sidebar { min-width: 0; }
+
+.info-card {
+  background: var(--bg-panel);
+  border: var(--border-strong);
+  margin-bottom: 20px;
+}
+
+.info-card-head {
+  background: var(--solar-teal-dim);
+  border-bottom: var(--border);
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--solar-teal);
+  text-transform: uppercase;
+}
+
+.info-card-body { padding: 16px; }
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(88,200,168,0.06);
+}
+.info-row:last-child { border-bottom: none; }
+
+.info-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-primary);
+  text-align: right;
+  font-weight: 400;
+}
+
+.info-value.teal { color: var(--solar-teal); }
+.info-value.gold { color: var(--gold); }
+
+/* Tier methods table */
+.methods-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+
+.methods-table td {
+  padding: 7px 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(88,200,168,0.06);
+  vertical-align: top;
+}
+
+.methods-table td:first-child {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--solar-teal);
+  width: 36px;
+  padding-right: 8px;
+}
+
+.methods-table tr:last-child td { border-bottom: none; }
+
+/* See also list */
+.see-also-list {
+  list-style: none;
+}
+.see-also-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(88,200,168,0.06);
+}
+.see-also-list li:last-child { border-bottom: none; }
+.see-also-list a {
+  font-size: 13px;
+  color: var(--solar-teal);
+  text-decoration: none;
+  font-weight: 400;
+}
+.see-also-list a:hover { text-decoration: underline; }
+.see-also-list span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  position: relative;
+  z-index: 5;
+  border-top: var(--border);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(4,8,12,0.8);
+}
+
+.footer-sig {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.footer-sig strong {
+  color: rgba(88,200,168,0.5);
+  font-weight: 400;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="#" class="header-logo">SOLARNET</a>
+  <nav class="header-nav">
+    <a href="#">Archive</a>
+    <a href="#">Culture</a>
+    <a href="#">Technology</a>
+    <a href="#">Factions</a>
+    <a href="#">Timeline</a>
+  </nav>
+  <div class="header-tier">FTE ACCESS</div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Solarnet</a><span>›</span>
+  <a href="#">Archive</a><span>›</span>
+  <a href="#">Culture &amp; Society</a><span>›</span>
+  <a href="#">Spacer Life</a><span>›</span>
+  Hygiene &amp; Bathing Culture
+</div>
+
+<!-- MAIN -->
+<div class="page-wrap">
+
+  <!-- ARTICLE HEADER -->
+  <div class="article-header">
+    <div class="article-tag">Culture &amp; Society — Spacer Life</div>
+    <h1 class="article-title">Hygiene &amp; Bathing Culture</h1>
+    <p class="article-subtitle">Personal sanitation practices across Sol System, from Earthside convention to the deep Belt</p>
+    <div class="article-meta">
+      <div class="meta-item">Era: <strong>First Trilogy Era</strong></div>
+      <div class="meta-item">Scope: <strong>Sol System</strong></div>
+      <div class="meta-item">Domain: <strong>Culture / Technology</strong></div>
+      <div class="meta-item">Status: <strong class="cls-archived" style="padding:2px 6px;border:1px solid rgba(88,200,168,0.3);font-size:8px;">ARCHIVED / PROPOSED CANON</strong></div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <main class="article-body">
+
+    <p>
+      Among the most revealing markers of Sol System's social stratification in the First Trilogy Era is not wealth, accent, or dress — it is hygiene practice. How a person keeps clean, and with what tools, announces their origin, their cultural loyalties, and their relationship to the fundamental scarcity of space more precisely than almost any other daily ritual.
+    </p>
+
+    <h2>The Core Problem</h2>
+
+    <p>
+      <span class="classification cls-archived">ARCHIVED</span>
+      Water is mass. Mass is fuel. Fuel is survival. This equation, unchanging across the entire Standard Era, sits at the foundation of every hygiene solution developed for space habitation. Gravity-assisted bathing — the simple act of water falling, draining, and being expelled — is a privilege of planetary bodies and of those wealthy enough to simulate planetary conditions.
+    </p>
+
+    <p>
+      The earliest spacer generations solved the problem the same way the first astronauts did: imperfectly. Sponge baths, chemical wipes, waterless soap. The fecal bag approach of mid-20th-century spaceflight gave way to enclosed vacuum-assisted waste systems, but the fundamental constraint on water use in personal hygiene remained a constant engineering challenge across the Space Age and into the Standard Era.
+    </p>
+
+    <p>
+      What distinguishes the FTE from earlier eras is not the elimination of this constraint, but the development of a mature, stratified cultural response to it — different classes and factions arriving at different solutions that reflect their values as much as their resources.
+    </p>
+
+    <h2>Methods by Tier</h2>
+
+    <h3>The Ditty Bag — Main Belt Standard</h3>
+
+    <p>
+      <span class="classification cls-proposed">PROPOSED CANON</span>
+      The standard personal hygiene kit of the Main Belt spacer is known universally as the <em>ditty bag</em> — a term inherited, like much of spacer vocabulary, from the maritime tradition of Old Earth. Every spacer owns one. It lives in the hab. When travelling, it goes in the rucksack.
+    </p>
+
+    <p>
+      Contents vary by platform culture and personal preference, but the core is consistent: waterless cleansing solution, dry-process skin care appropriate to the low-humidity pressurised atmosphere of a Belt hab, chemical wipes for spot cleaning, and dry-process hair care. Asteroidal Industries, Inc. standardised early formulations for long-haul workers in the pre-Confederacy era, and their product lines remain the de facto standard against which all Belt equivalents are measured, however many regional brands and platform-specific variants have proliferated.
+    </p>
+
+    <p>
+      Daily hygiene for a Main Belt spacer on a standard shift is typically accomplished in under ten minutes. This is not perceived as deprivation. It is efficiency, and efficiency is a cultural value.
+    </p>
+
+    <div class="pull-quote">
+      <p>The ditty bag and five minutes. That's a spacer's morning. Everything else is luxury or theatre.</p>
+      <cite>— Common Belt saying; provenance uncertain, attested across multiple platforms</cite>
+    </div>
+
+    <h3>The Centrifuge Block — Community Infrastructure</h3>
+
+    <p>
+      <span class="classification cls-proposed">PROPOSED CANON</span>
+      Most Belt platforms and major stations operating at FTE standard maintain at least one centrifuge shower block: a dedicated rotating section generating between 0.2g and 0.5g, sufficient for water to behave in approximately normal fashion. Access is rationed by water budget and scheduled on the local Mainer 36-hour cycle.
+    </p>
+
+    <p>
+      A slot in the centrifuge block is booked in advance, typically through the platform's utility management system. Standard allocation is fifteen minutes. The wait is worth it. For a spacer who has been on ditty-bag rotation for days, the centrifuge block represents the closest thing available to a planetary shower — actual flowing water, actual steam, actual sensation of cleanliness that the body understands at a level the chemicals cannot reach.
+    </p>
+
+    <p>
+      The social function of the centrifuge block has been compared by more than one New School historian to the bathhouses of ancient Rome and medieval Europe — and the comparison, however irritating to those who received it as revelation rather than obvious fact, is essentially correct. The block is where deals are discussed, gossip travels, alliances form. It is not merely a hygiene facility; it is community infrastructure.
+    </p>
+
+    <div class="helena-note">
+      <div class="helena-note-head">HELENA-Prime annotation</div>
+      <p>The New School comparison to Roman bathhouse culture was received with considerable disdain by the spacers it purported to describe. The irritation was not that the comparison was wrong — it was correct — but that it was offered as insight by people who had never needed to book a shower slot in their lives. I have logged this response pattern across approximately forty years of Belt cultural documentation and it has not changed.</p>
+    </div>
+
+    <h3>The Enclosure System — Consortium Standard</h3>
+
+    <p>
+      <span class="classification cls-proposed">PROPOSED CANON</span>
+      The Consortium's solution to zero-gravity hygiene is the enclosed shower system — a flexible membrane or rigid enclosure within which the user is misted with pressurised water and soap, scrubs, and then has the water recovered by vacuum extraction. The procedure is thorough, hygienic by any planetary standard, and takes approximately forty minutes when performed correctly.
+    </p>
+
+    <p>
+      Licensed Consortium spacers — particularly those operating aerowing routes between Earth and orbital stations — consider the enclosure system simply the correct way to bathe in space. It is associated with being civilised, with taking personal care seriously, with the slower and more deliberate pace of Consortium life in which several hours per day devoted to personal hygiene and grooming is entirely normal.
+    </p>
+
+    <p>
+      Belt spacers consider it absurd. Not immoral, not offensive — simply, genuinely, unfathomably inefficient. Forty minutes and a procedure guide to accomplish what the ditty bag handles in five. The contempt runs both directions: the aerowing spacer arrives at a Belt platform and asks where the shower is, and receives a look.
+    </p>
+
+    <h3>The Gravity Bath — Planetary Standard</h3>
+
+    <p>
+      <span class="classification cls-archived">ARCHIVED</span>
+      Mars and Luna, with their substantial surface gravity, support bathing infrastructure closely analogous to Earth standard. Full immersion baths are available in private residences; standard showers with conventional drainage are municipal infrastructure. Martians visiting Belt platforms for the first time frequently find the hygiene adjustment one of the most disorienting aspects of the experience.
+    </p>
+
+    <p>
+      Earth tourists who venture as far as Belt space — a small minority of space tourists in any era — typically arrive having been briefed on the enclosure system and frequently find even that inadequate preparation for the actual experience of Belt hab life.
+    </p>
+
+    <h2>The Hab Plumbing Standard</h2>
+
+    <p>
+      <span class="classification cls-proposed">PROPOSED CANON</span>
+      Individual hab units across Belt platforms and major stations are built to a standard that includes two water access points: one in the kitchen area, one in the half-bathroom. Both are accompanied by erator and vacuum systems. Water flow is purposeful — not indulgent. Hand-washing, face-washing, spot-cleaning.
+    </p>
+
+    <p>
+      Platform atmosphere systems include dehumidifiers as standard components, recovering moisture from the pressurised air and returning it to the water reclamation cycle. Breathable atmosphere is supplied via the platform's main utility line, with local carbon exchange handling CO₂ scrubbing at the hab level. Spacers with access to personal nitrogen and oxygen tanks can adjust local pressure and atmospheric composition — a liberty that has given rise to considerable folk wisdom, some of it physiologically sound and some of it less so, regarding optimal atmospheric mixes for different kinds of work.
+    </p>
+
+    <h2>Bil Jax's Bath House — The Exception</h2>
+
+    <p>
+      <span class="classification cls-archived">ARCHIVED</span>
+      The most celebrated bathing facility in Rim space during the Twilight Age is the rotating bath house aboard Bil Jax's Bazaar, constructed to provide approximately 0.75g — enough for a genuine hot shower with gravity-assisted drainage. The facility was incorporated into the first iteration of the Bazaar and proved immediately and enduringly popular among spacers mining near Jupiter, with peak seasons corresponding to orbital cycles that brought traffic near the station.
+    </p>
+
+    <p>
+      Bil Jax charged nominal fees, kept the facility affordable by Belt standards, and understood — whether by instinct or intention — that the bath house was as much a social institution as a hygiene service. It remains the pinnacle of luxury bathing available in the outer system throughout the FTE, and its existence is the clearest single illustration of how scarce and therefore how valued genuine gravity-assisted bathing is in Belt and Rim culture.
+    </p>
+
+    <div class="pull-quote">
+      <p>He built them a bathhouse at three-quarters gravity and charged them almost nothing for it, and they loved him for it more than for anything else he ever did.</p>
+      <cite>— HELENA-Prime, reflecting on Bil Jax's legacy</cite>
+    </div>
+
+    <h2>Cultural Significance</h2>
+
+    <p>
+      <span class="classification cls-proposed">PROPOSED CANON</span>
+      Hygiene practice functions as class marker, cultural identifier, and sometimes as political signal across Sol System's stratified society. The Mainer who does the ditty bag in five minutes and books the centrifuge slot twice a week is making a statement about values as much as adapting to constraint. The Consortium spacer who maintains the full enclosure ritual three days into a Belt transit is asserting identity against environment.
+    </p>
+
+    <p>
+      What is rarely acknowledged by either is that Belt bathing culture, grown from material necessity, arrived independently at social structures — the communal bathing block as hub of community life — that ancient planetary cultures developed from abundance. The Romans built their bathhouses because they could. The Mainers built theirs because they had to. The sociological function is, in the end, the same.
+    </p>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="info-card">
+      <div class="info-card-head">Quick Reference</div>
+      <div class="info-card-body">
+        <div class="info-row">
+          <span class="info-label">Domain</span>
+          <span class="info-value">Culture / Daily Life</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Era</span>
+          <span class="info-value teal">First Trilogy Era</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Scope</span>
+          <span class="info-value">Sol System-wide</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Primary faction</span>
+          <span class="info-value">Confederate / All</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Methods by Faction</div>
+      <div class="info-card-body">
+        <table class="methods-table">
+          <tr>
+            <td>▸</td>
+            <td><strong style="color:#e8eeff;font-size:12px;">Belt / Confederacy</strong><br><span style="color:var(--text-dim);font-size:11px;">Ditty bag (daily) + centrifuge block (weekly)</span></td>
+          </tr>
+          <tr>
+            <td>▸</td>
+            <td><strong style="color:#e8eeff;font-size:12px;">Consortium / ITN</strong><br><span style="color:var(--text-dim);font-size:11px;">Enclosed shower system; 40-min procedure</span></td>
+          </tr>
+          <tr>
+            <td>▸</td>
+            <td><strong style="color:#e8eeff;font-size:12px;">Mars / Luna</strong><br><span style="color:var(--text-dim);font-size:11px;">Gravity-standard; full immersion available</span></td>
+          </tr>
+          <tr>
+            <td>▸</td>
+            <td><strong style="color:#e8eeff;font-size:12px;">Rim</strong><br><span style="color:var(--text-dim);font-size:11px;">Ditty bag; centrifuge rare; Bil Jax exception</span></td>
+          </tr>
+          <tr>
+            <td>▸</td>
+            <td><strong style="color:#e8eeff;font-size:12px;">Transit / Nomadic</strong><br><span style="color:var(--text-dim);font-size:11px;">Ditty bag only; rucksack-kept</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Key Term</div>
+      <div class="info-card-body">
+        <p style="font-family:var(--font-serif);font-style:italic;font-size:18px;color:var(--solar-teal);margin-bottom:6px;">ditty bag</p>
+        <p style="font-size:12px;color:var(--text-dim);line-height:1.6;">Personal hygiene kit; standard issue across all Belt and Rim spacer culture. Kept in the hab; travels in the rucksack. Term inherited from Old Earth maritime tradition.</p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Notable Facility</div>
+      <div class="info-card-body">
+        <p style="font-size:13px;color:#e8eeff;margin-bottom:6px;font-weight:600;">Bil Jax's Bath House</p>
+        <p style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-bottom:8px;">Rotating facility, ~0.75g. The Bazaar, Rim space. The most celebrated gravity-assisted bathing facility in the outer system. Twilight Age landmark.</p>
+        <a href="#" style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;color:var(--solar-teal);text-decoration:none;text-transform:uppercase;">→ See: The Bazaar</a>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">See Also</div>
+      <div class="info-card-body">
+        <ul class="see-also-list">
+          <li><a href="#">Mainer Cycle</a><span>36-hour Belt day; schedules centrifuge access</span></li>
+          <li><a href="#">Rucksack Culture</a><span>The transit spacer's essential kit</span></li>
+          <li><a href="#">Asteroidal Industries, Inc.</a><span>Original standard formulations</span></li>
+          <li><a href="#">The Bazaar</a><span>Bil Jax's station; Rim space landmark</span></li>
+          <li><a href="#">Spacer Bar Culture</a><span>Complementary social infrastructure</span></li>
+          <li><a href="#">Las Venus, Mars</a><span>Planetary bathing culture; grounder standard</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-sig">Solarnet Archive — <strong>FTE Public Access</strong> — All content subject to continuity review</div>
+  <div class="footer-sig">Curated by <strong>HELENA-Prime</strong> — helena@solarmail.geneva</div>
+</footer>
+
+</body>
+</html>

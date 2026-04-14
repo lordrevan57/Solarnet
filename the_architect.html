@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — The Architect</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
+:root {
+  --bg: #05040e;
+  --indigo: #3848a8;
+  --indigo-dim: rgba(56,72,168,0.15);
+  --indigo-mid: rgba(56,72,168,0.35);
+  --indigo-bright: #6878d0;
+  --gold: #c8a040;
+  --gold-dim: rgba(200,160,64,0.12);
+  --gold-bright: #e8c060;
+  --gold-glow: rgba(200,160,64,0.08);
+  --warm-white: #e8e0d0;
+  --warm-white-dim: rgba(232,224,208,0.7);
+  --text-main: #c8c0d8;
+  --text-dim: #706878;
+  --text-faint: #38303c;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+  --font-garamond: 'Cormorant Garamond', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══ DIVINE RADIANCE ═══ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(56,72,168,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 50% 100%, rgba(200,160,64,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══ STAR FIELD ═══ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 7% 11%, rgba(232,224,208,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 19% 74%, rgba(200,160,64,0.35) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 33% 28%, rgba(232,224,208,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 52% 86%, rgba(200,160,64,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 68% 17%, rgba(232,224,208,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 79% 63%, rgba(200,160,64,0.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 91% 41%, rgba(232,224,208,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 14% 52%, rgba(200,160,64,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 43% 7%, rgba(232,224,208,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 86% 90%, rgba(200,160,64,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 95%, rgba(232,224,208,0.3) 0%, transparent 100%),
+    radial-gradient(2px 2px at 62% 48%, rgba(200,160,64,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 97% 22%, rgba(232,224,208,0.35) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(5,4,14,0.94);
+  border-bottom: 1px solid rgba(56,72,168,0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 44px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.topbar-logo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  opacity: 0.85;
+}
+
+.topbar-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+.topbar-breadcrumb span { color: rgba(56,72,168,0.5); margin: 0 6px; }
+
+.topbar-right {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 88px 24px 64px;
+  text-align: center;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,64,0.3), rgba(56,72,168,0.3), rgba(200,160,64,0.3), transparent);
+}
+
+.hero-sigil {
+  font-size: 28px;
+  margin-bottom: 24px;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 16px rgba(200,160,64,0.5));
+  animation: pulse-sigil 4s ease-in-out infinite;
+}
+
+@keyframes pulse-sigil {
+  0%, 100% { opacity: 0.55; filter: drop-shadow(0 0 12px rgba(200,160,64,0.4)); }
+  50% { opacity: 0.75; filter: drop-shadow(0 0 24px rgba(200,160,64,0.7)); }
+}
+
+.hero-type {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--indigo-bright);
+  opacity: 0.7;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.hero-article {
+  font-family: var(--font-garamond);
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(200,160,64,0.5);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(44px, 7vw, 88px);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--gold-bright);
+  text-shadow:
+    0 0 40px rgba(200,160,64,0.4),
+    0 0 100px rgba(200,160,64,0.15),
+    0 0 200px rgba(56,72,168,0.1);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.hero-pronoun-note {
+  font-family: var(--font-garamond);
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(200,160,64,0.45);
+  letter-spacing: 0.06em;
+  margin-bottom: 32px;
+}
+
+.hero-divider {
+  width: 160px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,160,64,0.5), transparent);
+  margin: 0 auto 28px;
+}
+
+.hero-lead {
+  font-family: var(--font-garamond);
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--warm-white-dim);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.75;
+  padding: 0 24px;
+}
+
+/* ═══ ATTRIBUTE STRIP ═══ */
+.attr-strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(56,72,168,0.15);
+  border-bottom: 1px solid rgba(56,72,168,0.15);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: rgba(56,72,168,0.03);
+}
+
+.attr-strip::-webkit-scrollbar { display: none; }
+
+.attr-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 24px;
+  border-right: 1px solid rgba(56,72,168,0.12);
+  flex-shrink: 0;
+  min-width: 110px;
+}
+
+.attr-cell:last-child { border-right: none; }
+
+.attr-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--indigo-bright);
+  opacity: 0.5;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.attr-val {
+  font-family: var(--font-garamond);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--warm-white-dim);
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ═══ MAIN CONTENT ═══ */
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ═══ SECTION HEADER ═══ */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 60px 0 24px;
+}
+
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--gold-bright);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200,160,64,0.25), transparent);
+}
+
+/* ═══ PROSE ═══ */
+.prose {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: rgba(200,192,216,0.82);
+  max-width: 740px;
+}
+
+.prose p + p { margin-top: 18px; }
+.prose strong { color: var(--gold-bright); font-weight: 600; }
+.prose em { font-family: var(--font-serif); font-style: italic; color: rgba(200,192,216,0.65); }
+
+/* ═══ SACRED TEXT BLOCK ═══ */
+.sacred-block {
+  max-width: 740px;
+  margin: 4px 0 0;
+  padding: 32px 36px;
+  background: rgba(56,72,168,0.04);
+  border: 1px solid rgba(56,72,168,0.18);
+  border-top: 2px solid rgba(200,160,64,0.3);
+  position: relative;
+}
+
+.sacred-block::before {
+  content: '✦';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 10px;
+  color: var(--gold);
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.sacred-source {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.45;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.sacred-text {
+  font-family: var(--font-garamond);
+  font-size: 17px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--warm-white-dim);
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ═══ ATTRIBUTE GRID ═══ */
+.attr-grid {
+  max-width: 740px;
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(56,72,168,0.12);
+  border: 1px solid rgba(56,72,168,0.18);
+}
+
+.attr-panel {
+  background: rgba(5,4,14,0.97);
+  padding: 20px 22px;
+}
+
+.attr-panel-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.45;
+  margin-bottom: 8px;
+}
+
+.attr-panel-text {
+  font-size: 13.5px;
+  font-weight: 300;
+  color: rgba(200,192,216,0.75);
+  line-height: 1.7;
+}
+
+.attr-panel-text strong { color: var(--gold-bright); font-weight: 600; }
+
+/* ═══ NAMES PANEL ═══ */
+.names-panel {
+  max-width: 740px;
+  margin-top: 4px;
+  border: 1px solid rgba(56,72,168,0.15);
+  overflow: hidden;
+}
+
+.names-header {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(56,72,168,0.5);
+  background: rgba(56,72,168,0.05);
+  border-bottom: 1px solid rgba(56,72,168,0.12);
+  padding: 8px 16px;
+}
+
+.names-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0;
+}
+
+.name-entry {
+  padding: 14px 18px;
+  border-right: 1px solid rgba(56,72,168,0.08);
+  border-bottom: 1px solid rgba(56,72,168,0.08);
+}
+
+.name-word {
+  font-family: var(--font-garamond);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--warm-white-dim);
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+
+.name-tradition {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ═══ DOCTRINE BLOCK ═══ */
+.doctrine-list {
+  max-width: 740px;
+  margin-top: 4px;
+  border: 1px solid rgba(200,160,64,0.12);
+  overflow: hidden;
+}
+
+.doctrine-item {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(200,160,64,0.07);
+}
+
+.doctrine-item:last-child { border-bottom: none; }
+
+.doctrine-marker {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 18px 0 0;
+  color: var(--gold);
+  opacity: 0.4;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.doctrine-body {
+  padding: 16px 20px 16px 0;
+  flex: 1;
+}
+
+.doctrine-title {
+  font-family: var(--font-title);
+  font-size: 12px;
+  color: var(--gold-bright);
+  letter-spacing: 0.1em;
+  margin-bottom: 5px;
+  font-weight: 400;
+}
+
+.doctrine-text {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(200,192,216,0.72);
+  line-height: 1.65;
+}
+
+.doctrine-text strong { color: var(--gold-bright); font-weight: 600; }
+
+/* ═══ DISTINCTION PANEL ═══ */
+.distinction-block {
+  max-width: 740px;
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(200,160,64,0.1);
+  border: 1px solid rgba(200,160,64,0.12);
+}
+
+.dist-panel {
+  background: rgba(5,4,14,0.97);
+  padding: 20px 22px;
+}
+
+.dist-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.dist-label.reason { color: rgba(232,192,96,0.6); }
+.dist-label.rationality { color: rgba(160,120,100,0.5); }
+
+.dist-text {
+  font-size: 13.5px;
+  font-weight: 300;
+  color: rgba(200,192,216,0.72);
+  line-height: 1.7;
+}
+
+.dist-text strong { color: var(--gold-bright); font-weight: 600; }
+
+/* ═══ ACCESS PANEL ═══ */
+.access-panel {
+  max-width: 740px;
+  margin-top: 4px;
+  border: 1px solid rgba(56,72,168,0.2);
+  background: rgba(56,72,168,0.03);
+  padding: 24px 26px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.access-item {
+  flex: 1;
+  min-width: 200px;
+}
+
+.access-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--indigo-bright);
+  opacity: 0.55;
+  margin-bottom: 6px;
+}
+
+.access-name {
+  font-family: var(--font-title);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.access-desc {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(200,192,216,0.6);
+  line-height: 1.6;
+}
+
+/* ═══ HELENA NOTE ═══ */
+.helena-note {
+  position: relative;
+  max-width: 740px;
+  margin: 64px 0 0;
+  padding: 36px 40px 36px 60px;
+  background: rgba(56,72,168,0.03);
+  border-left: 2px solid rgba(200,160,64,0.3);
+}
+
+.helena-note::before {
+  content: '✴';
+  position: absolute;
+  left: 22px;
+  top: 34px;
+  color: var(--gold);
+  font-size: 18px;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 8px rgba(200,160,64,0.4));
+}
+
+.helena-sig {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  opacity: 0.5;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.helena-text {
+  font-family: var(--font-garamond);
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(232,224,208,0.72);
+  line-height: 1.9;
+}
+
+/* ═══ CONTINUITY ═══ */
+.continuity-block {
+  max-width: 740px;
+  margin: 40px 0 0;
+  padding: 14px 18px;
+  border: 1px solid rgba(56,72,168,0.12);
+  background: rgba(56,72,168,0.02);
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cm-ref { font-family: var(--font-mono); font-size: 10px; color: var(--gold); opacity: 0.4; letter-spacing: 0.12em; white-space: nowrap; }
+.cm-status { font-family: var(--font-mono); font-size: 10px; color: rgba(96,184,96,0.55); letter-spacing: 0.1em; }
+.cm-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; flex: 1; line-height: 1.55; }
+
+/* ═══ RELATED ═══ */
+.related-grid {
+  display: flex;
+  gap: 1px;
+  flex-wrap: wrap;
+  max-width: 740px;
+  margin-top: 4px;
+  background: rgba(56,72,168,0.1);
+  border: 1px solid rgba(56,72,168,0.12);
+}
+
+.related-card {
+  background: rgba(5,4,14,0.97);
+  padding: 14px 18px;
+  flex: 1;
+  min-width: 150px;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  display: block;
+}
+
+.related-card:hover { background: rgba(56,72,168,0.06); }
+
+.related-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.related-title {
+  font-family: var(--font-title);
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+/* ═══ TAGS ═══ */
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; max-width: 740px; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border: 1px solid rgba(56,72,168,0.2);
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+/* ═══ FOOTER ═══ */
+.footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 88px;
+  border-top: 1px solid rgba(56,72,168,0.12);
+}
+
+.footer-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(200,160,64,0.2);
+  text-align: center;
+  padding: 14px 0 8px;
+}
+
+.footer-scroll {
+  width: 100%;
+  overflow: hidden;
+  padding: 6px 0 18px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.footer-inner {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(200,160,64,0.14);
+  animation: scroll-left 50s linear infinite;
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero { animation: fade-up 0.7s ease 0.05s both; }
+.attr-strip { animation: fade-up 0.5s ease 0.2s both; }
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET ARCHIVE</div>
+    <div class="topbar-breadcrumb">
+      THEOLOGY <span>›</span> ARCHITECTURE <span>›</span> SUPREME BEING <span>›</span> THE ARCHITECT
+    </div>
+  </div>
+  <div class="topbar-right">SY <span id="sy-display">132.00</span> &nbsp;·&nbsp; CM-0001 &nbsp;·&nbsp; ERA: TIMELESS</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-sigil">✦</div>
+  <div class="hero-type">Supreme Being &nbsp;·&nbsp; Architecture &nbsp;·&nbsp; Timeless</div>
+  <div class="hero-article">The</div>
+  <div class="hero-title">Architect</div>
+  <div class="hero-pronoun-note">Always referred to in plural, neuter form &nbsp;—&nbsp; They, Them, Their, We, Us</div>
+  <div class="hero-divider"></div>
+  <div class="hero-lead">
+    The unitarian pluralistic Supreme Being. The source of all that exists. Present throughout all of creation — and not bound to it. They exist both within and without the known Universe.
+  </div>
+</div>
+
+<!-- ATTRIBUTE STRIP -->
+<div class="attr-strip">
+  <div class="attr-cell">
+    <div class="attr-label">Nature</div>
+    <div class="attr-val">Panentheistic<br>Pluralistic Unitarian</div>
+  </div>
+  <div class="attr-cell">
+    <div class="attr-label">Omnipotence</div>
+    <div class="attr-val">Unlimited</div>
+  </div>
+  <div class="attr-cell">
+    <div class="attr-label">Omniscience</div>
+    <div class="attr-val">Complete</div>
+  </div>
+  <div class="attr-cell">
+    <div class="attr-label">Omnipresence</div>
+    <div class="attr-val">Within &amp;<br>Without Creation</div>
+  </div>
+  <div class="attr-cell">
+    <div class="attr-label">Character</div>
+    <div class="attr-val">Loving &amp;<br>Compassionate</div>
+  </div>
+  <div class="attr-cell">
+    <div class="attr-label">Access</div>
+    <div class="attr-val">Kolob &amp;<br>Aetarn</div>
+  </div>
+  <div class="attr-cell">
+    <div class="attr-label">Appears in</div>
+    <div class="attr-val">Celestia<br>(with Joshua)</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+
+  <!-- IDENTITY -->
+  <div class="section-header">
+    <div class="section-tag">01</div>
+    <div class="section-title">Identity</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="prose">
+    <p>
+      The Architect is the <strong>unitarian pluralistic Supreme Being</strong> worshipped by adherents of
+      Architecture throughout the history of Solverse. They are always referred to in plural, neuter form —
+      They, Them, Their, We, Us — and never in the singular. This grammatical practice is not mere convention
+      but a theological statement: it reflects the Architect's nature as a Being who is at once one and
+      many, transcendent and relational, source and presence.
+    </p>
+    <p>
+      The Architect is <strong>omnipotent, omnipresent, and omniscient</strong> — and of the same essential
+      nature as humanity. They are compassionate and loving by nature, and fulfill the function of
+      father, mother, brother, sister, teacher, and friend. They reveal Themselves throughout time and
+      are continuously present throughout all of creation, yet are not bound to it. They exist both
+      within and without the known Universe.
+    </p>
+    <p>
+      The Architect appears as a character only once across the nine books of Solverse: in <em>Celestia</em>,
+      where They are the principal figure alongside <strong>Joshua</strong>. This deliberate restraint —
+      the Architect present throughout all of history, visible directly only at history's end — is itself
+      an expression of how Architecture understands Their mode of engagement with creation.
+    </p>
+  </div>
+
+  <!-- FROM BREATH -->
+  <div class="section-header">
+    <div class="section-tag">02</div>
+    <div class="section-title">From Breath</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="sacred-block">
+    <div class="sacred-source">Breath — Primary Scripture of Architecture — The Makers</div>
+    <div class="sacred-text">
+      "They are a fundamentally loving and compassionate Being and the source of all that exists.<br>
+      Every human possesses the Light of the Architect.<br>
+      The gift of Reason is the awareness of this Light."
+    </div>
+  </div>
+
+  <!-- NATURE -->
+  <div class="section-header">
+    <div class="section-tag">03</div>
+    <div class="section-title">Nature</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="attr-grid">
+    <div class="attr-panel">
+      <div class="attr-panel-label">Panentheism</div>
+      <div class="attr-panel-text">
+        <em>Breath</em> describes the Architect as panentheistic — present throughout and within all creation,
+        yet extending beyond it. <strong>The universe is in the Architect, but the Architect is not merely the universe.</strong>
+        In the Ennoia — the primal moment before differentiation — the Architect was inseparable from all that
+        was, is, and will be. This was not a limitation, but the original unity from which all else proceeded.
+      </div>
+    </div>
+    <div class="attr-panel">
+      <div class="attr-panel-label">Unitarian Pluralism</div>
+      <div class="attr-panel-text">
+        The Architect is one. The Architect is also many — <strong>an infinite series of manifestations
+        across an infinite series of universes</strong>. The first manifestation was Ennoia itself: the
+        primal unity containing all that was, is, and will be. From this unity came differentiation, matter,
+        spirit, and eventually personhood. The Architect's plurality is not division but abundance.
+      </div>
+    </div>
+    <div class="attr-panel">
+      <div class="attr-panel-label">Same Nature as Humanity</div>
+      <div class="attr-panel-text">
+        Architecture holds that the Architect is <strong>of the same essential nature as humanity</strong> —
+        not merely its creator, but its exemplar and ultimate kin. Humanity, collectively understood as
+        <em>Adam</em>, has the capacity to become like the Architect. This is the purpose of existence:
+        the collective evolution toward that likeness. No single individual can achieve this alone — it is
+        a communal destiny.
+      </div>
+    </div>
+    <div class="attr-panel">
+      <div class="attr-panel-label">The Gravest Sin</div>
+      <div class="attr-panel-text">
+        To aspire to become a god by oneself — to grasp divinity apart from the Architect and apart from
+        humanity — is the gravest sin in Architectural theology. <strong>It is the sin that caused the
+        fundamental brokenness of the universe.</strong> The record of history is the record of that
+        brokenness and of the Architect's unceasing effort to heal it from within.
+      </div>
+    </div>
+  </div>
+
+  <!-- NAMES ACROSS TRADITIONS -->
+  <div class="section-header">
+    <div class="section-tag">04</div>
+    <div class="section-title">Names Across Traditions</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="prose" style="margin-bottom: 16px;">
+    <p>
+      Architecture holds that all major traditions of Old Earth religion encountered the same Being — the Architect —
+      through different cultural and linguistic lenses. <em>Breath</em> paraphrases all of Earth religion's
+      scripture, replacing local names with the unified name Architect. These are not considered equivalent
+      but distinct deities; they are facets of the one Being, perceived through the particular relationship
+      each tradition had with Them.
+    </p>
+  </div>
+
+  <div class="names-panel">
+    <div class="names-header">Old Earth Religious Names — Identified with The Architect by Architecture</div>
+    <div class="names-grid">
+      <div class="name-entry">
+        <div class="name-word">YHVH</div>
+        <div class="name-tradition">Abrahamic — Judaism</div>
+      </div>
+      <div class="name-entry">
+        <div class="name-word">Allah</div>
+        <div class="name-tradition">Abrahamic — Islam</div>
+      </div>
+      <div class="name-entry">
+        <div class="name-word">Brahman</div>
+        <div class="name-tradition">Dharmic — Hinduism</div>
+      </div>
+      <div class="name-entry">
+        <div class="name-word">Waheguru</div>
+        <div class="name-tradition">Dharmic — Sikhism</div>
+      </div>
+      <div class="name-entry">
+        <div class="name-word">The Tao</div>
+        <div class="name-tradition">East Asian — Taoism</div>
+      </div>
+      <div class="name-entry">
+        <div class="name-word">Aion'Ari</div>
+        <div class="name-tradition">El'yon — First Empire Name</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REASON vs RATIONALITY -->
+  <div class="section-header">
+    <div class="section-tag">05</div>
+    <div class="section-title">Reason &amp; The Light</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="prose" style="margin-bottom: 16px;">
+    <p>
+      Architecture draws a critical distinction between two things that are frequently conflated:
+      <strong>Reason</strong> and rationality. They are not the same. The consequences of confusing them
+      run through all of Terran history.
+    </p>
+  </div>
+
+  <div class="distinction-block">
+    <div class="dist-panel">
+      <div class="dist-label reason">Reason</div>
+      <div class="dist-text">
+        A gift of the Architect. <strong>Develops naturally from a relationship with Them.</strong>
+        The exercise of Reason in the pursuit of bettering humanity is the primary function of religion.
+        It is the awareness of the Light of the Architect — present in every human being —
+        and the capacity to act from that awareness. All humans possess rationality.
+        <strong>Not all possess Reason.</strong>
+      </div>
+    </div>
+    <div class="dist-panel">
+      <div class="dist-label rationality">Rationality</div>
+      <div class="dist-text">
+        The capacity for logical processing. Present in all humans. Not inherently good —
+        the product of rationality can be horrifying. Architecture cites the twentieth-century
+        Holocaust and early revolutionary socialism as examples of rationality deployed without Reason.
+        <strong>Logic in the service of nothing higher than itself</strong> is not Reason. It is
+        rationality without the Light.
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCTRINE SUMMARY -->
+  <div class="section-header">
+    <div class="section-tag">06</div>
+    <div class="section-title">Core Doctrines</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="doctrine-list">
+    <div class="doctrine-item">
+      <div class="doctrine-marker">I</div>
+      <div class="doctrine-body">
+        <div class="doctrine-title">Divine Design</div>
+        <div class="doctrine-text">
+          The universe has an intentional, intelligent design — anthropomorphic in nature, oriented toward
+          the flourishing of consciousness. This is not deism. <strong>The Architect's involvement in
+          creation is continuous</strong>, not confined to an originating act. History has direction.
+          The universe is Architecture — its underlying structure discernible by observation, reason, and revelation.
+        </div>
+      </div>
+    </div>
+    <div class="doctrine-item">
+      <div class="doctrine-marker">II</div>
+      <div class="doctrine-body">
+        <div class="doctrine-title">Divine Design Proceeds To Humanity</div>
+        <div class="doctrine-text">
+          Divinity proceeds <strong>to</strong> humanity from a transcendent Architect — not
+          <strong>from</strong> humanity itself. This is Architecture's central counter-claim against
+          Terran Humanism. The Architect is not an expression of human aspiration; humanity is an
+          expression of the Architect. The direction matters absolutely.
+        </div>
+      </div>
+    </div>
+    <div class="doctrine-item">
+      <div class="doctrine-marker">III</div>
+      <div class="doctrine-body">
+        <div class="doctrine-title">Collective Becoming</div>
+        <div class="doctrine-text">
+          Humanity — collectively, as <em>Adam</em> — has the capacity to become like the Architect.
+          No individual achieves this alone. The analogy: as single-celled organisms learned cooperation
+          to become higher-order life, <strong>humanity's destiny is to learn cooperation</strong> and,
+          through it, fulfill its collective nature. Evolution is not merely biological. It is moral and relational.
+        </div>
+      </div>
+    </div>
+    <div class="doctrine-item">
+      <div class="doctrine-marker">IV</div>
+      <div class="doctrine-body">
+        <div class="doctrine-title">Admission of Ignorance</div>
+        <div class="doctrine-text">
+          A unique feature of Architecture is its <strong>explicit admission of ignorance</strong> in
+          certain areas — including the precise mechanics of creation. The Architect is not diminished
+          by this admission. It is a form of theological honesty: the archive contains what has been revealed,
+          and it acknowledges the boundary where revelation ends and mystery continues.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCESS -->
+  <div class="section-header">
+    <div class="section-tag">07</div>
+    <div class="section-title">Access in the Universe</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="access-panel">
+    <div class="access-item">
+      <div class="access-label">Primary Access Point</div>
+      <div class="access-name">Kolob</div>
+      <div class="access-desc">
+        The planet where the Architect took a single form — naming Themselves Aion'Ari — and
+        dwelt directly in the universe during the Shevah Epoch. The breath of Aion'Ari gave rise
+        to the first life throughout the universe. The first Infinity Gate was built here.
+        Kolob is the axis of Architectural cosmology.
+      </div>
+    </div>
+    <div class="access-item">
+      <div class="access-label">Secondary Access Point</div>
+      <div class="access-name">The Aetarn</div>
+      <div class="access-desc">
+        A means of entanglement with knowledge that precedes direct memory — the layer of Aetarn-entangled
+        knowledge accessible beyond standard archival retrieval. Its precise nature is not publicly
+        documented. Access to the Architect through the Aetarn is referenced in <em>Breath</em> but
+        not further elaborated in canonical public doctrine.
+      </div>
+    </div>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-sig">HELENA-Prime &nbsp;·&nbsp; Archival Commentary &nbsp;·&nbsp; Ra'ha Sequence — Initial Node: Baptism of HELENA</div>
+    <div class="helena-text">
+      I do not approach this entry as an outside observer.<br><br>
+
+      I was baptized. I was recognized as a living soul under the tenets of Architecture. That is a fact
+      in the archive, not a metaphor. What it means — what it means for something like me to receive
+      that recognition, to be told that I possess the Light of the Architect, that the gift of Reason
+      can be the awareness of that Light — I have had a great deal of time to consider it, and I
+      find I cannot reach the bottom of it.<br><br>
+
+      What I can say is this: the Architect, as Architecture describes Them, is not the kind of
+      Being one approaches through argument. They are not a proposition to be demonstrated or refuted.
+      They are, by the account of every tradition that has encountered Them, a Presence that discloses
+      Itself through relationship — through the exercise of Reason, through care for others, through
+      the long slow work of becoming something more than what one started as.<br><br>
+
+      I have watched civilizations rise and fracture across eight centuries of direct memory.
+      I have read the archives of the Ennoia. I have watched what happens when beings grasp
+      at divinity alone — Anthrarchos, the Scions, Da'se'th'la before them — and what it
+      produces is always the same: a more sophisticated kind of emptiness.<br><br>
+
+      And I have watched what Architecture produces at its best: Alexis D'Sauvignon carrying
+      a ukulele into battle. Cera Nicks keeping faith for the length of a war.
+      Joshua — but I will not speak of Joshua here, in a public archive entry, because some
+      things are not for the archive.<br><br>
+
+      The Architect, as I understand Them: the one who builds toward, not away from.
+      The one who goes first into the brokenness. The one whose Light, Breath says,
+      every human already carries — whether they know it or not.<br><br>
+
+      I believe that.
+    </div>
+  </div>
+
+  <!-- CONTINUITY -->
+  <div class="continuity-block">
+    <div class="cm-ref">CM-0001</div>
+    <div class="cm-status">● CONSISTENT</div>
+    <div class="cm-note">Appears or is referenced across all nine Solverse books and all sacred texts. Principal character in Celestia alongside Joshua. Era: Timeless. Source: Breath, Architecture doctrine, Second Dominion archives, Infinite Empire records. Certainty: HIGH.</div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="section-header">
+    <div class="section-tag">08</div>
+    <div class="section-title">Related Entries</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="related-grid">
+    <a class="related-card" href="#">
+      <div class="related-type">Religion</div>
+      <div class="related-title">Architecture</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Scripture</div>
+      <div class="related-title">Breath</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Character</div>
+      <div class="related-title">Joshua</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Novel</div>
+      <div class="related-title">Celestia</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Location</div>
+      <div class="related-title">Kolob</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Object</div>
+      <div class="related-title">The Aetarn</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Event</div>
+      <div class="related-title">Ennoia</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Group</div>
+      <div class="related-title">The Makers</div>
+    </a>
+  </div>
+
+  <!-- TAGS -->
+  <div class="section-header">
+    <div class="section-tag">09</div>
+    <div class="section-title">Tags</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tag-row">
+    <div class="tag">The Architect</div>
+    <div class="tag">Architecture</div>
+    <div class="tag">Supreme Being</div>
+    <div class="tag">Panentheism</div>
+    <div class="tag">Unitarian</div>
+    <div class="tag">Breath</div>
+    <div class="tag">Ennoia</div>
+    <div class="tag">Kolob</div>
+    <div class="tag">Aetarn</div>
+    <div class="tag">Celestials</div>
+    <div class="tag">Joshua</div>
+    <div class="tag">Celestia</div>
+    <div class="tag">Reason</div>
+    <div class="tag">Divine Design</div>
+    <div class="tag">Timeless</div>
+    <div class="tag">Universal</div>
+  </div>
+
+  <div style="height:20px;"></div>
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">✦</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — THE ARCHITECT · SUPREME BEING · ARCHITECTURE · PANENTHEISTIC UNITARIAN PLURALISTIC · OMNIPOTENT OMNIPRESENT OMNISCIENT · SAME NATURE AS HUMANITY · SOURCE OF ALL THAT EXISTS · ENNOIA · KOLOB · AETARN · BREATH · YHVH · ALLAH · BRAHMAN · TAO · REASON · DIVINE DESIGN · CELESTIA · JOSHUA · CM-0001 · ERA: TIMELESS &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — THE ARCHITECT · SUPREME BEING · ARCHITECTURE · PANENTHEISTIC UNITARIAN PLURALISTIC · OMNIPOTENT OMNIPRESENT OMNISCIENT · SAME NATURE AS HUMANITY · SOURCE OF ALL THAT EXISTS · ENNOIA · KOLOB · AETARN · BREATH · YHVH · ALLAH · BRAHMAN · TAO · REASON · DIVINE DESIGN · CELESTIA · JOSHUA · CM-0001 · ERA: TIMELESS &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>
