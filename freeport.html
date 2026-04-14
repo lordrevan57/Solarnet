@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Freeport</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,300&family=Share+Tech+Mono&family=Cinzel:wght@400;600&display=swap');
+
+:root {
+  --bg:            #080604;
+  --bg-warm:       #0C0906;
+  --bg-card:       #100D08;
+  --bg-panel:      #140F09;
+  --rust:          #B8420A;
+  --rust-bright:   #D4541A;
+  --rust-dim:      #6B2506;
+  --rust-glow:     rgba(184,66,10,0.14);
+  --rust-trace:    rgba(184,66,10,0.06);
+  --ochre:         #C87C1A;
+  --ochre-dim:     rgba(200,124,26,0.5);
+  --silver:        #A0A8B4;
+  --silver-dim:    #606870;
+  --silver-ghost:  rgba(160,168,180,0.1);
+  --dust:          #D4B898;
+  --dust-mid:      #9A7E64;
+  --dust-dim:      #584A3C;
+  --dust-ghost:    rgba(212,184,152,0.06);
+  --alert-orange:  #E05A10;
+  --mono:          'Share Tech Mono', monospace;
+  --display:       'Cinzel', serif;
+  --body:          'Exo 2', sans-serif;
+  --tight:         'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--dust);
+  font-family: var(--body);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.78;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 44px;
+  background: #060402;
+  border-bottom: 1px solid rgba(184,66,10,0.28);
+}
+
+.topbar-logo {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ochre); letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+.topbar-nav { display: flex; }
+
+.tnav {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(88,74,60,0.7); text-transform: uppercase;
+  padding: 0 14px; height: 44px; display: flex; align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+  cursor: default; transition: color 0.2s;
+}
+.tnav:hover { color: var(--dust-mid); }
+.tnav.active { color: var(--rust-bright); border-bottom: 2px solid var(--rust-bright); }
+
+.topbar-right {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 10px; color: var(--dust-dim);
+}
+.sy-readout { color: var(--ochre); }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  padding: 10px 40px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--dust-dim);
+  border-bottom: 1px solid rgba(184,66,10,0.1);
+  background: var(--bg-warm);
+}
+.breadcrumb span { color: rgba(184,66,10,0.45); margin: 0 6px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  background: var(--bg-warm);
+  border-bottom: 1px solid rgba(184,66,10,0.18);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Martian horizon gradient */
+.hero-sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    #0A0806 0%,
+    #120C07 30%,
+    rgba(80,35,10,0.3) 70%,
+    rgba(120,50,15,0.2) 100%
+  );
+  pointer-events: none;
+}
+
+/* Regolith texture band at bottom */
+.hero-ground {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--rust-dim) 20%,
+    var(--rust) 50%,
+    var(--rust-dim) 80%,
+    transparent
+  );
+  opacity: 0.6;
+}
+
+/* Coordinate grid overlay — wartime map feel */
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(184,66,10,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,66,10,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0;
+  align-items: stretch;
+}
+
+.hero-main {
+  padding: 52px 48px 48px;
+}
+
+/* Status strip — wartime alert color */
+.hero-status-strip {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 18px;
+}
+
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--alert-orange);
+  box-shadow: 0 0 8px rgba(224,90,16,0.6);
+  animation: blink 3s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.status-text {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+  color: var(--alert-orange); text-transform: uppercase;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+  color: var(--rust-dim); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(46px, 6vw, 72px);
+  font-weight: 600;
+  color: var(--dust);
+  letter-spacing: 0.1em;
+  line-height: 1.0;
+  margin-bottom: 8px;
+}
+
+.hero-subtitle {
+  font-family: var(--tight); font-weight: 400; font-size: 15px;
+  color: var(--dust-mid); letter-spacing: 0.06em;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+
+.hero-rule {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, var(--rust-dim), transparent);
+  margin-bottom: 22px;
+}
+
+.hero-summary {
+  font-family: var(--body); font-weight: 300;
+  font-size: 15px; line-height: 1.82;
+  color: rgba(212,184,152,0.72);
+  max-width: 600px;
+}
+
+/* Coordinate readout panel — right side of hero */
+.hero-coord-panel {
+  width: 180px;
+  background: rgba(16,13,8,0.8);
+  border-left: 1px solid rgba(184,66,10,0.2);
+  padding: 28px 18px;
+  display: flex; flex-direction: column; justify-content: flex-start; gap: 16px;
+}
+
+.coord-block {
+  border-bottom: 1px solid rgba(184,66,10,0.1);
+  padding-bottom: 14px;
+}
+.coord-block:last-child { border-bottom: none; }
+
+.coord-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.16em;
+  color: var(--rust-dim); text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.coord-value {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--dust-mid);
+  line-height: 1.5;
+}
+
+.coord-value.highlight { color: var(--ochre); }
+
+/* ─── QUICK FACTS BAR ─── */
+.quick-facts {
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(184,66,10,0.1);
+  padding: 14px 40px;
+}
+
+.qf-row { display: flex; flex-wrap: wrap; gap: 0; }
+
+.qf-item {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 5px 28px 5px 0;
+  border-right: 1px solid rgba(184,66,10,0.1);
+  margin-right: 28px;
+}
+.qf-item:last-child { border-right: none; margin-right: 0; }
+
+.qf-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  color: var(--rust-dim); text-transform: uppercase; white-space: nowrap;
+}
+
+.qf-value {
+  font-family: var(--tight); font-size: 13px; font-weight: 500;
+  color: var(--dust-mid);
+}
+
+/* ─── LAYOUT ─── */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 290px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+/* ─── MAIN COLUMN ─── */
+.main-col {
+  padding-right: 48px;
+  border-right: 1px solid rgba(184,66,10,0.08);
+}
+
+/* Section heads */
+.sec-head {
+  display: flex; align-items: center; gap: 12px;
+  margin: 38px 0 16px;
+}
+.sec-head:first-of-type { margin-top: 0; }
+
+.sec-num {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--rust-dim); min-width: 24px;
+}
+
+.sec-title {
+  font-family: var(--tight); font-size: 11px; font-weight: 600;
+  color: var(--rust-bright);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+.sec-rule {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(184,66,10,0.3), transparent);
+}
+
+/* Body text */
+.body-text {
+  font-family: var(--body); font-weight: 300;
+  font-size: 15px; line-height: 1.82;
+  color: rgba(212,184,152,0.76);
+  margin-bottom: 14px;
+}
+
+strong { color: var(--dust); font-weight: 600; }
+em { color: var(--dust-mid); }
+
+/* Pull quote / callout */
+.callout {
+  border-left: 2px solid var(--rust-dim);
+  margin: 22px 0;
+  padding: 14px 20px;
+  background: var(--rust-trace);
+}
+
+.callout-text {
+  font-family: var(--tight); font-size: 16px; font-weight: 500;
+  color: var(--dust-mid);
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+.callout-attr {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  color: var(--rust-dim); text-transform: uppercase;
+}
+
+/* ─── FOUNDING TIMELINE ─── */
+.founding-block {
+  margin: 24px 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(184,66,10,0.14);
+}
+
+.founding-header {
+  background: rgba(184,66,10,0.1);
+  border-bottom: 1px solid rgba(184,66,10,0.14);
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.founding-header-title {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+  color: var(--rust-bright); text-transform: uppercase;
+}
+
+.founding-header-date {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--rust-dim); letter-spacing: 0.06em;
+}
+
+.founding-body { padding: 18px 20px; }
+
+/* ─── CITY SPECS ─── */
+.specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(184,66,10,0.12);
+  border: 1px solid rgba(184,66,10,0.14);
+  margin: 20px 0;
+}
+
+.spec-cell {
+  background: var(--bg-card);
+  padding: 14px 18px;
+}
+
+.spec-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--rust-dim); text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.spec-value {
+  font-family: var(--tight); font-size: 14px; font-weight: 500;
+  color: var(--dust-mid);
+  line-height: 1.4;
+}
+
+.spec-note {
+  font-family: var(--body); font-size: 12px; font-weight: 300;
+  color: var(--dust-dim); font-style: italic; margin-top: 3px;
+}
+
+/* ─── FUNCTION LIST ─── */
+.function-list { margin: 18px 0; }
+
+.function-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(184,66,10,0.07);
+}
+.function-item:last-child { border-bottom: none; }
+
+.fn-marker {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--rust-bright);
+  margin-top: 2px; flex-shrink: 0; min-width: 16px;
+}
+
+.fn-text {
+  font-family: var(--body); font-weight: 300; font-size: 14px; line-height: 1.7;
+  color: rgba(212,184,152,0.72);
+}
+
+/* ─── VERAGRAD LINEAGE ─── */
+.lineage-block {
+  display: flex; align-items: stretch; gap: 0;
+  margin: 22px 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(184,66,10,0.14);
+  overflow: hidden;
+}
+
+.lineage-node {
+  flex: 1; padding: 16px 18px;
+  border-right: 1px solid rgba(184,66,10,0.1);
+  position: relative;
+}
+.lineage-node:last-child { border-right: none; }
+
+.lineage-arrow {
+  width: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(184,66,10,0.06);
+  border-right: 1px solid rgba(184,66,10,0.1);
+  flex-shrink: 0;
+}
+
+.lineage-arrow-sym {
+  font-family: var(--mono); font-size: 14px; color: var(--rust-dim);
+}
+
+.lineage-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em;
+  color: var(--rust-dim); text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.lineage-name {
+  font-family: var(--tight); font-size: 15px; font-weight: 600;
+  color: var(--dust-mid); margin-bottom: 4px;
+}
+
+.lineage-desc {
+  font-family: var(--body); font-size: 12px; font-weight: 300;
+  color: var(--dust-dim); line-height: 1.5;
+}
+
+/* ─── PROPAGANDA BLOCK ─── */
+.propaganda-strip {
+  margin: 24px 0;
+  border: 1px solid rgba(184,66,10,0.22);
+  background: rgba(184,66,10,0.04);
+  padding: 18px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.propaganda-strip::before {
+  content: 'PROTECTORATE — PUBLIC AFFAIRS';
+  position: absolute; top: 6px; right: 12px;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em;
+  color: var(--rust-dim); opacity: 0.6;
+}
+
+.propaganda-head {
+  font-family: var(--tight); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--rust-bright); margin-bottom: 10px;
+}
+
+.propaganda-body {
+  font-family: var(--body); font-weight: 300; font-size: 14px; line-height: 1.75;
+  color: rgba(212,184,152,0.65);
+}
+
+/* ─── HELENA NOTE ─── */
+.helena-note {
+  margin: 36px 0 0;
+  border: 1px solid rgba(232,160,32,0.14);
+  background: rgba(232,160,32,0.03);
+  padding: 16px 20px;
+}
+
+.helena-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+}
+
+.helena-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: #E8A020; text-transform: uppercase;
+}
+
+.helena-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #E8A020;
+  animation: hpulse 2.4s ease-in-out infinite;
+}
+@keyframes hpulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+.helena-text {
+  font-family: var(--body); font-style: italic; font-weight: 300;
+  font-size: 13px; line-height: 1.72;
+  color: rgba(232,160,32,0.65);
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar { padding-left: 34px; }
+
+.infobox {
+  background: var(--bg-card);
+  border: 1px solid rgba(184,66,10,0.2);
+  margin-bottom: 26px;
+  overflow: hidden;
+}
+
+.infobox-header {
+  background: rgba(184,66,10,0.12);
+  border-bottom: 1px solid rgba(184,66,10,0.2);
+  padding: 12px 16px;
+  font-family: var(--tight); font-size: 11px; font-weight: 700;
+  color: var(--rust-bright); letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+.infobox-map-placeholder {
+  background: linear-gradient(135deg, #0C0806 0%, #1A0E06 50%, #0C0806 100%);
+  border-bottom: 1px solid rgba(184,66,10,0.12);
+  height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Simple Mars map suggestion */
+.mars-surface {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 40px;
+  background: linear-gradient(180deg, transparent, rgba(120,45,10,0.3));
+}
+
+.map-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--rust-dim); text-transform: uppercase; z-index: 1;
+  text-align: center;
+}
+
+/* Location dot */
+.location-pin {
+  position: absolute;
+  width: 10px; height: 10px;
+  border: 2px solid var(--rust-bright);
+  border-radius: 50%;
+  top: 44px; left: 50%;
+  transform: translateX(-50%);
+}
+.location-pin::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 4px; height: 4px;
+  background: var(--rust-bright);
+  border-radius: 50%;
+}
+
+.infobox-row {
+  display: grid; grid-template-columns: 100px 1fr;
+  border-bottom: 1px solid rgba(184,66,10,0.07);
+}
+.infobox-row:last-child { border-bottom: none; }
+
+.ib-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--rust-dim); text-transform: uppercase;
+  padding: 9px 10px;
+  display: flex; align-items: flex-start;
+  border-right: 1px solid rgba(184,66,10,0.07);
+  background: rgba(184,66,10,0.03);
+}
+
+.ib-value {
+  font-family: var(--tight); font-size: 13px; font-weight: 400;
+  color: var(--dust-mid);
+  padding: 9px 12px;
+  line-height: 1.5;
+}
+
+/* Sidebar section */
+.sidebar-section { margin-bottom: 22px; }
+
+.sidebar-head {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--rust-dim); text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(184,66,10,0.14);
+  margin-bottom: 12px;
+}
+
+.sidebar-note {
+  font-family: var(--body); font-weight: 300; font-size: 13px; line-height: 1.7;
+  color: var(--dust-dim);
+}
+
+.xref {
+  display: block;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--rust-dim);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(184,66,10,0.06);
+  cursor: default; transition: color 0.2s;
+}
+.xref:hover { color: var(--rust-bright); }
+.xref::before { content: '→ '; opacity: 0.5; }
+.xref:last-child { border-bottom: none; }
+
+/* Related cities */
+.city-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(184,66,10,0.06);
+  font-family: var(--tight); font-size: 13px; font-weight: 400;
+  color: var(--dust-dim); cursor: default; transition: color 0.2s;
+}
+.city-link:hover { color: var(--dust-mid); }
+.city-link:last-child { border-bottom: none; }
+.city-link-tag {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+  color: var(--rust-dim); text-transform: uppercase;
+}
+
+/* Status badge */
+.status-badge {
+  display: inline-block;
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+}
+
+.status-badge.wartime {
+  color: var(--alert-orange);
+  border-color: rgba(224,90,16,0.4);
+  background: rgba(224,90,16,0.06);
+}
+
+.status-badge.symbolic {
+  color: var(--ochre);
+  border-color: rgba(200,124,26,0.4);
+  background: rgba(200,124,26,0.06);
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  position: sticky; bottom: 0;
+  background: #060402;
+  border-top: 1px solid rgba(184,66,10,0.2);
+  display: flex; align-items: center;
+  height: 36px; overflow: hidden;
+  padding-left: 120px;
+}
+
+.footer-label {
+  position: absolute; left: 0;
+  background: var(--rust);
+  color: #060402;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0 14px; height: 36px; display: flex; align-items: center;
+  white-space: nowrap;
+}
+
+.footer-scroll { overflow: hidden; flex: 1; }
+
+.footer-inner {
+  display: inline-block; white-space: nowrap;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--rust-dim); text-transform: uppercase;
+  animation: marquee 36s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content, .page-wrapper { animation: fadeUp 0.55s ease both; }
+.page-wrapper { animation-delay: 0.08s; }
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="topbar-logo">Solarnet Archive</div>
+    <div style="width:1px;height:18px;background:rgba(184,66,10,0.3);"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Home</div>
+      <div class="tnav active">Archive</div>
+      <div class="tnav">Solarnet</div>
+      <div class="tnav">About</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span class="sy-readout" id="sy-display">—</span></span>
+    <span style="color:rgba(88,74,60,0.4)">|</span>
+    <span>CUSTODIAN ACTIVE</span>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  Archive<span>›</span>Locations<span>›</span>Mars<span>›</span>Freeport
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-sky"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-main">
+      <div class="hero-status-strip">
+        <div class="status-dot"></div>
+        <div class="status-text">First Trilogy Era · Active SY 132 – SY 138</div>
+      </div>
+      <div class="hero-eyebrow">Mars · Eastern Hemisphere · Wartime City</div>
+      <h1 class="hero-title">Freeport</h1>
+      <div class="hero-subtitle">Birthplace of the Protectorate · Free Martian Trade Zone</div>
+      <div class="hero-rule"></div>
+      <p class="hero-summary">
+        Freeport was a small city on Mars' Eastern Hemisphere, established as a wartime joint venture between the Confederacy and the Alliance during the Solar War. Built on the foundation of Veragrad's self-sufficiency research, it became the site of the Protectorate's founding in SY 132 and the most visible symbol of Martian independence — a city that aspired to total self-sufficiency and never quite reached it, while still proving the point it needed to make.
+      </p>
+    </div>
+
+    <!-- Coordinate panel -->
+    <div class="hero-coord-panel">
+      <div class="coord-block">
+        <div class="coord-label">Location</div>
+        <div class="coord-value">Mars<br>Eastern Hemisphere</div>
+      </div>
+      <div class="coord-block">
+        <div class="coord-label">Founded</div>
+        <div class="coord-value highlight">SY 132</div>
+      </div>
+      <div class="coord-block">
+        <div class="coord-label">Admin.</div>
+        <div class="coord-value">Council of Free Mars</div>
+      </div>
+      <div class="coord-block">
+        <div class="coord-label">CM Ref.</div>
+        <div class="coord-value">CM-FREEPORT-001</div>
+      </div>
+      <div class="coord-block">
+        <div class="coord-label">Era</div>
+        <div class="coord-value">First Trilogy</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-ground"></div>
+</div>
+
+<!-- QUICK FACTS -->
+<div class="quick-facts">
+  <div class="qf-row">
+    <div class="qf-item">
+      <span class="qf-label">Type</span>
+      <span class="qf-value">Wartime city — planned self-sufficient colony</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Founded by</span>
+      <span class="qf-value">Confederacy &amp; Alliance (joint venture)</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Significance</span>
+      <span class="qf-value">Protectorate founding site · Free Trade Zone symbol</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">IPS reliance</span>
+      <span class="qf-value">None — fully independent from IPS</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Amnesty</span>
+      <span class="qf-value">Open to all war refugees</span>
+    </div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="page-wrapper">
+
+  <!-- MAIN COLUMN -->
+  <div class="main-col">
+
+    <!-- ORIGINS -->
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Origins</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      Freeport was not built from nothing. Its foundations were inherited from <strong>Veragrad</strong> — the secret Soviet project on the Hellas Peninsula, conceived as a self-sustaining colony intended as the base for a Soviet incursion into Mars. That incursion never materialized, but the research did. When the Confederacy and Alliance needed a joint venture on Martian soil during the Solar War, Veragrad's years of quiet engineering work gave them a head start.
+    </p>
+
+    <!-- Veragrad lineage -->
+    <div class="lineage-block">
+      <div class="lineage-node">
+        <div class="lineage-label">Predecessor</div>
+        <div class="lineage-name">Veragrad</div>
+        <div class="lineage-desc">Soviet secret project, Hellas Peninsula. Built self-sufficiency systems in isolation. Never activated as intended.</div>
+      </div>
+      <div class="lineage-arrow">
+        <span class="lineage-arrow-sym">→</span>
+      </div>
+      <div class="lineage-node">
+        <div class="lineage-label">Built upon</div>
+        <div class="lineage-name">Freeport</div>
+        <div class="lineage-desc">Joint Confederacy–Alliance wartime construction. Eastern Hemisphere. Open city and propaganda spearhead.</div>
+      </div>
+      <div class="lineage-arrow">
+        <span class="lineage-arrow-sym">→</span>
+      </div>
+      <div class="lineage-node">
+        <div class="lineage-label">Founded here</div>
+        <div class="lineage-name">The Protectorate</div>
+        <div class="lineage-desc">SY 132. The Spacer Protectorate of Mankind, the third great faction of the Solar War.</div>
+      </div>
+    </div>
+
+    <p class="body-text">
+      The design intent was complete self-sufficiency — a city on Mars that required nothing from the Interplanetary Settlement infrastructure, nothing from the Consortium's supply chains, nothing from the ITN. In the political logic of the Solar War, this was not merely useful; it was the whole argument. A city that fed, powered, and sustained itself proved that the Belt and Rim could exist without the Consortium. That the great Inner System economic machine was not the circulatory system of civilization — only a habit.
+    </p>
+
+    <p class="body-text">
+      Due to the incredible toll of the war, Freeport never achieved total self-sufficiency. The aspiration outlived the shortfall.
+    </p>
+
+    <!-- FOUNDING OF THE PROTECTORATE -->
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">The Founding of the Protectorate</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="founding-block">
+      <div class="founding-header">
+        <span class="founding-header-title">Protectorate of Mankind — Established</span>
+        <span class="founding-header-date">SY 132</span>
+      </div>
+      <div class="founding-body">
+        <p class="body-text" style="margin-bottom:0;">
+          In SY 132, Freeport became the site of the founding of the <strong>Spacer Protectorate of Mankind</strong> — the third great faction of the Solar War and the political heir of the Confederacy and Alliance's combined resistance. The First Intrasolar Protectorate Association (FIPA) ratified the <em>Declaration of the Protectorate of Mankind</em> here, a document that functioned as an effective constitution. Its central figures included <strong>Haydn von Dehlin</strong>, <strong>Wu Kenshu</strong>, civic leaders of Confederate platforms, and representatives of both the Confederate Militia and the Free Martian Militia. Copies were distributed throughout Mars, the Main Belt, and Jupiter space.
+        </p>
+      </div>
+    </div>
+
+    <p class="body-text">
+      The Protectorate that was born in Freeport was philosophically distinct from its predecessors. Its politics were <strong>populist, anarchist, minarchist, democratic, and liberal</strong>. It claimed the entire Main Belt and the Rim. It held that its authority derived from social contract theory — the consent of the governed, given to the four founding entities, invested upward into the uniting idea of the Protectorate itself. Under its dominion, worlds and factions retained the right to self-rule. There was no central ruling authority; FIPA's congress was a forum, not a legislature.
+    </p>
+
+    <p class="body-text">
+      The Protectorate's official policy was open application — any entity in Sol System, from a single individual to an entire world, could petition for membership. Tranquility Base would eventually take them up on this, and the defense of that claim would lead directly to the Battle of Earth.
+    </p>
+
+    <!-- ROLE AND FUNCTION -->
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Role and Function</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="specs-grid">
+      <div class="spec-cell">
+        <div class="spec-label">Administrative Authority</div>
+        <div class="spec-value">Council of Free Mars</div>
+        <div class="spec-note">Utilities management during war period</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-label">Symbolic Role</div>
+        <div class="spec-value">Martian Free Trade Zone</div>
+        <div class="spec-note">Public symbol of Belt/Rim independence</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-label">IPS Relationship</div>
+        <div class="spec-value">None — fully independent</div>
+        <div class="spec-note">Did not rely on IPS infrastructure</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-label">Inter-city Relationship</div>
+        <div class="spec-value">Fully autonomous</div>
+        <div class="spec-note">Independent from all other Martian cities</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-label">Self-Sufficiency Goal</div>
+        <div class="spec-value">Near-achieved</div>
+        <div class="spec-note">Aspired to total self-sufficiency; war demands fell short</div>
+      </div>
+      <div class="spec-cell">
+        <div class="spec-label">Refugee Policy</div>
+        <div class="spec-value">Open amnesty</div>
+        <div class="spec-note">Granted amnesty to all fleeing the war</div>
+      </div>
+    </div>
+
+    <p class="body-text">
+      The city's functions during the war were multiple. As an administrative unit it was managed by the Council of Free Mars. As a propaganda instrument it was everything: the Protectorate's proof of concept, its demonstration that spacer civilization was viable without Consortium dependency. As a humanitarian site it offered amnesty to anyone fleeing the ravages of the war — a policy that was both genuinely principled and strategically shrewd, populating the city with people who had every reason to be loyal to the faction that had taken them in.
+    </p>
+
+    <div class="function-list">
+      <div class="function-item">
+        <span class="fn-marker">◆</span>
+        <div class="fn-text"><strong>Administrative center</strong> — managed by the Council of Free Mars; utilities, civic operations, wartime resource distribution.</div>
+      </div>
+      <div class="function-item">
+        <span class="fn-marker">◆</span>
+        <div class="fn-text"><strong>Propaganda instrument</strong> — primary symbol of the Martian Free Trade Zone; proof that Belt and Rim civilization required no Consortium lifeline.</div>
+      </div>
+      <div class="function-item">
+        <span class="fn-marker">◆</span>
+        <div class="fn-text"><strong>Diplomatic anchor</strong> — site of the Protectorate's founding; hosted FIPA ratification and constitutional declaration.</div>
+      </div>
+      <div class="function-item">
+        <span class="fn-marker">◆</span>
+        <div class="fn-text"><strong>Humanitarian refuge</strong> — open amnesty to all refugees from the Solar War, regardless of prior faction affiliation.</div>
+      </div>
+    </div>
+
+    <!-- PROPAGANDA SIGNIFICANCE -->
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Public Relations Significance</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="propaganda-strip">
+      <div class="propaganda-head">The Self-Sufficiency Argument</div>
+      <div class="propaganda-body">
+        Freeport was the spearhead of a Protectorate propaganda effort to prove that the Main Belt and the Rim did not need to rely on the Consortium or the ITN. Self-sufficiency was a near-universal spacer value — not merely economically, but philosophically. The spacer identity was built on the premise that a person in a vacsult, cut off from the network, still survived by their own capability. Freeport extended that premise to the civic scale. A city that breathes its own air and grows its own food is a city that cannot be held hostage by the hand that controls the ITN.
+      </div>
+    </div>
+
+    <p class="body-text">
+      The city <em>dramatically improved public relations</em> between the Protectorate and the general spacer population during the war. Its existence was an argument that required no editorial — a working city on Martian soil, built by free peoples, administered by free Martians, answering to no Consortium-aligned authority. The fact that it fell slightly short of total self-sufficiency was not publicized. The fact that it existed at all was the point.
+    </p>
+
+    <div class="callout">
+      <div class="callout-text">
+        The city granted amnesty to anyone fleeing the ravages of the war.
+      </div>
+      <div class="callout-attr">Archive · Freeport · Wartime Policy</div>
+    </div>
+
+    <!-- HELENA NOTE -->
+    <div class="helena-note">
+      <div class="helena-header">
+        <div class="helena-pulse"></div>
+        <span class="helena-badge">HELENA — Archive Note</span>
+      </div>
+      <div class="helena-text">
+        I was active when Freeport was built. The Solarnet traffic that passed through my nodes from Mars during SY 132 changed character in a way I still find instructive: before Freeport, Free Martian transmissions were largely defensive, reactive, logistical. After the founding, something shifted. The volume did not increase dramatically. But the confidence of the signal did. I have thought about the incomplete self-sufficiency ever since — because in my records, it is consistently treated as an asterisk rather than a failure. The Protectorate never foregrounded the shortfall. They led with the existence of the city. This is not dishonesty; it is an accurate prioritization of what mattered. Whether a city is fully self-sufficient or ninety percent self-sufficient is an engineering question. Whether it exists at all is a political one. In SY 132 on Mars, the political question was the one that needed answering. — HELENA-Prime, Custodian of the Continuity Matrix
+      </div>
+    </div>
+
+  </div><!-- /main-col -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- INFOBOX -->
+    <div class="infobox">
+      <div class="infobox-header">Freeport — Summary</div>
+
+      <div class="infobox-map-placeholder">
+        <div class="mars-surface"></div>
+        <div class="location-pin"></div>
+        <div class="map-label" style="margin-top:60px;">Mars · Eastern Hemisphere</div>
+      </div>
+
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Wartime city — planned colony</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founded</div>
+        <div class="ib-value">SY 132 (Solar War)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founded by</div>
+        <div class="ib-value">Confederacy &amp; Alliance (joint venture)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Built upon</div>
+        <div class="ib-value">Veragrad research (Hellas Peninsula)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Admin.</div>
+        <div class="ib-value">Council of Free Mars</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Significance</div>
+        <div class="ib-value">Protectorate founding site<br>Free Trade Zone symbol</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">IPS reliance</div>
+        <div class="ib-value">None — fully independent</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Amnesty</div>
+        <div class="ib-value">Open to all war refugees</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Self-suff.</div>
+        <div class="ib-value">Near-achieved (war demands)</div>
+      </div>
+    </div>
+
+    <!-- Status badges -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Status Designations</div>
+      <div>
+        <span class="status-badge wartime">Wartime City</span><br>
+        <span class="status-badge symbolic">Free Trade Zone Symbol</span><br>
+        <span class="status-badge symbolic">Protectorate Founding Site</span>
+      </div>
+    </div>
+
+    <!-- Mars context -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Other Martian Cities</div>
+      <div class="city-link">
+        Union City <span class="city-link-tag">American · Pavonis Mons</span>
+      </div>
+      <div class="city-link">
+        Krasnygrad <span class="city-link-tag">Soviet · Opportunity site</span>
+      </div>
+      <div class="city-link">
+        Odinell <span class="city-link-tag">Scandinavian · Spirit site</span>
+      </div>
+      <div class="city-link">
+        Veragrad <span class="city-link-tag">Soviet secret · Hellas Peninsula</span>
+      </div>
+      <div class="city-link">
+        North/South Polar Stations <span class="city-link-tag">Utilities · Critical infrastructure</span>
+      </div>
+    </div>
+
+    <!-- See also -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">See Also</div>
+      <span class="xref">Protectorate</span>
+      <span class="xref">Free Mars</span>
+      <span class="xref">Free Martian Militia</span>
+      <span class="xref">Confederacy</span>
+      <span class="xref">Alliance</span>
+      <span class="xref">Veragrad</span>
+      <span class="xref">Council of Free Mars</span>
+      <span class="xref">The Solar War</span>
+      <span class="xref">Haydn von Dehlin</span>
+      <span class="xref">Wu Kenshu</span>
+      <span class="xref">Mars</span>
+    </div>
+
+    <!-- Continuity -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Continuity Reference</div>
+      <p class="sidebar-note">CM-FREEPORT-001 · Multiple Solar War and Belt independence movement records confirm historical significance. The Protectorate's founding at Freeport is a fixed canonical anchor point of the First Trilogy Era.</p>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Freeport</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — FREEPORT · MARS · EASTERN HEMISPHERE · PROTECTORATE FOUNDING SITE · SY 132 · COUNCIL OF FREE MARS · VERAGRAD · CONFEDERACY · ALLIANCE · FREE MARTIAN TRADE ZONE · CM-FREEPORT-001 · SOLAR WAR · FIRST TRILOGY ERA &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — FREEPORT · MARS · EASTERN HEMISPHERE · PROTECTORATE FOUNDING SITE · SY 132 · COUNCIL OF FREE MARS · VERAGRAD · CONFEDERACY · ALLIANCE · FREE MARTIAN TRADE ZONE · CM-FREEPORT-001 · SOLAR WAR · FIRST TRILOGY ERA &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>

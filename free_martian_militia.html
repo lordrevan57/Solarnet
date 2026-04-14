@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Martian Militia — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:            #05070a;
+  --mars-rust:     #A63820;
+  --mars-red:      #C94A2A;
+  --mars-ochre:    #C47A35;
+  --mars-dust:     #B89060;
+  --mars-pale:     #E8C49A;
+  /* Militia gets a slightly more muted, worn palette — no faction gold, no clean blue */
+  --mili-mid:      #8A6040;
+  --mili-dark:     #1A0800;
+  --mili-warm:     rgba(196,122,53,0.12);
+  --text:          #d4ccc4;
+  --text-muted:    rgba(212,204,196,0.55);
+  --text-dim:      rgba(212,204,196,0.28);
+  --border:        rgba(196,122,53,0.18);
+  --border-strong: rgba(196,122,53,0.4);
+  --teal:          #58c8a8;
+  --font-mono:     'Share Tech Mono', monospace;
+  --font-title:    'Cinzel', serif;
+  --font-body:     'Exo 2', sans-serif;
+  --font-serif:    'IM Fell English', serif;
+  --font-ui:       'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--font-body); font-weight:300; font-size:15px; line-height:1.75; }
+
+/* HEADER */
+.site-header { border-bottom:1px solid var(--border); background:rgba(5,7,10,0.97); position:sticky; top:0; z-index:100; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:48px; }
+.site-logo { font-family:var(--font-title); font-size:14px; letter-spacing:0.35em; color:var(--teal); text-decoration:none; }
+.site-nav { font-family:var(--font-mono); font-size:9px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; }
+.crumb { color:var(--mars-ochre); margin:0 6px; }
+
+/* HERO — lower, grittier than the planet page. No space gradient. Ground level. */
+.hero-band {
+  background: linear-gradient(180deg, #120600 0%, #2A0E04 50%, #050708 100%);
+  border-bottom: 2px solid rgba(196,122,53,0.5);
+  position:relative; overflow:hidden;
+}
+/* Scratched-texture overlay — uneven horizontals */
+.hero-band::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 3px,
+      rgba(196,122,53,0.015) 3px, rgba(196,122,53,0.015) 4px
+    );
+  pointer-events:none;
+}
+.hero-inner {
+  position:relative; z-index:2;
+  max-width:900px; margin:0 auto;
+  padding:48px 40px 40px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:36px; align-items:start;
+}
+.hero-category { font-family:var(--font-mono); font-size:9px; letter-spacing:0.35em; color:var(--mars-ochre); text-transform:uppercase; margin-bottom:10px; opacity:0.7; }
+.hero-title { font-family:var(--font-title); font-size:36px; font-weight:700; color:var(--mars-pale); letter-spacing:0.04em; line-height:1.1; margin-bottom:4px; }
+.hero-subtitle { font-family:var(--font-serif); font-style:italic; font-size:13px; color:rgba(196,122,53,0.45); margin-bottom:20px; }
+.hero-summary { font-family:var(--font-body); font-size:14px; font-weight:300; color:rgba(212,204,196,0.72); line-height:1.7; max-width:520px; }
+
+/* INFOBOX */
+.infobox { background:rgba(26,8,0,0.85); border:1px solid var(--border-strong); border-top:3px solid var(--mars-ochre); min-width:210px; max-width:230px; }
+.infobox-head { background:rgba(196,122,53,0.08); border-bottom:1px solid var(--border); padding:12px 14px; font-family:var(--font-title); font-size:11px; letter-spacing:0.1em; color:var(--mars-pale); }
+.infobox-sub { font-family:var(--font-mono); font-size:9px; letter-spacing:0.12em; color:rgba(196,122,53,0.4); margin-top:3px; }
+.infobox-body { padding:4px 0; }
+.infobox-row { display:grid; grid-template-columns:80px 1fr; gap:4px; padding:5px 14px; border-bottom:1px solid rgba(196,122,53,0.07); font-family:var(--font-ui); font-size:11px; }
+.infobox-row:last-child { border-bottom:none; }
+.ib-label { color:var(--mars-ochre); font-weight:500; font-size:10px; letter-spacing:0.05em; text-transform:uppercase; padding-top:1px; }
+.ib-value { color:rgba(212,204,196,0.8); line-height:1.5; }
+
+/* PAGE BODY */
+.page-body { max-width:900px; margin:0 auto; padding:48px 40px 80px; display:grid; grid-template-columns:1fr 220px; gap:48px; align-items:start; }
+.main-col { min-width:0; }
+.side-col { position:sticky; top:68px; }
+
+/* HEADINGS */
+h2.section { font-family:var(--font-title); font-size:13px; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--mars-ochre); border-bottom:1px solid var(--border); padding-bottom:8px; margin:36px 0 16px; }
+h2.section:first-child { margin-top:0; }
+h3.subsection { font-family:var(--font-ui); font-size:13px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--mars-dust); margin:24px 0 10px; }
+
+p { margin-bottom:14px; color:rgba(212,204,196,0.85); font-weight:300; }
+p:last-child { margin-bottom:0; }
+strong { color:var(--mars-pale); font-weight:600; }
+
+/* WAR ARC — a vertical timeline for the militia's Solar War journey */
+.war-arc { margin:24px 0; position:relative; padding-left:28px; }
+.war-arc::before { content:''; position:absolute; left:7px; top:8px; bottom:8px; width:1px; background:linear-gradient(to bottom, var(--mars-rust), rgba(196,122,53,0.15)); }
+.arc-entry { position:relative; margin-bottom:28px; }
+.arc-entry:last-child { margin-bottom:0; }
+.arc-dot { position:absolute; left:-24px; top:5px; width:9px; height:9px; border:1px solid var(--mars-ochre); background:var(--bg); transform:rotate(45deg); }
+.arc-dot.major { background:var(--mars-rust); border-color:var(--mars-pale); }
+.arc-date { font-family:var(--font-mono); font-size:9px; letter-spacing:0.2em; color:var(--mars-ochre); text-transform:uppercase; margin-bottom:4px; }
+.arc-title { font-family:var(--font-ui); font-size:13px; font-weight:600; color:var(--mars-pale); letter-spacing:0.05em; margin-bottom:6px; }
+.arc-body { font-family:var(--font-body); font-size:13px; font-weight:300; color:var(--text-muted); line-height:1.7; }
+
+/* DOCTRINE BLOCK — the three "rules" of militia existence */
+.doctrine-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:20px 0; }
+.doctrine-card { background:rgba(26,8,0,0.7); border:1px solid var(--border); border-top:2px solid rgba(196,122,53,0.35); padding:16px; }
+.doc-number { font-family:var(--font-mono); font-size:22px; color:rgba(196,122,53,0.2); margin-bottom:6px; }
+.doc-title { font-family:var(--font-title); font-size:11px; letter-spacing:0.08em; color:var(--mars-pale); margin-bottom:8px; }
+.doc-body { font-family:var(--font-ui); font-size:11px; color:var(--text-muted); line-height:1.65; }
+
+/* PULL QUOTE */
+.pull-quote { border-left:3px solid var(--mars-ochre); background:rgba(196,122,53,0.04); padding:16px 20px; margin:24px 0; font-family:var(--font-serif); font-style:italic; font-size:15px; color:var(--mars-pale); line-height:1.7; }
+.pull-quote cite { display:block; margin-top:10px; font-style:normal; font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--mars-ochre); opacity:0.7; }
+
+/* DECO DIVIDER */
+.deco-divider { display:flex; align-items:center; gap:12px; margin:32px 0; opacity:0.25; }
+.deco-divider::before,.deco-divider::after { content:''; flex:1; height:1px; background:var(--mars-ochre); }
+.deco-mark { width:6px; height:6px; border:1px solid var(--mars-ochre); transform:rotate(45deg); flex-shrink:0; }
+
+/* INFERRED */
+.inferred-notice { background:rgba(55,138,221,0.05); border:1px solid rgba(55,138,221,0.18); border-left:3px solid #378ADD; padding:12px 16px; margin:20px 0; font-family:var(--font-mono); font-size:10px; line-height:1.7; color:rgba(55,138,221,0.6); letter-spacing:0.03em; }
+.inferred-notice strong { color:#378ADD; font-weight:normal; }
+
+/* HELENA NOTE */
+.helena-note { background:rgba(88,200,168,0.04); border:1px solid rgba(88,200,168,0.14); border-left:3px solid var(--teal); padding:14px 18px; margin:28px 0; font-family:var(--font-serif); font-style:italic; font-size:13px; color:rgba(212,204,196,0.7); line-height:1.75; }
+.helena-note-label { font-family:var(--font-mono); font-style:normal; font-size:9px; letter-spacing:0.3em; color:var(--teal); display:block; margin-bottom:8px; opacity:0.7; }
+
+/* SIDEBAR */
+.sidebar-block { background:rgba(20,5,0,0.6); border:1px solid var(--border); border-top:2px solid var(--mars-ochre); padding:16px; margin-bottom:20px; }
+.sidebar-head { font-family:var(--font-title); font-size:10px; letter-spacing:0.2em; color:var(--mars-ochre); text-transform:uppercase; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.sidebar-link { display:block; font-family:var(--font-ui); font-size:12px; color:var(--mars-dust); text-decoration:none; padding:4px 0; border-bottom:1px solid rgba(196,122,53,0.07); letter-spacing:0.03em; }
+.sidebar-link:last-child { border-bottom:none; }
+.sidebar-meta { font-family:var(--font-mono); font-size:10px; color:var(--text-dim); line-height:1.9; }
+.sidebar-meta span { color:var(--mars-ochre); opacity:0.7; }
+
+/* NO-INSIGNIA BADGE — honest about what this entry lacks */
+.no-insignia { border:1px dashed rgba(196,122,53,0.2); padding:18px; text-align:center; margin-bottom:20px; }
+.no-insignia-text { font-family:var(--font-mono); font-size:9px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; line-height:1.8; }
+
+/* FOOTER */
+.page-footer { border-top:1px solid var(--border); padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+.footer-stamp { font-family:var(--font-mono); font-size:9px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; }
+.footer-stamp span { color:var(--mars-ochre); opacity:0.5; }
+#sy-clock { font-family:var(--font-mono); font-size:9px; letter-spacing:0.15em; color:var(--teal); opacity:0.5; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a class="site-logo" href="#">✴ SOLARNET</a>
+  <nav class="site-nav">
+    Archive <span class="crumb">/</span> Factions <span class="crumb">/</span> Mars <span class="crumb">/</span> <span style="color:var(--mars-pale)">Free Martian Militia</span>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero-band">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-category">◈ Militia · Decentralized · Solar War Era · Free Mars</div>
+      <h1 class="hero-title">Free Martian Militia</h1>
+      <div class="hero-subtitle">Citizens under arms — pact of mutual civil defense — no shared command, no shared flag</div>
+      <p class="hero-summary">
+        The Free Martian Militia is not a single organization. It is an umbrella term for every citizen of Free Mars who picked up a weapon, named a pact with their neighbors, and agreed to defend the planet. They arrived at the Solar War without training, without uniforms, without unity beyond the fact of being Martian. They left it as founding members of the Spacer Protectorate.
+      </p>
+    </div>
+    <div class="infobox">
+      <div class="infobox-head">
+        Free Martian Militia
+        <div class="infobox-sub">3M · FMM · The Militia</div>
+      </div>
+      <div class="infobox-body">
+        <div class="infobox-row"><span class="ib-label">Type</span><span class="ib-value">Decentralized citizen militia coalition</span></div>
+        <div class="infobox-row"><span class="ib-label">Active</span><span class="ib-value">SY 129 – SY 138+</span></div>
+        <div class="infobox-row"><span class="ib-label">Allegiance</span><span class="ib-value">Free Mars<br>Protectorate (SY 132+)</span></div>
+        <div class="infobox-row"><span class="ib-label">Structure</span><span class="ib-value">Loose; command varies per militia unit</span></div>
+        <div class="infobox-row"><span class="ib-label">Equipment</span><span class="ib-value">Self-supplied; no standard issue</span></div>
+        <div class="infobox-row"><span class="ib-label">Training</span><span class="ib-value">Civilian (initial)<br>AEK-trained (post–1st Battle)</span></div>
+        <div class="infobox-row"><span class="ib-label">Opponents</span><span class="ib-value">Technocracy<br>Consortium</span></div>
+        <div class="infobox-row"><span class="ib-label">Legacy</span><span class="ib-value">Protectorate founding members</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+  <main class="main-col">
+
+    <h2 class="section">Overview</h2>
+
+    <p>
+      The Free Martian Militia is the umbrella term given to a large group of loosely organized citizens of Free Mars bound voluntarily by a pact of mutual civil defense. It is not one force. It is dozens of forces — city militias, neighborhood watch groups, mining cooperatives that decided to arm themselves, farming collectives that turned their greenhouses into fallback positions. Command structure varies widely from militia to militia. Militiamen are expected to supply their own weaponry and gear.
+    </p>
+
+    <p>
+      Before the Solar War, the militias exist as a background fact of Martian life — a low-intensity institution, organized from time to time in response to local disputes or criminal activity, never called to face anything larger than itself. The Confederacy's tradition of citizen militias is their model: loose, local, self-arming, accountable to no central authority. When the war comes to Mars, that model is tested against professional military forces that have been fighting for months.
+    </p>
+
+    <div class="doctrine-grid">
+      <div class="doctrine-card">
+        <div class="doc-number">I</div>
+        <div class="doc-title">Voluntary</div>
+        <div class="doc-body">Membership is by individual pact. No conscription. No central body can order a militia unit into the field — only its own members can.</div>
+      </div>
+      <div class="doctrine-card">
+        <div class="doc-number">II</div>
+        <div class="doc-title">Self-Armed</div>
+        <div class="doc-body">Each militiaman supplies their own weapons, gear, and consumables. The militia has no quartermaster, no supply chain, no logistics corps.</div>
+      </div>
+      <div class="doctrine-card">
+        <div class="doc-number">III</div>
+        <div class="doc-title">Locally Commanded</div>
+        <div class="doc-body">Command structure is determined by each unit. There is no supreme commander of the Free Martian Militia — only signatories who speak for their own people.</div>
+      </div>
+    </div>
+
+    <div class="deco-divider"><div class="deco-mark"></div></div>
+
+    <h2 class="section">The Solar War</h2>
+
+    <p>
+      The militia's arc through the Solar War is the arc of an institution built for one scale of conflict discovering what it is capable of at another. They began as local defense forces. They ended as the ground-level fighting force of the Protectorate's most critical battles — and as its founders.
+    </p>
+
+    <div class="war-arc">
+
+      <div class="arc-entry">
+        <div class="arc-dot"></div>
+        <div class="arc-date">SY 129 — War Begins</div>
+        <div class="arc-title">Consortium Withdraws Recognition</div>
+        <div class="arc-body">When the Technocracy moves on Mars and the Consortium subsequently declares the Free Mars treaty void, Free Martians face a war on their soil without a standing army, a unified command, or any formal alliance. The militia units activate. The Free Martian Council issues edicts. They are organized enough to call themselves defenders. They are not yet organized enough to win.</div>
+      </div>
+
+      <div class="arc-entry">
+        <div class="arc-dot major"></div>
+        <div class="arc-date">SY 132 — First Battle of Mars</div>
+        <div class="arc-title">Orbital Engagement — Militia Holds Ground</div>
+        <div class="arc-body">The First Battle of Mars is largely an orbital engagement — Confederate and Technical fleets fighting above the planet, kinetic weapons deployed, the cruiser <em>Paragon</em> preventing Technical deorbiting. The militias hold the surface. When fleets from Deimos and Phobos deliver the kinetic blitzkrieg that ends the battle with no Technical survivors, the militias are still at their positions. They survive the first test. Then the Confederacy forms its pact with the Alliance and the Free Martian Council, petitions the Army of Eastern Kamijing for aid, and the interval between battles begins.</div>
+      </div>
+
+      <div class="arc-entry">
+        <div class="arc-dot"></div>
+        <div class="arc-date">SY 132 — Inter-Battle Period</div>
+        <div class="arc-title">AEK Training</div>
+        <div class="arc-body">Between the First and Second Battles, militia units receive formal military training from the Army of Eastern Kamijing — the AEK contingent that has come to Martian defense. This is the hinge point of the militia's war. They arrive at the Second Battle as citizens who have been taught. The AEK's training philosophy emphasizes individual capability, Kami Do discipline, and unit cohesion; what this produces in hastily trained militiamen is not AEK soldiers, but it is something considerably more dangerous than what they were before.</div>
+      </div>
+
+      <div class="arc-entry">
+        <div class="arc-dot major"></div>
+        <div class="arc-date">SY 132 — Second Battle of Mars</div>
+        <div class="arc-title">The Urban Fight for Taikograd</div>
+        <div class="arc-body">A highly mobilized Technical force arrives in orbit. Strategic bombing knocks out Taikograd's defenses. Technical ground forces land at the city — the economic capital of Mars, the largest PRC population center on the planet — and cut power and oxygen to the city, locking civilians including Jaymeson and Cera Nicks inside their homes. The battle endures for three Martian days. When AEK Shock Command troops halo jump from orbiting Confederate capital ships, they land and encircle the Technical siege lines from outside. The Free Martian Militia is assigned the urban fight — the street-by-street, corridor-by-corridor, airlock-by-airlock battle inside Taikograd itself. They win it. <em>The Defiant</em> decimates the Technical navy in orbit above them. The battle is won.</div>
+      </div>
+
+      <div class="arc-entry">
+        <div class="arc-dot"></div>
+        <div class="arc-date">SY 132 — Post-Battle</div>
+        <div class="arc-title">Formation of the Protectorate · Founding of Freeport</div>
+        <div class="arc-body">Leaders from the Alliance, Confederacy, Free Martian Militia, and Army of Eastern Kamijing meet on Mars. Together they found Freeport as a refuge for any refugee seeking asylum and declare it under the protection of a new united faction: the Spacer Protectorate. Signatories from the various militia units are among the Protectorate's founding members — citizens who entered the war as self-armed volunteers, who trained in the interval between battles, and who now speak for Mars at the founding of something larger than Mars.</div>
+      </div>
+
+      <div class="arc-entry">
+        <div class="arc-dot"></div>
+        <div class="arc-date">SY 132–138 — Skirmish Period</div>
+        <div class="arc-title">Sustained Surface Combat</div>
+        <div class="arc-body">For several seasons, militia units skirmish with both Technocrat and Consortium forces on the Martian surface. The Consortium enters the war as a "peacekeeping" force and is welcomed by no faction. Widespread skirmishing throughout the Belt. On Mars the militias hold the surface under the Protectorate's defensive posture — zero tolerance for instigation within Protectorate space, purely defensive war.</div>
+      </div>
+
+      <div class="arc-entry">
+        <div class="arc-dot major"></div>
+        <div class="arc-date">SY 138 — Siege of Mars</div>
+        <div class="arc-title">Twelve Days — Defeat and Dispersal</div>
+        <div class="arc-body">Mars is blockaded by combined Consortium and Technical forces under the new Unity Government, which demands Martian resources as Solar trade collapses. For twelve standard days the siege holds. On the second day, irregulars from the Protectorate's Alliance faction attempt a subterfuge campaign against Consortium forces landing at the poles. When Martian defeat becomes apparent, Burt Robinson — Consortium diplomat turned Free Martian patriot — refuses to surrender. He departs with the <strong>Remus Exiles</strong>, a warband of Martian Militia veterans, Lunar expatriates, and refugees. He stations them around Jupiter and keeps them intact until his death at 196. The militias that remain disperse into the planet or surrender. The Protectorate retreats. Mars is no longer free.</div>
+      </div>
+
+    </div>
+
+    <div class="pull-quote">
+      They organized themselves from time to time into the Free Martian Militia for self-defense after the manner of the Confederacy. The manner of the Confederacy was sufficient — until the war came for them directly, and then something had to change, and it did.
+      <cite>— Continuity Matrix, CM-FMM-001</cite>
+    </div>
+
+    <div class="deco-divider"><div class="deco-mark"></div></div>
+
+    <h2 class="section">Structure &amp; Character</h2>
+
+    <p>
+      The militia has no standard uniform, no standard weapon, no standard rank structure. What it has is the pact — a voluntary agreement of mutual defense among people who share a city or a district or a shift in the same greenhouse. The pact is the organizational unit. The signatories of the pact choose their own leadership, establish their own rules of engagement, and are accountable to each other and to the Free Martian Council insofar as they choose to be.
+    </p>
+
+    <p>
+      This structure is both the militia's weakness and its strength. It cannot be beheaded — there is no supreme commander whose capture ends its resistance. It cannot be easily subverted or suborned — each unit's loyalty is to its own members, not to any external authority. It is, however, difficult to coordinate at scale and impossible to supply centrally. The AEK training between the First and Second Battles addresses the tactical gap; the logistical gap is addressed only partly, and only by Freeport's self-sufficiency work.
+    </p>
+
+    <div class="inferred-notice">
+      <strong>HELENA — Archival Note:</strong> The number of individual militia units active during the Solar War, their city-by-city breakdown, and specific named unit commanders are [ABSENT] from the current archive beyond broad references to "signatories" who join the Protectorate. Development recommended — individual militia stories are the ground-level texture of the war on Mars.
+    </div>
+
+    <div class="helena-note">
+      <span class="helena-note-label">✴ HELENA — Archive Note</span>
+      I have records of the battles. I do not have records of the names of the people who fought the urban action in Taikograd while the power was out and civilians were locked in their homes waiting for the air to thin. Those were militia — self-armed, locally commanded, trained between battles by people who themselves trained for a lifetime. The AEK gave them weeks and expected them to do what took the AEK years. They did it. I would like to know their names. I expect the archive will fill them in eventually, when the Chronicler hears them.
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="side-col">
+
+    <div class="no-insignia">
+      <div class="no-insignia-text">
+        No standard insignia<br>
+        No standard uniform<br>
+        No standard weapon<br>
+        ——<br>
+        Identity is the pact,<br>not the flag
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">War Timeline</div>
+      <div class="sidebar-meta">
+        <span>SY 129</span><br>Militia activated · war begins<br><br>
+        <span>SY 132</span><br>First Battle of Mars (orbital)<br><br>
+        <span>SY 132</span><br>AEK training interval<br><br>
+        <span>SY 132</span><br>Second Battle · Taikograd urban fight<br><br>
+        <span>SY 132</span><br>Protectorate founded<br><br>
+        <span>SY 132–138</span><br>Skirmish period<br><br>
+        <span>SY 138</span><br>Siege of Mars · dispersal
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Related Entries</div>
+      <a class="sidebar-link" href="#">Free Mars</a>
+      <a class="sidebar-link" href="#">Mars</a>
+      <a class="sidebar-link" href="#">Spacer Protectorate</a>
+      <a class="sidebar-link" href="#">Army of Eastern Kamijing</a>
+      <a class="sidebar-link" href="#">Solar War</a>
+      <a class="sidebar-link" href="#">Freeport</a>
+      <a class="sidebar-link" href="#">Burt Robinson</a>
+      <a class="sidebar-link" href="#">Remus Exiles</a>
+      <a class="sidebar-link" href="#">Taikograd</a>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Archive Data</div>
+      <div class="sidebar-meta">
+        <span>Type</span><br>Faction — citizen militia<br><br>
+        <span>Status</span><br>Canonical<br><br>
+        <span>Era</span><br>First Trilogy Era<br><br>
+        <span>Matrix ref</span><br>CM-FMM-001
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="footer-stamp">
+    Solarnet Archive <span>/</span> Factions <span>/</span> Mars <span>/</span> Free Martian Militia
+    <span style="display:block;margin-top:2px;">Custodian: HELENA-Prime · revan@solarmail.conf</span>
+  </div>
+  <div id="sy-clock">SY —.———</div>
+</footer>
+
+<script>
+const EPOCH_DATE = new Date('2026-01-12T00:00:00Z');
+const EPOCH_SY = 132.0;
+const SY_PER_MS = 0.01 / 86400000;
+function updateClock() {
+  const sy = EPOCH_SY + (new Date() - EPOCH_DATE) * SY_PER_MS;
+  const int = Math.floor(sy);
+  const frac = (sy - int).toFixed(3).slice(1);
+  document.getElementById('sy-clock').textContent = `SY ${int}${frac}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

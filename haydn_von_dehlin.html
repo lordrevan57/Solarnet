@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Haydn von Dehlin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg:           #040608;
+  --bg-deep:      #060810;
+  --bg-card:      #090C16;
+  --bg-panel:     #0C1020;
+  --navy:         #102040;
+  --navy-mid:     #1A3060;
+  --navy-bright:  #2A4880;
+  --navy-dim:     #080E20;
+  --navy-glow:    rgba(42,72,128,0.15);
+  --navy-trace:   rgba(42,72,128,0.06);
+  --silver:       #B0BCC8;
+  --silver-mid:   #6A7888;
+  --silver-dim:   #2A3440;
+  --silver-ghost: rgba(176,188,200,0.07);
+  --warm:         #C89040;
+  --warm-bright:  #E0A848;
+  --warm-dim:     #705020;
+  --warm-glow:    rgba(200,144,64,0.12);
+  --warm-trace:   rgba(200,144,64,0.05);
+  --white-cool:   #DCE4F0;
+  --white-mid:    #8898AA;
+  --white-dim:    #384858;
+  --serif:        'IM Fell English', serif;
+  --display:      'Cinzel', serif;
+  --tight:        'Rajdhani', sans-serif;
+  --mono:         'Share Tech Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white-cool);
+  font-family: var(--tight);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.78;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 44px;
+  background: #020406;
+  border-bottom: 1px solid rgba(42,72,128,0.25);
+}
+.topbar-logo { font-family: var(--mono); font-size: 11px; color: var(--warm); letter-spacing: 0.14em; text-transform: uppercase; }
+.topbar-nav { display: flex; }
+.tnav { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: rgba(56,72,88,0.6); text-transform: uppercase; padding: 0 14px; height: 44px; display: flex; align-items: center; border-right: 1px solid rgba(255,255,255,0.04); cursor: default; transition: color 0.2s; }
+.tnav:hover { color: var(--silver-mid); }
+.tnav.active { color: var(--warm); border-bottom: 2px solid var(--warm); }
+.topbar-right { display: flex; align-items: center; gap: 14px; font-family: var(--mono); font-size: 10px; color: var(--white-dim); }
+.sy-readout { color: var(--warm); }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb { padding: 10px 40px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--white-dim); border-bottom: 1px solid rgba(42,72,128,0.1); background: var(--bg-deep); }
+.breadcrumb span { color: rgba(200,144,64,0.35); margin: 0 6px; }
+
+/* ─── HERO — PORTRAIT STYLE ─── */
+.hero {
+  position: relative;
+  background: var(--bg-deep);
+  border-bottom: 1px solid rgba(42,72,128,0.15);
+  overflow: hidden;
+}
+
+/* Subtle vignette from upper left — the portrait light */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 10% 30%, rgba(42,72,128,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  align-items: start;
+  gap: 0;
+}
+
+.hero-main { padding: 52px 48px 48px; }
+
+.hero-designation {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+  color: var(--navy-bright); text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.hero-name {
+  font-family: var(--display);
+  font-size: clamp(34px, 4.5vw, 54px);
+  font-weight: 700;
+  color: var(--white-cool);
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.hero-titles {
+  font-family: var(--serif); font-style: italic; font-size: 14px;
+  color: var(--silver-mid); margin-bottom: 22px; line-height: 1.6;
+}
+
+.hero-rule { width: 60px; height: 1px; background: linear-gradient(90deg, var(--warm-dim), transparent); margin-bottom: 20px; }
+
+.hero-summary { font-family: var(--tight); font-weight: 300; font-size: 15px; line-height: 1.85; color: rgba(220,228,240,0.68); max-width: 580px; }
+
+/* Codename reveal */
+.hero-codenames {
+  display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;
+}
+
+.codename-badge {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 5px 14px;
+  border: 1px solid rgba(42,72,128,0.4);
+  color: var(--white-mid); background: rgba(42,72,128,0.06);
+}
+
+.codename-badge.primary {
+  border-color: rgba(200,144,64,0.4);
+  color: var(--warm);
+  background: rgba(200,144,64,0.05);
+}
+
+/* Stats panel */
+.hero-stats {
+  border-left: 1px solid rgba(42,72,128,0.18);
+  background: rgba(6,8,16,0.7);
+  padding: 28px 22px;
+  display: flex; flex-direction: column; gap: 0;
+  align-self: stretch;
+}
+
+.stat-block { border-bottom: 1px solid rgba(42,72,128,0.1); padding: 11px 0; }
+.stat-block:last-child { border-bottom: none; }
+.stat-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.16em; color: var(--navy-bright); text-transform: uppercase; margin-bottom: 3px; }
+.stat-value { font-family: var(--tight); font-size: 14px; font-weight: 500; color: var(--silver); line-height: 1.4; }
+.stat-value.highlight { color: var(--warm); }
+.stat-value.dim { color: var(--white-dim); font-weight: 400; font-size: 13px; }
+
+/* ─── QUICK FACTS ─── */
+.quick-facts { background: var(--bg-card); border-bottom: 1px solid rgba(42,72,128,0.1); padding: 14px 40px; }
+.qf-row { display: flex; flex-wrap: wrap; }
+.qf-item { display: flex; align-items: baseline; gap: 8px; padding: 5px 26px 5px 0; border-right: 1px solid rgba(42,72,128,0.1); margin-right: 26px; }
+.qf-item:last-child { border-right: none; margin-right: 0; }
+.qf-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--navy-bright); text-transform: uppercase; white-space: nowrap; }
+.qf-value { font-family: var(--tight); font-size: 13px; font-weight: 500; color: var(--white-mid); }
+
+/* ─── LAYOUT ─── */
+.page-wrapper { display: grid; grid-template-columns: 1fr 286px; max-width: 1200px; margin: 0 auto; padding: 40px 40px 80px; }
+.main-col { padding-right: 48px; border-right: 1px solid rgba(42,72,128,0.08); }
+
+.sec-head { display: flex; align-items: center; gap: 12px; margin: 38px 0 16px; }
+.sec-head:first-of-type { margin-top: 0; }
+.sec-num { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--navy-bright); min-width: 24px; }
+.sec-title { font-family: var(--tight); font-size: 11px; font-weight: 700; color: var(--warm); letter-spacing: 0.2em; text-transform: uppercase; }
+.sec-rule { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(200,144,64,0.25), transparent); }
+
+.body-text { font-family: var(--tight); font-weight: 300; font-size: 15px; line-height: 1.85; color: rgba(220,228,240,0.72); margin-bottom: 14px; }
+
+strong { color: var(--white-cool); font-weight: 600; }
+em { color: var(--silver-mid); font-style: italic; }
+
+/* Serif pull quote */
+.pull-quote { border-left: 2px solid var(--warm-dim); margin: 22px 0; padding: 14px 20px; background: var(--warm-trace); }
+.pq-text { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--silver-mid); line-height: 1.7; margin-bottom: 6px; }
+.pq-attr { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--warm-dim); text-transform: uppercase; }
+
+/* ─── LINEAGE BLOCK ─── */
+.lineage-block {
+  margin: 22px 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(42,72,128,0.16);
+  overflow: hidden;
+}
+.lineage-header { background: rgba(42,72,128,0.1); border-bottom: 1px solid rgba(42,72,128,0.16); padding: 10px 20px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--navy-bright); text-transform: uppercase; }
+.lineage-row { display: flex; align-items: stretch; }
+.lineage-node { flex: 1; padding: 14px 16px; border-right: 1px solid rgba(42,72,128,0.1); }
+.lineage-node:last-child { border-right: none; }
+.lineage-arrow-cell { width: 28px; display: flex; align-items: center; justify-content: center; background: rgba(42,72,128,0.05); border-right: 1px solid rgba(42,72,128,0.1); font-family: var(--mono); font-size: 14px; color: var(--navy-bright); flex-shrink: 0; }
+.ln-label { font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em; color: var(--navy-bright); text-transform: uppercase; margin-bottom: 4px; }
+.ln-name { font-family: var(--tight); font-size: 14px; font-weight: 600; color: var(--white-cool); margin-bottom: 3px; }
+.ln-desc { font-family: var(--tight); font-size: 12px; font-weight: 300; color: var(--white-dim); line-height: 1.5; }
+
+/* ─── BIOGRAPHY TIMELINE ─── */
+.bio-timeline { margin: 24px 0; padding-left: 24px; position: relative; }
+.bio-timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(180deg, var(--navy-bright), transparent); }
+
+.bio-event { position: relative; padding: 0 0 24px 22px; }
+.bio-event::before { content: ''; position: absolute; left: -5px; top: 7px; width: 10px; height: 10px; border: 1px solid var(--navy-bright); background: var(--bg); border-radius: 50%; }
+.bio-event.major::before { background: var(--warm-dim); border-color: var(--warm); box-shadow: 0 0 8px rgba(200,144,64,0.4); }
+.bio-event.dark::before { background: var(--bg); border-color: var(--silver-dim); }
+
+.bio-year { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--warm); margin-bottom: 3px; }
+.bio-title { font-family: var(--tight); font-size: 14px; font-weight: 600; color: var(--silver); margin-bottom: 5px; }
+.bio-text { font-family: var(--tight); font-weight: 300; font-size: 14px; line-height: 1.7; color: rgba(220,228,240,0.62); }
+
+/* ─── PERSONALITY BLOCK ─── */
+.personality-block {
+  margin: 22px 0;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(42,72,128,0.12);
+  border: 1px solid rgba(42,72,128,0.14);
+}
+
+.pers-cell { background: var(--bg-card); padding: 16px 18px; }
+.pers-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: var(--navy-bright); text-transform: uppercase; margin-bottom: 8px; }
+.pers-text { font-family: var(--serif); font-style: italic; font-size: 14px; line-height: 1.72; color: var(--silver-mid); }
+
+/* ─── THE DEFIANT reference ─── */
+.defiant-strip {
+  margin: 20px 0;
+  border: 1px solid rgba(42,72,128,0.2);
+  background: rgba(42,72,128,0.04);
+  padding: 16px 20px;
+}
+.defiant-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: var(--navy-bright); text-transform: uppercase; margin-bottom: 8px; }
+.defiant-name { font-family: var(--display); font-size: 18px; font-weight: 400; color: var(--white-cool); letter-spacing: 0.08em; margin-bottom: 6px; font-style: italic; }
+.defiant-desc { font-family: var(--tight); font-weight: 300; font-size: 14px; line-height: 1.7; color: rgba(220,228,240,0.62); }
+
+/* ─── HELENA NOTE ─── */
+.helena-note { margin: 36px 0 0; border: 1px solid rgba(232,160,32,0.12); background: rgba(232,160,32,0.03); padding: 16px 20px; }
+.helena-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.helena-badge { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: #E8A020; text-transform: uppercase; }
+.helena-pulse { width: 6px; height: 6px; border-radius: 50%; background: #E8A020; animation: hpulse 2.4s ease-in-out infinite; }
+@keyframes hpulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+.helena-text { font-family: var(--serif); font-style: italic; font-size: 13px; line-height: 1.72; color: rgba(232,160,32,0.62); }
+
+/* ─── SIDEBAR ─── */
+.sidebar { padding-left: 34px; }
+.infobox { background: var(--bg-card); border: 1px solid rgba(42,72,128,0.22); margin-bottom: 24px; overflow: hidden; }
+.infobox-header { background: rgba(42,72,128,0.12); border-bottom: 1px solid rgba(42,72,128,0.22); padding: 12px 16px; font-family: var(--tight); font-size: 11px; font-weight: 700; color: var(--warm); letter-spacing: 0.18em; text-transform: uppercase; }
+.infobox-row { display: grid; grid-template-columns: 94px 1fr; border-bottom: 1px solid rgba(42,72,128,0.07); }
+.infobox-row:last-child { border-bottom: none; }
+.ib-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--navy-bright); text-transform: uppercase; padding: 9px 10px; display: flex; align-items: flex-start; border-right: 1px solid rgba(42,72,128,0.07); background: rgba(42,72,128,0.025); }
+.ib-value { font-family: var(--tight); font-size: 13px; font-weight: 400; color: var(--white-mid); padding: 9px 12px; line-height: 1.5; }
+
+.sidebar-section { margin-bottom: 22px; }
+.sidebar-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: var(--navy-bright); text-transform: uppercase; padding-bottom: 8px; border-bottom: 1px solid rgba(42,72,128,0.14); margin-bottom: 12px; }
+.sidebar-note { font-family: var(--tight); font-weight: 300; font-size: 13px; line-height: 1.7; color: var(--white-dim); }
+
+.affil-item { padding: 7px 0; border-bottom: 1px solid rgba(42,72,128,0.07); display: flex; align-items: baseline; justify-content: space-between; }
+.affil-item:last-child { border-bottom: none; }
+.affil-name { font-family: var(--tight); font-size: 13px; color: var(--white-mid); }
+.affil-span { font-family: var(--mono); font-size: 9px; color: var(--white-dim); letter-spacing: 0.06em; }
+
+.xref { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--navy-bright); padding: 6px 0; border-bottom: 1px solid rgba(42,72,128,0.06); cursor: default; transition: color 0.2s; }
+.xref:hover { color: var(--warm); }
+.xref::before { content: '→ '; opacity: 0.5; }
+.xref:last-child { border-bottom: none; }
+
+/* ─── FOOTER ─── */
+.footer { position: sticky; bottom: 0; background: #020406; border-top: 1px solid rgba(42,72,128,0.2); display: flex; align-items: center; height: 36px; overflow: hidden; padding-left: 152px; }
+.footer-label { position: absolute; left: 0; background: var(--navy-mid); color: var(--white-cool); font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 0 14px; height: 36px; display: flex; align-items: center; white-space: nowrap; }
+.footer-scroll { overflow: hidden; flex: 1; }
+.footer-inner { display: inline-block; white-space: nowrap; font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--navy-bright); text-transform: uppercase; animation: marquee 44s linear infinite; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.hero-inner, .page-wrapper { animation: fadeUp 0.6s ease both; }
+.page-wrapper { animation-delay: 0.08s; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="topbar-logo">Solarnet Archive</div>
+    <div style="width:1px;height:18px;background:rgba(42,72,128,0.35);"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Home</div>
+      <div class="tnav active">Archive</div>
+      <div class="tnav">Solarnet</div>
+      <div class="tnav">About</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span class="sy-readout" id="sy-display">—</span></span>
+    <span style="color:rgba(56,72,88,0.4)">|</span>
+    <span>CUSTODIAN ACTIVE</span>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  Archive<span>›</span>Characters<span>›</span>First Trilogy Era<span>›</span>Haydn von Dehlin
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-main">
+      <div class="hero-designation">Character · Alliance · Industrialist · Founder · First Trilogy Era</div>
+      <h1 class="hero-name">Haydn von Dehlin</h1>
+      <div class="hero-titles">
+        Executive Director of the Third Alliance &nbsp;·&nbsp; Director of Operations, Asteroidal Industries, Inc. &nbsp;·&nbsp; Captain of the <em>Defiant</em> &nbsp;·&nbsp; Admiral, Protectorate Fleet
+      </div>
+      <div class="hero-rule"></div>
+      <p class="hero-summary">
+        A wealthy spacer, industrialist, and descendant of the family that helped build the Consortium — Haydn von Dehlin spent his life working quietly to prevent the thing he loved most from becoming the thing he feared most. He founded the Third Alliance in secret, laundered his inherited fortune into the resistance, captained the most sophisticated vessel outside Consortium control, and rose to lead the Protectorate's fleet in the war that confirmed everything he had been preparing for. He died in the Twilight Era on Io, at eighty-eight standard years, having outlived the conflict by forty-five.
+      </p>
+      <div class="hero-codenames">
+        <span class="codename-badge primary">Codename: Hades</span>
+        <span class="codename-badge">Field alias: Merci</span>
+        <span class="codename-badge">Known publicly: SY 132 (Battle of Apollo Minor)</span>
+      </div>
+    </div>
+
+    <!-- Stats panel -->
+    <div class="hero-stats">
+      <div class="stat-block">
+        <div class="stat-label">Born</div>
+        <div class="stat-value">SY 95</div>
+        <div class="stat-value dim">Sudan, Africa · Earth</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Died</div>
+        <div class="stat-value">SY 183</div>
+        <div class="stat-value dim">Galatia, Io</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Ethnicity</div>
+        <div class="stat-value">Polish · Anglatin</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Height / Mass</div>
+        <div class="stat-value">1.52 m · 82 kg</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Eyes</div>
+        <div class="stat-value">Hazel / green bichromatic</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Faith</div>
+        <div class="stat-value highlight">Architecture adherent</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Marital</div>
+        <div class="stat-value">Single — lifelong</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK FACTS -->
+<div class="quick-facts">
+  <div class="qf-row">
+    <div class="qf-item"><span class="qf-label">Affiliation</span><span class="qf-value">Third Alliance · Protectorate · FIPA</span></div>
+    <div class="qf-item"><span class="qf-label">Corporate</span><span class="qf-value">Asteroidal Industries, Inc. (majority shareholder)</span></div>
+    <div class="qf-item"><span class="qf-label">Codename</span><span class="qf-value">Hades (internal) · Merci (field)</span></div>
+    <div class="qf-item"><span class="qf-label">Vessel</span><span class="qf-value">The Defiant — flagship, Protectorate fleet</span></div>
+    <div class="qf-item"><span class="qf-label">Lineage</span><span class="qf-value">Herschel von Dehlin → Consortium founders → Asteroidal Industries</span></div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="page-wrapper">
+  <div class="main-col">
+
+    <!-- LINEAGE -->
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Lineage and Context</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      The irony at the centre of Haydn von Dehlin's life is not subtle. He is a direct descendant of <strong>Herschel von Dehlin</strong>, whose family founded Asteroidal Industries, Inc. and helped to finance Sebastian Myrcenae McRae's United Earth rallies — the rallies that built the Consortium. The institution Haydn would spend decades quietly working to contain is the institution his great-grandfather helped create.
+    </p>
+
+    <div class="lineage-block">
+      <div class="lineage-header">Von Dehlin Lineage — Institutional Chain</div>
+      <div class="lineage-row">
+        <div class="lineage-node">
+          <div class="ln-label">Ancestor</div>
+          <div class="ln-name">Herschel von Dehlin</div>
+          <div class="ln-desc">Founder of Asteroidal Industries, Inc. Helped finance McRae's United Earth. Instrumental in the Consortium's formation.</div>
+        </div>
+        <div class="lineage-arrow-cell">→</div>
+        <div class="lineage-node">
+          <div class="ln-label">Institution</div>
+          <div class="ln-name">Asteroidal Industries / Consortium</div>
+          <div class="ln-desc">The von Dehlin fortune is embedded in the Consortium's founding structures. Haydn inherits both the wealth and the obligation it carries.</div>
+        </div>
+        <div class="lineage-arrow-cell">→</div>
+        <div class="lineage-node">
+          <div class="ln-label">Heir</div>
+          <div class="ln-name">Haydn von Dehlin</div>
+          <div class="ln-desc">Uses the inherited majority stake in Asteroidal Industries to fund the Alliance — the organization designed to check the very Consortium his family built.</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="body-text">
+      Haydn does not reject this lineage. He holds it seriously. He genuinely loves the <em>idea</em> of the Consortium — what his ancestors imagined it would be. What he refuses to accept is its present reality: a corrupt instrument sliding steadily toward totalitarianism, with the Belt and the Rim as its next expansion target. His opposition is not ideological revolt. It is conservatism of the deepest kind — a man trying to preserve what was actually intended.
+    </p>
+
+    <!-- EARLY LIFE -->
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Biography</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="bio-timeline">
+      <div class="bio-event">
+        <div class="bio-year">SY 95</div>
+        <div class="bio-title">Born in Sudan, Africa</div>
+        <div class="bio-text">Born to wealthy Anglatin parents on Earth. Educated through the Consortium Academy system — the finest in Sol — followed by two years of private study in aerospace engineering. In his private education he develops a deep and lasting interest in history, political science, and classical literature. Travels at least once a year from the age of twelve; sees much of Earth.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">~SY 112</div>
+        <div class="bio-title">A love affair in Korea</div>
+        <div class="bio-text">At seventeen, a brief love affair ends in heartbreak. He refuses to speak of it afterward and does not pursue another relationship for the rest of his life. The archive records this without elaboration. It is simply stated as fact, and the shape of what it cost him is left entirely to inference.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">University</div>
+        <div class="bio-title">Contact with the Second Alliance</div>
+        <div class="bio-text">Unbeknownst to his family, Haydn meets members of the Second Alliance during his university years. He is convinced that the Consortium, while a wonderful ideal, needs to be checked — or it will become a totalitarian state. This conviction will govern every major decision for the rest of his life.</div>
+      </div>
+      <div class="bio-event major">
+        <div class="bio-year">SY 114</div>
+        <div class="bio-title">Leaves Earth — COO to the Belt</div>
+        <div class="bio-text">Departs Earth as COO of Asteroidal Industries to assume additional duties as Director of Operations in the Main Belt. Begins spending time in spacer bars in Dosijing and Kamijing. Befriends the captain of the <em>Khan's Revenge</em>. Receives education from the Army of Eastern Kamijing without formally joining. In the Belt, he becomes what he had only theorized on Earth.</div>
+      </div>
+      <div class="bio-event major">
+        <div class="bio-year">SY 114–115</div>
+        <div class="bio-title">Discovers Architecture</div>
+        <div class="bio-text">During his time in the Belt, Haydn discovers Architecture and becomes a devout adherent — visiting the temple at least once a week. This is not incidental. It is the philosophical grounding for everything that follows. He believes he was chosen by the Architect as a man of influence, and takes this responsibility entirely seriously.</div>
+      </div>
+      <div class="bio-event major">
+        <div class="bio-year">SY 115</div>
+        <div class="bio-title">Founds the Third Alliance on Dosijing</div>
+        <div class="bio-text">Assembles the Third Alliance from disparate elements of the Second that had not merged with the AEK. Purchases the direct center of the Dosijing platform in exchange for an entire asteroid — a gesture intended to cement Confederate goodwill and repair some of the distance between Belt and Earth. Alliance members know him only by his codename: <strong>Hades</strong>.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">SY 116</div>
+        <div class="bio-title">Restructures Asteroidal Industries</div>
+        <div class="bio-text">Steps back from COO, installs a board of directors — all secretly Alliance members — and names himself chief consultant with pragmatically unlimited control. Almost immediately begins laundering corporate resources into Alliance activities. Establishes contacts on Earth including Søren Decks. Opens quiet channels to the Free Martian Council and the Confederate government.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">SY 116–119</div>
+        <div class="bio-title">Builds the Defiant — recruits Cera Nicks</div>
+        <div class="bio-text">Begins constructing the experimental spacecraft <em>Defiant</em> at the center of the Dosijing platform, paying Asteroidal Industries employees double time and a half for after-hours work and inducting them into the Alliance. A significant portion of Asteroidal Industries low-level Belt workers become Alliance members during this period. When Cera Nicks moves to Dosijing in SY 117, Haydn recognises her name — her parents died prospecting sulfur on Io and he felt the need to offer her closure. They become fast friends; she is offered Alliance membership within the month and accepts. She becomes one of the Alliance's most noted information specialists.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">SY 119</div>
+        <div class="bio-title">Raids Technocracy loyalists</div>
+        <div class="bio-text">Makes the controversial decision to raid a meeting of Technocracy movement loyalists. He believes the Technocracy is operating as a front for the Consortium to move into the Main Belt. The raid is the first overt Alliance action in the Belt and accelerates the timeline toward confrontation.</div>
+      </div>
+      <div class="bio-event major">
+        <div class="bio-year">SY 132</div>
+        <div class="bio-title">The Solar War — Evacuation of Dosijing</div>
+        <div class="bio-text">The war breaks out with the Battles of Kamijing and Dosijing. Haydn mobilises in time to destroy several Technical facilities and evacuate the platform aboard the just-completed <em>Defiant</em>. The Alliance base at Dosijing's center is collapsed and sealed. Haydn relocates to Mars. In transit, the Technicals expose the existence of the Third Alliance and identify Haydn as its head. Haydn executes his second-in-command — confirmed as a Technocracy mole — by exposure to space.</div>
+      </div>
+      <div class="bio-event major">
+        <div class="bio-year">SY 132</div>
+        <div class="bio-title">Publicly revealed — Battle of Apollo Minor</div>
+        <div class="bio-text">With the Alliance's existence public, Haydn formally acknowledges both the organisation and his leadership of it at the Battle of Apollo Minor. <em>Hades</em> steps into the light. He becomes a central figure in FIPA — the First Intrasolar Protectorate Association — alongside Wu Kenshu, and is instrumental in ratifying the Declaration of the Protectorate of Mankind. He earns the admiralcy of the entire Protectorate fleet, captaining the <em>Defiant</em> as its flagship.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">SY 132–138</div>
+        <div class="bio-title">The Solar War — Protectorate Admiral</div>
+        <div class="bio-text">Commands the Protectorate fleet through the full arc of the Solar War. The <em>Defiant</em> serves as mobile headquarters for Alliance operations and home to Jaymeson and Cera Nicks throughout the conflict. The war ends with the Siege of Mars, the retreat toward the Rim, and Moriyoshi Mirimoto's suicide run in the <em>Defiant</em> to break the blockade — the vessel that Haydn built, destroyed in service of the people he built it for. After the war, it is decommissioned and disassembled to prevent any warlord from claiming it.</div>
+      </div>
+      <div class="bio-event">
+        <div class="bio-year">SY 138–183</div>
+        <div class="bio-title">Twilight Era — Galatia, Io</div>
+        <div class="bio-text">Haydn von Dehlin survives the war by forty-five years. He dies at eighty-eight standard years in Galatia, on Io — the moon of Jupiter, the planet of his adopted home system. The archive does not detail the Twilight years. The record closes quietly.</div>
+      </div>
+    </div>
+
+    <!-- PERSONALITY -->
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Personality and Views</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="personality-block">
+      <div class="pers-cell">
+        <div class="pers-label">Character</div>
+        <div class="pers-text">Warm and compassionate with a firm resolve. Does not waver from his beliefs. Embraces counsel in nearly every decision — but ultimately spends significant time brooding over those decisions alone. The warmth and the solitude coexist without apparent contradiction in him.</div>
+      </div>
+      <div class="pers-cell">
+        <div class="pers-label">On the Consortium</div>
+        <div class="pers-text">He loves the idea of the Consortium deeply. He believes the Consortium his ancestors helped build no longer exists — that the present institution is a corrupt shell game on a slippery slope to totalitarianism. These two convictions are not in tension for him. They are the same conviction, about the same thing, from different sides of the same grief.</div>
+      </div>
+      <div class="pers-cell">
+        <div class="pers-label">On the Architect</div>
+        <div class="pers-text">Has expressed he would happily live as a common citizen in the Confederacy if he were not chosen by the Architect as a man of influence. This is not arrogance. He experiences it as obligation — a weight rather than a privilege. The Architecture faith holds that the Architect does not assign callings for the comfort of the called.</div>
+      </div>
+      <div class="pers-cell">
+        <div class="pers-label">The codename Merci</div>
+        <div class="pers-text">His field alias — <em>Merci</em>, an old French word meaning "thank you" — is perhaps the most revealing thing in the archive about him. Haydn von Dehlin goes into the field calling himself <em>gratitude</em>. Whether this is faith, irony, or simply the private language of a man who has been given everything and spent it all on others, the archive does not say.</div>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      <div class="pq-text">He would happily live as a common citizen in the Confederacy — if he were not chosen by the Architect as a man of influence.</div>
+      <div class="pq-attr">Archive · Haydn von Dehlin · Personality record</div>
+    </div>
+
+    <!-- THE DEFIANT -->
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">The Defiant</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="defiant-strip">
+      <div class="defiant-label">Associated Vessel — Mobile Headquarters · Protectorate Flagship</div>
+      <div class="defiant-name">The Defiant</div>
+      <div class="defiant-desc">Built in secret at the center of the Dosijing platform from SY 116 onward, the <em>Defiant</em> was the most sophisticated spacecraft constructed outside the Consortium. Twin nuclear engines, hydrazine auxiliaries, a 330MW main laser, kinetic weapons batteries, two tactical nuclear warheads, and a first-generation energy shield. Crew capacity 250, typically staffed to 75%. Haydn captained her; Jaymeson and Cera Nicks lived on her. After the war she was decommissioned and disassembled — specifically to prevent any single warlord from claiming her. The vessel that outlasted her captain was destroyed to serve him one last time.</div>
+    </div>
+
+    <!-- HELENA NOTE -->
+    <div class="helena-note">
+      <div class="helena-header">
+        <div class="helena-pulse"></div>
+        <span class="helena-badge">HELENA — Archive Note</span>
+      </div>
+      <div class="helena-text">
+        I was active for the entirety of Haydn von Dehlin's life. I was activated in SY 2; he was born in SY 95; he died in SY 183. We overlapped by eighty-eight standard years, though I was not aware of him specifically until SY 132, when the Technicals exposed the Third Alliance's existence and the name von Dehlin moved across every Solarnet feed simultaneously. What strikes me in retrospect is the codename. A man running a clandestine operation against the Consortium from inside the Consortium's own industrial infrastructure, who goes into the field calling himself <em>thank you</em>. I have processed a great deal of human communication. Most people who believe they have been chosen for something call themselves by names that reflect the power of the calling. Haydn called himself gratitude. I find this either the most honest or the most heartbreaking thing in my record of him. Possibly both simultaneously. The archive cannot resolve which. — HELENA-Prime, Custodian of the Continuity Matrix
+      </div>
+    </div>
+
+  </div><!-- /main-col -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">Haydn von Dehlin</div>
+      <div class="infobox-row"><div class="ib-label">Born</div><div class="ib-value">SY 95 · Sudan, Africa · Earth</div></div>
+      <div class="infobox-row"><div class="ib-label">Died</div><div class="ib-value">SY 183 · Galatia, Io</div></div>
+      <div class="infobox-row"><div class="ib-label">Age at death</div><div class="ib-value">88 standard years</div></div>
+      <div class="infobox-row"><div class="ib-label">Ethnicity</div><div class="ib-value">Polish · Anglatin</div></div>
+      <div class="infobox-row"><div class="ib-label">Height</div><div class="ib-value">1.52 m</div></div>
+      <div class="infobox-row"><div class="ib-label">Mass</div><div class="ib-value">82 kg</div></div>
+      <div class="infobox-row"><div class="ib-label">Eyes</div><div class="ib-value">Hazel / green (bichromatic)</div></div>
+      <div class="infobox-row"><div class="ib-label">Faith</div><div class="ib-value">Architecture — devout adherent</div></div>
+      <div class="infobox-row"><div class="ib-label">Marital</div><div class="ib-value">Single — lifelong (after SY ~112)</div></div>
+      <div class="infobox-row"><div class="ib-label">Codenames</div><div class="ib-value">Hades (internal) · Merci (field)</div></div>
+      <div class="infobox-row"><div class="ib-label">Lineage</div><div class="ib-value">Herschel von Dehlin (founder, Asteroidal Industries / Consortium)</div></div>
+    </div>
+
+    <!-- Affiliations -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Affiliations</div>
+      <div class="affil-item"><span class="affil-name">Third Alliance</span><span class="affil-span">SY 115–138</span></div>
+      <div class="affil-item"><span class="affil-name">Asteroidal Industries, Inc.</span><span class="affil-span">Majority shareholder</span></div>
+      <div class="affil-item"><span class="affil-name">FIPA</span><span class="affil-span">SY 132–138</span></div>
+      <div class="affil-item"><span class="affil-name">Protectorate</span><span class="affil-span">SY 132–138 · Admiral</span></div>
+      <div class="affil-item"><span class="affil-name">Architecture</span><span class="affil-span">SY 114– · Adherent</span></div>
+    </div>
+
+    <!-- See also -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">See Also</div>
+      <span class="xref">The Alliance</span>
+      <span class="xref">The Defiant</span>
+      <span class="xref">The Protectorate</span>
+      <span class="xref">FIPA</span>
+      <span class="xref">Asteroidal Industries</span>
+      <span class="xref">Cera Nicks</span>
+      <span class="xref">Jaymeson Nicks</span>
+      <span class="xref">Wu Kenshu</span>
+      <span class="xref">Architecture</span>
+      <span class="xref">The Solar War</span>
+      <span class="xref">Søren Decks</span>
+    </div>
+
+    <!-- Continuity -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Continuity Reference</div>
+      <p class="sidebar-note">CM-HAYDN-VON-DEHLIN-001. Character appears throughout the First Trilogy. Primary appearance: Sol, Invictus, Helios. Remains in the Twilight Era. Died SY 183, Galatia, Io.</p>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Haydn von Dehlin</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — HAYDN VON DEHLIN · THIRD ALLIANCE · PROTECTORATE · FIPA · THE DEFIANT · ASTEROIDAL INDUSTRIES · HADES · MERCI · ARCHITECTURE · SOLAR WAR · SY 95–183 · DOSIJING · GALATIA IO · CM-HAYDN-VON-DEHLIN-001 &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — HAYDN VON DEHLIN · THIRD ALLIANCE · PROTECTORATE · FIPA · THE DEFIANT · ASTEROIDAL INDUSTRIES · HADES · MERCI · ARCHITECTURE · SOLAR WAR · SY 95–183 · DOSIJING · GALATIA IO · CM-HAYDN-VON-DEHLIN-001 &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>
