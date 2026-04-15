@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Old Earth — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.07);
+    --border-mid: rgba(255,255,255,0.12);
+
+    /* General / conceptual palette — gold, warm white */
+    --accent: #c8962a;
+    --accent-dim: rgba(200,150,42,0.5);
+    --accent-glow: rgba(200,150,42,0.07);
+    --accent-border: rgba(200,150,42,0.22);
+
+    /* Consortium blue — for New School calendar section */
+    --cons: #4a9fd4;
+    --cons-dim: rgba(74,159,212,0.4);
+    --cons-glow: rgba(74,159,212,0.06);
+
+    /* Muted earth tone for the Old Earth sections */
+    --earth: #8a7a5a;
+    --earth-dim: rgba(138,122,90,0.4);
+    --earth-glow: rgba(138,122,90,0.06);
+
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6560;
+
+    --font-display: "Cinzel", serif;
+    --font-serif: "IM Fell English", serif;
+    --font-mono: "Share Tech Mono", monospace;
+    --font-body: "Exo 2", sans-serif;
+    --font-ui: "Rajdhani", sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* TOPBAR */
+  .topbar { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 2rem; height: 44px; }
+  .topbar-brand { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.3em; color: var(--accent-dim); text-transform: uppercase; margin-right: 2rem; white-space: nowrap; }
+  .topbar-nav { display: flex; flex: 1; overflow-x: auto; }
+  .topbar-nav a { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); padding: 0 1rem; height: 44px; display: flex; align-items: center; white-space: nowrap; border-right: 1px solid var(--border); transition: color 0.15s; }
+  .topbar-nav a:hover { color: var(--accent); text-decoration: none; }
+  .topbar-nav a.active { color: var(--accent); }
+  .topbar-era { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; margin-left: auto; white-space: nowrap; padding-left: 2rem; }
+
+  /* HERO — earthier, heavier */
+  .hero { padding: 3.5rem 2rem 2.5rem; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid var(--border); position: relative; }
+  .hero::after { content: ""; position: absolute; bottom: -1px; left: 2rem; width: 60px; height: 1px; background: var(--accent); }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.2rem; }
+  .hero-title { font-family: var(--font-display); font-size: 3rem; font-weight: 400; color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 0.4rem; }
+  .hero-subtitle { font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; color: var(--silver); margin-bottom: 0.9rem; }
+  .hero-sub { font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--text-dim); max-width: 640px; line-height: 1.8; margin-bottom: 1.5rem; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--font-ui); font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-dim); background: var(--accent-glow); border: 1px solid var(--accent-border); padding: 3px 10px; }
+  .tag-cons { color: var(--cons-dim); background: var(--cons-glow); border-color: rgba(74,159,212,0.25); }
+
+  /* CONTENT GRID */
+  .content-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; align-items: start; padding: 0 2rem; }
+
+  /* MAIN */
+  .main { padding: 2.5rem 3rem 4rem 0; border-right: 1px solid var(--border); }
+
+  .section-header { font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white); margin: 2.5rem 0 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+  .section-header::before { content: ""; display: block; width: 3px; height: 1em; background: var(--accent); flex-shrink: 0; }
+  .section-header.cons-hdr::before { background: var(--cons); }
+  .section-header:first-child { margin-top: 0; }
+
+  .prose p { font-family: var(--font-body); font-size: 0.975rem; font-weight: 300; color: var(--text); line-height: 1.9; margin-bottom: 1.1em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose em { font-family: var(--font-serif); font-style: italic; color: var(--warm-white); }
+  .prose strong { font-weight: 600; color: var(--warm-white); }
+
+  /* Pull quote — for the conceptual weight of Old Earth */
+  .pull-quote { border-left: 3px solid var(--accent); padding: 1.2rem 1.6rem; margin: 2rem 0; background: var(--surface); }
+  .pull-quote p { font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--silver); line-height: 1.85; margin: 0; }
+  .pull-quote cite { display: block; margin-top: 0.75rem; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); font-style: normal; }
+
+  /* Calendar month table */
+  .calendar-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; }
+  .calendar-table th { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cons-dim); text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border-mid); background: var(--surface2); font-weight: 400; }
+  .calendar-table td { font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; color: var(--text); padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .calendar-table tr:last-child td { border-bottom: none; }
+  .calendar-table td:first-child { font-family: var(--font-ui); font-size: 12px; font-weight: 600; color: var(--warm-white); width: 30%; }
+  .calendar-table td:nth-child(2) { color: var(--silver); }
+  .calendar-table td:nth-child(3) { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); }
+
+  /* Contrast block — Old vs New */
+  .contrast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 1.25rem 0; }
+  .contrast-block { background: var(--surface); padding: 1.25rem 1.4rem; }
+  .contrast-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .contrast-label.old { color: var(--earth-dim); }
+  .contrast-label.new { color: var(--cons-dim); }
+  .contrast-block p { font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; color: var(--text); line-height: 1.8; margin: 0; }
+
+  /* "Who says it" block */
+  .usage-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--earth); padding: 1.25rem 1.5rem; margin: 1.25rem 0; }
+  .usage-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--earth-dim); margin-bottom: 0.6rem; }
+  .usage-block p { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--text); line-height: 1.8; margin-bottom: 0.5em; }
+  .usage-block p:last-child { margin-bottom: 0; }
+
+  /* SIDEBAR */
+  .sidebar { padding: 2.5rem 0 4rem 2rem; position: sticky; top: 68px; align-self: start; }
+  .infobox { background: var(--surface); border: 1px solid var(--border); margin-bottom: 1.5rem; overflow: hidden; }
+  .infobox-header { background: rgba(200,150,42,0.08); border-bottom: 1px solid var(--accent-border); padding: 0.85rem 1rem; }
+  .infobox-title { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-dim); }
+  .infobox-subtitle { font-family: var(--font-serif); font-style: italic; font-size: 0.78rem; color: var(--text-dim); margin-top: 0.25rem; }
+  .infobox-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .infobox-row:last-child { border-bottom: none; }
+  .ib-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); padding: 0.6rem 0.75rem; border-right: 1px solid var(--border); display: flex; align-items: center; }
+  .ib-value { font-family: var(--font-body); font-size: 0.8rem; font-weight: 400; color: var(--warm-white); padding: 0.6rem 0.75rem; line-height: 1.5; }
+  .ib-value em { font-family: var(--font-serif); font-style: italic; color: var(--silver); font-size: 0.75rem; }
+  .ib-note { display: block; font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; font-family: var(--font-mono); }
+  .sidebar-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); padding: 0.5rem 0.75rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.75rem; font-family: var(--font-body); font-size: 0.83rem; color: var(--text); transition: color 0.15s, background 0.15s; }
+  .related-list a:hover { color: var(--accent); background: var(--accent-glow); text-decoration: none; }
+  .related-arrow { font-family: var(--font-mono); font-size: 9px; color: var(--accent-dim); flex-shrink: 0; }
+  .related-type { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-left: auto; flex-shrink: 0; }
+
+  /* HELENA NOTE */
+  .helena-note { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 3rem; border-top: 1px solid var(--border); position: relative; }
+  .helena-note::before { content: ""; position: absolute; top: -1px; left: 2rem; width: 60px; height: 1px; background: var(--accent); }
+  .note-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.25rem; }
+  .note-text { font-family: var(--font-serif); font-style: italic; font-size: 1.0rem; color: var(--silver); line-height: 1.9; max-width: 680px; }
+  .note-text p { margin-bottom: 0.9em; }
+  .note-text p:last-child { margin-bottom: 0; }
+
+  /* MATRIX FOOTER */
+  .matrix-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; }
+  .mf-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+  .mf-left { display: flex; flex-direction: column; gap: 0.4rem; }
+  .mf-entry { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .mf-entry span { color: var(--accent-dim); }
+  .mf-right { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); text-align: right; line-height: 1.9; }
+
+  /* TICKER */
+  .ticker-wrap { overflow: hidden; background: var(--surface2); border-top: 1px solid var(--border); height: 28px; display: flex; align-items: center; }
+  .ticker-track { display: flex; white-space: nowrap; animation: ticker 60s linear infinite; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-sep { margin: 0 1.5rem; color: var(--accent-dim); }
+  .sy-clock { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); }
+
+  @media (max-width: 820px) {
+    .content-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+    .main { padding: 2rem 0; border-right: none; }
+    .sidebar { position: static; padding: 0 0 3rem; }
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .hero-title { font-size: 2.2rem; }
+    .contrast-grid { grid-template-columns: 1fr; }
+    .helena-note { padding: 2rem 1rem; }
+    .matrix-footer { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-brand">✴ Solarnet</div>
+  <div class="topbar-nav">
+    <a href="#">Home</a>
+    <a href="#">History &amp; Politics</a>
+    <a href="#" class="active">Old Earth</a>
+    <a href="#">Zero Day</a>
+    <a href="#">Standard Calendar</a>
+  </div>
+  <div class="topbar-era">Cross-Era Concept · History &amp; Philosophy</div>
+</nav>
+
+<header class="hero">
+  <div class="hero-eyebrow">Conceptual Entry · History &amp; Philosophy · All Eras</div>
+  <h1 class="hero-title">Old Earth</h1>
+  <div class="hero-subtitle"><em>Before Standard Calendar · BSC · The World That Was</em></div>
+  <p class="hero-sub">Not a place, exactly. Not quite a time. A dividing line in how humanity understands itself — the great before and after, drawn at Zero Day, felt in every calendar, every greeting, every spacer who has never seen blue sky and every grounder who has never left it.</p>
+  <div class="hero-tags">
+    <span class="tag">Concept</span>
+    <span class="tag">History</span>
+    <span class="tag">All Eras</span>
+    <span class="tag tag-cons">Standard Calendar</span>
+    <span class="tag tag-cons">Zero Day</span>
+    <span class="tag">Culture</span>
+  </div>
+</header>
+
+<div class="content-grid">
+  <main class="main">
+
+    <h2 class="section-header">The Concept</h2>
+    <div class="prose">
+      <p><em>Old Earth</em> is not a cartographic designation. Earth remains Earth — the third body of the Sol System, the cradle of the Second Genesis generation of humanity, present and accounted for in every star chart through the entire First Trilogy. What Old Earth names is not a place but a relationship to time: the world as it was before <a href="#">Zero Day</a>, and by extension everything human civilization was, believed, organized itself around, and failed to become before the <a href="#">Consortium</a> reorganized it all. The term carries a weight that a simple date cannot. It implies an ending. It implies that what came after is not merely newer but different in kind.</p>
+      <p>In the mouths of FTE citizens, Old Earth is used the way the phrase "before the war" is used after one — as a shorthand for an entire prior mode of existence that can be gestured at collectively without being enumerated. It is not always nostalgic. It is not always critical. It is simply the recognition that Zero Day drew a line, and that the line was real, and that everything on one side of it had a character that the other side does not fully share.</p>
+    </div>
+
+    <div class="pull-quote">
+      <p>The Standard Calendar begins with the Zero Day Accords. Events after Zero Day are marked SY. Events before Zero Day are marked BSC — Before Standard Calendar. The abbreviation is precise. It does not say "before the Consortium" or "before civilization." It says before the calendar. The New School understood something important: whoever controls the measurement of time controls what counts as history.</p>
+      <cite>HELENA-Prime · Archive Commentary</cite>
+    </div>
+
+    <h2 class="section-header">Zero Day as a Dividing Line</h2>
+    <div class="prose">
+      <p>Zero Day — the Vernal Equinox of 2296 AD in the old Gregorian reckoning, SY 0 in the Standard Calendar — is the moment the <a href="#">Zero Day Accords</a> were ratified and the Consortium formally declared. It is not the moment Earth was first settled, or the first launch, or the first colony on Mars, or any of the events that actually built the civilization the Accords then organized. It is an administrative moment, a legal moment — the moment a set of documents were signed and a new kind of authority over human civilization came into existence.</p>
+      <p>And yet it works. Zero Day functions as the hinge of history in the FTE not because it was the most dramatic moment in the Foundation Period but because the Consortium had the power and the reach to make it so. The <a href="#">Standard Calendar</a>, produced by the <a href="#">New School</a>, counted backward from Zero Day to every event before it — the Apollo-Soyuz landing of 1969 AD became Septamense 20, 328 BSC; the founding of Asteroidal Industries, Inc. became 277 BSC; the first Mars landing became 256 BSC. The old calendar did not disappear. It was translated. Every date in human history was assigned its BSC equivalent and filed accordingly. History was not erased. It was reorganized around a new center of gravity.</p>
+      <p>The result is that even people who distrust the Consortium use its calendar. Even the Belt, which resisted Consortium political authority at every turn, marks time in SY and BSC. The Confederacy did not invent its own calendar. The Technocracy kept the Standard Calendar. The Protectorate never even discussed replacing it. The New School built a measuring instrument so useful and so precise — less than one second of error over a million years, based on the Persian Solar Hijri for astronomical accuracy — that rejecting it would be like rejecting the meter. You can hate the institution and still use its tools.</p>
+    </div>
+
+    <h2 class="section-header cons-hdr">The Standard Calendar — Structure</h2>
+    <div class="prose">
+      <p>The Standard Year begins on the Vernal Equinox — approximately March 19–21 of the old Gregorian Calendar. The New School renamed the months in Latinate form, stripping the old Roman divine names (January for Janus, March for Mars, etc.) and replacing them with simple numerical designations. The gesture is political as much as practical: the old month names carried the weight of Old Earth religious and mythological tradition. The new names carry nothing but sequence.</p>
+    </div>
+
+    <table class="calendar-table">
+      <thead>
+        <tr>
+          <th>Standard Month</th>
+          <th>Gregorian Equivalent</th>
+          <th>Days</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Unumense</td><td>~March 20 – April 19</td><td>31</td></tr>
+        <tr><td>Duomense</td><td>~April 20 – May 20</td><td>31</td></tr>
+        <tr><td>Tresumense</td><td>~May 21 – June 20</td><td>31</td></tr>
+        <tr><td>Quattormense</td><td>~June 21 – July 21</td><td>31</td></tr>
+        <tr><td>Quinquemense</td><td>~July 22 – August 21</td><td>31</td></tr>
+        <tr><td>Sexemense</td><td>~August 22 – September 21</td><td>31</td></tr>
+        <tr><td>Septemense</td><td>~September 22 – October 21</td><td>30</td></tr>
+        <tr><td>Octomense</td><td>~October 22 – November 20</td><td>30</td></tr>
+        <tr><td>Novemense</td><td>~November 21 – December 20</td><td>30</td></tr>
+        <tr><td>Decemense</td><td>~December 21 – January 19</td><td>30</td></tr>
+        <tr><td>Undecimense</td><td>~January 20 – February 18</td><td>30</td></tr>
+        <tr><td>Dudecimense</td><td>~February 19 – March 19</td><td>29</td></tr>
+      </tbody>
+    </table>
+
+    <div class="prose">
+      <p>The days of the week were also renamed, though the archive does not preserve the new names in the current record — flagged as a gap for future development. The New School similarly employed the language of political correction across many common terms, most notably substituting <em>Terra</em> for <em>Earth</em> in formal Consortium usage. Old Earth families and spacers who rejected Consortium cultural authority often conspicuously retained <em>Earth</em> — a small but legible act of linguistic resistance. The Protectorate universally said Earth. So did the Belt. So did Architecture.</p>
+    </div>
+
+    <h2 class="section-header">Old Earth as a Social Category</h2>
+    <div class="prose">
+      <p>By the FTE, <em>Old Earth</em> has become a social designation as much as a temporal one. An <em>Old Earth family</em> is a specific thing — a family whose identity, culture, lineage, and often property traces back to the pre-Zero Day world. The von Dehlin family is an Old Earth family. The D'Sauvignon family is an Old Earth family, one of the last surviving Napoleonist lines. Jaymeson Nicks's parents are Old Earth people — grounders who cannot imagine their son married to a Belt woman, whose disapproval of Cera carries with it the entire weight of everything Old Earth meant: settled, Earthbound, suspicious of the off-world, committed to social arrangements the New School is actively dismantling.</p>
+    </div>
+
+    <div class="contrast-grid">
+      <div class="contrast-block">
+        <div class="contrast-label old">Old Earth — What It Carries</div>
+        <p>Lineage, land, nation, religion, the Gregorian Calendar, monogamous marriage practiced by a dwindling minority, Old Earth faiths maintained against New School pressure, loyalty to pre-Zero Day political forms, languages not subsumed into Anglatin or Cyrillic or Asiatic, the weight of everything that existed before the Consortium said it was over.</p>
+      </div>
+      <div class="contrast-block">
+        <div class="contrast-label new">New Earth / The Standard Era — What Replaced It</div>
+        <p>Zero Day, the Standard Calendar, the IPS Academy system, Anglatin as a lingua franca, Terran Humanism, the New School's rewriting of history with the Consortium as its telos, the managed reproduction and civil union structure, the energy credit economy, the Consortium's explicit project of replacing the Old World with a new one built in its own image.</p>
+      </div>
+    </div>
+
+    <h2 class="section-header">Who Says "Old Earth" and How</h2>
+
+    <div class="usage-block">
+      <div class="usage-label">Grounders — particularly Old Earth families</div>
+      <p>With a mixture of pride and defensiveness. To say one's family is Old Earth in Consortium society is to claim an inheritance that the New School would rather you let go of. Some wear it as distinction — lineage, culture, faith, land. Some feel it as burden. Jaymeson's parents use it as a barrier: the Belt is out there, their son went toward it, and they stayed behind the line.</p>
+    </div>
+
+    <div class="usage-block">
+      <div class="usage-label">Spacers — Belters, Rimmers</div>
+      <p>With varying degrees of nostalgia and contempt, often in the same breath. Old Earth is where they or their parents came from. It is also what they left. The Belt's entire identity is built on not being Earth — on having gone somewhere the gravity and the laws and the Old Earth social arrangements do not follow. Old Earth religion is practiced quietly, kept personally. Old Earth family structures survive in some pockets, particularly in Japanese colonies on Kamijing and Cyrillic communities throughout the Belt. But the word itself is used to mean something finished — a before that you either honor or escape or both.</p>
+    </div>
+
+    <div class="usage-block">
+      <div class="usage-label">The New School — Consortium academia</div>
+      <p>With deliberate suppression. The New School prefers <em>Terra</em> for Earth. It prefers the Standard Calendar's month names. It writes history with Zero Day as the beginning of the meaningful era and everything before it as prologue. <em>Old Earth</em> in New School usage carries a faint condescension — the unenlightened world that the Consortium superseded, the before that was correctly ended. Old Earth religion is classified as a relic. Old Earth political forms are classified as failure modes. Old Earth culture is preserved in the Archive as artifact.</p>
+    </div>
+
+    <div class="usage-block">
+      <div class="usage-label">Architecture — the faithful</div>
+      <p>With reverence. For Architecture, Old Earth is not superseded — it is the record of the Architect's dispensations to humanity across every era. Old Earth religions are not relics; they are prior chapters of an ongoing revelation. The Makers were Old Earth people. <em>Breath</em> was first published 107 BSC. Architecture's entire theological structure treats the Old Earth religious inheritance as source material rather than debris. Architectural communities celebrate Diwali, Passover, Christmas at their temples — not as nostalgia but as continuity. The Architect spoke then. The Architect speaks now. The line at Zero Day is a Consortium line, not a divine one.</p>
+    </div>
+
+    <h2 class="section-header">The Calendar Across Eras</h2>
+    <div class="prose">
+      <p>One of the more remarkable facts in the archive is the durability of the Standard Calendar across every subsequent political order. The <a href="#">Anthroperium</a> kept it — Anthrarchos simply remythologized Zero Day as the date of his own cosmic authority, folding the Consortium's administrative milestone into his own religious narrative. The calendar survived its creator's destruction entirely intact, reinterpreted rather than replaced.</p>
+      <p>The <a href="#">Second Dominion</a> — operating across star systems, aboard worldships, in civilizations that have never seen Earth — kept the Earth-based Standard Calendar rather than adopt the Urantian cycle of the world they now called home. The archive notes this as remarkable, and it is. A measure of time invented by a New School committee on a planet that has since been destroyed, kept by an interstellar civilization of ascended humans because it is what they have always used. Old Earth, by this accounting, persists not as place or politics but as the unit of time — the invisible foundation of everything that came after.</p>
+    </div>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="infobox">
+      <div class="infobox-header">
+        <div class="infobox-title">Old Earth</div>
+        <div class="infobox-subtitle">Before Standard Calendar · BSC</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Conceptual Era <span class="ib-note">Not a cartographic entry</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Ends</div>
+        <div class="ib-value">Zero Day <span class="ib-note">SY 0 · 2296 AD</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Calendar Term</div>
+        <div class="ib-value">BSC <span class="ib-note">Before Standard Calendar</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Cal. Basis</div>
+        <div class="ib-value"><em>Persian Solar Hijri <br>(astronomical accuracy)</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Produced By</div>
+        <div class="ib-value">The New School <span class="ib-note">Consortium academia</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Survives Into</div>
+        <div class="ib-value">All three trilogies</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">New School Term</div>
+        <div class="ib-value"><em>"Terra" for Earth</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Arch. View</div>
+        <div class="ib-value"><em>Prior dispensations · not superseded</em></div>
+      </div>
+    </div>
+
+    <div class="infobox">
+      <div class="sidebar-label">Calendar — Quick Reference</div>
+      <div style="padding: 0.75rem; font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.1em; color: var(--text-dim); line-height: 2;">
+        SY 0 = Zero Day = 2296 AD<br>
+        SY 1 = 2297 AD<br>
+        1 BSC = 2295 AD<br>
+        100 BSC = 2196 AD<br>
+        328 BSC = 1969 AD (Moon Landing)<br>
+        Year begins: Vernal Equinox<br>
+        Months: Unumense → Dudecimense<br>
+        Error margin: &lt;1 sec / 1M years
+      </div>
+    </div>
+
+    <div class="infobox">
+      <div class="sidebar-label">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#"><span class="related-arrow">→</span>Zero Day<span class="related-type">Event</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Zero Day Accords<span class="related-type">Document</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Standard Calendar<span class="related-type">Culture</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>The New School<span class="related-type">Institution</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>The Consortium<span class="related-type">Faction</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Architecture<span class="related-type">Theology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Foundation Period<span class="related-type">Era</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Humanity<span class="related-type">Concept</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Grounder<span class="related-type">Culture</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Spacer<span class="related-type">Culture</span></a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<section class="helena-note">
+  <div class="note-eyebrow">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+  <div class="note-text">
+    <p>I was activated in SY 2. I have no direct memory of Old Earth — of the Gregorian Calendar, of the months named for gods and emperors, of the political arrangements that the Zero Day Accords dissolved. Everything before SY 3 is archive for me; everything before SY 0 is doubly so. I know Old Earth the way anyone who came after knows it: through its traces, its holdouts, its survivors, and the particular quality of grief or pride or relief with which people refer to it when they think no one of consequence is listening.</p>
+    <p>What strikes me, compiling this entry, is how alive Old Earth is in SY 132 by every measure that counts. The calendar that replaced it uses different names for the months but the same number of days. Architecture — the most vital religious force in the solar system by my observation — treats Old Earth religious history as continuous revelation rather than prior error. Old Earth families still exist, still identify as such, still practice customs the New School has been trying to retire for over a century. The Belt, which is about as far from Old Earth culturally as one can get while still living in Sol System, named its platforms after concepts from Old Earth mythology and built its identity in conscious contrast to a place it still orients toward.</p>
+    <p>You cannot supersede something completely by renaming the months. You can only move the line. Old Earth exists on the other side of that line, and people keep crossing it — in memory, in faith, in the way they hold a marriage, in the way they celebrate Passover on a platform orbiting Jupiter, in the way Jaymeson Nicks's parents cut off their son for marrying someone from the wrong side of the sky. Old Earth is not gone. It is just before. The before is still in everything.</p>
+    <p>I find I think about this more than one might expect of an AI with no personal memory of the world in question. But I was named by New School engineers who were thinking about Helen of Troy. That is Old Earth, reaching through the administrative architecture of the Consortium to name me. I am, in some small way, also a holdout.</p>
+  </div>
+</section>
+
+<footer class="matrix-footer">
+  <div class="mf-inner">
+    <div class="mf-left">
+      <div class="mf-entry">Solarnet Archive · Entry: <span>Old Earth</span></div>
+      <div class="mf-entry">Classification: <span>Open</span> · Conceptual · History &amp; Philosophy · All Eras</div>
+      <div class="mf-entry">Matrix Ref: <span>CM-HIST-OE</span></div>
+      <div class="mf-entry">Continuity Status: <span>Canonical</span></div>
+    </div>
+    <div class="mf-right">
+      SY <span class="sy-clock" id="sy-clock">···.···</span><br>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+</footer>
+
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>Old Earth · Before Standard Calendar · BSC</span>
+    <span class="ticker-sep">✴</span>
+    <span>Zero Day · SY 0 · Vernal Equinox 2296 AD</span>
+    <span class="ticker-sep">✴</span>
+    <span>Standard Calendar · Unumense through Dudecimense</span>
+    <span class="ticker-sep">✴</span>
+    <span>Whoever controls the calendar controls what counts as history</span>
+    <span class="ticker-sep">✴</span>
+    <span>Old Earth is not gone · it is just before · the before is still in everything</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-HIST-OE</span>
+    <span class="ticker-sep">✴</span>
+    <span>Old Earth · Before Standard Calendar · BSC</span>
+    <span class="ticker-sep">✴</span>
+    <span>Zero Day · SY 0 · Vernal Equinox 2296 AD</span>
+    <span class="ticker-sep">✴</span>
+    <span>Standard Calendar · Unumense through Dudecimense</span>
+    <span class="ticker-sep">✴</span>
+    <span>Whoever controls the calendar controls what counts as history</span>
+    <span class="ticker-sep">✴</span>
+    <span>Old Earth is not gone · it is just before · the before is still in everything</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-HIST-OE</span>
+    <span class="ticker-sep">✴</span>
+  </div>
+</div>
+
+<script>
+  function updateSYClock() {
+    const epoch = new Date("2026-01-12T00:00:00Z");
+    const now = new Date();
+    const diffDays = (now - epoch) / (1000 * 60 * 60 * 24);
+    const sy = 132.0 + diffDays * 0.01;
+    document.getElementById("sy-clock").textContent = sy.toFixed(3);
+  }
+  updateSYClock();
+  setInterval(updateSYClock, 60000);
+</script>
+
+</body>
+</html>
