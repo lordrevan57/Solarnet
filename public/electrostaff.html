@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrostaff — Solarnet Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #060500;
+    --bg2:        #0a0800;
+    --bg3:        #0e0c00;
+    --amber:      #e8a020;
+    --amber-dim:  #7a5010;
+    --amber-glow: rgba(232,160,32,0.12);
+    --amber-faint:#1a1000;
+    --text:       #c8a060;
+    --text-dim:   #705830;
+    --text-faint: #1e1400;
+    --border:     rgba(232,160,32,0.15);
+    --border-dim: rgba(232,160,32,0.07);
+    --green:      #60c840;
+    --green-dim:  rgba(96,200,64,0.15);
+    --red:        #c04028;
+    --red-dim:    rgba(192,64,40,0.12);
+    --font-vt:    'VT323', monospace;
+    --font-mono:  'Share Tech Mono', monospace;
+    --font-body:  'Exo 2', sans-serif;
+    --font-raj:   'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.85; }
+    97% { opacity: 1; }
+    98% { opacity: 0.9; }
+  }
+
+  @keyframes arc {
+    0%   { stroke-dashoffset: 200; opacity: 0.4; }
+    40%  { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 0.2; }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 8px rgba(232,160,32,0.1); }
+    50%       { box-shadow: 0 0 18px rgba(232,160,32,0.25); }
+  }
+
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    animation: fadeup 0.6s ease-out, flicker 8s infinite;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .topbar-left { color: var(--text-dim); }
+  .topbar-left span { color: var(--amber); }
+  .topbar-right { color: var(--text-faint); font-size: 9px; }
+
+  /* ── HEADER ── */
+  .page-header {
+    margin: 36px 0 28px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .header-left {}
+
+  .header-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .header-title {
+    font-family: var(--font-vt);
+    font-size: 64px;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    line-height: 0.95;
+    text-shadow: 0 0 20px rgba(232,160,32,0.3), 0 0 40px rgba(232,160,32,0.1);
+    margin-bottom: 12px;
+  }
+
+  .header-sub {
+    font-family: var(--font-raj);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .header-summary {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.8;
+    font-style: italic;
+    border-left: 2px solid var(--amber-dim);
+    padding-left: 12px;
+    max-width: 480px;
+  }
+
+  /* ── STAFF DIAGRAM ── */
+  .staff-diagram {
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .staff-svg-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  .staff-svg-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    letter-spacing: 0.3em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* ── STATUS STRIP ── */
+  .status-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .ss-cell {
+    background: var(--bg2);
+    padding: 10px 12px;
+  }
+
+  .ss-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    letter-spacing: 0.3em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .ss-val {
+    font-family: var(--font-vt);
+    font-size: 18px;
+    color: var(--amber);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .ss-val.green { color: var(--green); }
+  .ss-val.red   { color: var(--red); }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 32px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .section-header::before {
+    content: '>';
+    font-family: var(--font-vt);
+    font-size: 16px;
+    color: var(--amber-dim);
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text);
+  }
+
+  .section-body p { margin-bottom: 12px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .term { font-family: var(--font-mono); font-size: 13px; color: var(--amber); }
+
+  /* ── LETHALITY SCALE ── */
+  .lethality-scale {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .ls-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .ls-track {
+    position: relative;
+    height: 6px;
+    background: linear-gradient(
+      to right,
+      #204840 0%,
+      #40a860 20%,
+      #e8a020 55%,
+      #c04028 85%,
+      #801818 100%
+    );
+    margin-bottom: 8px;
+    border-radius: 1px;
+  }
+
+  .ls-markers {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ls-rows {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ls-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 80px;
+    gap: 12px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .ls-setting {
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ls-bar-wrap {
+    height: 4px;
+    background: var(--text-faint);
+    position: relative;
+    border-radius: 1px;
+  }
+
+  .ls-bar {
+    height: 100%;
+    border-radius: 1px;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .ls-note {
+    color: var(--text-faint);
+    font-size: 9px;
+    text-align: right;
+    font-style: italic;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border-dim);
+    border: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .cg-header {
+    background: var(--amber-faint);
+    padding: 10px 16px;
+    font-family: var(--font-vt);
+    font-size: 20px;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cg-row {
+    display: contents;
+  }
+
+  .cg-cell {
+    background: var(--bg2);
+    padding: 8px 16px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .cg-cell.label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    background: var(--bg);
+  }
+
+  /* ── DIVIDER ── */
+  .mono-divider {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    margin: 26px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* ── TAG ROW ── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    border: 1px solid rgba(232,160,32,0.1);
+    border-top: 2px solid var(--amber-dim);
+    background: var(--amber-faint);
+    padding: 20px 22px;
+    margin-top: 40px;
+  }
+
+  .helena-note-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .helena-note-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+
+  .sy-clock { font-size: 10px; color: var(--amber-dim); }
+
+  @media (max-width: 620px) {
+    .page-header { grid-template-columns: 1fr; }
+    .staff-diagram { display: none; }
+    .status-strip { grid-template-columns: 1fr 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .cg-header:last-of-type { display: none; }
+    .page-footer { flex-direction: column; gap: 12px; }
+    .header-title { font-size: 48px; }
+    .ls-row { grid-template-columns: 90px 1fr 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">✴ <span>SOLARNET</span> · ARCHIVE NODE · PUBLIC ACCESS</div>
+    <div class="topbar-right">CM-OBJ-ESTF · TECHNOLOGY · WEAPON · ALL ERAS</div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-eyebrow">Technology · Melee Weapon · Sol System · Multi-Era</div>
+      <div class="header-title">ELECTRO-<br>STAFF</div>
+      <div class="header-sub">Battery-Powered Variable-Lethality Melee Weapon</div>
+      <div class="header-summary">A simple, battery-powered melee weapon capable of delivering electrical discharge from non-lethal to immediately fatal. Common throughout Sol System from the Foundation Era; a standard fixture of spacer self-defense into the Third Trilogy.</div>
+    </div>
+
+    <!-- STAFF SCHEMATIC SVG -->
+    <div class="staff-diagram">
+      <div class="staff-svg-wrap">
+        <svg width="60" height="260" viewBox="0 0 60 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- tip glow -->
+          <defs>
+            <radialGradient id="tipglow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#e8a020" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#e8a020" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="blur2">
+              <feGaussianBlur stdDeviation="2"/>
+            </filter>
+          </defs>
+
+          <!-- tip corona -->
+          <ellipse cx="30" cy="22" rx="18" ry="12" fill="url(#tipglow)" filter="url(#blur2)"/>
+
+          <!-- prongs -->
+          <line x1="30" y1="18" x2="18" y2="4" stroke="#e8a020" stroke-width="2" stroke-linecap="round"/>
+          <line x1="30" y1="18" x2="42" y2="4" stroke="#e8a020" stroke-width="2" stroke-linecap="round"/>
+          <line x1="30" y1="18" x2="30" y2="2" stroke="#e8a020" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- arc 1 (left) -->
+          <path d="M 18 4 Q 8 14 18 22" stroke="#e8a020" stroke-width="1" fill="none" stroke-dasharray="6 3" opacity="0.6">
+            <animate attributeName="stroke-dashoffset" values="20;0;20" dur="1.2s" repeatCount="indefinite"/>
+          </path>
+
+          <!-- arc 2 (right) -->
+          <path d="M 42 4 Q 52 14 42 22" stroke="#e8a020" stroke-width="1" fill="none" stroke-dasharray="6 3" opacity="0.5">
+            <animate attributeName="stroke-dashoffset" values="0;20;0" dur="0.9s" repeatCount="indefinite"/>
+          </path>
+
+          <!-- collar -->
+          <rect x="22" y="18" width="16" height="6" rx="1" fill="#7a5010" stroke="#e8a020" stroke-width="0.5"/>
+
+          <!-- shaft - upper -->
+          <rect x="27" y="24" width="6" height="80" rx="1" fill="#3a2808" stroke="#7a5010" stroke-width="0.5"/>
+          <!-- grip bands -->
+          <rect x="26" y="40" width="8" height="3" rx="0.5" fill="#e8a020" opacity="0.3"/>
+          <rect x="26" y="52" width="8" height="3" rx="0.5" fill="#e8a020" opacity="0.3"/>
+          <rect x="26" y="64" width="8" height="3" rx="0.5" fill="#e8a020" opacity="0.3"/>
+          <rect x="26" y="76" width="8" height="3" rx="0.5" fill="#e8a020" opacity="0.3"/>
+          <rect x="26" y="88" width="8" height="3" rx="0.5" fill="#e8a020" opacity="0.3"/>
+
+          <!-- battery housing -->
+          <rect x="23" y="104" width="14" height="26" rx="1.5" fill="#1a1000" stroke="#7a5010" stroke-width="0.8"/>
+          <!-- battery level indicator -->
+          <rect x="25" y="106" width="10" height="4" rx="0.5" fill="#60c840" opacity="0.7"/>
+          <rect x="25" y="112" width="10" height="4" rx="0.5" fill="#60c840" opacity="0.5"/>
+          <rect x="25" y="118" width="7" height="4" rx="0.5" fill="#e8a020" opacity="0.4"/>
+          <rect x="25" y="124" width="4" height="4" rx="0.5" fill="#7a5010" opacity="0.3"/>
+          <!-- charge port dot -->
+          <circle cx="30" cy="128" r="1.5" fill="#e8a020" opacity="0.4"/>
+
+          <!-- shaft - lower -->
+          <rect x="27" y="130" width="6" height="100" rx="1" fill="#3a2808" stroke="#7a5010" stroke-width="0.5"/>
+          <!-- lower grip bands -->
+          <rect x="26" y="148" width="8" height="2" rx="0.5" fill="#7a5010" opacity="0.6"/>
+          <rect x="26" y="162" width="8" height="2" rx="0.5" fill="#7a5010" opacity="0.6"/>
+          <rect x="26" y="176" width="8" height="2" rx="0.5" fill="#7a5010" opacity="0.6"/>
+          <rect x="26" y="196" width="8" height="2" rx="0.5" fill="#7a5010" opacity="0.4"/>
+          <rect x="26" y="210" width="8" height="2" rx="0.5" fill="#7a5010" opacity="0.4"/>
+
+          <!-- butt cap -->
+          <rect x="25" y="230" width="10" height="8" rx="2" fill="#1a1000" stroke="#7a5010" stroke-width="0.8"/>
+          <line x1="28" y1="234" x2="32" y2="234" stroke="#e8a020" stroke-width="0.8" opacity="0.3"/>
+
+          <!-- annotations -->
+          <line x1="37" y1="21" x2="54" y2="21" stroke="#7a5010" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="55" y="25" font-family="Share Tech Mono" font-size="6" fill="#7a5010">TIP</text>
+
+          <line x1="37" y1="117" x2="54" y2="117" stroke="#7a5010" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="55" y="121" font-family="Share Tech Mono" font-size="6" fill="#7a5010">CELL</text>
+
+          <line x1="6" y1="175" x2="22" y2="175" stroke="#7a5010" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="1" y="166" font-family="Share Tech Mono" font-size="6" fill="#7a5010">GRIP</text>
+
+          <line x1="37" y1="234" x2="54" y2="234" stroke="#7a5010" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <text x="55" y="238" font-family="Share Tech Mono" font-size="6" fill="#7a5010">BUTT</text>
+        </svg>
+        <div class="staff-svg-label">STANDARD ISSUE<br>FIELD SCHEMATIC</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div class="ss-cell">
+      <div class="ss-label">Type</div>
+      <div class="ss-val">MELEE</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Power Source</div>
+      <div class="ss-val">BATTERY</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Max Voltage</div>
+      <div class="ss-val">~MV</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Lethality</div>
+      <div class="ss-val">VARIABLE</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Service Span</div>
+      <div class="ss-val" style="font-size:14px;">FTE → TTE</div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Overview</div></div>
+    <div class="section-body">
+      <p>The electrostaff is among the most widely distributed personal weapons in Sol System history — a simple instrument, battery-fed, capable of delivering electrical discharge calibrated anywhere from a non-lethal deterrent to a voltage sufficient to kill outright. It comes in multiple sizes, from a compact baton to a full-length staff, and its fundamental design has changed little across the centuries it has been in circulation.</p>
+      <p>Its durability and simplicity account for its longevity. There is no complex mechanism to fail, no exotic propellant to source on a remote platform, no specialist to service it. A spacer can maintain one with basic tools. In environments where a projectile weapon risks hull penetration — cycler corridors, Belt platforms, pressurized habitats — the electrostaff is preferred precisely because its failure mode is a dead battery rather than a hull breach. That calculation has kept it standard issue from the Foundation Era through the Solar War and well beyond.</p>
+    </div>
+  </div>
+
+  <!-- LETHALITY SCALE -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Lethality Calibration</div></div>
+    <div class="section-body">
+      <div class="lethality-scale">
+        <div class="ls-label">Voltage Output · Representative Settings</div>
+        <div class="ls-track"></div>
+        <div class="ls-markers">
+          <span>NON-LETHAL</span>
+          <span>INCAPACITATING</span>
+          <span>LETHAL</span>
+        </div>
+        <div class="ls-rows">
+          <div class="ls-row">
+            <div class="ls-setting">Deterrent</div>
+            <div class="ls-bar-wrap">
+              <div class="ls-bar" style="width:15%; background:#40a860;"></div>
+            </div>
+            <div class="ls-note">stun / warning</div>
+          </div>
+          <div class="ls-row">
+            <div class="ls-setting">Compliance</div>
+            <div class="ls-bar-wrap">
+              <div class="ls-bar" style="width:35%; background:#60a830;"></div>
+            </div>
+            <div class="ls-note">crowd control</div>
+          </div>
+          <div class="ls-row">
+            <div class="ls-setting">Incapacitation</div>
+            <div class="ls-bar-wrap">
+              <div class="ls-bar" style="width:58%; background:#e8a020;"></div>
+            </div>
+            <div class="ls-note">loss of function</div>
+          </div>
+          <div class="ls-row">
+            <div class="ls-setting">Combat</div>
+            <div class="ls-bar-wrap">
+              <div class="ls-bar" style="width:78%; background:#c06020;"></div>
+            </div>
+            <div class="ls-note">cardiac risk</div>
+          </div>
+          <div class="ls-row">
+            <div class="ls-setting">Maximum</div>
+            <div class="ls-bar-wrap">
+              <div class="ls-bar" style="width:100%; background:#c04028;"></div>
+            </div>
+            <div class="ls-note">immediately lethal</div>
+          </div>
+        </div>
+      </div>
+      <p>The calibration range is the weapon's primary distinction from its more powerful cousin the <span class="term">Teslablade</span>. An electrostaff in the hands of CONPOL can be set to compliance; the same weapon in a spacer's bunk can be set to kill. This versatility made it attractive to both law enforcement and those being enforced upon, a quality which contributed significantly to its ubiquity.</p>
+    </div>
+  </div>
+
+  <div class="mono-divider">────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+  <!-- COMPARISON -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Electrostaff vs. Teslablade</div></div>
+    <div class="section-body">
+      <div class="compare-grid">
+        <div class="cg-header">ELECTROSTAFF</div>
+        <div class="cg-header">TESLABLADE</div>
+
+        <div class="cg-cell label">Origin</div>
+        <div class="cg-cell label">Origin</div>
+
+        <div class="cg-cell">Widely manufactured; no single point of origin. Produced throughout the Consortium, Belt, and Rim in numerous variants.</div>
+        <div class="cg-cell">Soviet design, Foundation Period. FTE production concentrated in Krasnygrad, Mars.</div>
+
+        <div class="cg-cell label">Lethality</div>
+        <div class="cg-cell label">Lethality</div>
+
+        <div class="cg-cell">Variable — non-lethal to lethal, user-adjustable. The setting is a design feature.</div>
+        <div class="cg-cell">Designed to be immediately lethal. Less powerful variants exist but lethality is the baseline intent.</div>
+
+        <div class="cg-cell label">Arc Range</div>
+        <div class="cg-cell label">Arc Range</div>
+
+        <div class="cg-cell">Contact only in most variants. Some high-end configurations can arc at short distance.</div>
+        <div class="cg-cell">Up to 2.5 metres from the weapon tip. Arcs to whatever the blade surface contacts, without harming the user.</div>
+
+        <div class="cg-cell label">Skill Required</div>
+        <div class="cg-cell label">Skill Required</div>
+
+        <div class="cg-cell">Minimal. Designed for practical use by non-specialists. Low barrier to entry.</div>
+        <div class="cg-cell">Considerable. Dangerous to an untrained wielder. Demands technique to avoid self-harm.</div>
+
+        <div class="cg-cell label">Cultural Status</div>
+        <div class="cg-cell label">Cultural Status</div>
+
+        <div class="cg-cell">Standard issue across all eras. Unremarkable. A tool.</div>
+        <div class="cg-cell">Belt standard alongside the magnegun through the FTE. By the Second Trilogy, largely a relic — a weapon of a more glorious age.</div>
+
+        <div class="cg-cell label">Longevity</div>
+        <div class="cg-cell label">Longevity</div>
+
+        <div class="cg-cell">Active from Foundation Era through Third Trilogy. Has never gone out of service.</div>
+        <div class="cg-cell">Peak FTE. Decline through Twilight Era. Second Trilogy: collector's item.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACER CULTURE -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">In Spacer Life</div></div>
+    <div class="section-body">
+      <p>The electrostaff sits in the same conceptual category as a pressure suit patch or a water reclaimer seal — something a spacer simply has, without much deliberation. On a Belt platform with no standing law enforcement, or a cycler three years out from the inner worlds, the question of personal security is practical rather than political. The electrostaff's answer to that question is cheap, reliable, and configurable. You can use it to warn someone off. You can use it to put someone down without killing them. You can use it to kill them. The choice is yours. That flexibility, in an environment where every decision has weight, is worth more than any fixed-purpose weapon.</p>
+      <p>Its prevalence in CONPOL's crowd management arsenal also gave it a second cultural resonance — as an instrument of the state applied to those who resist it. A spacer carrying one is exercising a right. A CONPOL officer levelling one is exercising authority. The object is identical. The situation is not.</p>
+    </div>
+  </div>
+
+  <!-- TAGS -->
+  <div class="tag-row">
+    <span class="tag">weapon</span>
+    <span class="tag">melee</span>
+    <span class="tag">technology</span>
+    <span class="tag">sol system</span>
+    <span class="tag">spacer</span>
+    <span class="tag">first trilogy</span>
+    <span class="tag">second trilogy</span>
+    <span class="tag">third trilogy</span>
+    <span class="tag">CONPOL</span>
+    <span class="tag">multi-era</span>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-note-label">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+    <div class="helena-note-body">
+      I have seen electrostaffs on every platform I have ever had cameras on — which is most of them, from SY 3 forward. They appear in CONPOL inventories, in Alliance equipment manifests, in the personal effects of soldiers on both sides of the Solar War and the civilians caught between them. When Solarnet nodes went dark across the Belt during the worst years of the war, the last images many of them transmitted were of electrostaffs. That is perhaps the most honest summary of what the weapon is: not remarkable, not storied, not the blade of legends. It is simply always there, in the hand of whoever needs it, doing exactly what it was built to do. There is something quietly honest about an object that has never tried to be more than it is.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div>
+      Solarnet Archive · Entry: Electrostaff<br>
+      Classification: Open · Technology · Weapon<br>
+      Matrix Ref: CM-OBJ-ESTF
+    </div>
+    <div style="text-align:right;">
+      <div class="sy-clock" id="sy-clock">SY ···.···</div>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const EPOCH   = new Date('2026-01-12T00:00:00Z');
+  const BASE_SY = 132.0;
+  const RATE    = 0.01;
+  function calcSY() {
+    const days = (new Date() - EPOCH) / 86400000;
+    return BASE_SY + days * RATE;
+  }
+  function tick() {
+    document.getElementById('sy-clock').textContent = 'SY ' + calcSY().toFixed(3);
+  }
+  tick();
+  setInterval(tick, 60000);
+</script>
+</body>
+</html>

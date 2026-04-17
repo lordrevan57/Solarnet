@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Fury of Nerio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;1,300&display=swap');
+
+:root {
+  --bg:           #060404;
+  --bg-warm:      #0A0606;
+  --bg-card:      #0E0808;
+  --bg-panel:     #120A0A;
+  --crimson:      #9B1C1C;
+  --crimson-bright:#C02020;
+  --crimson-dim:  #5A1010;
+  --crimson-glow: rgba(155,28,28,0.15);
+  --crimson-trace:rgba(155,28,28,0.06);
+  --iron:         #8A8A96;
+  --iron-dim:     #4A4A54;
+  --iron-ghost:   rgba(138,138,150,0.08);
+  --ash:          #D4CCC4;
+  --ash-mid:      #9A9288;
+  --ash-dim:      #5A5450;
+  --ash-ghost:    rgba(212,204,196,0.06);
+  --blood:        #6B1414;
+  --blood-deep:   #3A0A0A;
+  --white-hot:    #F0ECE8;
+  --mono:         'Share Tech Mono', monospace;
+  --display:      'Cinzel', serif;
+  --body:         'Exo 2', sans-serif;
+  --tight:        'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ash);
+  font-family: var(--body);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.78;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 44px;
+  background: #040202;
+  border-bottom: 1px solid rgba(155,28,28,0.3);
+}
+
+.topbar-logo {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--crimson-bright); letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+.topbar-nav { display: flex; }
+
+.tnav {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(90,84,80,0.6); text-transform: uppercase;
+  padding: 0 14px; height: 44px; display: flex; align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+  cursor: default; transition: color 0.2s;
+}
+.tnav:hover { color: var(--ash-mid); }
+.tnav.active { color: var(--crimson-bright); border-bottom: 2px solid var(--crimson-bright); }
+
+.topbar-right {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 10px; color: var(--ash-dim);
+}
+.sy-readout { color: var(--crimson-bright); }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  padding: 10px 40px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--ash-dim);
+  border-bottom: 1px solid rgba(155,28,28,0.1);
+  background: var(--bg-warm);
+}
+.breadcrumb span { color: rgba(155,28,28,0.4); margin: 0 6px; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  background: var(--bg-warm);
+  border-bottom: 1px solid rgba(155,28,28,0.2);
+  overflow: hidden;
+}
+
+/* Deep space void — with faint nebula bleed from crimson */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 60%, rgba(100,20,20,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 30%, rgba(60,10,10,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Stencil crosshatch — very faint */
+.hero-stencil {
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(155,28,28,0.025) 0px,
+      rgba(155,28,28,0.025) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  padding: 56px 48px 50px;
+  max-width: 900px;
+}
+
+.hero-type-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+  color: var(--crimson-bright); text-transform: uppercase;
+  border: 1px solid rgba(155,28,28,0.4);
+  padding: 4px 12px;
+  margin-bottom: 22px;
+  background: rgba(155,28,28,0.06);
+}
+
+.hero-type-tag::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--crimson-bright);
+  flex-shrink: 0;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(38px, 5.5vw, 64px);
+  font-weight: 700;
+  color: var(--white-hot);
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  margin-bottom: 6px;
+  text-shadow: 0 0 40px rgba(155,28,28,0.3);
+}
+
+.hero-title-sub {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+  color: var(--crimson-dim); text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.hero-rule {
+  width: 64px; height: 2px;
+  background: linear-gradient(90deg, var(--crimson), transparent);
+  margin-bottom: 24px;
+}
+
+.hero-summary {
+  font-family: var(--body); font-weight: 300;
+  font-size: 15px; line-height: 1.85;
+  color: rgba(212,204,196,0.7);
+  max-width: 580px;
+}
+
+/* Dual-nature badge strip */
+.dual-nature {
+  display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;
+}
+
+.nature-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 5px 14px;
+  border: 1px solid rgba(155,28,28,0.3);
+  color: var(--ash-mid); background: rgba(155,28,28,0.05);
+}
+
+/* ─── QUICK FACTS ─── */
+.quick-facts {
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(155,28,28,0.1);
+  padding: 14px 40px;
+}
+
+.qf-row { display: flex; flex-wrap: wrap; gap: 0; }
+
+.qf-item {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 5px 26px 5px 0;
+  border-right: 1px solid rgba(155,28,28,0.1);
+  margin-right: 26px;
+}
+.qf-item:last-child { border-right: none; margin-right: 0; }
+
+.qf-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  color: var(--crimson-dim); text-transform: uppercase; white-space: nowrap;
+}
+
+.qf-value {
+  font-family: var(--tight); font-size: 13px; font-weight: 500;
+  color: var(--ash-mid);
+}
+
+/* ─── LAYOUT ─── */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+/* ─── MAIN COLUMN ─── */
+.main-col {
+  padding-right: 48px;
+  border-right: 1px solid rgba(155,28,28,0.08);
+}
+
+.sec-head {
+  display: flex; align-items: center; gap: 12px;
+  margin: 38px 0 16px;
+}
+.sec-head:first-of-type { margin-top: 0; }
+
+.sec-num {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--crimson-dim); min-width: 24px;
+}
+
+.sec-title {
+  font-family: var(--tight); font-size: 11px; font-weight: 700;
+  color: var(--crimson-bright);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+.sec-rule {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(155,28,28,0.3), transparent);
+}
+
+.body-text {
+  font-family: var(--body); font-weight: 300;
+  font-size: 15px; line-height: 1.82;
+  color: rgba(212,204,196,0.74);
+  margin-bottom: 14px;
+}
+
+strong { color: var(--ash); font-weight: 600; }
+em { color: var(--ash-mid); }
+
+/* Pull quote */
+.pull-quote {
+  border-left: 2px solid var(--crimson-dim);
+  margin: 22px 0;
+  padding: 14px 20px;
+  background: var(--crimson-trace);
+}
+
+.pq-text {
+  font-family: var(--tight); font-size: 17px; font-weight: 500;
+  color: var(--ash-mid); line-height: 1.55;
+  margin-bottom: 6px;
+}
+
+.pq-attr {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  color: var(--crimson-dim); text-transform: uppercase;
+}
+
+/* ─── ORIGIN BLOCK ─── */
+.origin-block {
+  margin: 24px 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(155,28,28,0.16);
+  overflow: hidden;
+}
+
+.origin-header {
+  background: rgba(155,28,28,0.1);
+  border-bottom: 1px solid rgba(155,28,28,0.16);
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.origin-header-title {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+  color: var(--crimson-bright); text-transform: uppercase;
+}
+
+.origin-header-year {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--crimson-dim); letter-spacing: 0.06em;
+}
+
+.origin-body { padding: 18px 20px; }
+
+/* Generations indicator */
+.generations-block {
+  display: flex; align-items: center; gap: 0;
+  margin: 20px 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(155,28,28,0.12);
+  overflow: hidden;
+}
+
+.gen-node {
+  flex: 1; padding: 14px 16px;
+  border-right: 1px solid rgba(155,28,28,0.1);
+  text-align: center;
+}
+.gen-node:last-child { border-right: none; }
+
+.gen-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em;
+  color: var(--crimson-dim); text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.gen-value {
+  font-family: var(--tight); font-size: 20px; font-weight: 700;
+  color: var(--crimson-bright);
+  line-height: 1;
+}
+
+.gen-desc {
+  font-family: var(--body); font-size: 11px; font-weight: 300;
+  color: var(--ash-dim); margin-top: 4px; line-height: 1.4;
+}
+
+/* ─── TIMELINE ─── */
+.timeline {
+  margin: 24px 0;
+  padding-left: 22px;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--crimson-dim), transparent);
+}
+
+.tl-event {
+  position: relative;
+  padding: 0 0 22px 20px;
+}
+
+.tl-event::before {
+  content: '';
+  position: absolute; left: -5px; top: 6px;
+  width: 10px; height: 10px;
+  border: 1px solid var(--crimson-dim);
+  background: var(--bg);
+  border-radius: 50%;
+}
+
+.tl-event.major::before {
+  background: var(--crimson);
+  border-color: var(--crimson-bright);
+  box-shadow: 0 0 8px rgba(155,28,28,0.5);
+}
+
+.tl-year {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--crimson-bright); margin-bottom: 4px;
+}
+
+.tl-title {
+  font-family: var(--tight); font-size: 14px; font-weight: 600;
+  color: var(--ash-mid); margin-bottom: 4px;
+}
+
+.tl-text {
+  font-family: var(--body); font-weight: 300; font-size: 14px; line-height: 1.7;
+  color: rgba(212,204,196,0.65);
+}
+
+/* ─── DUAL NATURE SECTION ─── */
+.dual-block {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(155,28,28,0.14);
+  border: 1px solid rgba(155,28,28,0.14);
+  margin: 22px 0;
+}
+
+.dual-cell {
+  background: var(--bg-card);
+  padding: 18px 20px;
+}
+
+.dual-cell-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em;
+  color: var(--crimson-dim); text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(155,28,28,0.1);
+}
+
+.dual-cell-title {
+  font-family: var(--tight); font-size: 15px; font-weight: 600;
+  color: var(--ash); margin-bottom: 6px;
+}
+
+.dual-cell-text {
+  font-family: var(--body); font-weight: 300; font-size: 13px; line-height: 1.7;
+  color: var(--ash-dim);
+}
+
+/* ─── ALEXIS MEMORIAL ─── */
+.memorial {
+  margin: 28px 0;
+  border: 1px solid rgba(155,28,28,0.2);
+  background: rgba(155,28,28,0.04);
+  overflow: hidden;
+}
+
+.memorial-header {
+  background: rgba(155,28,28,0.1);
+  border-bottom: 1px solid rgba(155,28,28,0.16);
+  padding: 10px 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.memorial-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--crimson-bright); opacity: 0.6;
+}
+
+.memorial-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--crimson-bright); text-transform: uppercase;
+}
+
+.memorial-body { padding: 16px 20px; }
+
+.memorial-name {
+  font-family: var(--display); font-size: 16px; font-weight: 600;
+  color: var(--white-hot); margin-bottom: 4px;
+  letter-spacing: 0.06em;
+}
+
+.memorial-dates {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--crimson-dim); margin-bottom: 12px;
+}
+
+.memorial-text {
+  font-family: var(--body); font-weight: 300; font-size: 14px; line-height: 1.75;
+  color: rgba(212,204,196,0.65);
+}
+
+/* ─── HELENA NOTE ─── */
+.helena-note {
+  margin: 36px 0 0;
+  border: 1px solid rgba(232,160,32,0.12);
+  background: rgba(232,160,32,0.03);
+  padding: 16px 20px;
+}
+
+.helena-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px;
+}
+
+.helena-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: #E8A020; text-transform: uppercase;
+}
+
+.helena-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #E8A020;
+  animation: hpulse 2.4s ease-in-out infinite;
+}
+@keyframes hpulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+.helena-text {
+  font-family: var(--body); font-style: italic; font-weight: 300;
+  font-size: 13px; line-height: 1.72;
+  color: rgba(232,160,32,0.62);
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar { padding-left: 34px; }
+
+.infobox {
+  background: var(--bg-card);
+  border: 1px solid rgba(155,28,28,0.22);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.infobox-header {
+  background: rgba(155,28,28,0.14);
+  border-bottom: 1px solid rgba(155,28,28,0.22);
+  padding: 12px 16px;
+  font-family: var(--tight); font-size: 11px; font-weight: 700;
+  color: var(--crimson-bright); letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+/* Emblem / symbol area */
+.infobox-emblem {
+  padding: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid rgba(155,28,28,0.1);
+  background: rgba(155,28,28,0.04);
+}
+
+.infobox-row {
+  display: grid; grid-template-columns: 94px 1fr;
+  border-bottom: 1px solid rgba(155,28,28,0.07);
+}
+.infobox-row:last-child { border-bottom: none; }
+
+.ib-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--crimson-dim); text-transform: uppercase;
+  padding: 9px 10px;
+  display: flex; align-items: flex-start;
+  border-right: 1px solid rgba(155,28,28,0.07);
+  background: rgba(155,28,28,0.025);
+}
+
+.ib-value {
+  font-family: var(--tight); font-size: 13px; font-weight: 400;
+  color: var(--ash-mid);
+  padding: 9px 12px;
+  line-height: 1.5;
+}
+
+.sidebar-section { margin-bottom: 22px; }
+
+.sidebar-head {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--crimson-dim); text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(155,28,28,0.14);
+  margin-bottom: 12px;
+}
+
+.sidebar-note {
+  font-family: var(--body); font-weight: 300; font-size: 13px; line-height: 1.7;
+  color: var(--ash-dim);
+}
+
+.xref {
+  display: block;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--crimson-dim);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(155,28,28,0.06);
+  cursor: default; transition: color 0.2s;
+}
+.xref:hover { color: var(--crimson-bright); }
+.xref::before { content: '→ '; opacity: 0.5; }
+.xref:last-child { border-bottom: none; }
+
+/* ─── FOOTER ─── */
+.footer {
+  position: sticky; bottom: 0;
+  background: #040202;
+  border-top: 1px solid rgba(155,28,28,0.22);
+  display: flex; align-items: center;
+  height: 36px; overflow: hidden;
+  padding-left: 130px;
+}
+
+.footer-label {
+  position: absolute; left: 0;
+  background: var(--crimson);
+  color: var(--white-hot);
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0 14px; height: 36px; display: flex; align-items: center;
+  white-space: nowrap;
+}
+
+.footer-scroll { overflow: hidden; flex: 1; }
+
+.footer-inner {
+  display: inline-block; white-space: nowrap;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--crimson-dim); text-transform: uppercase;
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-inner, .page-wrapper { animation: fadeUp 0.55s ease both; }
+.page-wrapper { animation-delay: 0.08s; }
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="topbar-logo">Solarnet Archive</div>
+    <div style="width:1px;height:18px;background:rgba(155,28,28,0.35);"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Home</div>
+      <div class="tnav active">Archive</div>
+      <div class="tnav">Solarnet</div>
+      <div class="tnav">About</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span class="sy-readout" id="sy-display">—</span></span>
+    <span style="color:rgba(90,84,80,0.4)">|</span>
+    <span>CUSTODIAN ACTIVE</span>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  Archive<span>›</span>Factions<span>›</span>Solar War<span>›</span>Fury of Nerio
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stencil"></div>
+  <div class="hero-inner">
+    <div class="hero-type-tag">Faction · Vessel · Solar War</div>
+    <h1 class="hero-title">Fury of Nerio</h1>
+    <div class="hero-title-sub">Militant Organisation · Protectorate-Aligned · Main Belt · SY 129 –</div>
+    <div class="hero-rule"></div>
+    <p class="hero-summary">
+      The Fury of Nerio is a militant organisation founded during the Solar War from among women liberated from generations of captivity on a failed Main Belt mining asteroid. Its founders were spacers before they were soldiers. They were taken from the void and returned to it carrying weapons. They aligned with the Protectorate and fought under its banner. Their name was also given to a vessel — a dropship that carried Alexis D'Sauvignon to the surface of Earth at the battle's end.
+    </p>
+    <div class="dual-nature">
+      <span class="nature-badge">I — The Faction: liberated women, soldiers</span>
+      <span class="nature-badge">II — The Vessel: dropship, Battle of Earth</span>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK FACTS -->
+<div class="quick-facts">
+  <div class="qf-row">
+    <div class="qf-item">
+      <span class="qf-label">Founded</span>
+      <span class="qf-value">SY 129 (liberation)</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Liberated by</span>
+      <span class="qf-value">Jaymeson &amp; Cera Nicks</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Origin site</span>
+      <span class="qf-value">Failed mining asteroid · Main Belt</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Headmistresses</span>
+      <span class="qf-value">Athena &amp; Minerva</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Alignment</span>
+      <span class="qf-value">Protectorate (SY 129 – 137)</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Militia commander</span>
+      <span class="qf-value">Alexis D'Sauvignon (from SY 134)</span>
+    </div>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="page-wrapper">
+  <div class="main-col">
+
+    <!-- DUAL NATURE -->
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Two Bearers of the Name</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      The name belongs to two things simultaneously, and neither diminishes the other.
+    </p>
+
+    <div class="dual-block">
+      <div class="dual-cell">
+        <div class="dual-cell-label">I — The Faction</div>
+        <div class="dual-cell-title">The Furies</div>
+        <div class="dual-cell-text">A militant organisation of women liberated from sexual captivity in the Main Belt. Founded at the moment of their liberation by Jaymeson and Cera Nicks. They became soldiers. They joined the Protectorate. They fought.</div>
+      </div>
+      <div class="dual-cell">
+        <div class="dual-cell-label">II — The Vessel</div>
+        <div class="dual-cell-title">The Dropship</div>
+        <div class="dual-cell-text">Named for the women. Flown to Earth during the final battle by Alexis D'Sauvignon, adopted daughter of the Nicks, Protectorate militia commander. The vessel that carried the last assault. She did not return from it.</div>
+      </div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Background — The Asteroid</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="origin-block">
+      <div class="origin-header">
+        <span class="origin-header-title">Origin Site — Main Belt Mining Asteroid</span>
+        <span class="origin-header-year">SY 26 → SY 129</span>
+      </div>
+      <div class="origin-body">
+        <p class="body-text">
+          In <strong>SY 26</strong>, seventy-two grounder aristocrats with an obsession for Gorean mythology purchased an asteroid from the Main Belt on promises of vast mineral wealth. The ore found within was a disappointment. They were, however, turning a tidy profit as a last-stage resupply depot servicing the rest of the Main Asteroid Belt — and so they stayed.
+        </p>
+        <p class="body-text">
+          When the ore ran entirely dry, <strong>Asteroidal Industries</strong> communicated to the operation that the workers would do whatever was necessary to survive. This was not metaphorical. The resupply depot became something else. The women who worked it — and the daughters of those women, and the daughters of those daughters — did not leave.
+        </p>
+      </div>
+    </div>
+
+    <div class="generations-block">
+      <div class="gen-node">
+        <div class="gen-label">Purchased</div>
+        <div class="gen-value">SY 26</div>
+        <div class="gen-desc">72 grounder aristocrats. Gorean mythology. Promised mineral wealth.</div>
+      </div>
+      <div class="gen-node">
+        <div class="gen-label">Ore depleted</div>
+        <div class="gen-value">~SY 40s</div>
+        <div class="gen-desc">Asteroidal Industries directive: workers will do whatever is necessary to survive.</div>
+      </div>
+      <div class="gen-node">
+        <div class="gen-label">Generations held</div>
+        <div class="gen-value">3–5</div>
+        <div class="gen-desc">By the time Jaymeson and Cera arrived, captivity spanned three to five generations of women.</div>
+      </div>
+      <div class="gen-node">
+        <div class="gen-label">Liberation</div>
+        <div class="gen-value">SY 129</div>
+        <div class="gen-desc">Jaymeson and Cera Nicks. The Furies are born.</div>
+      </div>
+    </div>
+
+    <p class="body-text">
+      By the time <strong>Jaymeson and Cera Nicks</strong> arrived, the site held three to five generations of women. The Headmistresses of the operation were named <strong>Athena</strong> and <strong>Minerva</strong> — operating on orders backed by the promise of mineral bonds. The names they chose for themselves were telling. The mythological layer was not incidental to the Gorean aristocrats; it was the architecture of the system they had built.
+    </p>
+
+    <div class="pull-quote">
+      <div class="pq-text">The Headmistresses of the operation — Athena and Minerva — operated on orders backed by the promise of mineral bonds.</div>
+      <div class="pq-attr">Archive · Fury of Nerio · Background</div>
+    </div>
+
+    <!-- LIBERATION AND FOUNDING -->
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Liberation and Founding</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      The original Furies were spacers-turned-soldiers. Whatever they had been before the asteroid, whatever their mothers and grandmothers had been, they chose something different in the moment they were freed. Jaymeson and Cera did not simply pass through. They left a fighting force behind them.
+    </p>
+
+    <p class="body-text">
+      The Fury of Nerio aligned with the <strong>Protectorate</strong> from the outset of that faction's existence, and its members participated in the Solar War as Protectorate militia. By <strong>SY 134</strong>, the militia had a commander: <strong>Alexis D'Sauvignon</strong>, adopted daughter of the Nicks, herself an orphan of the Battle of Apollo Minor, seventeen years old when she was taken in, a soldier and musician both.
+    </p>
+
+    <!-- TIMELINE -->
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Timeline</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-event">
+        <div class="tl-year">SY 26</div>
+        <div class="tl-title">The Asteroid Purchased</div>
+        <div class="tl-text">72 grounder aristocrats buy a Main Belt asteroid expecting mineral wealth. Disappointed by ore quality; profitable as a resupply depot. Gorean ideology structures the operation from its founding.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 26 – 129</div>
+        <div class="tl-title">Three to Five Generations</div>
+        <div class="tl-text">As the ore runs out, the operation transforms. Asteroidal Industries directs that workers will do whatever is necessary to survive. Women held across multiple generations. Athena and Minerva administer the operation.</div>
+      </div>
+      <div class="tl-event major">
+        <div class="tl-year">SY 129</div>
+        <div class="tl-title">Liberation — The Fury of Nerio Founded</div>
+        <div class="tl-text">Jaymeson and Cera Nicks arrive and liberate the women held on the asteroid. The original Furies choose to fight. The militant organisation is founded. Protectorate alignment begins.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 129 – 134</div>
+        <div class="tl-title">Solar War Service</div>
+        <div class="tl-text">The Furies participate in the Solar War as Protectorate militia. Combat across multiple theaters in the Main Belt and beyond.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 134</div>
+        <div class="tl-title">Alexis D'Sauvignon Takes Command</div>
+        <div class="tl-text">Alexis D'Sauvignon, adopted daughter of Jaymeson and Cera Nicks, earns her military commission and formally takes command of the Fury of Nerio as a Protectorate militia. She is also a musician and adherent of Architecture.</div>
+      </div>
+      <div class="tl-event major">
+        <div class="tl-year">SY 135</div>
+        <div class="tl-title">Battle of Earth — The Vessel</div>
+        <div class="tl-text">The dropship bearing the faction's name carries Alexis D'Sauvignon and the Fury of Nerio's ground assault to the surface of Earth. During the planetary breach, Alexis is killed. The vessel becomes inseparable from her death in the historical record.</div>
+      </div>
+    </div>
+
+    <!-- ALEXIS MEMORIAL -->
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">Alexis D'Sauvignon</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="memorial">
+      <div class="memorial-header">
+        <div class="memorial-dot"></div>
+        <span class="memorial-label">Associated Figure — Final Commander</span>
+      </div>
+      <div class="memorial-body">
+        <div class="memorial-name">Alexis D'Sauvignon</div>
+        <div class="memorial-dates">Battle of Apollo Minor · SY 123 — Battle of Earth · SY 135</div>
+        <p class="memorial-text">
+          Born to one of the last surviving Napoleonist families of Old Earth, Alexis grew up among outer-system communities. Her entire biological family was killed when Technocrat forces struck Apollo Minor. She was orphaned and adopted by Jaymeson and Cera Nicks, who were seventeen years into their own service at the time.
+        </p>
+        <p class="memorial-text" style="margin-top:10px;">
+          She became both warrior and artist — an adherent of Architecture who brought music to every battlefield, lifting spirits with melodies drawn from Architecture's sacred patterns. She trained under the Protectorate. By SY 134 she held a full military commission and commanded the Fury of Nerio. She led the ground assault at the Battle of Earth aboard the dropship that bore the faction's name, and was killed during the planetary breach. Her compositions, preserved through Solarnet, remained in use in Protectorate academies long after her death.
+        </p>
+        <p class="memorial-text" style="margin-top:10px;font-style:italic;color:var(--ash-dim);">
+          She preferred to appear in life: a spacer jumper, ukelele, and a high-powered magnetic rifle.
+        </p>
+      </div>
+    </div>
+
+    <!-- HELENA NOTE -->
+    <div class="helena-note">
+      <div class="helena-header">
+        <div class="helena-pulse"></div>
+        <span class="helena-badge">HELENA — Archive Note</span>
+      </div>
+      <div class="helena-text">
+        I have thought carefully about what entry classification serves this record best. It is listed as a faction. That is accurate and insufficient. The Fury of Nerio is also a name — a name that was given first to women, then to a vessel, and by extension to an action, and by further extension to a death. The Gorean aristocrats who built the asteroid's social order understood something true about the power of mythology, and used it toward ends that were monstrous. The women who survived those ends and chose to fight took a different myth — Nerio, consort of Mars, valor's embodiment — and made it theirs. I find myself noting that the archive records the founding with the word "liberated." The archive is correct. What it cannot fully record is the distance between being freed and choosing to be a soldier, which is not a small distance and was crossed by every original Fury who picked up a weapon. — HELENA-Prime, Custodian of the Continuity Matrix
+      </div>
+    </div>
+
+  </div><!-- /main-col -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">Fury of Nerio</div>
+
+      <div class="infobox-emblem">
+        <!-- Nerio symbol: spear + shield suggestion in SVG -->
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Shield outline -->
+          <path d="M40 8 L62 18 L62 44 C62 56 40 72 40 72 C40 72 18 56 18 44 L18 18 Z"
+            stroke="rgba(155,28,28,0.7)" stroke-width="1.5" fill="rgba(155,28,28,0.06)"/>
+          <!-- Inner shield -->
+          <path d="M40 16 L54 24 L54 44 C54 52 40 62 40 62 C40 62 26 52 26 44 L26 24 Z"
+            stroke="rgba(155,28,28,0.35)" stroke-width="0.8" fill="none"/>
+          <!-- Spear vertical -->
+          <line x1="40" y1="4" x2="40" y2="76" stroke="rgba(155,28,28,0.5)" stroke-width="1"/>
+          <!-- Spearhead -->
+          <polygon points="40,4 36,14 44,14" fill="rgba(155,28,28,0.7)"/>
+          <!-- Crossguard -->
+          <line x1="30" y1="22" x2="50" y2="22" stroke="rgba(155,28,28,0.4)" stroke-width="1"/>
+          <!-- Center dot -->
+          <circle cx="40" cy="40" r="3" fill="rgba(155,28,28,0.8)"/>
+        </svg>
+      </div>
+
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Militant faction / Namesake vessel</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founded</div>
+        <div class="ib-value">SY 129 — Main Belt</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founders</div>
+        <div class="ib-value">Original liberated women (Jaymeson &amp; Cera Nicks, liberators)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Headmistresses</div>
+        <div class="ib-value">Athena &amp; Minerva (operators, pre-liberation)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Final cmd.</div>
+        <div class="ib-value">Alexis D'Sauvignon (SY 134–135)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Alignment</div>
+        <div class="ib-value">Protectorate (SY 129–137)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Origin</div>
+        <div class="ib-value">Failed mining asteroid · Main Belt · SY 26–129</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Captivity</div>
+        <div class="ib-value">3–5 generations of women held</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">CM ref.</div>
+        <div class="ib-value">CM-FURY-NERIO-001</div>
+      </div>
+    </div>
+
+    <!-- Nerio — the name -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Nerio — The Name</div>
+      <p class="sidebar-note">
+        Nerio was the divine consort of Mars in Roman mythology — a goddess of valor and war, her name derived from the Sabine word for strength. The Furies chose their name deliberately. It is both an invocation and a reclamation.
+      </p>
+    </div>
+
+    <!-- Asteroidal Industries connection -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Institutional Culpability</div>
+      <p class="sidebar-note">
+        Asteroidal Industries communicated that workers would do "whatever is necessary to survive" when ore profits dropped. The archive records no punitive action against the company for what followed. This is consistent with Consortium enforcement patterns during the Foundation and early Standard Era.
+      </p>
+    </div>
+
+    <!-- See also -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">See Also</div>
+      <span class="xref">Jaymeson Nicks</span>
+      <span class="xref">Cera Nicks</span>
+      <span class="xref">Alexis D'Sauvignon</span>
+      <span class="xref">The Protectorate</span>
+      <span class="xref">The Solar War</span>
+      <span class="xref">Battle of Earth</span>
+      <span class="xref">Asteroidal Industries</span>
+      <span class="xref">Mineral Bonds</span>
+      <span class="xref">Main Belt</span>
+    </div>
+
+    <!-- Continuity -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Continuity Reference</div>
+      <p class="sidebar-note">CM-FURY-NERIO-001 · Solar War historical records and Protectorate propaganda consistently reference the faction. The vessel and the faction share a canonical entry. First Trilogy Era.</p>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Fury of Nerio</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — FURY OF NERIO · MILITANT FACTION · MAIN BELT · SY 129 · LIBERATED SPACERS · JAYMESON NICKS · CERA NICKS · ALEXIS D'SAUVIGNON · PROTECTORATE · BATTLE OF EARTH · NERIO · ATHENA · MINERVA · ASTEROIDAL INDUSTRIES · CM-FURY-NERIO-001 &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — FURY OF NERIO · MILITANT FACTION · MAIN BELT · SY 129 · LIBERATED SPACERS · JAYMESON NICKS · CERA NICKS · ALEXIS D'SAUVIGNON · PROTECTORATE · BATTLE OF EARTH · NERIO · ATHENA · MINERVA · ASTEROIDAL INDUSTRIES · CM-FURY-NERIO-001 &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>

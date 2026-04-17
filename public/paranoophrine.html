@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paranoophrine — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.07);
+    --border-mid: rgba(255,255,255,0.12);
+
+    /* Medical / pharmaceutical — cool teal, clinical */
+    --accent: #3aafa0;
+    --accent-dim: rgba(58,175,160,0.45);
+    --accent-glow: rgba(58,175,160,0.07);
+    --accent-border: rgba(58,175,160,0.2);
+
+    /* Black market / wartime — amber warning */
+    --warn: #c8962a;
+    --warn-dim: rgba(200,150,42,0.45);
+    --warn-glow: rgba(200,150,42,0.07);
+    --warn-border: rgba(200,150,42,0.22);
+
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6560;
+
+    --font-display: "Cinzel", serif;
+    --font-serif: "IM Fell English", serif;
+    --font-mono: "Share Tech Mono", monospace;
+    --font-body: "Exo 2", sans-serif;
+    --font-ui: "Rajdhani", sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .topbar { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 2rem; height: 44px; }
+  .topbar-brand { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.3em; color: var(--accent-dim); text-transform: uppercase; margin-right: 2rem; white-space: nowrap; }
+  .topbar-nav { display: flex; flex: 1; overflow-x: auto; }
+  .topbar-nav a { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); padding: 0 1rem; height: 44px; display: flex; align-items: center; white-space: nowrap; border-right: 1px solid var(--border); transition: color 0.15s; }
+  .topbar-nav a:hover { color: var(--accent); text-decoration: none; }
+  .topbar-nav a.active { color: var(--accent); }
+  .topbar-era { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; margin-left: auto; white-space: nowrap; padding-left: 2rem; }
+
+  .hero { padding: 3.5rem 2rem 2.5rem; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid var(--border); position: relative; }
+  .hero::after { content: ""; position: absolute; bottom: -1px; left: 2rem; width: 60px; height: 1px; background: var(--accent); }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.2rem; }
+  .hero-title { font-family: var(--font-display); font-size: 3rem; font-weight: 400; color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 0.25rem; }
+  .hero-alias { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent-dim); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .hero-sub { font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--text-dim); max-width: 600px; line-height: 1.7; margin-bottom: 1.5rem; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--font-ui); font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-dim); background: var(--accent-glow); border: 1px solid var(--accent-border); padding: 3px 10px; }
+  .tag-warn { color: var(--warn-dim); background: var(--warn-glow); border-color: var(--warn-border); }
+
+  .content-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; align-items: start; padding: 0 2rem; }
+
+  .main { padding: 2.5rem 3rem 4rem 0; border-right: 1px solid var(--border); }
+  .section-header { font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white); margin: 2.5rem 0 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+  .section-header::before { content: ""; display: block; width: 3px; height: 1em; background: var(--accent); flex-shrink: 0; }
+  .section-header.warn-hdr::before { background: var(--warn); }
+  .section-header:first-child { margin-top: 0; }
+
+  .prose p { font-family: var(--font-body); font-size: 0.975rem; font-weight: 300; color: var(--text); line-height: 1.9; margin-bottom: 1.1em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose em { font-family: var(--font-serif); font-style: italic; color: var(--warm-white); }
+  .prose strong { font-weight: 600; color: var(--warm-white); }
+
+  /* Drug profile block */
+  .drug-profile { background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--accent); margin: 1.5rem 0; overflow: hidden; }
+  .dp-header { padding: 0.85rem 1rem; background: rgba(58,175,160,0.06); border-bottom: 1px solid var(--accent-border); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-dim); }
+  .dp-row { display: grid; grid-template-columns: 180px 1fr; border-bottom: 1px solid var(--border); }
+  .dp-row:last-child { border-bottom: none; }
+  .dp-label { font-family: var(--font-ui); font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); padding: 0.65rem 0.85rem; border-right: 1px solid var(--border); display: flex; align-items: center; }
+  .dp-value { font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; color: var(--text); padding: 0.65rem 0.85rem; line-height: 1.6; }
+  .dp-value em { font-family: var(--font-serif); font-style: italic; color: var(--silver); }
+  .dp-value .positive { color: rgba(58,175,160,0.8); }
+  .dp-value .negative { color: rgba(200,150,42,0.8); }
+
+  /* Timeline entries */
+  .timeline { margin: 0.5rem 0 1.5rem; }
+  .tl-entry { display: grid; grid-template-columns: 110px 1fr; border-bottom: 1px solid var(--border); }
+  .tl-entry:first-child { border-top: 1px solid var(--border); }
+  .tl-date { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--accent-dim); padding: 0.75rem 1rem 0.75rem 0; border-right: 1px solid var(--border); display: flex; align-items: flex-start; padding-top: 0.85rem; }
+  .tl-date.warn { color: var(--warn-dim); }
+  .tl-body { padding: 0.75rem 0 0.75rem 1rem; font-family: var(--font-body); font-size: 0.88rem; font-weight: 300; color: var(--text); line-height: 1.7; }
+  .tl-body strong { font-weight: 600; color: var(--warm-white); display: block; margin-bottom: 0.2rem; font-family: var(--font-ui); font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tl-war { background: rgba(200,150,42,0.03); border-left: 2px solid var(--warn); }
+
+  /* Etymology note */
+  .etym-block { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.1rem 1.4rem; margin: 1.25rem 0; }
+  .etym-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.5rem; }
+  .etym-block p { font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; color: var(--text); line-height: 1.8; margin: 0; }
+
+  /* SIDEBAR */
+  .sidebar { padding: 2.5rem 0 4rem 2rem; position: sticky; top: 68px; align-self: start; }
+  .infobox { background: var(--surface); border: 1px solid var(--border); margin-bottom: 1.5rem; overflow: hidden; }
+  .infobox-header { background: rgba(58,175,160,0.07); border-bottom: 1px solid var(--accent-border); padding: 0.85rem 1rem; }
+  .infobox-title { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-dim); }
+  .infobox-subtitle { font-family: var(--font-serif); font-style: italic; font-size: 0.78rem; color: var(--text-dim); margin-top: 0.25rem; }
+  .infobox-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .infobox-row:last-child { border-bottom: none; }
+  .ib-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); padding: 0.6rem 0.75rem; border-right: 1px solid var(--border); display: flex; align-items: center; }
+  .ib-value { font-family: var(--font-body); font-size: 0.8rem; font-weight: 400; color: var(--warm-white); padding: 0.6rem 0.75rem; line-height: 1.5; }
+  .ib-value em { font-family: var(--font-serif); font-style: italic; color: var(--silver); font-size: 0.75rem; }
+  .ib-note { display: block; font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; font-family: var(--font-mono); }
+  .sidebar-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); padding: 0.5rem 0.75rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.75rem; font-family: var(--font-body); font-size: 0.83rem; color: var(--text); transition: color 0.15s, background 0.15s; }
+  .related-list a:hover { color: var(--accent); background: var(--accent-glow); text-decoration: none; }
+  .related-arrow { font-family: var(--font-mono); font-size: 9px; color: var(--accent-dim); flex-shrink: 0; }
+  .related-type { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-left: auto; flex-shrink: 0; }
+
+  /* HELENA NOTE */
+  .helena-note { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 3rem; border-top: 1px solid var(--border); position: relative; }
+  .helena-note::before { content: ""; position: absolute; top: -1px; left: 2rem; width: 60px; height: 1px; background: var(--accent); }
+  .note-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.25rem; }
+  .note-text { font-family: var(--font-serif); font-style: italic; font-size: 1.0rem; color: var(--silver); line-height: 1.9; max-width: 680px; }
+  .note-text p { margin-bottom: 0.9em; }
+  .note-text p:last-child { margin-bottom: 0; }
+
+  /* MATRIX FOOTER */
+  .matrix-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; }
+  .mf-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+  .mf-left { display: flex; flex-direction: column; gap: 0.4rem; }
+  .mf-entry { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .mf-entry span { color: var(--accent-dim); }
+  .mf-right { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); text-align: right; line-height: 1.9; }
+
+  /* TICKER */
+  .ticker-wrap { overflow: hidden; background: var(--surface2); border-top: 1px solid var(--border); height: 28px; display: flex; align-items: center; }
+  .ticker-track { display: flex; white-space: nowrap; animation: ticker 55s linear infinite; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-sep { margin: 0 1.5rem; color: var(--accent-dim); }
+  .sy-clock { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); }
+
+  @media (max-width: 820px) {
+    .content-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+    .main { padding: 2rem 0; border-right: none; }
+    .sidebar { position: static; padding: 0 0 3rem; }
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .hero-title { font-size: 2.2rem; }
+    .dp-row { grid-template-columns: 130px 1fr; }
+    .helena-note { padding: 2rem 1rem; }
+    .matrix-footer { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-brand">✴ Solarnet</div>
+  <div class="topbar-nav">
+    <a href="#">Home</a>
+    <a href="#">Culture &amp; Society</a>
+    <a href="#" class="active">Paranoophrine</a>
+    <a href="#">Spacer</a>
+    <a href="#">Chemstick</a>
+  </div>
+  <div class="topbar-era">Pre-Standard Era Onward · Technology · Pharmacology</div>
+</nav>
+
+<header class="hero">
+  <div class="hero-eyebrow">CM-0009 · PHARMACEUTICAL · PRE-STANDARD ERA ONWARD</div>
+  <h1 class="hero-title">Paranoophrine</h1>
+  <div class="hero-alias">Colloquial: "Noof" · Street: "the Good Stuff"</div>
+  <p class="hero-sub">The most effective painkiller known to humanity. Non-addictive by chemistry, highly abusable by nature, wartime black-market staple by necessity, and Twilight Era warband revenue stream by consequence. The drug that solved one problem and created several others.</p>
+  <div class="hero-tags">
+    <span class="tag">Pharmaceutical</span>
+    <span class="tag">Spacer Culture</span>
+    <span class="tag">Pre-Standard Era</span>
+    <span class="tag tag-warn">Black Market</span>
+    <span class="tag tag-warn">Solar War</span>
+    <span class="tag tag-warn">Twilight Era</span>
+  </div>
+</header>
+
+<div class="content-grid">
+  <main class="main">
+
+    <h2 class="section-header">Pharmacological Profile</h2>
+
+    <div class="drug-profile">
+      <div class="dp-header">Paranoophrine · Clinical Summary · Public Domain Formula · 17 BSC</div>
+      <div class="dp-row">
+        <div class="dp-label">Classification</div>
+        <div class="dp-value">Analgesic · Dual-action receptor modulator</div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Mechanism</div>
+        <div class="dp-value">Direct action on pain receptors; simultaneous stimulation of pleasure receptors</div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Physical Addiction</div>
+        <div class="dp-value"><span class="positive">None documented</span></div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Abuse Potential</div>
+        <div class="dp-value"><span class="negative">High</span> · Psychological habituation common</div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Efficacy</div>
+        <div class="dp-value">Most effective analgesic known · replaces opioid class</div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Manufacture</div>
+        <div class="dp-value">Public domain · low-cost · widely producible</div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Patent Status</div>
+        <div class="dp-value"><em>Released to public domain on invention · 17 BSC</em></div>
+      </div>
+      <div class="dp-row">
+        <div class="dp-label">Common Packaging</div>
+        <div class="dp-value">Standard spacer medkit · Bazaar Bar menus · warband supply stock</div>
+      </div>
+    </div>
+
+    <div class="etym-block">
+      <div class="etym-label">Etymology · Greek Roots</div>
+      <p><em>Para</em> (beside, beyond) + <em>noos</em> (mind, intellect) + <em>-phrine</em> (after epinephrine, adrenaline — the body's own emergency signal). A drug that sits beside the mind's experience of pain, positioned between the signal and the suffering. The name is precise in the way pharmaceutical Greek usually is: it describes mechanism, not effect. The effect is what got it onto every spacer's medkit and eventually into every warband's supply ledger.</p>
+    </div>
+
+    <h2 class="section-header">Overview</h2>
+    <div class="prose">
+      <p>Paranoophrine was first synthesized in 17 BSC — seventeen years before Zero Day, in the final stretch of the Foundation Period — and hailed immediately as the pharmaceutical achievement of the century. Its creators had accomplished something the field had been attempting for generations: a painkiller that matched or exceeded opioid efficacy without the physical addiction mechanism. The patent was released to the public domain on invention, deliberately, to allow low-cost manufacture. The creators understood that a drug this effective should not be gated behind a corporate price structure. That decision made it ubiquitous within a generation.</p>
+      <p>By Zero Day it was in common spacer medkits alongside <a href="#">chemsticks</a> and emergency sealant. By the SY 50s it was as unremarkable a medical supply as bandage material. Every platform, every ship with a medical locker, every Bazaar Bar worth the name carried it — the archive records Bil Jax's station offering it alongside synthehol at the top end of its chemical menu, which gives some indication of how its reputation had evolved from clinical painkiller toward recreational use of the more expensive, refined grades.</p>
+      <p>The problem the creators did not fully anticipate — or anticipated and accepted — was the abuse profile. Paranoophrine is not physically addictive. The body does not develop dependency in the chemical sense. What it does is act simultaneously on the pain receptors and the pleasure receptors of the brain, which means that using it when you are not in pain produces an experience that has nothing to do with medicine and everything to do with why people seek out substances that make them feel good. Psychological habituation is well-documented. The non-addiction claim is technically accurate. It is also somewhat beside the point for someone who has been reaching for noof at the end of every shift for six months.</p>
+    </div>
+
+    <h2 class="section-header warn-hdr">The Solar War — Shortage &amp; Black Market</h2>
+    <div class="prose">
+      <p>The Solar War produced a Paranoophrine shortage almost immediately. The reasons are straightforward: a painkiller this effective is a frontline military necessity, and both the Technocracy and the Consortium began commandeering stockpiles and manufacturing capacity for military medical supply within the first year of open hostilities. The civilian supply — which had been enormous, cheap, and universally accessible for over a century — dried up fast.</p>
+      <p>Price did what prices do when supply collapses and demand remains constant. The black market for noof during the Solar War was, by most accounts in the archive, one of the most lucrative informal economies in the Belt and Rim. The public domain formula meant anyone could manufacture it, which meant the black market was not a matter of secret synthesis but of distribution — getting product from where it could still be made to where people needed it and were willing to pay wartime prices for it. The <a href="#">Freebooters</a> ran significant quantities. Independent traders did the same. The <a href="#">Bazaar</a> networks, already accustomed to moving goods through unofficial channels, pivoted toward noof with the ease of organizations that had never been particularly formal about what they carried.</p>
+    </div>
+
+    <h2 class="section-header">Timeline</h2>
+
+    <div class="timeline">
+      <div class="tl-entry">
+        <div class="tl-date">17 BSC</div>
+        <div class="tl-body">
+          <strong>Invention · Patent Released to Public Domain</strong>
+          Paranoophrine synthesized and immediately released to public domain manufacture. Hailed as replacement for opioid-class painkillers. Low-cost production begins globally within years.
+        </div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-date">SY 0–50s</div>
+        <div class="tl-body">
+          <strong>Universal Distribution · Standard Medkit Item</strong>
+          Becomes unremarkable medical supply across Earth, Luna, Mars, and the Belt. Appears in spacer medkits alongside emergency equipment. Abuse profile becomes documented but not formally addressed — the drug remains available without restriction in most jurisdictions.
+        </div>
+      </div>
+      <div class="tl-entry tl-war">
+        <div class="tl-date warn">SY 129</div>
+        <div class="tl-body">
+          <strong>Solar War Begins · Military Commandeering · Shortage</strong>
+          Technocracy and Consortium begin commandeering stockpiles for frontline medical supply. Civilian access collapses across most of the Belt and Inner Sol. Prices spike. Black market manufacture and distribution begins within months.
+        </div>
+      </div>
+      <div class="tl-entry tl-war">
+        <div class="tl-date warn">SY 129–138</div>
+        <div class="tl-body">
+          <strong>Solar War Duration · Black Market Peak</strong>
+          Noof becomes one of the most lucrative wartime black market commodities. Freebooters, independent traders, and Bazaar networks handle primary distribution. The public domain formula means supply can be manufactured anywhere with basic chemistry equipment; the bottleneck is distribution, not production.
+        </div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-date">Twilight Era</div>
+        <div class="tl-body">
+          <strong>Post-War · Warband Revenue Stream</strong>
+          Paranoophrine shortages persist into the Twilight Era as post-war economic and political fragmentation disrupts normal distribution. The drug becomes a primary income source for many warbands — manufactured cheaply, sold at wartime-inflated prices to populations still cut off from normal supply chains.
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-header">In Spacer Culture</h2>
+    <div class="prose">
+      <p>The spacer slang term <em>noof</em> predates the Solar War and appears to have entered common use sometime in the SY 40s–60s as the drug became fully integrated into Belt life. Its presence on the Bazaar Bar menu alongside synthehol and other chemical diversions indicates that by the time of the First Trilogy Era, noof occupies a cultural position somewhere between aspirin and a recreational substance — widely available, socially unremarkable in medicinal doses, occasionally a problem in larger ones.</p>
+      <p>The non-addiction property gives it an unusual social status among substances of its class. It is not regarded the way opioids were regarded in the Old Earth period — with the stigma of physical dependency, of a drug that holds people. It is regarded the way people regard something that feels good and that one should therefore be thoughtful about, which is a considerably lighter burden and one that the architecture of abuse does not require physical chains to support. The psychological habituation is real. It is simply not called addiction by anyone who doesn't want it to be.</p>
+    </div>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="infobox">
+      <div class="infobox-header">
+        <div class="infobox-title">Paranoophrine</div>
+        <div class="infobox-subtitle">"Noof" · CM-0009</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Invented</div>
+        <div class="ib-value">17 BSC <span class="ib-note">Public domain from day one</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Analgesic <span class="ib-note">Dual-action</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Efficacy</div>
+        <div class="ib-value"><em>Most effective known</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Addiction</div>
+        <div class="ib-value">Not physically <span class="ib-note">High abuse potential</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Slang</div>
+        <div class="ib-value">Noof</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Wartime</div>
+        <div class="ib-value"><em>Shortage · black market · SY 129+</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Post-war</div>
+        <div class="ib-value"><em>Warband revenue · Twilight Era</em></div>
+      </div>
+    </div>
+
+    <div class="infobox">
+      <div class="sidebar-label">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#"><span class="related-arrow">→</span>Chemstick<span class="related-type">Technology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Spacer<span class="related-type">Culture</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Spacer EDC Kits<span class="related-type">Culture</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Freebooters<span class="related-type">Faction</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Synthehol<span class="related-type">Culture</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>The Solar War<span class="related-type">Event</span></a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<section class="helena-note">
+  <div class="note-eyebrow">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+  <div class="note-text">
+    <p>The decision to release the patent to public domain on invention is the detail in the Paranoophrine record that I find most worth holding. Someone made that call deliberately, in 17 BSC, and the consequence of it is that a drug this effective has been available to every spacer who needed it for over a century and a half — not because any government mandated it but because the people who made it decided that was the right outcome and structured their intellectual property accordingly. The Belt would look different without that decision. The medkit in every small freighter in the solar system looks different without that decision.</p>
+    <p>The Solar War undid it, for a while, in the specific way wars undo things: by making something that had been treated as a public good into a military resource, and then by disrupting the supply chains that had made the public good accessible. By SY 132 — the present, by my reckoning — the black market for noof is still active in parts of the Belt where the war's disruptions have not fully healed. The warbands that run it are not, in most cases, criminal organizations in any ideological sense. They are people who found a revenue stream that works in a post-war economy that does not offer many others. The drug is cheap to make and expensive to distribute to populations that are cut off. That arithmetic does not require malice.</p>
+    <p>The non-addiction claim is the other thing I keep returning to. It is true. It is also the kind of truth that requires careful reading. The drug does not create physical dependency. It creates a situation where someone who has been using it to feel better — about pain, or about the work, or about the long transit, or about whatever the particular weight of that person's life happens to be in that moment — has to choose to stop. The chemistry is not holding them. Everything else might be. I note this not as a condemnation of the drug or its users, but as an observation that the distinction between physical and psychological habituation matters considerably less to the person in the middle of it than it does in the pharmacological literature.</p>
+  </div>
+</section>
+
+<footer class="matrix-footer">
+  <div class="mf-inner">
+    <div class="mf-left">
+      <div class="mf-entry">Solarnet Archive · Entry: <span>Paranoophrine</span></div>
+      <div class="mf-entry">Classification: <span>Open</span> · Pharmaceutical · Culture</div>
+      <div class="mf-entry">Matrix Ref: <span>CM-0009</span></div>
+      <div class="mf-entry">Continuity Status: <span>Canonical</span></div>
+    </div>
+    <div class="mf-right">
+      SY <span class="sy-clock" id="sy-clock">···.···</span><br>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+</footer>
+
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>Paranoophrine · "Noof" · Most effective analgesic known · 17 BSC</span>
+    <span class="ticker-sep">✴</span>
+    <span>Non-addictive · high abuse potential · public domain formula</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solar War shortage · black market spike · SY 129 onward</span>
+    <span class="ticker-sep">✴</span>
+    <span>Twilight Era warband revenue stream · still running SY 132</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-0009</span>
+    <span class="ticker-sep">✴</span>
+    <span>Paranoophrine · "Noof" · Most effective analgesic known · 17 BSC</span>
+    <span class="ticker-sep">✴</span>
+    <span>Non-addictive · high abuse potential · public domain formula</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solar War shortage · black market spike · SY 129 onward</span>
+    <span class="ticker-sep">✴</span>
+    <span>Twilight Era warband revenue stream · still running SY 132</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-0009</span>
+    <span class="ticker-sep">✴</span>
+  </div>
+</div>
+
+<script>
+  function updateSYClock() {
+    const epoch = new Date("2026-01-12T00:00:00Z");
+    const now = new Date();
+    const diffDays = (now - epoch) / (1000 * 60 * 60 * 24);
+    const sy = 132.0 + diffDays * 0.01;
+    document.getElementById("sy-clock").textContent = sy.toFixed(3);
+  }
+  updateSYClock();
+  setInterval(updateSYClock, 60000);
+</script>
+
+</body>
+</html>

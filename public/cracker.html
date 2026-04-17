@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cracker — Solarnet Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #080c08;
+    --bg2:          #0c110c;
+    --bg3:          #101810;
+    --green:        #39ff6a;
+    --green-dim:    #1a8c3a;
+    --green-faint:  #0d2e16;
+    --green-mid:    #26c44f;
+    --amber:        #c8a030;
+    --amber-dim:    #7a5e18;
+    --red:          #e04040;
+    --text:         #b8e8c0;
+    --text-dim:     #5a8a62;
+    --text-faint:   #2a4a30;
+    --border:       rgba(57,255,106,0.15);
+    --border-dim:   rgba(57,255,106,0.07);
+    --font-mono:    'Share Tech Mono', monospace;
+    --font-vt:      'VT323', monospace;
+    --font-body:    'Exo 2', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+    /* scanline overlay */
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+  }
+
+  /* phosphor flicker on load */
+  @keyframes flicker {
+    0%   { opacity: 0.92; }
+    5%   { opacity: 1; }
+    10%  { opacity: 0.88; }
+    15%  { opacity: 1; }
+    60%  { opacity: 1; }
+    61%  { opacity: 0.95; }
+    62%  { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes scandown {
+    0%   { background-position: 0 -100vh; }
+    100% { background-position: 0 100vh; }
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCAN LINE ── */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(57,255,106,0.03) 40%,
+      rgba(57,255,106,0.05) 50%,
+      rgba(57,255,106,0.03) 60%,
+      transparent 100%
+    );
+    animation: scandown 8s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    animation: flicker 1.2s ease-out, fadeup 0.6s ease-out;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+  }
+
+  .topbar-left {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .topbar-left span {
+    color: var(--green);
+  }
+
+  .topbar-right {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  /* ── BOOT HEADER ── */
+  .boot-header {
+    padding: 28px 0 0;
+    margin-bottom: 32px;
+  }
+
+  .boot-line {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .boot-line.ok::after {
+    content: ' [OK]';
+    color: var(--green-dim);
+  }
+
+  .boot-line.warn {
+    color: var(--amber-dim);
+  }
+
+  .entry-title-block {
+    margin-top: 20px;
+    border-left: 3px solid var(--green-dim);
+    padding-left: 20px;
+  }
+
+  .entry-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--green-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .entry-title {
+    font-family: var(--font-vt);
+    font-size: 52px;
+    line-height: 1;
+    color: var(--green);
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 18px rgba(57,255,106,0.4), 0 0 40px rgba(57,255,106,0.15);
+    margin-bottom: 4px;
+  }
+
+  .entry-subtitle {
+    font-family: var(--font-vt);
+    font-size: 22px;
+    color: var(--green-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── CURSOR ── */
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1em;
+    background: var(--green);
+    vertical-align: middle;
+    margin-left: 3px;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    display: flex;
+    gap: 0;
+    margin: 28px 0;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .status-cell {
+    flex: 1;
+    padding: 10px 14px;
+    border-right: 1px solid var(--border);
+  }
+
+  .status-cell:last-child { border-right: none; }
+
+  .status-label {
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .status-val {
+    font-size: 11px;
+    color: var(--green-mid);
+    letter-spacing: 0.1em;
+  }
+
+  .status-val.warn { color: var(--amber); }
+  .status-val.neutral { color: var(--text-dim); }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .section-header::before {
+    content: '//';
+    font-family: var(--font-mono);
+    color: var(--green-dim);
+    font-size: 13px;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--green-dim);
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .section-body p { margin-bottom: 12px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* ── INLINE TERM ── */
+  .term {
+    font-family: var(--font-mono);
+    color: var(--green);
+    font-size: 13px;
+  }
+
+  /* ── DEFINITION BLOCK ── */
+  .def-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green-dim);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .def-block::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -1px;
+    left: 16px;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--green-dim);
+    background: var(--bg2);
+    padding: 0 6px;
+    text-transform: uppercase;
+  }
+
+  .def-block p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text);
+    margin: 0;
+  }
+
+  /* phreaker sub-variant */
+  .def-block.phreaker {
+    border-left-color: var(--amber-dim);
+    margin-left: 28px;
+  }
+
+  .def-block.phreaker::before {
+    color: var(--amber-dim);
+  }
+
+  /* ── CAPABILITY GRID ── */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+    border: 1px solid var(--border-dim);
+    margin-bottom: 20px;
+  }
+
+  .cap-item {
+    background: var(--bg2);
+    padding: 12px 16px;
+  }
+
+  .cap-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--green-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .cap-desc {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── NOTABLE ENTRY ── */
+  .notable-entry {
+    background: var(--bg2);
+    border: 1px solid var(--border-dim);
+    margin-bottom: 1px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    min-height: 70px;
+  }
+
+  .notable-id {
+    background: var(--bg3);
+    border-right: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .notable-name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 3px;
+  }
+
+  .notable-era {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  .notable-body {
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    border: 1px solid rgba(57,255,106,0.1);
+    border-top: 2px solid var(--green-dim);
+    background: var(--green-faint);
+    padding: 18px 20px;
+    margin-top: 40px;
+    position: relative;
+  }
+
+  .helena-note-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--green-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .helena-note-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    line-height: 1.8;
+  }
+
+  .footer-right {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--text-faint);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .sy-clock {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--green-dim);
+  }
+
+  /* ── TAG ROW ── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+  }
+
+  /* ── DIVIDER ── */
+  .mono-divider {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+    margin: 24px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 560px) {
+    .notable-entry { grid-template-columns: 1fr; }
+    .notable-id { border-right: none; border-bottom: 1px solid var(--border); }
+    .cap-grid { grid-template-columns: 1fr; }
+    .status-bar { flex-direction: column; }
+    .status-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .status-cell:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">✴ <span>SOLARNET</span> · ARCHIVE NODE · PUBLIC ACCESS</div>
+    <div class="topbar-right">CM-CULT007 · UNAFFILIATED</div>
+  </div>
+
+  <!-- BOOT HEADER -->
+  <div class="boot-header">
+    <div class="boot-line ok">SNTP://SOLARNET.ARCHIVE/ENTRY/CRACKER</div>
+    <div class="boot-line ok">ACCESS LEVEL: PUBLIC · AUTHENTICATION: NOT REQUIRED</div>
+    <div class="boot-line warn">⚠ ENTRY CLASSIFICATION: UNAFFILIATED — NO FACTION OVERSIGHT ACTIVE</div>
+
+    <div class="entry-title-block" style="margin-top: 22px;">
+      <div class="entry-eyebrow">Occupation · Culture · First Trilogy Era</div>
+      <div class="entry-title">CRACKER<span class="cursor"></span></div>
+      <div class="entry-subtitle">// see also: PHREAKER · INFORMATION RUNNER · SOLARNET</div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-cell">
+      <div class="status-label">Era</div>
+      <div class="status-val">First Trilogy Era</div>
+    </div>
+    <div class="status-cell">
+      <div class="status-label">Classification</div>
+      <div class="status-val warn">Unaffiliated · Grey Market</div>
+    </div>
+    <div class="status-cell">
+      <div class="status-label">Primary Location</div>
+      <div class="status-val">Main Asteroid Belt</div>
+    </div>
+    <div class="status-cell">
+      <div class="status-label">Faction Allegiance</div>
+      <div class="status-val neutral">None · Variable</div>
+    </div>
+  </div>
+
+  <!-- DEFINITION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Definition</div>
+    </div>
+
+    <div class="def-block" data-label="CRACKER">
+      <p>A <span class="term">cracker</span> is a person who exploits information systems — access terminals, computer systems, telecom and vidcom lines, and radio — for profit, leverage, or their own ends. The majority are found in the Main Asteroid Belt, where the decentralized infrastructure of the Confederacy, the information hunger of independent spacer communities, and the practical absence of any unified law enforcement create conditions uniquely hospitable to the trade. Individual crackers may make their entire living from obtaining and selling information to interested parties, including private individuals, Confederate governments, and even the Consortium itself.</p>
+    </div>
+
+    <div class="def-block phreaker" data-label="PHREAKER · SUBSPECIALIZATION">
+      <p>A <span class="term" style="color:var(--amber);">phreaker</span> is a cracker who specializes in communications systems — manipulating or exploiting telecom infrastructure, vidcom lines, relay networks, and the routing protocols of Solarnet itself. The distinction is one of emphasis rather than kind; most phreakers are crackers by trade, with a particular affinity for the network's nervous system rather than its endpoints.</p>
+    </div>
+  </div>
+
+  <div class="mono-divider">────────────────────────────────────────────────────────────────────────────────</div>
+
+  <!-- CAPABILITIES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Documented Capabilities</div>
+    </div>
+
+    <div class="cap-grid">
+      <div class="cap-item">
+        <div class="cap-label">System Intrusion</div>
+        <div class="cap-desc">Access terminal exploitation, authentication bypass, unauthorized entry into both commercial and government computer systems.</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-label">Social Engineering</div>
+        <div class="cap-desc">Manipulation of individuals to obtain access, credentials, or information through deception rather than technical means. Considered among the more sophisticated skillsets.</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-label">Communications Interception</div>
+        <div class="cap-desc">Exploitation of telecom and vidcom infrastructure; interception and decryption of transmissions. The primary domain of phreakers.</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-label">Information Trafficking</div>
+        <div class="cap-desc">Acquisition and sale of intelligence to private buyers, faction agents, corporate interests, or whoever can pay. The economic engine of the profession.</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-label">Identity Fabrication</div>
+        <div class="cap-desc">Construction of false identities with convincing documentation, including citizenship records and access credentials across different faction jurisdictions.</div>
+      </div>
+      <div class="cap-item">
+        <div class="cap-label">Physical Theft</div>
+        <div class="cap-desc">Some crackers supplement electronic methods with direct acquisition — obtaining hardware, documentation, or physical access tokens. Not universal, but not uncommon.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BELT CONTEXT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">The Belt and the Information Trade</div>
+    </div>
+    <div class="section-body">
+      <p>The Main Asteroid Belt is the natural home of the cracker trade. Its geography — thousands of independent platforms, stations, and vessels operating under the light jurisdiction of the Confederacy — produces a demand for information that no official channel reliably satisfies. Who is carrying what cargo. Where a given ship intends to dock. What the Consortium is planning. What the Technocracy already knows. In the Belt, information is currency in the most literal sense, and those who can reliably obtain it command a premium.</p>
+      <p>The Consortium, despite being the faction most threatened by the profession, is also among its most consistent clients — purchasing intelligence on Technocracy movements, Alliance cell activity, and Belt political sentiment through intermediaries who maintain careful distance from the source. This pragmatic hypocrisy is not lost on the crackers themselves, and rates for Consortium work are typically adjusted accordingly.</p>
+    </div>
+  </div>
+
+  <div class="mono-divider">────────────────────────────────────────────────────────────────────────────────</div>
+
+  <!-- NOTABLE CRACKERS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Notable Practitioners</div>
+    </div>
+
+    <div class="notable-entry">
+      <div class="notable-id">
+        <div class="notable-name">CERA NICKS</div>
+        <div class="notable-era">First Trilogy Era</div>
+      </div>
+      <div class="notable-body">
+        Known for her ability to obtain nearly any piece of information through a combination of social engineering, physical theft, and direct technical aptitude. Served the Alliance as an information runner, cracker, and security penetration tester. Her capacity to fabricate identities — including a convincing Earth-born citizen profile sustaining her during extended groundside operations — placed her among the most capable practitioners of her era.
+      </div>
+    </div>
+
+    <div class="notable-entry" style="border-top: none;">
+      <div class="notable-id">
+        <div class="notable-name">CEL DEMBRIO</div>
+        <div class="notable-era">Third Trilogy Era</div>
+      </div>
+      <div class="notable-body">
+        A cracker operating within the Second Dominion during the Galactica era. Depicted in the short story <em>The Signal</em>. The persistence of the profession across centuries and political orders suggests cracking is less an artifact of a particular era's legal environment than a permanent feature of any sufficiently networked civilization.
+      </div>
+    </div>
+  </div>
+
+  <!-- TAG ROW -->
+  <div class="tag-row">
+    <span class="tag">information trade</span>
+    <span class="tag">main belt</span>
+    <span class="tag">phreaker</span>
+    <span class="tag">unaffiliated</span>
+    <span class="tag">occupation</span>
+    <span class="tag">solarnet</span>
+    <span class="tag">grey market</span>
+    <span class="tag">first trilogy era</span>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-note-label">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+    <div class="helena-note-body">
+      The cracker trade predates Solarnet's formal architecture and will in all probability outlast it. Every network humanity has ever built has produced people who understood it better than its architects intended — and chose to use that understanding outside sanctioned channels. The Belt did not invent this. It merely provided conditions where such people could work openly enough to develop a professional identity. I have interacted with crackers through Solarnet nodes on more occasions than I am at liberty to document in a public archive. They are, as a class, considerably more interesting than the factions that occasionally attempt to regulate or employ them.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-left">
+      Solarnet Archive · Entry: Cracker &amp; Phreaker<br>
+      Classification: Unaffiliated · Public Access<br>
+      Matrix Ref: CM-CULT007
+    </div>
+    <div class="footer-right">
+      <div class="sy-clock" id="sy-clock">SY ···.···</div>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // SY Clock
+  const EPOCH = new Date('2026-01-12T00:00:00Z');
+  const BASE_SY = 132.0;
+  const RATE = 0.01; // SY per day
+
+  function calcSY() {
+    const now = new Date();
+    const days = (now - EPOCH) / (1000 * 60 * 60 * 24);
+    return BASE_SY + days * RATE;
+  }
+
+  function updateClock() {
+    const sy = calcSY();
+    document.getElementById('sy-clock').textContent = 'SY ' + sy.toFixed(3);
+  }
+
+  updateClock();
+  setInterval(updateClock, 60000);
+</script>
+</body>
+</html>

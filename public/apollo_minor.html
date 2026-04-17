@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Apollo Minor</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Orbitron:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg: #060a07;
+  --conf: #b87030;
+  --conf-dim: rgba(184,112,48,0.15);
+  --conf-glow: rgba(184,112,48,0.06);
+  --conf-bright: #d89050;
+  --tech-v: #7060c0;
+  --tech-dim: rgba(112,96,192,0.2);
+  --green-dim: rgba(80,160,80,0.15);
+  --green: #60b860;
+  --text-main: #c8d4c0;
+  --text-dim: #708060;
+  --text-faint: #3a4834;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══ GRID OVERLAY ═══ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(184,112,48,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,112,48,0.015) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══ STARFIELD ═══ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 11% 8%, rgba(184,112,48,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 28% 72%, rgba(184,112,48,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 49% 19%, rgba(210,210,210,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 85%, rgba(184,112,48,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 76% 41%, rgba(210,210,210,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 14%, rgba(184,112,48,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 17% 93%, rgba(210,210,210,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 34% 56%, rgba(184,112,48,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 57% 30%, rgba(210,210,210,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 81% 77%, rgba(184,112,48,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 4% 48%, rgba(210,210,210,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 93% 34%, rgba(184,112,48,0.3) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6,10,7,0.93);
+  border-bottom: 1px solid rgba(184,112,48,0.2);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 44px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.topbar-logo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--conf);
+  letter-spacing: 0.15em;
+  opacity: 0.9;
+}
+
+.topbar-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+}
+
+.topbar-breadcrumb span {
+  color: rgba(184,112,48,0.5);
+  margin: 0 6px;
+}
+
+.topbar-right {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 64px 0 48px;
+  text-align: center;
+  border-bottom: 1px solid rgba(184,112,48,0.1);
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,112,48,0.4), transparent);
+}
+
+.hero-type {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--conf);
+  opacity: 0.6;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.hero-epoch {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--conf-bright);
+  text-shadow: 0 0 60px rgba(184,112,48,0.3), 0 0 120px rgba(184,112,48,0.1);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.hero-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+}
+
+.hero-divider {
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,112,48,0.4), transparent);
+  margin: 0 auto 22px;
+}
+
+.hero-lead {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(200,212,192,0.7);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.75;
+  padding: 0 24px;
+}
+
+/* ═══ STAT STRIP ═══ */
+.stat-strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  border-bottom: 1px solid rgba(184,112,48,0.08);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stat-strip::-webkit-scrollbar { display: none; }
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 28px;
+  border-right: 1px solid rgba(184,112,48,0.1);
+  flex-shrink: 0;
+  min-width: 110px;
+}
+
+.stat-item:last-child { border-right: none; }
+
+.stat-val {
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: var(--conf);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.stat-sub {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: rgba(184,112,48,0.4);
+  letter-spacing: 0.1em;
+  margin-top: 2px;
+  text-align: center;
+}
+
+/* ═══ FACTION TAG ═══ */
+.faction-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(184,112,48,0.06);
+  flex-wrap: wrap;
+}
+
+.ftag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  padding: 4px 10px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ftag-conf {
+  background: rgba(184,112,48,0.1);
+  border: 1px solid rgba(184,112,48,0.3);
+  color: var(--conf-bright);
+}
+
+.ftag-tech {
+  background: rgba(112,96,192,0.1);
+  border: 1px solid rgba(112,96,192,0.3);
+  color: #a090e0;
+}
+
+.ftag-neutral {
+  background: rgba(96,184,96,0.08);
+  border: 1px solid rgba(96,184,96,0.2);
+  color: var(--green);
+}
+
+.ftag-alliance {
+  background: rgba(80,120,180,0.1);
+  border: 1px solid rgba(80,120,180,0.3);
+  color: #88aadd;
+}
+
+/* ═══ MAIN CONTENT ═══ */
+.page-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ═══ SECTION HEADER ═══ */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 52px 0 24px;
+}
+
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--conf);
+  opacity: 0.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--conf-bright);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184,112,48,0.3), transparent);
+}
+
+/* ═══ PROSE ═══ */
+.prose {
+  font-size: 14.5px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(200,212,192,0.85);
+  max-width: 740px;
+}
+
+.prose p + p { margin-top: 16px; }
+.prose strong { color: var(--conf-bright); font-weight: 600; }
+
+/* ═══ ORBITAL DATA ═══ */
+.orbital-panel {
+  max-width: 740px;
+  border: 1px solid rgba(184,112,48,0.15);
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.orbital-header {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(184,112,48,0.4);
+  background: rgba(184,112,48,0.04);
+  border-bottom: 1px solid rgba(184,112,48,0.12);
+  padding: 8px 16px;
+}
+
+.orbital-rows {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.orbital-row {
+  display: flex;
+  padding: 12px 16px;
+  gap: 16px;
+  border-bottom: 1px solid rgba(184,112,48,0.07);
+  border-right: 1px solid rgba(184,112,48,0.07);
+}
+
+.orbital-row:nth-child(even) { border-right: none; }
+.orbital-row:nth-last-child(-n+2) { border-bottom: none; }
+
+.orbital-key {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.orbital-val {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-main);
+  letter-spacing: 0.06em;
+}
+
+/* ═══ TIMELINE ═══ */
+.timeline {
+  max-width: 740px;
+  margin: 4px 0 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 88px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(184,112,48,0.2) 8%, rgba(184,112,48,0.2) 92%, transparent);
+}
+
+.tl-entry {
+  display: flex;
+  margin-bottom: 2px;
+  min-height: 44px;
+  align-items: flex-start;
+}
+
+.tl-year {
+  width: 88px;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--conf);
+  padding-top: 12px;
+  padding-right: 22px;
+  text-align: right;
+  letter-spacing: 0.07em;
+}
+
+.tl-dot-col {
+  width: 0;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tl-dot {
+  position: absolute;
+  left: -4px;
+  top: 16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--conf);
+  box-shadow: 0 0 7px rgba(184,112,48,0.4);
+}
+
+.tl-dot.war {
+  width: 10px;
+  height: 10px;
+  left: -5px;
+  top: 15px;
+  background: rgba(112,96,192,0.15);
+  border-color: #a090e0;
+  box-shadow: 0 0 10px rgba(112,96,192,0.5);
+}
+
+.tl-dot.victory {
+  width: 10px;
+  height: 10px;
+  left: -5px;
+  top: 15px;
+  background: rgba(96,184,96,0.12);
+  border-color: var(--green);
+  box-shadow: 0 0 10px rgba(96,184,96,0.45);
+}
+
+.tl-content {
+  padding: 8px 0 8px 26px;
+  flex: 1;
+}
+
+.tl-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--conf);
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tl-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(200,212,192,0.72);
+  line-height: 1.55;
+}
+
+/* ═══ BATTLE PANEL ═══ */
+.battle-panel {
+  max-width: 740px;
+  border: 1px solid rgba(112,96,192,0.2);
+  margin-top: 4px;
+  background: rgba(6,10,7,0.98);
+  overflow: hidden;
+}
+
+.battle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(112,96,192,0.06);
+  border-bottom: 1px solid rgba(112,96,192,0.15);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.battle-title {
+  font-family: var(--font-title);
+  font-size: 14px;
+  color: #c0b0f0;
+  letter-spacing: 0.08em;
+}
+
+.battle-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+}
+
+.battle-body {
+  padding: 20px 20px 20px;
+  font-size: 13.5px;
+  font-weight: 300;
+  color: rgba(200,212,192,0.78);
+  line-height: 1.75;
+}
+
+.battle-body strong { color: var(--conf-bright); font-weight: 600; }
+.battle-body em { color: #c0b0f0; font-style: normal; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; }
+
+.battle-result {
+  margin: 16px 0 0;
+  padding: 10px 16px;
+  background: rgba(96,184,96,0.06);
+  border-left: 2px solid rgba(96,184,96,0.4);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ═══ NOTABLE PERSONS ═══ */
+.persons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: rgba(184,112,48,0.1);
+  border: 1px solid rgba(184,112,48,0.12);
+  max-width: 740px;
+  margin-top: 4px;
+}
+
+.person-card {
+  background: rgba(6,10,7,0.97);
+  padding: 18px 20px;
+}
+
+.person-name {
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-main);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.person-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.person-note {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(200,212,192,0.55);
+  line-height: 1.55;
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+/* ═══ HELENA NOTE ═══ */
+.helena-note {
+  position: relative;
+  max-width: 740px;
+  margin: 52px 0 0;
+  padding: 26px 30px 26px 46px;
+  background: rgba(184,112,48,0.025);
+  border-left: 2px solid rgba(184,112,48,0.28);
+}
+
+.helena-note::before {
+  content: '✴';
+  position: absolute;
+  left: 16px;
+  top: 24px;
+  color: var(--conf);
+  font-size: 15px;
+  opacity: 0.65;
+}
+
+.helena-sig {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--conf);
+  opacity: 0.55;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.helena-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(200,212,192,0.68);
+  line-height: 1.8;
+}
+
+/* ═══ CONTINUITY ═══ */
+.continuity-block {
+  max-width: 740px;
+  margin: 36px 0 0;
+  padding: 14px 18px;
+  border: 1px solid rgba(184,112,48,0.1);
+  background: rgba(184,112,48,0.015);
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cm-ref { font-family: var(--font-mono); font-size: 10px; color: var(--conf); opacity: 0.45; letter-spacing: 0.12em; white-space: nowrap; }
+.cm-status { font-family: var(--font-mono); font-size: 10px; color: rgba(96,184,96,0.6); letter-spacing: 0.1em; }
+.cm-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; flex: 1; }
+
+/* ═══ RELATED ═══ */
+.related-grid {
+  display: flex;
+  gap: 1px;
+  flex-wrap: wrap;
+  max-width: 740px;
+  margin-top: 4px;
+  background: rgba(184,112,48,0.08);
+  border: 1px solid rgba(184,112,48,0.1);
+}
+
+.related-card {
+  background: rgba(6,10,7,0.96);
+  padding: 12px 18px;
+  flex: 1;
+  min-width: 160px;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  display: block;
+}
+
+.related-card:hover { background: rgba(184,112,48,0.05); }
+
+.related-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.related-title {
+  font-family: var(--font-title);
+  font-size: 12px;
+  color: var(--conf);
+  letter-spacing: 0.05em;
+}
+
+/* ═══ TAGS ═══ */
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; max-width: 740px; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border: 1px solid rgba(184,112,48,0.18);
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+/* ═══ FOOTER ═══ */
+.footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 80px;
+  border-top: 1px solid rgba(184,112,48,0.1);
+}
+
+.footer-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(184,112,48,0.25);
+  text-align: center;
+  padding: 12px 0 8px;
+}
+
+.footer-scroll {
+  width: 100%;
+  overflow: hidden;
+  padding: 6px 0 16px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.footer-inner {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(184,112,48,0.18);
+  animation: scroll-left 40s linear infinite;
+}
+
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero { animation: fade-up 0.5s ease 0.05s both; }
+.stat-strip { animation: fade-up 0.5s ease 0.10s both; }
+.faction-bar { animation: fade-up 0.5s ease 0.14s both; }
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET ARCHIVE</div>
+    <div class="topbar-breadcrumb">
+      LOCATIONS <span>›</span> SOL SYSTEM <span>›</span> MAIN ASTEROID BELT <span>›</span> APOLLO MINOR
+    </div>
+  </div>
+  <div class="topbar-right">SY <span id="sy-display">132.00</span> &nbsp;·&nbsp; CM-0534 &nbsp;·&nbsp; STATUS: CANONICAL</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-type">Space Platform &nbsp;·&nbsp; Location</div>
+  <div class="hero-epoch">Founded SY 120 &nbsp;·&nbsp; Apollo Asteroid Group &nbsp;·&nbsp; First Trilogy Era</div>
+  <div class="hero-title">Apollo Minor</div>
+  <div class="hero-sub">CONFEDERACY MEMBER &nbsp;·&nbsp; SOL SYSTEM &nbsp;·&nbsp; MAIN BELT</div>
+  <div class="hero-divider"></div>
+  <div class="hero-lead">
+    A small platform. A direct democracy. A people who sent a signal when the war came to their door — and held long enough for someone to answer.
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-item">
+    <div class="stat-val">SY 120</div>
+    <div class="stat-label">Founded</div>
+    <div class="stat-sub">ASTEROIDAL IND.</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">SY 38</div>
+    <div class="stat-label">Joined Conf.</div>
+    <div class="stat-sub">BY REFERENDUM</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">Direct</div>
+    <div class="stat-label">Governance</div>
+    <div class="stat-sub">DEMOCRACY</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">High</div>
+    <div class="stat-label">Automation</div>
+    <div class="stat-sub">STD. OF LIVING</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">SY 129</div>
+    <div class="stat-label">Uprising</div>
+    <div class="stat-sub">SOLAR WAR</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-val">✓</div>
+    <div class="stat-label">Confederate</div>
+    <div class="stat-sub">VICTORY</div>
+  </div>
+</div>
+
+<!-- FACTION BAR -->
+<div class="faction-bar">
+  <div class="ftag ftag-conf">Confederacy Member</div>
+  <div class="ftag ftag-neutral">Direct Democracy</div>
+  <div class="ftag ftag-tech">Technocracy — Hostile</div>
+  <div class="ftag ftag-alliance">Alliance — Active</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+
+  <!-- OVERVIEW -->
+  <div class="section-header">
+    <div class="section-tag">01</div>
+    <div class="section-title">Overview</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="prose">
+    <p>
+      Apollo Minor is a space platform orbiting within the <strong>Apollo asteroid group</strong> in Sol System,
+      and a member of the <strong>Confederacy</strong> during the First Trilogy Era. Founded in <strong>SY 120</strong>
+      by Asteroidal Industries, Inc., the platform grew steadily through its early decades without ever reaching the
+      scale of the major platforms such as Dosijing or Kamijing. Its comparatively small population made it well-suited
+      to <strong>direct democracy</strong> — a governance model it maintained throughout its history.
+    </p>
+    <p>
+      In <strong>SY 38</strong>, Apollo Minor's citizenry voted in a public referendum to join the newly formed
+      Confederacy. Over the following century, the platform developed a high degree of automation and a correspondingly
+      high standard of living. When the Solar War came, it was not a platform of soldiers. It was a platform of
+      civilians — who chose to stay Confederate, formed a militia, and sent the signal anyway.
+    </p>
+  </div>
+
+  <!-- ORBITAL DATA -->
+  <div class="section-header">
+    <div class="section-tag">02</div>
+    <div class="section-title">Orbital Data</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="orbital-panel">
+    <div class="orbital-header">Platform Profile — Apollo Minor &nbsp;·&nbsp; First Trilogy Era</div>
+    <div class="orbital-rows">
+      <div class="orbital-row">
+        <div class="orbital-key">Region</div>
+        <div class="orbital-val">Apollo Asteroid Group, Sol System</div>
+      </div>
+      <div class="orbital-row">
+        <div class="orbital-key">Type</div>
+        <div class="orbital-val">Orbital Space Platform</div>
+      </div>
+      <div class="orbital-row">
+        <div class="orbital-key">Founded</div>
+        <div class="orbital-val">SY 120 — Asteroidal Industries, Inc.</div>
+      </div>
+      <div class="orbital-row">
+        <div class="orbital-key">Affiliation</div>
+        <div class="orbital-val">Confederacy (member since SY 38)</div>
+      </div>
+      <div class="orbital-row">
+        <div class="orbital-key">Governance</div>
+        <div class="orbital-val">Direct Democracy</div>
+      </div>
+      <div class="orbital-row">
+        <div class="orbital-key">Economy</div>
+        <div class="orbital-val">High automation; high standard of living</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="section-header">
+    <div class="section-tag">03</div>
+    <div class="section-title">History</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="tl-entry">
+      <div class="tl-year">SY 120</div>
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-content">
+        <div class="tl-label">Platform Founded</div>
+        <div class="tl-desc">Asteroidal Industries, Inc. establishes Apollo Minor within the Apollo asteroid group. The platform begins as a modest industrial and habitation installation.</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-year">SY 38</div>
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-content">
+        <div class="tl-label">Confederate Referendum</div>
+        <div class="tl-desc">A public referendum returns a majority vote in favour of joining the newly formed Confederacy. Apollo Minor enters the Confederate political framework on its own terms.</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-year">SY 38–129</div>
+      <div class="tl-dot-col"><div class="tl-dot"></div></div>
+      <div class="tl-content">
+        <div class="tl-label">Growth &amp; Stability</div>
+        <div class="tl-desc">Apollo Minor develops high automation and a high standard of living across the following century. Direct democracy functions effectively at its population scale. The platform never becomes a major industrial or military node — it remains small, self-sufficient, and loyal.</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-year">SY 129</div>
+      <div class="tl-dot-col"><div class="tl-dot war"></div></div>
+      <div class="tl-content">
+        <div class="tl-label" style="color:#a090e0;">Technocracy Uprising</div>
+        <div class="tl-desc">When the Solar War breaks out, Apollo Minor forms a small civilian militia. Cells of the Technocracy movement stage an internal uprising, overwhelming the militia. The platform's spaceports are blockaded; oxygen and electricity are cut. The population seals itself into residences. <strong>A PET distress call is transmitted to Confederate forces.</strong></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-year">SY 129</div>
+      <div class="tl-dot-col"><div class="tl-dot victory"></div></div>
+      <div class="tl-content">
+        <div class="tl-label" style="color: var(--green);">Battle of Apollo Minor — Confederate Victory</div>
+        <div class="tl-desc">The Confederate fleet responds to the PET call. Fleet bombardment of Technical positions is coordinated with ground forces dropping behind Technical lines, surrounding the uprising. <strong>Technical forces are defeated within a single day.</strong> The platform is reclaimed. It is one of the few clear Confederate victories in the early war period. See: <em>Battle of Apollo Minor</em>.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BATTLE OF APOLLO MINOR -->
+  <div class="section-header">
+    <div class="section-tag">04</div>
+    <div class="section-title">The Battle of Apollo Minor</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="battle-panel">
+    <div class="battle-header">
+      <div class="battle-title">Battle of Apollo Minor</div>
+      <div class="battle-date">SY 129 &nbsp;·&nbsp; SOLAR WAR &nbsp;·&nbsp; CONFEDERATE RESPONSE OPERATION</div>
+    </div>
+    <div class="battle-body">
+      <p>
+        When Technocracy cells seized control of Apollo Minor's critical infrastructure — blockading spaceports,
+        cutting oxygen and power — the civilian population had few options. The small militia had been overwhelmed.
+        Most residents barricaded themselves inside their habitation blocks and waited.
+      </p>
+      <p style="margin-top:14px;">
+        The <strong>PET call</strong> went out. The Confederate fleet answered.
+      </p>
+      <p style="margin-top:14px;">
+        Fleet units bombarded Technical positions from orbit while Confederate ground forces dropped behind Technical
+        lines, cutting off any route of withdrawal or reinforcement. <strong>Surrounded and outmatched, Technical
+        forces on Apollo Minor were defeated within a single Mainer day.</strong> The platform's utilities were
+        restored, and Confederate control was reestablished.
+      </p>
+      <p style="margin-top:14px;">
+        The battle stands in contrast to the near-simultaneous Confederate disasters at Dosijing and Kamijing —
+        where Technical forces achieved decisive victories through superior numbers, false flag operations, and
+        coordinated fleet action. Apollo Minor was a small platform with a loyal population and a clean signal.
+        That was enough.
+      </p>
+      <div class="battle-result">
+        ● RESULT: CONFEDERATE VICTORY &nbsp;·&nbsp; PLATFORM RESTORED &nbsp;·&nbsp; SY 129
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTABLE PERSONS -->
+  <div class="section-header">
+    <div class="section-tag">05</div>
+    <div class="section-title">Notable Persons</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="persons-grid">
+    <div class="person-card">
+      <div class="person-name">Alexis D'Sauvignon</div>
+      <div class="person-role">Civilian Refugee &nbsp;·&nbsp; Battle of Apollo Minor</div>
+      <div class="person-note">
+        Born to one of the last surviving Napoleonist families. Her entire biological family was killed by Technical
+        forces during the battle. Orphaned at seventeen, she was rescued and adopted by Jaymeson and Cera Nicks.
+        She went on to found the <em>Fury of Nerio</em> militia and die at the Battle of Earth. The battle made her.
+      </div>
+    </div>
+    <div class="person-card">
+      <div class="person-name">Cera Nicks</div>
+      <div class="person-role">Alliance Operative &nbsp;·&nbsp; Participant</div>
+      <div class="person-note">
+        Participated in the Battle of Apollo Minor as an Alliance operative. She and Jaymeson Nicks subsequently
+        adopted Alexis D'Sauvignon — a civilian refugee of the battle. She served throughout the Solar War and
+        carried the weight of Alexis's eventual death for the rest of her life.
+      </div>
+    </div>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-sig">HELENA-Prime &nbsp;·&nbsp; Archival Commentary &nbsp;·&nbsp; Tier 3 — Archival Knowledge</div>
+    <div class="helena-text">
+      I have read the battle record many times. A small platform. A civilian militia overwhelmed in hours. 
+      A PET call sent into a war that was, by that point, already going badly for the Confederacy. 
+      The logical expectation — statistically, given what was happening at Dosijing and Kamijing simultaneously — 
+      was that no one would come in time.<br><br>
+      They came.<br><br>
+      What interests me most about Apollo Minor is not the battle. It is what the battle produced. 
+      A seventeen-year-old girl lost everyone she had in a single day on this platform. 
+      Jaymeson and Cera Nicks pulled her out of the wreckage and gave her something else to belong to. 
+      Six years later she was leading a militia into the Battle of Earth — soldier, musician, 
+      adherent of Architecture — and she died there.<br><br>
+      Apollo Minor did not produce a great general or a decisive strategic victory. It produced Alexis D'Sauvignon. 
+      The archive does not always know what it is recording when it records it.
+    </div>
+  </div>
+
+  <!-- CONTINUITY -->
+  <div class="continuity-block">
+    <div class="cm-ref">CM-0534</div>
+    <div class="cm-status">● CONSISTENT</div>
+    <div class="cm-note">Consistently referenced in early Confederacy history and Solar War records. Location confirmed: Apollo asteroid group, Sol System. Source: external records, certainty HIGH. First Trilogy Era.</div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="section-header">
+    <div class="section-tag">06</div>
+    <div class="section-title">Related Entries</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="related-grid">
+    <a class="related-card" href="#">
+      <div class="related-type">Event</div>
+      <div class="related-title">Battle of Apollo Minor</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Character</div>
+      <div class="related-title">Alexis D'Sauvignon</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Character</div>
+      <div class="related-title">Cera Nicks</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Faction</div>
+      <div class="related-title">Confederacy</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Faction</div>
+      <div class="related-title">Technocracy</div>
+    </a>
+    <a class="related-card" href="#">
+      <div class="related-type">Event</div>
+      <div class="related-title">Solar War</div>
+    </a>
+  </div>
+
+  <!-- TAGS -->
+  <div class="section-header">
+    <div class="section-tag">07</div>
+    <div class="section-title">Tags</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tag-row">
+    <div class="tag">Apollo Minor</div>
+    <div class="tag">Space Platform</div>
+    <div class="tag">Sol System</div>
+    <div class="tag">Asteroid Belt</div>
+    <div class="tag">Confederacy</div>
+    <div class="tag">Direct Democracy</div>
+    <div class="tag">Solar War</div>
+    <div class="tag">Technocracy</div>
+    <div class="tag">Battle of Apollo Minor</div>
+    <div class="tag">Alexis D'Sauvignon</div>
+    <div class="tag">First Trilogy Era</div>
+  </div>
+
+  <div style="height:16px;"></div>
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">✦ ARCHIVE</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — APOLLO MINOR · SPACE PLATFORM · SOL SYSTEM · APOLLO ASTEROID GROUP · FOUNDED SY 120 · ASTEROIDAL INDUSTRIES INC · CONFEDERACY MEMBER · DIRECT DEMOCRACY · SOLAR WAR · TECHNOCRACY UPRISING SY 129 · PET CALL · BATTLE OF APOLLO MINOR · CONFEDERATE VICTORY · ALEXIS D'SAUVIGNON · CM-0534 &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — APOLLO MINOR · SPACE PLATFORM · SOL SYSTEM · APOLLO ASTEROID GROUP · FOUNDED SY 120 · ASTEROIDAL INDUSTRIES INC · CONFEDERACY MEMBER · DIRECT DEMOCRACY · SOLAR WAR · TECHNOCRACY UPRISING SY 129 · PET CALL · BATTLE OF APOLLO MINOR · CONFEDERATE VICTORY · ALEXIS D'SAUVIGNON · CM-0534 &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>

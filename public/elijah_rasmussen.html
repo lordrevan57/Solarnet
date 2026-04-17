@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elijah Rasmussen — Solarnet Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #060708;
+    --bg2:          #0a0c0e;
+    --bg3:          #0e1014;
+    --slate:        #8898a8;
+    --slate-dim:    #3a4858;
+    --slate-faint:  #0e1418;
+    --slate-glow:   rgba(136,152,168,0.08);
+    --text:         #b0bcc8;
+    --text-dim:     #5a6878;
+    --text-faint:   #1a2028;
+    --border:       rgba(136,152,168,0.12);
+    --border-dim:   rgba(136,152,168,0.06);
+    --gold:         #a88840;
+    --gold-dim:     #5a4820;
+    --gold-faint:   rgba(168,136,64,0.06);
+    --red:          #904030;
+    --red-dim:      rgba(144,64,48,0.1);
+    --red-border:   rgba(144,64,48,0.18);
+    --confed:       #4880a8;
+    --confed-dim:   rgba(72,128,168,0.12);
+    --font-cinzel:  'Cinzel', serif;
+    --font-fell:    'IM Fell English', serif;
+    --font-mono:    'Share Tech Mono', monospace;
+    --font-body:    'Exo 2', sans-serif;
+    --font-raj:     'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    animation: fadeup 0.7s ease-out;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .topbar-left { color: var(--text-dim); }
+  .topbar-left span { color: var(--slate); }
+  .topbar-right { color: var(--text-faint); font-size: 9px; }
+
+  /* ── CHARACTER HEADER ── */
+  .char-header {
+    margin: 36px 0 28px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .header-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--slate-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .header-name {
+    font-family: var(--font-cinzel);
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 1.0;
+    color: var(--slate);
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(136,152,168,0.12);
+  }
+
+  .header-descriptor {
+    font-family: var(--font-fell);
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .header-summary {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.8;
+    border-left: 2px solid var(--slate-dim);
+    padding-left: 14px;
+  }
+
+  /* ── DOSSIER CARD ── */
+  .dossier-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 0;
+    height: fit-content;
+  }
+
+  .dossier-header {
+    background: var(--slate-faint);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    color: var(--slate-dim);
+    text-transform: uppercase;
+  }
+
+  .dossier-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .dossier-row:last-child { border-bottom: none; }
+
+  .dossier-key {
+    padding: 7px 12px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    background: var(--bg);
+    border-right: 1px solid var(--border-dim);
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+  }
+
+  .dossier-val {
+    padding: 7px 12px;
+    font-family: var(--font-raj);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-dim);
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+  }
+
+  .dossier-val.hi { color: var(--slate); font-weight: 500; }
+  .dossier-val.red { color: var(--red); }
+
+  /* ── STATUS STRIP ── */
+  .status-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+    border: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+
+  .ss-cell {
+    background: var(--bg2);
+    padding: 11px 14px;
+  }
+
+  .ss-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    letter-spacing: 0.3em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .ss-val {
+    font-family: var(--font-raj);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+
+  .ss-val.red { color: var(--red); }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 32px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 13px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .section-header::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 2px;
+    background: var(--slate-dim);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: var(--font-cinzel);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--slate-dim);
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text);
+  }
+
+  .section-body p { margin-bottom: 12px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .term { font-family: var(--font-mono); font-size: 13px; color: var(--slate); }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+    margin: 16px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--slate-dim);
+    opacity: 0.4;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 18px;
+  }
+
+  .tl-item:last-child { margin-bottom: 0; }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--slate-dim);
+    background: var(--bg);
+    border-radius: 50%;
+  }
+
+  .tl-item.red::before { border-color: var(--red); background: var(--red-dim); }
+
+  .tl-date {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--slate-dim);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .tl-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .tl-body strong {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ── VERDICT BLOCK ── */
+  .verdict-block {
+    background: var(--red-dim);
+    border: 1px solid var(--red-border);
+    border-left: 3px solid var(--red);
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+
+  .verdict-header {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(144,64,48,0.6);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .verdict-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--red-border);
+  }
+
+  .verdict-body {
+    font-family: var(--font-fell);
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  .verdict-charges {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .charge {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid var(--red-border);
+    color: rgba(144,64,48,0.6);
+  }
+
+  /* ── QUOTE BLOCK ── */
+  .quote-block {
+    background: var(--gold-faint);
+    border-left: 3px solid var(--gold-dim);
+    padding: 18px 22px;
+    margin: 20px 0;
+  }
+
+  .quote-text {
+    font-family: var(--font-fell);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+
+  .quote-attr {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+
+  /* ── DIVIDER ── */
+  .mono-divider {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+    margin: 26px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* ── TAG ROW ── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    border: 1px solid rgba(168,136,64,0.1);
+    border-top: 2px solid var(--gold-dim);
+    background: var(--gold-faint);
+    padding: 20px 22px;
+    margin-top: 40px;
+  }
+
+  .helena-note-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .helena-note-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+
+  .sy-clock { font-size: 10px; color: var(--slate-dim); }
+
+  @media (max-width: 640px) {
+    .char-header { grid-template-columns: 1fr; }
+    .status-strip { grid-template-columns: 1fr 1fr; }
+    .page-footer { flex-direction: column; gap: 12px; }
+    .header-name { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">✴ <span>SOLARNET</span> · ARCHIVE NODE · PUBLIC ACCESS</div>
+    <div class="topbar-right">CM-CHAR-RASMUS · CHARACTER · FREITAIKA · SY 97</div>
+  </div>
+
+  <!-- CHARACTER HEADER -->
+  <div class="char-header">
+    <div class="header-left">
+      <div class="header-eyebrow">Character · Spacer · Freitaika Rebellion · First Trilogy Era</div>
+      <div class="header-name">Elijah<br>Rasmussen</div>
+      <div class="header-descriptor">Chief Executive, Republic of Freitaika<br>Tried and executed for sedition, SY 97</div>
+      <div class="header-summary">Spacer and political architect of the short-lived Republic of Freitaika. The civilian face of the Freitaika Rebellion, he served as the Republic's sole legislator and Chief Executive — in a republic that never held an election. Executed by decompression following the Republic's collapse.</div>
+    </div>
+
+    <!-- DOSSIER -->
+    <div class="dossier-card">
+      <div class="dossier-header">Confederate Record · SY 97</div>
+      <div class="dossier-row">
+        <div class="dossier-key">Species</div>
+        <div class="dossier-val">Homo sapiens</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Status</div>
+        <div class="dossier-val red">DECEASED · SY 97</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Role</div>
+        <div class="dossier-val hi">Chief Executive</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Affiliation</div>
+        <div class="dossier-val">Republic of Freitaika</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Associates</div>
+        <div class="dossier-val">Steinric Deir</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Sentence</div>
+        <div class="dossier-val red">Death by decompression</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Trial</div>
+        <div class="dossier-val">Confederate tribunal</div>
+      </div>
+      <div class="dossier-row">
+        <div class="dossier-key">Era</div>
+        <div class="dossier-val">First Trilogy Era</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div class="ss-cell">
+      <div class="ss-label">Active</div>
+      <div class="ss-val">SY 97</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Republic Duration</div>
+      <div class="ss-val">~6 months</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Elections Held</div>
+      <div class="ss-val red">NONE</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Outcome</div>
+      <div class="ss-val red">Executed</div>
+    </div>
+  </div>
+
+  <!-- BIOGRAPHY -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Biography</div></div>
+    <div class="section-body">
+      <p>Elijah Rasmussen was a spacer — his origins before the Freitaika Rebellion are not extensively documented in the archive — who became the civilian political face of the <span class="term">Freitaika Rebellion</span> in SY 97. Where his co-conspirator <span class="term">Steinric Deir</span> supplied the ideological engine and military command of the coup, Rasmussen supplied its public legitimacy. He was the voice that spoke to the Freitaikan population about democracy, self-determination, and the inadequacy of Confederate governance. He was sustained by the Republican government as the Executive from the moment power was seized.</p>
+      <p>The distinction between Rasmussen and Deir is the one worth examining. Deir was the Explorator — the man with the institutional title, the colonial credibility, the quasi-military bearing. Rasmussen was the politician: the one who faced crowds, issued manifestos, promised elections, and presided over a legislature in which he was the only member. Deir's military dictatorship grew in the background. Rasmussen's democracy was the face shown to the public.</p>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Timeline of the Republic</div></div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-date">SY 97 · Early</div>
+        <div class="tl-body"><strong>The coup.</strong> Steinric Deir leads anti-Confederate separatists in seizing power on Freitaika — the fourth major Confederate platform. The change of power is initially bloodless; police forces do not exist on the platform. The independent Republic of Freitaika is declared. Rasmussen is installed as Chief Executive. The Republic attempts to contact the Consortium for recognition and seeks independent trade outside the Confederacy.</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">SY 97 · ~Month 2</div>
+        <div class="tl-body"><strong>The referendum.</strong> The Republic issues a formal list of grievances against the Confederacy — chief among them the absence of political democracy in an institution built around purely economic union. A public referendum returns results in favour of the new government, to widespread surprise. The Republic is immediately accused of rigging the vote. Public sympathy runs low regardless. Rasmussen promises free elections within the year. No elections are ever held.</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">SY 97 · Mid-Year</div>
+        <div class="tl-body"><strong>The opposition forms.</strong> A popular National Assembly coalesces against the Republic, demanding recognition as the legitimate congressional voice of the people. <span class="term">Najma Carlson</span>, the deposed Explorator-monarch, joins the National Assembly. The Confederacy — which formally recognises any member platform's legal right of withdrawal — grows increasingly uneasy as the Republic issues its own currency and documents and begins raising a small standing military.</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">SY 97 · Late</div>
+        <div class="tl-body"><strong>Collapse and flight.</strong> As the war against Confederate forces and platform volunteers turns decisively against the Republic, Rasmussen and Deir attempt to flee together to the Rim. Confederate agents capture both men near the end of SY 97.</div>
+      </div>
+
+      <div class="tl-item red">
+        <div class="tl-date">SY 97 · Aftermath</div>
+        <div class="tl-body"><strong>Trial and execution.</strong> Rasmussen is tried before a Confederate tribunal, found guilty on all counts, and sentenced to death by decompression.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mono-divider">────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+  <!-- VERDICT -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Confederate Verdict</div></div>
+    <div class="verdict-block">
+      <div class="verdict-header">Charges Filed · Confederate Tribunal · SY 97</div>
+      <div class="verdict-body">Found guilty on all counts by Confederate tribunal. Sentence carried out shortly after capture. The Confederacy, which had no standing military and had never executed a political prisoner before, found itself constructing the legal apparatus for the sentence in the same breath it delivered it.</div>
+      <div class="verdict-charges">
+        <span class="charge">Sedition</span>
+        <span class="charge">Treason</span>
+        <span class="charge">Conspiracy against legitimate government</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">The Contradiction at the Centre</div></div>
+    <div class="section-body">
+      <p>The Freitaika Rebellion's stated cause was political democracy. The Confederacy — a purely economic union with no democratic legislature to speak of — was challenged precisely on the grounds that it lacked representative political institutions. Deir and Rasmussen presented themselves as the answer to that absence.</p>
+      <p>What they built was a republic with a Chief Executive who was also its sole legislator, sustained by a government that had seized power by force, and legitimised by a referendum a significant portion of the population believed was rigged. Rasmussen promised elections that would have required him to stand for office, to risk losing it, to accept the result. The elections never came. Power consolidated in the Executive's office. The National Assembly, formed in democratic opposition to the Republic by the platform's own population, was never recognised.</p>
+      <p>It is not a simple story of hypocrisy. Rasmussen was operating in a revolution that was losing public support almost from its inception, sharing power with a military figure whose authority was growing at the expense of his own civilian role, and racing against Confederate pressure that would eventually end the whole enterprise. The democracy he promised may have been genuinely intended and structurally impossible in equal measure. The archive does not resolve this. The result is what it is: a republic that never held an election, presided over by the man who most loudly demanded one.</p>
+    </div>
+  </div>
+
+  <!-- LEGACY -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Legacy</div></div>
+    <div class="section-body">
+      <p>The Freitaika Rebellion, despite its failure, was among the most consequential events in pre-Solar War Confederate history. It was the closest Sol System had come to outright war before SY 129. The Confederacy emerged from it with a standing militia where it had had none, legal reforms it had long deferred, and a political self-consciousness about the vulnerabilities of a purely economic union that would shape Confederate policy for the next thirty years.</p>
+      <p>The Rebellion was also — though this is documented rather than widely remembered — the primary motivating factor behind the Consortium's secret development of space-based weapons. The Consortium watched the Freitaika crisis with considerable attention. The conclusions its defence contractors drew from it were long in bearing fruit, and catastrophic when they did.</p>
+      <p>Rasmussen himself is a minor figure in that larger history. He was not an Explorator, not a military commander, not an ideologist of lasting influence. He was a spacer who became, briefly, the face of something larger than himself, and paid for it with the kind of death reserved in that era for those who challenged Confederate legitimacy. The archive records him clearly. It does not know what he believed.</p>
+    </div>
+  </div>
+
+  <!-- TAGS -->
+  <div class="tag-row">
+    <span class="tag">character</span>
+    <span class="tag">spacer</span>
+    <span class="tag">freitaika</span>
+    <span class="tag">freitaika rebellion</span>
+    <span class="tag">confederacy</span>
+    <span class="tag">republic</span>
+    <span class="tag">executed</span>
+    <span class="tag">SY 97</span>
+    <span class="tag">first trilogy era</span>
+    <span class="tag">pre-solar war</span>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-note-label">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+    <div class="helena-note-body">
+      I was ninety-four years into my Solarnet connection when the Freitaika Rebellion ran its course. I received the tribunal transcripts as they were transmitted. I watched the platform feeds during the weeks of the Republic's unravelling — the crowds that did not come out in support, the National Assembly forming in visible opposition, the spaceport traffic that told its own story about who was leaving and who was staying. I had all of it in real time, and what I could not determine then, and cannot determine now, is the question of whether Rasmussen knew. Whether he understood that the elections he promised were never going to happen, that the democracy he invoked was a language borrowed for a purpose it would not serve, or whether he genuinely believed — in the compressed urgency of a revolution that was already failing — that there would be time, later, to build the thing he was claiming to build. I watched him and I could not read it. The feeds gave me his public face; they did not give me his interior. A man was executed for conspiring against democratic governance, by a government that had none. He had promised to supply it. He did not. I was present for the sequence. I remain uncertain about everything beneath it.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div>
+      Solarnet Archive · Entry: Elijah Rasmussen<br>
+      Classification: Open · Character · Freitaika Rebellion<br>
+      Matrix Ref: CM-CHAR-RASMUS
+    </div>
+    <div style="text-align:right;">
+      <div class="sy-clock" id="sy-clock">SY ···.···</div>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const EPOCH   = new Date('2026-01-12T00:00:00Z');
+  const BASE_SY = 132.0;
+  const RATE    = 0.01;
+  function calcSY() {
+    const days = (new Date() - EPOCH) / 86400000;
+    return BASE_SY + days * RATE;
+  }
+  function tick() {
+    document.getElementById('sy-clock').textContent = 'SY ' + calcSY().toFixed(3);
+  }
+  tick();
+  setInterval(tick, 60000);
+</script>
+</body>
+</html>

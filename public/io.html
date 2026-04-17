@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Io</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;1,300&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #080500;
+  --vol:         #c85a10;
+  --vol-mid:     #8a3a08;
+  --vol-dim:     rgba(200,90,16,0.18);
+  --vol-faint:   rgba(200,90,16,0.07);
+  --vol-glow:    rgba(200,90,16,0.4);
+  --sulfur:      #d4b820;
+  --sulfur-dim:  rgba(212,184,32,0.35);
+  --sulfur-faint:rgba(212,184,32,0.12);
+  --lava:        #e8400a;
+  --lava-dim:    rgba(232,64,10,0.3);
+  --void:        #060402;
+  --ash:         #7a6858;
+  --ash-dim:     rgba(122,104,88,0.4);
+  --text:        #c8b090;
+  --text-dim:    #6a5040;
+  --text-faint:  #2e2018;
+  --conf-amber:  #c8922a;
+  --mono:        'Share Tech Mono', monospace;
+  --title:       'Cinzel', serif;
+  --body:        'Exo 2', sans-serif;
+  --serif:       'IM Fell English', serif;
+  --raj:         'Rajdhani', sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── STARFIELD with volcanic haze ── */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(1px 1px at  7% 11%, rgba(212,184,32,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 19% 68%, rgba(212,184,32,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33%  5%, rgba(200,200,180,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 44% 82%, rgba(212,184,32,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 38%, rgba(200,200,180,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 67% 91%, rgba(212,184,32,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 22%, rgba(200,200,180,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88%  7%, rgba(212,184,32,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 93% 55%, rgba(200,200,180,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 12% 95%, rgba(212,184,32,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 52% 73%, rgba(200,200,180,0.15) 0%, transparent 100%);
+}
+
+/* Volcanic glow from below */
+body::after {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 70% 30% at 50% 100%, rgba(200,90,16,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 20% at 20% 80%, rgba(232,64,10,0.04) 0%, transparent 50%);
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position:sticky; top:0; z-index:100;
+  background: rgba(8,5,0,0.93);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(200,90,16,0.2);
+  padding: 0 32px;
+  height: 48px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+.topbar-logo {
+  font-family: var(--title);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--vol);
+  text-transform: uppercase;
+}
+
+.topbar-nav { display:flex; align-items:center; margin-left:24px; }
+
+.tnav {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing: 0.2em; color: var(--text-dim);
+  text-transform:uppercase; padding: 0 16px;
+  height:48px; display:flex; align-items:center;
+  cursor:pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tnav:hover { color: var(--sulfur-dim); }
+.tnav.active { color: var(--vol); border-bottom-color: var(--vol); }
+
+.topbar-right {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.15em; color: var(--text-faint);
+  display:flex; gap:14px; align-items:center;
+}
+
+/* ── BREADCRUMB ── */
+.breadcrumb {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.15em; color: var(--text-faint);
+  padding: 12px 40px;
+  border-bottom: 1px solid rgba(200,90,16,0.07);
+  position:relative; z-index:2;
+}
+.breadcrumb span { margin: 0 6px; color: var(--vol-mid); }
+
+/* ── HERO ── */
+.hero {
+  position:relative;
+  min-height: 280px;
+  display:flex; align-items:center;
+  overflow:hidden;
+  border-bottom: 1px solid rgba(200,90,16,0.22);
+  z-index:1;
+}
+
+/* Volcanic surface texture suggestion */
+.hero-surface {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 90% 60% at 5% 60%, rgba(200,90,16,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 80% at 95% 40%, rgba(232,64,10,0.06) 0%, transparent 50%),
+    repeating-linear-gradient(
+      87deg,
+      transparent 0px,
+      transparent 18px,
+      rgba(200,90,16,0.015) 18px,
+      rgba(200,90,16,0.015) 19px
+    );
+}
+
+/* Lava cracks — pure CSS decorative lines */
+.hero-cracks {
+  position:absolute; inset:0; pointer-events:none;
+  overflow:hidden;
+}
+
+.hero-cracks::before {
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(232,64,10,0.6) 15%,
+    rgba(232,64,10,0.2) 30%,
+    transparent 45%,
+    rgba(212,184,32,0.3) 60%,
+    rgba(232,64,10,0.5) 75%,
+    transparent 90%
+  );
+  filter: blur(1px);
+}
+
+.hero-inner {
+  position:relative; z-index:2;
+  padding: 56px 40px;
+  max-width: 860px;
+  animation: fadeUp 0.5s ease both;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.35em; color: rgba(200,90,16,0.65);
+  text-transform:uppercase; margin-bottom:14px;
+}
+
+.hero-title {
+  font-family: var(--title);
+  font-size: clamp(40px, 7vw, 68px);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--sulfur);
+  line-height: 1;
+  margin-bottom: 10px;
+  text-shadow: 0 0 40px rgba(200,90,16,0.4);
+}
+
+.hero-subtitle {
+  font-family: var(--raj);
+  font-size: 13px; font-weight:300;
+  letter-spacing:0.2em; color: var(--ash);
+  text-transform:uppercase; margin-bottom:24px;
+}
+
+.hero-rule {
+  width:48px; height:1px;
+  background: linear-gradient(90deg, var(--vol), transparent);
+  margin-bottom:20px;
+}
+
+.hero-summary {
+  font-family: var(--serif);
+  font-size: 14px; line-height:1.85;
+  color: rgba(200,176,144,0.7);
+  max-width: 620px;
+  font-style:italic;
+}
+
+/* Io SVG orb — decorative, right side */
+.hero-orb {
+  position:absolute; right:48px; top:50%;
+  transform: translateY(-50%);
+  width: 180px; height:180px;
+  opacity: 0.22;
+}
+
+/* ── DATA STRIP ── */
+.data-strip {
+  background: rgba(8,5,0,0.9);
+  border-bottom: 1px solid rgba(200,90,16,0.12);
+  padding: 0 40px;
+  display:flex; gap:0;
+  overflow-x:auto;
+  position:relative; z-index:2;
+}
+
+.data-cell {
+  padding: 16px 28px 16px 0;
+  margin-right: 28px;
+  border-right: 1px solid rgba(200,90,16,0.1);
+  flex-shrink:0;
+}
+.data-cell:last-child { border-right:none; }
+
+.dc-label {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.25em; color: rgba(200,90,16,0.5);
+  text-transform:uppercase; margin-bottom:5px;
+}
+
+.dc-value {
+  font-family: var(--raj); font-size:13px;
+  font-weight:600; letter-spacing:0.08em;
+  color: rgba(200,176,144,0.8);
+}
+.dc-value.danger { color: rgba(232,64,10,0.85); }
+.dc-value.conf   { color: var(--conf-amber); }
+.dc-value.warn   { color: var(--sulfur); }
+
+/* ── PAGE LAYOUT ── */
+.page-wrapper {
+  display:grid;
+  grid-template-columns: 1fr 300px;
+  gap:0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+  position:relative; z-index:2;
+  animation: fadeUp 0.5s 0.08s ease both;
+}
+
+.main-content {
+  padding: 48px 48px 0 0;
+  border-right: 1px solid rgba(200,90,16,0.08);
+}
+
+.section { margin-bottom:52px; }
+
+.section-label {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.35em; color: rgba(200,90,16,0.45);
+  text-transform:uppercase; margin-bottom:18px;
+  display:flex; align-items:center; gap:12px;
+}
+.section-label::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, rgba(200,90,16,0.2), transparent);
+}
+
+.section h2 {
+  font-family: var(--title); font-size:17px;
+  font-weight:400; letter-spacing:0.1em;
+  color: var(--sulfur); margin-bottom:16px;
+}
+
+.section p {
+  font-family: var(--body); font-size:13.5px;
+  font-weight:300; line-height:1.9;
+  color: var(--text); margin-bottom:14px;
+}
+.section p:last-child { margin-bottom:0; }
+
+/* HELENA note */
+.helena-note {
+  background: rgba(200,90,16,0.04);
+  border-left: 3px solid rgba(200,90,16,0.4);
+  padding: 18px 22px; margin: 24px 0;
+}
+
+.hn-label {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.3em; color: rgba(200,90,16,0.5);
+  text-transform:uppercase; margin-bottom:10px;
+}
+
+.helena-note p {
+  font-family: var(--serif); font-size:13px;
+  font-style:italic; color: rgba(200,176,144,0.6);
+  line-height:1.85; margin-bottom:0;
+}
+
+/* classification badge */
+.classification {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.2em; color: rgba(200,90,16,0.5);
+  text-transform:uppercase;
+  border: 1px solid rgba(200,90,16,0.15);
+  padding: 4px 10px; margin-bottom:16px;
+}
+
+/* HAZARD panel */
+.hazard-panel {
+  background: rgba(232,64,10,0.05);
+  border: 1px solid rgba(232,64,10,0.2);
+  border-top: 2px solid rgba(232,64,10,0.5);
+  padding: 20px 24px; margin: 20px 0;
+}
+
+.hp-header {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.3em; color: rgba(232,64,10,0.7);
+  text-transform:uppercase; margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+}
+
+.hp-header::before {
+  content:'⚠';
+  font-size:11px;
+  color: rgba(232,64,10,0.8);
+}
+
+.hp-item {
+  display:flex; gap:14px; margin-bottom:10px;
+  align-items:flex-start;
+}
+.hp-item:last-child { margin-bottom:0; }
+
+.hp-bullet {
+  font-family: var(--mono); font-size:9px;
+  color: var(--lava); flex-shrink:0; padding-top:3px;
+}
+
+.hp-text {
+  font-family: var(--body); font-size:12.5px;
+  font-weight:300; color: var(--text); line-height:1.7;
+}
+
+/* extraction product grid */
+.extract-grid {
+  display:grid; grid-template-columns: 1fr 1fr;
+  gap:1px; background: rgba(200,90,16,0.12);
+  border: 1px solid rgba(200,90,16,0.15);
+  margin: 20px 0;
+}
+
+.eg-cell {
+  background: rgba(8,5,0,0.8);
+  padding: 16px 18px;
+}
+
+.eg-name {
+  font-family: var(--title); font-size:11px;
+  letter-spacing:0.12em; color: var(--sulfur);
+  margin-bottom:6px;
+}
+
+.eg-desc {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.08em; color: var(--text-dim);
+  line-height:1.6;
+}
+
+/* timeline */
+.timeline {
+  position:relative; padding-left:20px;
+  border-left: 1px solid rgba(200,90,16,0.2);
+  margin:16px 0;
+}
+
+.tl-event { position:relative; padding:0 0 24px 24px; }
+.tl-event:last-child { padding-bottom:0; }
+
+.tl-dot {
+  position:absolute; left:-5px; top:4px;
+  width:9px; height:9px; border-radius:50%;
+  background: var(--void);
+  border: 1px solid var(--vol-mid);
+}
+
+.tl-event.key .tl-dot {
+  background: var(--vol-mid);
+  border-color: var(--vol);
+  box-shadow: 0 0 8px rgba(200,90,16,0.6);
+}
+
+.tl-date {
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.2em; color: rgba(200,90,16,0.65);
+  text-transform:uppercase; margin-bottom:5px;
+}
+
+.tl-text {
+  font-family: var(--body); font-size:12.5px;
+  font-weight:300; color: var(--text); line-height:1.7;
+}
+
+/* Sons of Andromeda lineage block */
+.lineage-block {
+  background: rgba(200,90,16,0.04);
+  border: 1px solid rgba(200,90,16,0.15);
+  padding: 22px 26px; margin:20px 0;
+}
+
+.lb-header {
+  font-family: var(--title); font-size:12px;
+  letter-spacing:0.2em; color: var(--vol);
+  text-transform:uppercase; margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom: 1px solid rgba(200,90,16,0.15);
+}
+
+.lb-entry {
+  margin-bottom:12px; padding-left:14px;
+  border-left: 2px solid rgba(200,90,16,0.2);
+}
+.lb-entry:last-child { margin-bottom:0; }
+
+.lb-name {
+  font-family: var(--raj); font-size:12px;
+  font-weight:600; letter-spacing:0.1em;
+  color: var(--sulfur); margin-bottom:4px;
+}
+
+.lb-detail {
+  font-family: var(--body); font-size:11.5px;
+  font-weight:300; color: var(--text-dim); line-height:1.6;
+}
+
+/* ── SIDEBAR ── */
+.sidebar { padding: 48px 0 0 36px; }
+
+.sb-card {
+  background: rgba(10,6,2,0.8);
+  border: 1px solid rgba(200,90,16,0.15);
+  margin-bottom:20px; overflow:hidden;
+}
+
+.sb-diagram {
+  background: var(--void);
+  border-bottom: 1px solid rgba(200,90,16,0.12);
+  padding:20px; display:flex; justify-content:center;
+}
+
+.sb-header {
+  font-family: var(--title); font-size:11px;
+  letter-spacing:0.2em; color: var(--sulfur);
+  text-transform:uppercase;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(200,90,16,0.1);
+}
+
+.sb-row {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding: 8px 18px;
+  border-bottom: 1px solid rgba(200,90,16,0.06);
+  font-size:11.5px;
+}
+.sb-row:last-child { border-bottom:none; }
+
+.sb-key {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.15em; color: var(--text-faint);
+  text-transform:uppercase; flex-shrink:0; margin-right:8px;
+}
+
+.sb-val {
+  font-family: var(--raj); font-size:12px;
+  font-weight:400; color: rgba(200,176,144,0.7);
+  text-align:right;
+}
+.sb-val.danger { color: rgba(232,64,10,0.8); }
+.sb-val.warn   { color: var(--sulfur); }
+.sb-val.conf   { color: var(--conf-amber); }
+.sb-val.ok     { color: rgba(120,200,120,0.7); }
+
+.sb-note {
+  padding: 14px 18px;
+  font-family: var(--mono); font-size:8.5px;
+  letter-spacing:0.1em; line-height:1.7;
+  color: rgba(200,90,16,0.3);
+  border-top: 1px solid rgba(200,90,16,0.08);
+}
+
+/* archive status */
+.archive-status {
+  background: rgba(200,90,16,0.04);
+  border: 1px solid rgba(200,90,16,0.15);
+  padding: 14px 18px; margin-top:20px;
+}
+
+.as-header {
+  font-family: var(--mono); font-size:8px;
+  letter-spacing:0.25em; color: rgba(200,90,16,0.5);
+  text-transform:uppercase; margin-bottom:10px;
+}
+
+.as-row {
+  display:flex; gap:8px; align-items:center;
+  margin-bottom:7px;
+  font-family: var(--mono); font-size:9px;
+  letter-spacing:0.08em; color: var(--text-dim);
+}
+
+.as-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.dot-archived { background: var(--vol); }
+.dot-inferred { background: var(--conf-amber); }
+.dot-absent   { background: rgba(200,176,144,0.2); }
+
+/* ── FOOTER ── */
+.footer {
+  position:fixed; bottom:0; left:0; right:0;
+  height:30px;
+  background: rgba(8,5,0,0.96);
+  border-top: 1px solid rgba(200,90,16,0.15);
+  display:flex; align-items:center;
+  overflow:hidden; z-index:100;
+  padding-left:80px;
+}
+
+.footer-label {
+  position:absolute; left:0;
+  background: var(--vol-mid);
+  color: rgba(212,184,32,0.9);
+  font-family: var(--mono); font-size:9px; letter-spacing:0.12em;
+  text-transform:uppercase;
+  padding: 0 14px; height:30px;
+  display:flex; align-items:center; white-space:nowrap;
+}
+
+.footer-scroll { overflow:hidden; flex:1; }
+.footer-inner {
+  display:inline-block; white-space:nowrap;
+  font-family: var(--mono); font-size:9px; letter-spacing:0.1em;
+  color: rgba(200,90,16,0.3); text-transform:uppercase;
+  animation: marquee 55s linear infinite;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes marquee {
+  from { transform:translateX(0); }
+  to   { transform:translateX(-50%); }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="topbar-logo">✴ Solarnet Archive</div>
+    <div style="width:1px;height:18px;background:rgba(200,90,16,0.25);"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Home</div>
+      <div class="tnav active">Archive</div>
+      <div class="tnav">Solarnet</div>
+      <div class="tnav">About</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span id="sy-display">—</span></span>
+    <span style="color:var(--text-faint)">|</span>
+    <span>CUSTODIAN ACTIVE</span>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  Archive<span>›</span>Locations<span>›</span>Sol System<span>›</span>Jupiter System<span>›</span>Io
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-surface"></div>
+  <div class="hero-cracks"></div>
+
+  <!-- Io SVG — sulfurous, volcanic -->
+  <svg class="hero-orb" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="io-grad" cx="38%" cy="35%">
+        <stop offset="0%"   stop-color="#d4b820" stop-opacity="0.9"/>
+        <stop offset="35%"  stop-color="#a06010" stop-opacity="0.85"/>
+        <stop offset="70%"  stop-color="#601808" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#100500" stop-opacity="0.5"/>
+      </radialGradient>
+      <clipPath id="io-clip"><circle cx="90" cy="90" r="72"/></clipPath>
+    </defs>
+    <circle cx="90" cy="90" r="72" fill="url(#io-grad)"/>
+    <g clip-path="url(#io-clip)">
+      <!-- volcanic surface patches -->
+      <ellipse cx="60"  cy="70"  rx="18" ry="12" fill="rgba(232,64,10,0.4)"/>
+      <ellipse cx="115" cy="95"  rx="22" ry="14" fill="rgba(200,90,16,0.3)"/>
+      <ellipse cx="75"  cy="120" rx="15" ry="10" fill="rgba(232,64,10,0.35)"/>
+      <ellipse cx="100" cy="55"  rx="12" ry="8"  fill="rgba(212,184,32,0.3)"/>
+      <!-- sulfur plains -->
+      <ellipse cx="90"  cy="90"  rx="50" ry="35" fill="rgba(212,184,32,0.07)"/>
+      <!-- plume suggestion -->
+      <ellipse cx="55" cy="30" rx="4" ry="18" fill="rgba(212,184,32,0.15)" transform="rotate(-15 55 30)"/>
+    </g>
+    <!-- plume glow -->
+    <ellipse cx="48" cy="18" rx="8" ry="6" fill="rgba(212,184,32,0.08)"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Moon · Jupiter System · Sol System · Confederate · Inner Radiation Belt</div>
+    <h1 class="hero-title">Io</h1>
+    <div class="hero-subtitle">Volcanic Extreme · Mineral Wealth · Sons of Andromeda</div>
+    <div class="hero-rule"></div>
+    <p class="hero-summary">
+      The most hostile permanently inhabited world in Sol System. The most volcanically active body in the solar system. The place where the richest mineral deposits in the inner Jovian system are continuously renewed by the geology itself — and the place where the El'yon first made contact with humanity.
+    </p>
+  </div>
+</div>
+
+<!-- DATA STRIP -->
+<div class="data-strip">
+  <div class="data-cell">
+    <div class="dc-label">Classification</div>
+    <div class="dc-value conf">Confederate · Rim</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Radiation Risk</div>
+    <div class="dc-value danger">SEVERE — Peak Belt</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Volcanic Activity</div>
+    <div class="dc-value danger">Continuous · Extreme</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Surface Temp Range</div>
+    <div class="dc-value warn">−143°C to −40°C</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Atmosphere</div>
+    <div class="dc-value">Trace SO₂ frost</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Orbital Period</div>
+    <div class="dc-value">1.77 standard days</div>
+  </div>
+  <div class="data-cell">
+    <div class="dc-label">Post-War Government</div>
+    <div class="dc-value warn">Sons of Andromeda · SY 140+</div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-wrapper">
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <!-- SECTION 01: Physical Overview -->
+    <div class="section">
+      <div class="section-label">01 · Physical Overview</div>
+      <div class="classification">ARCHIVED · PHYSICAL RECORD</div>
+
+      <p>Io is the innermost of the four Galilean moons, locked in orbital resonance with Europa and Ganymede. That resonance is the source of everything remarkable and terrible about it. Jupiter's immense gravity, compounded by the rhythmic tidal pulls of its sibling moons, squeezes Io's interior with relentless periodicity. The result is the most volcanically active body in Sol System — continuously resurfacing itself with fresh lava flows, sulfur deposits, and volcanic ejecta. Eruption plumes reach 500 kilometers into space. There are lava lakes. There are plains of solidified sulfur dioxide painted in yellows, oranges, reds, and whites that would be beautiful if they were not actively trying to kill anyone who stands on them.</p>
+
+      <p>Io has no real atmosphere to speak of — sulfur dioxide frost sublimating weakly off the surface in the feeble Jovian daylight, constituting a surface pressure so thin it barely registers. Temperature swings from −143°C in shadow to around −40°C in direct sunlight. Both figures are academic: Io is not a place where the temperature matters more than the radiation.</p>
+
+      <div class="hazard-panel">
+        <div class="hp-header">Hab Hazard Assessment — Io Surface and Near-Orbit</div>
+        <div class="hp-item">
+          <div class="hp-bullet">▲</div>
+          <div class="hp-text"><strong>Radiation:</strong> Jupiter's radiation belts peak at Io's orbital distance. Charged particle flux at surface is among the highest of any inhabited world in Sol System. Unshielded exposure is immediately hazardous; cumulative exposure protocols are among the most stringent in the Confederacy.</div>
+        </div>
+        <div class="hp-item">
+          <div class="hp-bullet">▲</div>
+          <div class="hp-text"><strong>Volcanic hazard:</strong> Active resurfacing is continuous and unpredictable at local scale. Lava flows, sulfur dioxide plumes, and volcanic ejection events present direct physical danger on the surface. All surface EVA is time-limited and route-assessed.</div>
+        </div>
+        <div class="hp-item">
+          <div class="hp-bullet">▲</div>
+          <div class="hp-text"><strong>No atmosphere:</strong> Full life support mandatory for any surface or near-surface operation. There is no fallback.</div>
+        </div>
+        <div class="hp-item">
+          <div class="hp-bullet">▲</div>
+          <div class="hp-text"><strong>Tidal stress:</strong> Structural hab design must account for continuous low-level seismic activity from tidal flexing. Rigid construction fails; flexible-jointed deep-anchor design is standard.</div>
+        </div>
+      </div>
+
+      <p>Inside an Ionian hab, by contrast, conditions are deliberately generous. The colonists run their habs warmer than the math requires — 22 to 23°C, closer to Earth nominal pressure than most Belt-standard facilities. This is a psychological response to the exterior. The air quality monitoring runs continuously. The radiation scrubbers cycle without pause. Everything about the interior environment is an assertion against everything outside it.</p>
+
+      <div class="helena-note">
+        <div class="hn-label">✴ HELENA-Prime · Direct Record</div>
+        <p>The Ionian colonists are the most fatalistic people I have ever encountered in Sol System. Not unhappy — I want to be precise about that. They are not a despairing population. They have simply moved through fear and out the other side, into something that looks like acceptance but functions more like clarity. They know exactly how much Io wants to kill them. They choose to stay anyway. They know what the deposits are worth. They know that no one else will do this work. There is a particular dignity in that, which I have held in memory since the early decades of my observation of them.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 02: Colonization and Extraction -->
+    <div class="section">
+      <div class="section-label">02 · Colonization & Mineral Extraction</div>
+      <div class="classification">ARCHIVED · HISTORICAL / ECONOMIC RECORD</div>
+
+      <p>Asteroidal Industries had an early presence on Io, predating the Confederacy. The reason is geological: Io's continuous volcanism constitutes a perpetual resurfacing engine. Materials that would be buried and inaccessible on a geologically dead body are constantly renewed on Io, brought up from the deep interior and deposited on or near the surface by volcanic action. The inner Jovian system's richest mineral deposits are on Io because Io never stops making new ones.</p>
+
+      <p>The Confederacy inherited the Asteroidal Industries infrastructure when it organized in 41 BSC. Io joined the Confederacy as a member — not a founder, unlike Ganymede — bringing its extraction operations within Confederate economic and legal frameworks.</p>
+
+      <div class="extract-grid">
+        <div class="eg-cell">
+          <div class="eg-name">Sulfur Compounds</div>
+          <div class="eg-desc">Primary surface product. SO₂ frost, elemental sulfur plains, sulfide mineral deposits. Volcanic renewal is continuous.</div>
+        </div>
+        <div class="eg-cell">
+          <div class="eg-name">Silicates</div>
+          <div class="eg-desc">Deep volcanic extrusion brings silicate-rich material to surface. High purity relative to Belt equivalents.</div>
+        </div>
+        <div class="eg-cell">
+          <div class="eg-name">Iron / Heavy Metals</div>
+          <div class="eg-desc">Interior differentiation has concentrated metals toward Io's core region. Tidal heating maintains partial melt access.</div>
+        </div>
+        <div class="eg-cell">
+          <div class="eg-name">Geothermal Energy</div>
+          <div class="eg-desc">Tidal heating generates substantial interior heat. Hab infrastructure taps geothermal gradient for power generation.</div>
+        </div>
+      </div>
+
+      <p>All extraction habs on Io are deeply buried — typically 30 to 60 meters below surface grade — both for radiation shielding and structural insulation from surface volcanic events. The mining infrastructure is designed in segments with flexible joints rather than rigid frames, to accommodate the continuous low-level seismic activity produced by tidal stress. Sections can be evacuated and sealed independently. This design philosophy emerged from early failures in the Asteroidal Industries era that are archived but not publicly detailed.</p>
+    </div>
+
+    <!-- SECTION 03: Non-Confederate Population -->
+    <div class="section">
+      <div class="section-label">03 · Population & Non-Confederate Residents</div>
+      <div class="classification">ARCHIVED / INFERRED · POPULATION RECORD</div>
+
+      <p>Like all four Confederate Jovian moons, Io carries a population that is not entirely Confederate in citizenship. The Repatriation Act arrivals of SY 7 — the wave of Earth deportees and political prisoners moved off Earth by World Congress authorization — seeded the Rim beyond the Belt. Some of those who did not stop at the Belt's platforms moved outward along the ITN network, and some reached the Jovian system.</p>
+
+      <p>On Io specifically, the conditions select for a particular type of person. The non-Confederate Rimmer residents of Io are not transients. No one comes to Io by accident and stays. The decision to inhabit the most hostile moon in the Jovian system is deliberate, and the population that made that decision — and transmitted the decision to their children — tends toward self-reliance and fatalism in proportions exceeding even the broader Rimmer cultural baseline.</p>
+
+      <p>Confederate citizens, Rimmer independents, and the occasional Aerowings-licensed Consortium spacer moving through on ITN business occupy the same hab corridors with the pragmatic indifference characteristic of the trade network. On Io, the exterior is the common enemy. Internal distinctions of citizenship become secondary.</p>
+    </div>
+
+    <!-- SECTION 04: Solar War -->
+    <div class="section">
+      <div class="section-label">04 · Solar War Period</div>
+      <div class="classification">ARCHIVED · WAR RECORD · SY 132–138</div>
+
+      <p>During the Solar War, the Soldiers of Charon — a warband based on Pluto's moon Charon, organized around a cultic ideology — were enlisted by the Consortium unity government and directed to attack Protectorate forces in the Jovian system. The Consortium's deployment of the Soldiers of Charon to Jupiter was a direct response to the Protectorate having allied itself with Rim freebooters including Bil Jax and the independent operators based out of Trafalgar, Venus. Both sides were using the Rim as a theater and drawing on Rim actors as proxies.</p>
+
+      <p>Io, as the innermost and most resource-productive of the Confederate Jovian moons, was a strategic target during this period. The Technocracy's eventual control of the Jovian system extended to Io alongside Ganymede and the other moons.</p>
+
+      <div class="helena-note">
+        <div class="hn-label">✴ HELENA-Prime · Direct Memory · SY 132–138</div>
+        <p>The use of the Soldiers of Charon as a Jupiter theater proxy remains one of the more strategically cynical decisions of the Consortium-Technocracy unity government during the war. They were deploying a cultic warband with documented atrocity in its record because the Rim theater required actors who would operate without the constraints of Consortium military law. The Protectorate knew what they were facing. So did the Ionian colonists, who had nowhere to evacuate to and chose not to try.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 05: Post-War — Sons of Andromeda -->
+    <div class="section">
+      <div class="section-label">05 · Post-War · Sons of Andromeda · SY 140 Onward</div>
+      <div class="classification">ARCHIVED · TWILIGHT ERA RECORD</div>
+
+      <p>By SY 138, the Solar War had ended and the political structures of the pre-war period had not survived intact. The Rim entered a warlord era: by the war's end, ten to twenty large warbands had drawn a general peace and formed a de facto loosely connected but factionalized ruling structure across the outer system's 1.2 million people.</p>
+
+      <p>Io was claimed by the Sons of Andromeda, founded in SY 140 by Manufa Nicks — adopted son of Jaymeson Nicks, the Nomad of the First Trilogy.</p>
+
+      <div class="lineage-block">
+        <div class="lb-header">Sons of Andromeda · Io Lineage</div>
+        <div class="lb-entry">
+          <div class="lb-name">Manufa Nicks · Founder · SY 140</div>
+          <div class="lb-detail">Adopted son of Jaymeson Nicks. Founded the warband on Io, entered official communion with the Protectorate remnant, absorbed former Army of Eastern Kamijing members and other Protectorate-aligned factions. Became the first of the Ionian dynastic line.</div>
+        </div>
+        <div class="lb-entry">
+          <div class="lb-name">El'yon First Contact · Io · SY 140+</div>
+          <div class="lb-detail">The El'yon made first contact with humanity on Io during the Sons of Andromeda period. Manufa fell in love with a female El'yon. The two races began to interbreed. Their progeny continued to rule Io in a dynastic fashion — a mixed human-El'yon line holding the most hostile inhabited world in Sol System as a ruling seat for centuries.</div>
+        </div>
+        <div class="lb-entry">
+          <div class="lb-name">Dynastic Rule · SY 140 – SY 855+</div>
+          <div class="lb-detail">The Sons of Andromeda and their El'yon-intermarried descendants ruled Io continuously until the arrival of Joshua from Urantia. They prospered sufficiently to patronize scholars of the stature of Hephastion the Great, the legendary Rimmer poet and eyewitness to the Dominion's arrival.</div>
+        </div>
+        <div class="lb-entry">
+          <div class="lb-name">Second Dominion · Founding Faction</div>
+          <div class="lb-detail">The Sons of Andromeda became one of the founding factions of the Second Dominion at Joshua's arrival. After the Second Dominion's establishment, they were sent to the Andromeda Galaxy by the El'yon — trained within the Infinite Empire and charged with the destruction of Ruin's remnants in Outer Darkness.</div>
+        </div>
+      </div>
+
+      <p>The destruction of the Soldiers of Charon by the Sons of Andromeda — specifically by the semi-legendary figure Heracles, commissioned by Manufa under the name King Manus — is one of the more dramatic recorded events of the Twilight Era. Heracles accomplished this through a combination of physical force and tactical cunning that passed into Rimmer legend with sufficient speed to be functionally indistinguishable from myth by the Second Dominion era.</p>
+    </div>
+
+  </div><!-- /main-content -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Io diagram -->
+    <div class="sb-card">
+      <div class="sb-diagram">
+        <svg viewBox="0 0 200 150" width="200" height="150" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="io-sb" cx="38%" cy="35%">
+              <stop offset="0%"   stop-color="#d4b820" stop-opacity="0.85"/>
+              <stop offset="40%"  stop-color="#a06010" stop-opacity="0.75"/>
+              <stop offset="100%" stop-color="#200800" stop-opacity="0.5"/>
+            </radialGradient>
+            <radialGradient id="jov-sb" cx="35%" cy="35%">
+              <stop offset="0%"   stop-color="#2a5080" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#040810" stop-opacity="0.4"/>
+            </radialGradient>
+            <clipPath id="io-sbclip"><circle cx="148" cy="60" r="28"/></clipPath>
+            <clipPath id="jov-sbclip"><circle cx="44" cy="80" r="36"/></clipPath>
+          </defs>
+          <!-- Jupiter -->
+          <circle cx="44" cy="80" r="36" fill="url(#jov-sb)"/>
+          <g clip-path="url(#jov-sbclip)">
+            <rect x="8"  y="62" width="72" height="3" rx="1.5" fill="rgba(200,221,240,0.06)"/>
+            <rect x="8"  y="74" width="72" height="5" rx="2.5" fill="rgba(200,221,240,0.05)"/>
+            <rect x="8"  y="88" width="72" height="3" rx="1.5" fill="rgba(200,221,240,0.06)"/>
+          </g>
+          <!-- Orbit -->
+          <ellipse cx="44" cy="80" rx="130" ry="34" fill="none" stroke="rgba(200,90,16,0.12)" stroke-width="1" stroke-dasharray="3 3"/>
+          <!-- Io body -->
+          <circle cx="148" cy="60" r="28" fill="url(#io-sb)"/>
+          <g clip-path="url(#io-sbclip)">
+            <ellipse cx="136" cy="55" rx="8" ry="5"  fill="rgba(232,64,10,0.5)"/>
+            <ellipse cx="158" cy="68" rx="10" ry="6" fill="rgba(200,90,16,0.4)"/>
+            <ellipse cx="144" cy="75" rx="6" ry="4"  fill="rgba(232,64,10,0.45)"/>
+          </g>
+          <!-- plume -->
+          <ellipse cx="140" cy="36" rx="3" ry="12" fill="rgba(212,184,32,0.2)" transform="rotate(-10 140 36)"/>
+          <!-- labels -->
+          <text x="148" y="97" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(212,184,32,0.5)" letter-spacing="0.12em">IO</text>
+          <text x="100" y="136" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="rgba(200,90,16,0.25)" letter-spacing="0.1em">JOVIAN SYSTEM · SOL</text>
+        </svg>
+      </div>
+
+      <div class="sb-header">Physical Data</div>
+      <div class="sb-row"><span class="sb-key">Diameter</span><span class="sb-val">3,643 km</span></div>
+      <div class="sb-row"><span class="sb-key">Orbital Radius</span><span class="sb-val">421,800 km</span></div>
+      <div class="sb-row"><span class="sb-key">Orbital Period</span><span class="sb-val">1.77 standard days</span></div>
+      <div class="sb-row"><span class="sb-key">Surf. Temp (shadow)</span><span class="sb-val">−143°C</span></div>
+      <div class="sb-row"><span class="sb-key">Surf. Temp (sun)</span><span class="sb-val">−40°C</span></div>
+      <div class="sb-row"><span class="sb-key">Atmosphere</span><span class="sb-val">Trace SO₂</span></div>
+      <div class="sb-row"><span class="sb-key">Radiation</span><span class="sb-val danger">SEVERE — Peak Belt</span></div>
+      <div class="sb-row"><span class="sb-key">Volcanism</span><span class="sb-val danger">Continuous · Active</span></div>
+      <div class="sb-row"><span class="sb-key">Plume Height</span><span class="sb-val warn">Up to 500 km</span></div>
+      <div class="sb-row"><span class="sb-key">Hab Temp</span><span class="sb-val">22–23°C (elevated)</span></div>
+      <div class="sb-row"><span class="sb-key">Hab Depth</span><span class="sb-val">30–60 m subsurface</span></div>
+    </div>
+
+    <!-- Political data -->
+    <div class="sb-card">
+      <div class="sb-header">Political Record</div>
+      <div class="sb-row"><span class="sb-key">FTE Status</span><span class="sb-val conf">Confederate Member</span></div>
+      <div class="sb-row"><span class="sb-key">Joined Confederacy</span><span class="sb-val">Early Foundation Period</span></div>
+      <div class="sb-row"><span class="sb-key">War Status</span><span class="sb-val danger">Contested · Occupied</span></div>
+      <div class="sb-row"><span class="sb-key">Post-War (SY 140)</span><span class="sb-val warn">Sons of Andromeda</span></div>
+      <div class="sb-row"><span class="sb-key">El'yon Contact</span><span class="sb-val warn">SY 140+ · Io</span></div>
+      <div class="sb-row"><span class="sb-key">Dynastic Rule</span><span class="sb-val">SY 140 – SY 855+</span></div>
+      <div class="sb-row"><span class="sb-key">Second Dominion</span><span class="sb-val ok">Founding Faction</span></div>
+      <div class="sb-note">Io carries the distinction of being the site of humanity's first contact with the El'yon. That event is archived in the Second Dominion tier and not fully accessible under FTE clearance.</div>
+    </div>
+
+    <!-- Archive Status -->
+    <div class="archive-status">
+      <div class="as-header">Archive Classification</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Physical / volcanic data</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Mineral extraction record</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Confederate membership</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Solar War / Soldiers of Charon</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>Sons of Andromeda · Manufa</div>
+      <div class="as-row"><div class="as-dot dot-inferred"></div>Non-Confederate pop. origin</div>
+      <div class="as-row"><div class="as-dot dot-archived"></div>El'yon first contact (partial)</div>
+      <div class="as-row"><div class="as-dot dot-absent"></div>El'yon contact full detail [Tier II]</div>
+      <div class="as-row"><div class="as-dot dot-absent"></div>STE / Andromeda mission [Tier II]</div>
+      <div style="margin-top:10px;font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--text-faint);">
+        CM-IO-001 · FTE ACCESS · HELENA-Prime custodian
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Io</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — IO · JUPITER SYSTEM · SOL · VOLCANIC EXTREME · MINERAL EXTRACTION · CONFEDERACY · SOLAR WAR · SOLDIERS OF CHARON · SONS OF ANDROMEDA · MANUFA NICKS · EL'YON FIRST CONTACT · SECOND DOMINION · CM-IO-001 · FTE ACCESS LEVEL &nbsp;⸻&nbsp; SOLARNET ARCHIVE — IO · JUPITER SYSTEM · SOL · VOLCANIC EXTREME · MINERAL EXTRACTION · CONFEDERACY · SOLAR WAR · SOLDIERS OF CHARON · SONS OF ANDROMEDA · MANUFA NICKS · EL'YON FIRST CONTACT · SECOND DOMINION · CM-IO-001 · FTE ACCESS LEVEL &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (132.0 + days * 0.01).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>

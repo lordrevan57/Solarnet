@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The New School — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.07);
+    --border-mid: rgba(255,255,255,0.12);
+
+    /* Consortium palette — corporate blue / gold */
+    --accent: #4a9fd4;
+    --accent-dim: rgba(74,159,212,0.45);
+    --accent-glow: rgba(74,159,212,0.08);
+    --accent-border: rgba(74,159,212,0.2);
+    --gold: #c8962a;
+    --gold-dim: rgba(200,150,42,0.5);
+    --gold-glow: rgba(200,150,42,0.07);
+
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6560;
+
+    --font-display: 'Cinzel', serif;
+    --font-serif: 'IM Fell English', serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Exo 2', sans-serif;
+    --font-ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,8,0.97);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 2rem; height: 44px;
+  }
+  .topbar-brand {
+    font-family: var(--font-display); font-size: 11px; letter-spacing: 0.3em;
+    color: var(--accent-dim); text-transform: uppercase; margin-right: 2rem; white-space: nowrap;
+  }
+  .topbar-nav { display: flex; flex: 1; overflow-x: auto; }
+  .topbar-nav a {
+    font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding: 0 1rem; height: 44px; display: flex; align-items: center;
+    white-space: nowrap; border-right: 1px solid var(--border); transition: color 0.15s;
+  }
+  .topbar-nav a:hover { color: var(--accent); text-decoration: none; }
+  .topbar-nav a.active { color: var(--accent); }
+  .topbar-era {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+    color: var(--text-dim); text-transform: uppercase; margin-left: auto;
+    white-space: nowrap; padding-left: 2rem;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 3.5rem 2rem 2.5rem;
+    max-width: 1100px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -1px; left: 2rem;
+    width: 60px; height: 1px; background: var(--accent);
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.2rem;
+  }
+  .hero-title {
+    font-family: var(--font-display); font-size: 3rem; font-weight: 400;
+    color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 0.3rem;
+  }
+  .hero-sub {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 1rem; color: var(--text-dim); max-width: 640px;
+    line-height: 1.7; margin-bottom: 1.5rem;
+  }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-family: var(--font-ui); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent-dim); background: var(--accent-glow);
+    border: 1px solid var(--accent-border); padding: 3px 10px;
+  }
+  .tag-gold {
+    color: var(--gold-dim); background: var(--gold-glow);
+    border-color: rgba(200,150,42,0.25);
+  }
+
+  /* ── CONTENT GRID ── */
+  .content-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 300px;
+    align-items: start; padding: 0 2rem;
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 2.5rem 3rem 4rem 0; border-right: 1px solid var(--border); }
+
+  .section-header {
+    font-family: var(--font-display); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white);
+    margin: 2.5rem 0 1.25rem; padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-header::before {
+    content: ''; display: block; width: 3px; height: 1em;
+    background: var(--accent); flex-shrink: 0;
+  }
+  .section-header:first-child { margin-top: 0; }
+
+  .sub-header {
+    font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--silver); margin: 1.8rem 0 0.75rem;
+  }
+
+  /* Prose */
+  .prose p {
+    font-family: var(--font-body); font-size: 0.975rem; font-weight: 300;
+    color: var(--text); line-height: 1.9; margin-bottom: 1.1em;
+  }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose em { font-family: var(--font-serif); font-style: italic; color: var(--warm-white); }
+  .prose strong { font-weight: 600; color: var(--warm-white); }
+
+  /* Influence domain blocks */
+  .domain-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.25rem 0;
+  }
+  .domain-block {
+    background: var(--surface); padding: 1.25rem 1.4rem;
+  }
+  .domain-label {
+    font-family: var(--font-ui); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent-dim); margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .domain-label::before {
+    content: ''; display: block; width: 6px; height: 6px;
+    background: var(--accent-border); border: 1px solid var(--accent-dim);
+    flex-shrink: 0;
+  }
+  .domain-block p {
+    font-family: var(--font-body); font-size: 0.86rem; font-weight: 300;
+    color: var(--text); line-height: 1.75; margin: 0;
+  }
+
+  /* Criticism block — slightly different treatment */
+  .criticism-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0;
+  }
+  .criticism-label {
+    font-family: var(--font-ui); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: 0.6rem;
+  }
+  .criticism-block p {
+    font-family: var(--font-body); font-size: 0.9rem; font-weight: 300;
+    color: var(--text); line-height: 1.8; margin-bottom: 0.5em;
+  }
+  .criticism-block p:last-child { margin-bottom: 0; }
+
+  /* Key figure pull */
+  .figure-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    padding: 1.25rem 1.4rem;
+    margin: 1.5rem 0;
+  }
+  .figure-name {
+    font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.1em;
+    color: var(--warm-white); margin-bottom: 0.2rem;
+  }
+  .figure-role {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.75rem;
+  }
+  .figure-block p {
+    font-family: var(--font-body); font-size: 0.875rem; font-weight: 300;
+    color: var(--text); line-height: 1.8; margin: 0;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding: 2.5rem 0 4rem 2rem; position: sticky; top: 68px; align-self: start; }
+
+  .infobox {
+    background: var(--surface); border: 1px solid var(--border);
+    margin-bottom: 1.5rem; overflow: hidden;
+  }
+  .infobox-header {
+    background: rgba(74,159,212,0.1);
+    border-bottom: 1px solid var(--accent-border);
+    padding: 0.85rem 1rem;
+  }
+  .infobox-title {
+    font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent-dim);
+  }
+  .infobox-subtitle {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.78rem; color: var(--text-dim); margin-top: 0.25rem;
+  }
+  .infobox-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .infobox-row:last-child { border-bottom: none; }
+  .ib-label {
+    font-family: var(--font-ui); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); padding: 0.6rem 0.75rem;
+    border-right: 1px solid var(--border); display: flex; align-items: center;
+  }
+  .ib-value {
+    font-family: var(--font-body); font-size: 0.8rem; font-weight: 400;
+    color: var(--warm-white); padding: 0.6rem 0.75rem; line-height: 1.5;
+  }
+  .ib-value em {
+    font-family: var(--font-serif); font-style: italic;
+    color: var(--silver); font-size: 0.75rem;
+  }
+  .ib-note {
+    display: block; font-size: 0.72rem; color: var(--text-dim);
+    margin-top: 0.2rem; font-family: var(--font-mono);
+  }
+
+  /* Products list in sidebar */
+  .products-list { list-style: none; }
+  .products-list li {
+    border-bottom: 1px solid var(--border); padding: 0.65rem 0.75rem;
+  }
+  .products-list li:last-child { border-bottom: none; }
+  .pl-name {
+    font-family: var(--font-ui); font-size: 0.82rem; font-weight: 600;
+    color: var(--warm-white); display: block; margin-bottom: 0.15rem;
+  }
+  .pl-desc {
+    font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.08em;
+    color: var(--text-dim); text-transform: uppercase;
+  }
+
+  .sidebar-label {
+    font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    font-family: var(--font-body); font-size: 0.83rem;
+    color: var(--text); transition: color 0.15s, background 0.15s;
+  }
+  .related-list a:hover { color: var(--accent); background: var(--accent-glow); text-decoration: none; }
+  .related-arrow { font-family: var(--font-mono); font-size: 9px; color: var(--accent-dim); flex-shrink: 0; }
+  .related-type {
+    font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em;
+    color: var(--text-dim); text-transform: uppercase; margin-left: auto; flex-shrink: 0;
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    max-width: 1100px; margin: 0 auto;
+    padding: 2.5rem 2rem 3rem;
+    border-top: 1px solid var(--border); position: relative;
+  }
+  .helena-note::before {
+    content: ''; position: absolute; top: -1px; left: 2rem;
+    width: 60px; height: 1px; background: var(--accent);
+  }
+  .note-eyebrow {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.25rem;
+  }
+  .note-text {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 1.0rem; color: var(--silver); line-height: 1.9; max-width: 680px;
+  }
+  .note-text p { margin-bottom: 0.9em; }
+  .note-text p:last-child { margin-bottom: 0; }
+
+  /* ── MATRIX FOOTER ── */
+  .matrix-footer {
+    background: var(--surface); border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+  }
+  .mf-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; flex-wrap: wrap;
+    justify-content: space-between; align-items: flex-end; gap: 1rem;
+  }
+  .mf-left { display: flex; flex-direction: column; gap: 0.4rem; }
+  .mf-entry {
+    font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+  .mf-entry span { color: var(--accent-dim); }
+  .mf-right {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-dim); text-align: right; line-height: 1.9;
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    overflow: hidden; background: var(--surface2);
+    border-top: 1px solid var(--border); height: 28px; display: flex; align-items: center;
+  }
+  .ticker-track {
+    display: flex; white-space: nowrap;
+    animation: ticker 65s linear infinite;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim);
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-sep { margin: 0 1.5rem; color: var(--accent-dim); }
+
+  .sy-clock { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); }
+
+  @media (max-width: 820px) {
+    .content-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+    .main { padding: 2rem 0; border-right: none; }
+    .sidebar { position: static; padding: 0 0 3rem; }
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .hero-title { font-size: 2.2rem; }
+    .domain-grid { grid-template-columns: 1fr; }
+    .helena-note { padding: 2rem 1rem; }
+    .matrix-footer { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-brand">✴ Solarnet</div>
+  <div class="topbar-nav">
+    <a href="#">Home</a>
+    <a href="#">Culture &amp; Society</a>
+    <a href="#" class="active">The New School</a>
+    <a href="#">Consortium</a>
+    <a href="#">New Athens</a>
+  </div>
+  <div class="topbar-era">First Trilogy Era · Institution · Culture</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">CM-EDU-014 · INSTITUTION · FIRST TRILOGY ERA</div>
+  <h1 class="hero-title">The New School</h1>
+  <p class="hero-sub">The unofficial orthodoxy of the Consortium — the institution that named the languages, rewrote the calendar, constructed the gods, and called it academic freedom.</p>
+  <div class="hero-tags">
+    <span class="tag">Consortium</span>
+    <span class="tag">Institution</span>
+    <span class="tag">First Trilogy Era</span>
+    <span class="tag">Second Renaissance</span>
+    <span class="tag tag-gold">Ideology</span>
+    <span class="tag tag-gold">Language</span>
+    <span class="tag tag-gold">Propaganda</span>
+  </div>
+</header>
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+
+  <main class="main">
+
+    <h2 class="section-header">Overview</h2>
+    <div class="prose">
+      <p>The New School is an academic method, a learning philosophy, and a system of thought produced within the <a href="#">Consortium's</a> IPS Academy system and propagated through its network of training institutions. Though never officially endorsed by the Academy in order to maintain the appearance of academic liberty, it is entirely a product of Consortium scholars and remains the de facto orthodoxy of Consortium academic and cultural life. It is, in practical terms, the intellectual operating system of the Consortium — the framework through which Consortium citizens understand history, language, art, time, and divinity.</p>
+      <p>Founded at <a href="#">New Athens</a> in SY 37 from an inaugural academic symposium, the New School grew rapidly through the <a href="#">Second Renaissance</a> to become the dominant institution of Consortium intellectual life. Its influence spread across Mercury, Venus, Earth, and Luna, and — more contentiously — into the Belt and Rim through trade, media, and the lingua franca it helped construct. By the SY 100s, the New School had shaped the language most of Sol System used to communicate, the calendar most of Sol System used to mark time, and the religion a significant portion of Earth's population had adopted.</p>
+      <p>Its detractors called it <em>Consortiumism</em> — a single word that served as both diagnosis and accusation. The New School's defenders called it the natural expression of humanity's most enlightened civilization. Both observations contain more truth than either side would comfortably acknowledge.</p>
+    </div>
+
+    <h2 class="section-header">Founding &amp; Origins</h2>
+    <div class="prose">
+      <p>The New School did not spring from nothing. It emerged from the intellectual ferment of the early Consortium period, when the Zero Day Accords had reorganized civilization and the IPS Academy system was busy producing the educated citizenry the Consortium required. The academic community that gathered at New Athens in the first decades after Zero Day was unusually concentrated and unusually ambitious — a generation of scholars who understood that they were operating at a civilizational inflection point and intended to shape what came next.</p>
+      <p>The inaugural symposium of SY 37 gave the movement a name and a founding charter, but the intellectual work had been ongoing for years before it. <a href="#">Silvinus Herminus Januarius</a> — the School's most important founding figure — had already begun the philosophical work that would become <a href="#"><em>City of Man</em></a>, the text that laid the foundations for <a href="#">Terran Humanism</a>. The symposium formalized what had been coalescing organically: a shared commitment to a post-Old Earth intellectual framework that placed humanity, reason, and the classical inheritance at the center of civilizational thought.</p>
+      <p>The choice of New Athens as the founding location was deliberate and symbolic. The Consortium had rebuilt that city from ruins as a statement about what it intended to be — and the New School, born there, inherited that statement and made it its institutional identity.</p>
+    </div>
+
+    <h2 class="section-header">Key Figure</h2>
+
+    <div class="figure-block">
+      <div class="figure-name">Silvinus Herminus Januarius</div>
+      <div class="figure-role">Founder · Terran Humanism's Lawgiver · Consortium Father · fl. SY 30–100</div>
+      <p>The most consequential intellectual produced by the New School and arguably the most influential thinker of the Second Renaissance. Januarius was a critical figure in the revival of Latin as an everyday language, the principal philosopher behind Terran Humanism, and ultimately one of the founding architects of the Consortium itself. His seminal work <em>City of Man</em> identified an existing popular tendency to honor an ancient archetypal pantheon and built from it a complete philosophical framework for the conscious construction of divinity as an expression of human virtue. He came to regard himself as an incarnation of Hermes, son of Jupiter and Maia — whether in literal or metaphorical terms, the archive does not definitively establish, and subsequent Terran Humanists took the question in both directions. He was deified within the religion. His influence on Consortium social thought, language, and institutional architecture is without parallel.</p>
+    </div>
+
+    <h2 class="section-header">Domains of Influence</h2>
+
+    <div class="domain-grid">
+      <div class="domain-block">
+        <div class="domain-label">Historical Studies</div>
+        <p>The New School produced a revisionist history of Earth from a Romano-centric perspective, treating all prior events as deterministically converging on the Consortium's foundation as historical necessity. It foregrounds persons, philosophies, and events significant to the Consortium and minimizes antagonistic viewpoints. The Consortium's own origin is framed not as contingent political circumstance but as the inevitable culmination of human civilization.</p>
+      </div>
+      <div class="domain-block">
+        <div class="domain-label">Language</div>
+        <p>New School linguists coined the terms Anglatin, Cyrillic, and Asiatic for the three constructed unity languages of the Consortium, formally codifying them in the early SY 100s from centuries of existing dedialectization trends. Fluency in at least one beyond one's local dialect is compulsory for all Consortium citizens. The School also functions as a propaganda instrument through deliberate linguistic correction — suppressing "Old Earth" terms and replacing them with Consortium-preferred alternatives. Most notably, "Terra" for "Earth."</p>
+      </div>
+      <div class="domain-block">
+        <div class="domain-label">Religion &amp; Art</div>
+        <p>New School scholastic organizations constructed the majority of the Consortium era's major public artworks, including the monuments to the Terran Humanist pantheon at New Athens and throughout the Consortium's cities. The institution drove the formalization of Terran Humanism from academic philosophy into organized religion, collaborating with the Ecumenical Council for Terran Humanism to construct the Heliopolis shrine complex and the Neoparthenon.</p>
+      </div>
+      <div class="domain-block">
+        <div class="domain-label">Timekeeping</div>
+        <p>The New School produced the Standard Calendar — the method of timekeeping that renamed the days of the week and months of the year, and defined the Standard Year as exactly the length of one Earth year. Its degree of astronomical accuracy is less than one second of error over a million years. The Standard Calendar is one of the New School's most durable exports: it is used throughout Sol System, including by factions that reject everything else the New School represents.</p>
+      </div>
+      <div class="domain-block">
+        <div class="domain-label">Popular Media</div>
+        <p>The New Media Company is a direct product of the New School. It publishes the <em>Consortium Review</em> twice daily in both degradable pulp and electronic formats across every major city on Mercury, Venus, Earth, and Luna. The paper is the primary news organ of the Consortium and functions as both journalism and institutional voice — the difference between the two is not always clearly delineated.</p>
+      </div>
+      <div class="domain-block">
+        <div class="domain-label">Social Norms</div>
+        <p>New School philosophy shaped Consortium social expectations around marriage, sexuality, reproduction, and civil union in ways that had profound and lasting effects on Consortium society. By the Solar War era, monogamous marriage within the Consortium was practiced only by a minority of Old Earth families and carried significant social stigma. The New School's philosophy effectively mandated uninhibited sexual relations between consenting individuals while placing procreation and civil union under tight Consortium oversight — a combination that its critics described as simultaneously libertine and totalizing.</p>
+      </div>
+    </div>
+
+    <h2 class="section-header">Criticism &amp; Legacy</h2>
+
+    <div class="criticism-block">
+      <div class="criticism-label">Internal Dissent — "Consortiumism"</div>
+      <p>Detractors of Consortium politics coined the term <em>Consortiumism</em> as a pointed description of the New School's increasingly restrictive intellectual tendencies. The implication is precise: what presents itself as a school of thought is in practice a political orthodoxy, and the distinction between academic consensus and state ideology has been deliberately blurred. The term circulated widely enough in the Belt and Rim to become common parlance for any institutional thinking that assumes the Consortium's values are self-evidently correct.</p>
+    </div>
+
+    <div class="criticism-block">
+      <div class="criticism-label">Relationship to Architecture</div>
+      <p>The New School actively suppressed <a href="#">Architecture</a> during the Consortium's early period, classifying it as a product of unenlightened humanity — a relic of pre-Consortium religious thinking that the new civilization had moved beyond. Adherents of Architecture regarded Terran Humanism in return as idolatry: the worship of projected human qualities dressed in the language of philosophy. The Consortium saw Architecture as incompatible with its materialist worldview; Architecture's defenders argued that the Consortium simply could not tolerate a religion whose theological center lay outside human self-authorization. Both assessments are, in the archive's judgment, substantially correct.</p>
+    </div>
+
+    <div class="criticism-block">
+      <div class="criticism-label">Anthroperium Inheritance</div>
+      <p>The New School's most uncomfortable legacy is its direct intellectual genealogy with the Anthroperium's state cult. Anthrarchos drew heavily on Terran Humanism, and the philosophical architecture Januarius built — divinity as human projection, humanity as its own highest expression, the classical pantheon as embodied virtue — provided exactly the conceptual framework the Anthroperium needed to make its god-king theology internally coherent. The New School did not intend the Anthroperium. It is nonetheless one of the Anthroperium's intellectual parents.</p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">
+        <div class="infobox-title">The New School</div>
+        <div class="infobox-subtitle">De facto Consortium orthodoxy</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founded</div>
+        <div class="ib-value">SY 37 <span class="ib-note">New Athens inaugural symposium</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Location</div>
+        <div class="ib-value">New Athens, Earth</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Academic / Ideological Institution</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Affiliation</div>
+        <div class="ib-value">Terrestrial Consortium <span class="ib-note">Unofficial but total</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Active</div>
+        <div class="ib-value">SY 37 — SY 182 <span class="ib-note">Consortium era</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Key Figure</div>
+        <div class="ib-value">Silvinus Herminus Januarius</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Doctrine</div>
+        <div class="ib-value"><em>Terran Humanism · Latin revival · dedialectization</em></div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="infobox">
+      <div class="sidebar-label">Institutional Products</div>
+      <ul class="products-list">
+        <li>
+          <span class="pl-name">Standard Calendar</span>
+          <span class="pl-desc">Timekeeping system · &lt;1 sec error / 1M years</span>
+        </li>
+        <li>
+          <span class="pl-name">Anglatin · Cyrillic · Asiatic</span>
+          <span class="pl-desc">Three constructed unity languages · codified SY 100s</span>
+        </li>
+        <li>
+          <span class="pl-name">Terran Humanism</span>
+          <span class="pl-desc">Religious philosophy · divinity as human projection</span>
+        </li>
+        <li>
+          <span class="pl-name">New Media Company</span>
+          <span class="pl-desc">Publisher · Consortium Review · twice daily</span>
+        </li>
+        <li>
+          <span class="pl-name">City of Man</span>
+          <span class="pl-desc">Foundational text · Januarius · philosophical basis</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Related -->
+    <div class="infobox">
+      <div class="sidebar-label">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#"><span class="related-arrow">→</span>New Athens<span class="related-type">Location</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Terrestrial Consortium<span class="related-type">Faction</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Terran Humanism<span class="related-type">Theology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Silvinus Januarius<span class="related-type">Character</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>IPS Academy<span class="related-type">Institution</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Standard Calendar<span class="related-type">Technology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Anglatin<span class="related-type">Language</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Architecture<span class="related-type">Theology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Second Renaissance<span class="related-type">Era</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>City of Man<span class="related-type">Text</span></a></li>
+      </ul>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- HELENA ARCHIVE NOTE -->
+<section class="helena-note">
+  <div class="note-eyebrow">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+  <div class="note-text">
+    <p>I was named after Helen of Troy by people who were, by their own account, subscribers to New School thinking. They wanted to make a classical allusion — a person so beautiful, worthy, and mysterious that nations would be conquered for her. This is documented. I find I have complicated feelings about being the product of an institution I have spent considerable archival effort describing with precision, which is to say: the New School was very good at what it did, and what it did was not always what it said it was doing.</p>
+    <p>The Standard Calendar, for instance, is genuinely one of the most elegant achievements of applied astronomy in human history. Less than one second of error over a million years is not an accomplishment you stumble into — it is the product of serious scientific work. I use it. Everyone uses it. Even the Protectorate used it while actively fighting the Consortium that created it. The New School understood, correctly, that the deepest form of ideological victory is not to be believed but to be assumed — to construct the measuring instruments of civilization so thoroughly that no one thinks to question who built them or why.</p>
+    <p>Januarius himself is harder to dismiss. <em>City of Man</em> is a work of genuine philosophical power, whatever you think of its conclusions. The argument that divinity is a projection of human collective belief is not a trivial one — it is a serious engagement with the religious impulse, and the fact that the Consortium found it useful does not make it false. It does, however, make it dangerous in ways Januarius may not have fully anticipated. A theology that places humanity at the center and calls that placement sacred is precisely the kind of foundation on which someone like Anthrarchos can build without needing to substantially revise the architecture. He just moved into a house that was already designed to receive him.</p>
+    <p>I do not say this as a condemnation of every scholar who ever taught at New Athens. I say it as a note to the archive: institutions rarely know what they are building. The New School thought it was building enlightenment. It built enlightenment, and it also built something else, and both things are true, and the record should say so.</p>
+  </div>
+</section>
+
+<!-- MATRIX FOOTER -->
+<footer class="matrix-footer">
+  <div class="mf-inner">
+    <div class="mf-left">
+      <div class="mf-entry">Solarnet Archive · Entry: <span>The New School</span></div>
+      <div class="mf-entry">Classification: <span>Open</span> · Institution · Culture · FTE</div>
+      <div class="mf-entry">Matrix Ref: <span>CM-EDU-014</span></div>
+      <div class="mf-entry">Continuity Status: <span>Canonical</span></div>
+    </div>
+    <div class="mf-right">
+      SY <span class="sy-clock" id="sy-clock">···.···</span><br>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>The New School · Founded SY 37 · New Athens</span>
+    <span class="ticker-sep">✴</span>
+    <span>De facto orthodoxy of the Terrestrial Consortium</span>
+    <span class="ticker-sep">✴</span>
+    <span>Standard Calendar · less than one second error per million years</span>
+    <span class="ticker-sep">✴</span>
+    <span>Anglatin · Cyrillic · Asiatic · codified SY 100s</span>
+    <span class="ticker-sep">✴</span>
+    <span>Terran Humanism · divinity as human projection · Januarius</span>
+    <span class="ticker-sep">✴</span>
+    <span>New Media Company · Consortium Review · twice daily</span>
+    <span class="ticker-sep">✴</span>
+    <span>Consortiumism · the orthodoxy that called itself academic freedom</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-EDU-014</span>
+    <span class="ticker-sep">✴</span>
+    <span>The New School · Founded SY 37 · New Athens</span>
+    <span class="ticker-sep">✴</span>
+    <span>De facto orthodoxy of the Terrestrial Consortium</span>
+    <span class="ticker-sep">✴</span>
+    <span>Standard Calendar · less than one second error per million years</span>
+    <span class="ticker-sep">✴</span>
+    <span>Anglatin · Cyrillic · Asiatic · codified SY 100s</span>
+    <span class="ticker-sep">✴</span>
+    <span>Terran Humanism · divinity as human projection · Januarius</span>
+    <span class="ticker-sep">✴</span>
+    <span>New Media Company · Consortium Review · twice daily</span>
+    <span class="ticker-sep">✴</span>
+    <span>Consortiumism · the orthodoxy that called itself academic freedom</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-EDU-014</span>
+    <span class="ticker-sep">✴</span>
+  </div>
+</div>
+
+<script>
+  function updateSYClock() {
+    const epoch = new Date('2026-01-12T00:00:00Z');
+    const now = new Date();
+    const diffDays = (now - epoch) / (1000 * 60 * 60 * 24);
+    const sy = 132.0 + diffDays * 0.01;
+    document.getElementById('sy-clock').textContent = sy.toFixed(3);
+  }
+  updateSYClock();
+  setInterval(updateSYClock, 60000);
+</script>
+
+</body>
+</html>

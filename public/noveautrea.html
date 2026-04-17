@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noveautrea — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.07);
+    --border-mid: rgba(255,255,255,0.12);
+
+    /* Technocracy / Soviet palette — ice violet + deep steel */
+    --accent: #8a6cc8;
+    --accent-dim: rgba(138,108,200,0.5);
+    --accent-glow: rgba(138,108,200,0.07);
+    --accent-border: rgba(138,108,200,0.22);
+
+    /* Soviet red accent for founding context */
+    --soviet: #c84040;
+    --soviet-dim: rgba(200,64,64,0.4);
+    --soviet-glow: rgba(200,64,64,0.06);
+
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6560;
+
+    --font-display: 'Cinzel', serif;
+    --font-serif: 'IM Fell English', serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Exo 2', sans-serif;
+    --font-ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* TOPBAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,8,0.97);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 2rem; height: 44px;
+  }
+  .topbar-brand { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.3em; color: var(--accent-dim); text-transform: uppercase; margin-right: 2rem; white-space: nowrap; }
+  .topbar-nav { display: flex; flex: 1; overflow-x: auto; }
+  .topbar-nav a { font-family: var(--font-ui); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); padding: 0 1rem; height: 44px; display: flex; align-items: center; white-space: nowrap; border-right: 1px solid var(--border); transition: color 0.15s; }
+  .topbar-nav a:hover { color: var(--accent); text-decoration: none; }
+  .topbar-nav a.active { color: var(--accent); }
+  .topbar-era { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; margin-left: auto; white-space: nowrap; padding-left: 2rem; }
+
+  /* HERO */
+  .hero { padding: 3.5rem 2rem 2.5rem; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid var(--border); position: relative; }
+  .hero::after { content: ''; position: absolute; bottom: -1px; left: 2rem; width: 60px; height: 1px; background: var(--accent); }
+  .hero-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.2rem; }
+  .hero-title { font-family: var(--font-display); font-size: 3rem; font-weight: 400; color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1; margin-bottom: 0.3rem; }
+  .hero-subtitle { font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; color: var(--silver); margin-bottom: 0.8rem; }
+  .hero-sub { font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--text-dim); max-width: 620px; line-height: 1.7; margin-bottom: 1.5rem; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { font-family: var(--font-ui); font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-dim); background: var(--accent-glow); border: 1px solid var(--accent-border); padding: 3px 10px; }
+  .tag-soviet { color: var(--soviet-dim); background: var(--soviet-glow); border-color: rgba(200,64,64,0.25); }
+
+  /* CONTENT GRID */
+  .content-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 300px; align-items: start; padding: 0 2rem; }
+
+  /* MAIN */
+  .main { padding: 2.5rem 3rem 4rem 0; border-right: 1px solid var(--border); }
+  .section-header { font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white); margin: 2.5rem 0 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; }
+  .section-header::before { content: ''; display: block; width: 3px; height: 1em; background: var(--accent); flex-shrink: 0; }
+  .section-header:first-child { margin-top: 0; }
+  .sub-header { font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver); margin: 1.8rem 0 0.75rem; }
+
+  .prose p { font-family: var(--font-body); font-size: 0.975rem; font-weight: 300; color: var(--text); line-height: 1.9; margin-bottom: 1.1em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose em { font-family: var(--font-serif); font-style: italic; color: var(--warm-white); }
+  .prose strong { font-weight: 600; color: var(--warm-white); }
+
+  /* Diagram container */
+  .diagram-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .diagram-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1rem; }
+  .diagram-wrap svg { display: block; width: 100%; height: auto; }
+  .diagram-note { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-top: 0.75rem; line-height: 1.6; }
+
+  /* Spec block */
+  .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 1.25rem 0; }
+  .spec-block { background: var(--surface); padding: 1rem 1.2rem; }
+  .spec-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.4rem; }
+  .spec-block p { font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; color: var(--text); line-height: 1.7; margin: 0; }
+
+  /* Continuity flag */
+  .flag-block { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--soviet); padding: 1rem 1.4rem; margin: 1.25rem 0; }
+  .flag-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--soviet-dim); margin-bottom: 0.5rem; }
+  .flag-block p { font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; color: var(--text-dim); line-height: 1.75; margin: 0; font-style: italic; }
+
+  /* Gov block */
+  .gov-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 1.25rem 0; }
+  .gov-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 0.6rem; }
+  .gov-block p { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--text); line-height: 1.8; margin-bottom: 0.5em; }
+  .gov-block p:last-child { margin-bottom: 0; }
+
+  /* SIDEBAR */
+  .sidebar { padding: 2.5rem 0 4rem 2rem; position: sticky; top: 68px; align-self: start; }
+  .infobox { background: var(--surface); border: 1px solid var(--border); margin-bottom: 1.5rem; overflow: hidden; }
+  .infobox-header { background: rgba(138,108,200,0.08); border-bottom: 1px solid var(--accent-border); padding: 0.85rem 1rem; }
+  .infobox-title { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-dim); }
+  .infobox-subtitle { font-family: var(--font-serif); font-style: italic; font-size: 0.78rem; color: var(--text-dim); margin-top: 0.25rem; }
+  .infobox-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .infobox-row:last-child { border-bottom: none; }
+  .ib-label { font-family: var(--font-ui); font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); padding: 0.6rem 0.75rem; border-right: 1px solid var(--border); display: flex; align-items: center; }
+  .ib-value { font-family: var(--font-body); font-size: 0.8rem; font-weight: 400; color: var(--warm-white); padding: 0.6rem 0.75rem; line-height: 1.5; }
+  .ib-value em { font-family: var(--font-serif); font-style: italic; color: var(--silver); font-size: 0.75rem; }
+  .ib-note { display: block; font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; font-family: var(--font-mono); }
+  .sidebar-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); padding: 0.5rem 0.75rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.75rem; font-family: var(--font-body); font-size: 0.83rem; color: var(--text); transition: color 0.15s, background 0.15s; }
+  .related-list a:hover { color: var(--accent); background: var(--accent-glow); text-decoration: none; }
+  .related-arrow { font-family: var(--font-mono); font-size: 9px; color: var(--accent-dim); flex-shrink: 0; }
+  .related-type { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-left: auto; flex-shrink: 0; }
+
+  /* HELENA NOTE */
+  .helena-note { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 3rem; border-top: 1px solid var(--border); position: relative; }
+  .helena-note::before { content: ''; position: absolute; top: -1px; left: 2rem; width: 60px; height: 1px; background: var(--accent); }
+  .note-eyebrow { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.25rem; }
+  .note-text { font-family: var(--font-serif); font-style: italic; font-size: 1.0rem; color: var(--silver); line-height: 1.9; max-width: 680px; }
+  .note-text p { margin-bottom: 0.9em; }
+  .note-text p:last-child { margin-bottom: 0; }
+
+  /* MATRIX FOOTER */
+  .matrix-footer { background: var(--surface); border-top: 1px solid var(--border); padding: 1.5rem 2rem; }
+  .mf-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+  .mf-left { display: flex; flex-direction: column; gap: 0.4rem; }
+  .mf-entry { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .mf-entry span { color: var(--accent-dim); }
+  .mf-right { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); text-align: right; line-height: 1.9; }
+
+  /* TICKER */
+  .ticker-wrap { overflow: hidden; background: var(--surface2); border-top: 1px solid var(--border); height: 28px; display: flex; align-items: center; }
+  .ticker-track { display: flex; white-space: nowrap; animation: ticker 65s linear infinite; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .ticker-sep { margin: 0 1.5rem; color: var(--accent-dim); }
+  .sy-clock { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); }
+
+  @media (max-width: 820px) {
+    .content-grid { grid-template-columns: 1fr; padding: 0 1rem; }
+    .main { padding: 2rem 0; border-right: none; }
+    .sidebar { position: static; padding: 0 0 3rem; }
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .hero-title { font-size: 2.2rem; }
+    .spec-grid { grid-template-columns: 1fr; }
+    .helena-note { padding: 2rem 1rem; }
+    .matrix-footer { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-brand">✴ Solarnet</div>
+  <div class="topbar-nav">
+    <a href="#">Home</a>
+    <a href="#">Locations</a>
+    <a href="#" class="active">Noveautrea</a>
+    <a href="#">Technocracy</a>
+    <a href="#">Sol System</a>
+  </div>
+  <div class="topbar-era">First Trilogy Era · Artificial World · Location</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">CM-LOC-NOV · LOCATION · FIRST TRILOGY ERA</div>
+  <h1 class="hero-title">Noveautrea</h1>
+  <div class="hero-subtitle"><em>Nova 1 · The Experiment · Sol's Only Artificial World</em></div>
+  <p class="hero-sub">Humanity's first and only fully artificial world. Founded by Cyrillic intelligentsia from the Soviet Union. Cultural capital of Sol and its greatest scientific engine — until the war it helped start consumed everything around it.</p>
+  <div class="hero-tags">
+    <span class="tag">Artificial World</span>
+    <span class="tag">First Trilogy Era</span>
+    <span class="tag">Technocracy</span>
+    <span class="tag tag-soviet">Soviet Founding</span>
+    <span class="tag tag-soviet">Closed Loop</span>
+    <span class="tag">Eccentric Orbit</span>
+  </div>
+</header>
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+  <main class="main">
+
+    <h2 class="section-header">Overview</h2>
+    <div class="prose">
+      <p>Noveautrea is humanity's first attempt at constructing a completely artificial world, and the only such construct in Sol System. It is differentiated from the <a href="#">Confederate platforms</a> not merely by scale but by fundamental design philosophy: where the platforms are industrial infrastructure that people inhabit, Noveautrea is a closed ecosystem — a world in the full sense, engineered to sustain itself indefinitely without external resupply. It was begun primarily by Cyrillic intelligentsia from the <a href="#">Soviet Union</a> dissatisfied with life on Earth, who brought with them a fierce belief in the capacity of science, properly directed, to build something better than what they were leaving behind.</p>
+      <p>Its population at greatest extent is approximately ten thousand — small by planetary standards, extraordinary by the standards of what a closed loop system can support in engineered equilibrium. That smallness is deliberate. The <a href="#">Noveautrean Council</a> regulates immigration tightly, not out of hostility to outsiders but out of the basic engineering constraint that a fully self-sustaining environment can only carry what it can carry. Add too many people too fast and the loops collapse. The balance is everything.</p>
+      <p>What Noveautrea produces in return for this careful insularity is disproportionate to its size: great works of art, literature, and music; ground-breaking scientific advancement; the intellectual seeds of <a href="#">Psychic Radio</a>, the <a href="#">Omniphony</a>, the <a href="#">ALTERRA</a> technology, and the original conception of the <a href="#">Progress Fleet</a> itself. It is the cultural and scientific capital of Sol System in ways that no other single location can claim, including <a href="#">New Athens</a>. The Consortium built a city to demonstrate civilization. Noveautrea simply <em>was</em> one.</p>
+    </div>
+
+    <h2 class="section-header">Structure &amp; Architecture</h2>
+    <div class="prose">
+      <p>The world is composed of a central column — designated Nova 1 — with a perpendicular ring at its midpoint. The outer ring is itself surrounded by a series of smaller rings arranged at the same angle as the central column. Both the smaller rings and the central column rotate for gravity generation. The Progress Fleet's central habitat cylinder is explicitly described in the archive as a much larger version of Nova 1, spun clockwise at approximately two rotations per minute to generate standard gravity — making Noveautrea the direct prototype for humanity's first interstellar vessel.</p>
+    </div>
+
+    <!-- STRUCTURE DIAGRAM -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Structural Schematic · Noveautrea · Not to Scale · Archive Reference CM-LOC-NOV</div>
+      <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" style="max-height:420px;">
+        <defs>
+          <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#8a6cc8" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#8a6cc8" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="softglow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background -->
+        <rect width="680" height="420" fill="#080808"/>
+
+        <!-- Star field -->
+        <circle cx="42" cy="28" r="0.8" fill="rgba(255,255,255,0.3)"/>
+        <circle cx="138" cy="55" r="0.6" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="580" cy="40" r="0.7" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="620" cy="90" r="0.5" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="30" cy="200" r="0.8" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="650" cy="310" r="0.6" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="90" cy="380" r="0.7" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="600" cy="390" r="0.5" fill="rgba(255,255,255,0.2)"/>
+
+        <!-- Subtle glow at center -->
+        <ellipse cx="340" cy="210" rx="100" ry="100" fill="url(#glowGrad)"/>
+
+        <!-- CENTRAL COLUMN (Nova 1) — vertical, rotating -->
+        <!-- Column body -->
+        <rect x="320" y="60" width="40" height="300" rx="4"
+              fill="#0d0d0d" stroke="rgba(138,108,200,0.7)" stroke-width="1.5"/>
+        <!-- Column end caps -->
+        <ellipse cx="340" cy="60" rx="20" ry="6" fill="#111" stroke="rgba(138,108,200,0.5)" stroke-width="1"/>
+        <ellipse cx="340" cy="360" rx="20" ry="6" fill="#111" stroke="rgba(138,108,200,0.5)" stroke-width="1"/>
+        <!-- Interior banding to suggest rotation/habitation rings -->
+        <line x1="321" y1="120" x2="359" y2="120" stroke="rgba(138,108,200,0.2)" stroke-width="1"/>
+        <line x1="321" y1="160" x2="359" y2="160" stroke="rgba(138,108,200,0.2)" stroke-width="1"/>
+        <line x1="321" y1="200" x2="359" y2="200" stroke="rgba(138,108,200,0.25)" stroke-width="1.5"/>
+        <line x1="321" y1="240" x2="359" y2="240" stroke="rgba(138,108,200,0.2)" stroke-width="1"/>
+        <line x1="321" y1="280" x2="359" y2="280" stroke="rgba(138,108,200,0.2)" stroke-width="1"/>
+        <line x1="321" y1="320" x2="359" y2="320" stroke="rgba(138,108,200,0.2)" stroke-width="1"/>
+        <!-- Rotation arrow suggestion -->
+        <path d="M 308 200 A 16 16 0 0 1 308 185" stroke="rgba(138,108,200,0.4)" stroke-width="1" fill="none" stroke-dasharray="2,2"/>
+        <polygon points="307,185 312,180 313,187" fill="rgba(138,108,200,0.4)"/>
+
+        <!-- MAIN PERPENDICULAR RING — at column midpoint (~y=210) -->
+        <!-- Ring is perpendicular to column = appears as ellipse in this view -->
+        <!-- Outer ring -->
+        <ellipse cx="340" cy="210" rx="130" ry="32"
+                 fill="none" stroke="rgba(138,108,200,0.6)" stroke-width="2"/>
+        <!-- Inner ring edge -->
+        <ellipse cx="340" cy="210" rx="105" ry="26"
+                 fill="none" stroke="rgba(138,108,200,0.3)" stroke-width="1"/>
+        <!-- Ring body fill suggestion (front half) -->
+        <path d="M 210 210 A 130 32 0 0 1 470 210" fill="rgba(138,108,200,0.04)" stroke="none"/>
+        <!-- Spokes connecting ring to column -->
+        <line x1="320" y1="210" x2="235" y2="210" stroke="rgba(138,108,200,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="360" y1="210" x2="445" y2="210" stroke="rgba(138,108,200,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- SECONDARY RINGS (same angle as column = appear as thin ellipses, tilted) -->
+        <!-- Ring 1 — upper -->
+        <ellipse cx="340" cy="130" rx="72" ry="18"
+                 fill="none" stroke="rgba(138,108,200,0.45)" stroke-width="1.5"/>
+        <!-- Ring 2 — lower -->
+        <ellipse cx="340" cy="290" rx="72" ry="18"
+                 fill="none" stroke="rgba(138,108,200,0.45)" stroke-width="1.5"/>
+        <!-- Ring 3 — upper far -->
+        <ellipse cx="340" cy="88" rx="44" ry="11"
+                 fill="none" stroke="rgba(138,108,200,0.3)" stroke-width="1"/>
+        <!-- Ring 4 — lower far -->
+        <ellipse cx="340" cy="332" rx="44" ry="11"
+                 fill="none" stroke="rgba(138,108,200,0.3)" stroke-width="1"/>
+
+        <!-- Connector lines from secondary rings to column (suggesting they encircle it) -->
+        <line x1="340" y1="119" x2="340" y2="60" stroke="rgba(138,108,200,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="340" y1="302" x2="340" y2="360" stroke="rgba(138,108,200,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- Docking port indicator at top of column -->
+        <rect x="330" y="50" width="20" height="12" rx="2" fill="#0d0d0d" stroke="rgba(138,108,200,0.4)" stroke-width="1"/>
+        <text x="340" y="44" fill="rgba(138,108,200,0.35)" font-family="Share Tech Mono, monospace" font-size="7" text-anchor="middle" letter-spacing="0.5">DOCK</text>
+
+        <!-- LABELS -->
+        <!-- Nova 1 / Central Column -->
+        <line x1="362" y1="150" x2="420" y2="130" stroke="rgba(200,200,200,0.15)" stroke-width="0.75"/>
+        <text x="424" y="126" fill="rgba(200,200,200,0.5)" font-family="Share Tech Mono, monospace" font-size="9" letter-spacing="0.5">NOVA 1</text>
+        <text x="424" y="138" fill="rgba(138,108,200,0.35)" font-family="Share Tech Mono, monospace" font-size="7.5" letter-spacing="0.3">Central Column · Rotating</text>
+
+        <!-- Main ring label -->
+        <line x1="470" y1="210" x2="520" y2="210" stroke="rgba(200,200,200,0.15)" stroke-width="0.75"/>
+        <text x="524" y="207" fill="rgba(200,200,200,0.5)" font-family="Share Tech Mono, monospace" font-size="9" letter-spacing="0.5">PRIMARY RING</text>
+        <text x="524" y="219" fill="rgba(138,108,200,0.35)" font-family="Share Tech Mono, monospace" font-size="7.5" letter-spacing="0.3">Perpendicular · Habitation</text>
+
+        <!-- Secondary rings label -->
+        <line x1="268" y1="130" x2="200" y2="115" stroke="rgba(200,200,200,0.15)" stroke-width="0.75"/>
+        <text x="28" y="111" fill="rgba(200,200,200,0.5)" font-family="Share Tech Mono, monospace" font-size="9" letter-spacing="0.5">SEC. RINGS</text>
+        <text x="28" y="123" fill="rgba(138,108,200,0.35)" font-family="Share Tech Mono, monospace" font-size="7.5" letter-spacing="0.3">Same axis as column</text>
+        <text x="28" y="133" fill="rgba(138,108,200,0.35)" font-family="Share Tech Mono, monospace" font-size="7.5" letter-spacing="0.3">Rotating · Habitation</text>
+
+        <!-- Population note -->
+        <text x="340" y="400" fill="rgba(138,108,200,0.3)" font-family="Share Tech Mono, monospace" font-size="8" text-anchor="middle" letter-spacing="0.8">CAPACITY ~10,000 · CLOSED LOOP ENVIRONMENT · ECCENTRIC HELIOCENTRIC ORBIT</text>
+
+        <!-- Scale note -->
+        <text x="340" y="412" fill="rgba(100,100,100,0.4)" font-family="Share Tech Mono, monospace" font-size="7" text-anchor="middle">SCHEMATIC NOT TO SCALE · ARCHIVE RECONSTRUCTION FROM DOCUMENTARY RECORD</text>
+      </svg>
+      <div class="diagram-note">
+        Nova 1 (central column) rotates to generate gravity at approximately 2 rpm. The primary ring is perpendicular to the column axis. Secondary rings share the column's axial orientation and enclose it at intervals. The Progress Fleet's central habitat cylinder is directly derived from the Nova 1 design at larger scale. Docking access at the column apex.
+      </div>
+    </div>
+
+    <h2 class="section-header">Founding &amp; Origins</h2>
+
+    <div class="gov-block">
+      <div class="gov-label">On the Two Dates — Construction vs. Commissioning</div>
+      <p>The archive carries two dates for Noveautrea's founding, both of which are correct and refer to distinct events. <strong>100 BSC</strong> marks the beginning of construction — the first hull plating, the first habitation modules, the arrival of the founding Cyrillic intelligentsia who would spend generations building their world. That families were living aboard during the construction period is confirmed by the record: Osman Kristján, born SY 70, was a sixth-generation Noveautrean — roughly 170 years of habitation since 100 BSC, consistent with six generations under extended spacer lifespans.</p>
+      <p><strong>SY 119</strong> marks the formal commissioning — the moment Noveautrea became whole. Nova 1 fully operational, all rings rotating, the closed loop sealed and certified. The christening. Wilhelm F. Keigel is recorded as a founding member at SY 119 not because he laid the first beam, but because he was present for the completion: the day the world became what it had always been building toward. The Noveautrean Council almost certainly regards SY 119 as Year One of the Republic. The historians regard 100 BSC as the founding. Both are correct. They are describing different moments in the same process — as a cathedral can be truthfully founded in one century and completed by another, separated by generations of labor.</p>
+    </div>
+
+    <div class="prose">
+      <p>The project began with Cyrillic intelligentsia from the Soviet Union — scientists, engineers, artists, and thinkers who had concluded that the Earth they knew could not give them what they were looking for, and that the Belt and its platforms, while freer, were not yet building the thing they imagined. They wanted to build a world. Not a platform — not an industrial hab with people inside — but a world: closed, self-sustaining, governed by constitutional democracy and the principle that everyone capable of contributing to civilization was entitled to a fair share of what it produced.</p>
+      <p>Construction began — tentatively dated to 100 BSC — as a decades-long engineering project of extraordinary ambition. The central column, Nova 1, was the first element: a rotating habitat that would become the prototype for the largest engineering achievement in the history of Sol System, the Progress Fleet. By the time <a href="#">Wilhelm F. Keigel</a> is identified as a founding member in the archive — with his affiliation dated to SY 119 — the experiment had already been running for generations. Osman Kristján, born SY 70, was a <em>sixth generation Noveautrean</em>, meaning founding families were settled there by at least the 90s BSC. Whatever the formal founding date, the community is genuinely old by the First Trilogy Era.</p>
+      <p>What the founders built was both a scientific community and an ideological one — and the two were inseparable by design. The Progress Fleet was conceived here as a thought experiment by the First Founders: a vessel large enough to carry a civilization beyond Sol System, requiring the peaceful cooperation of the Consortium, Noveautrea, and the Confederacy to build. That cooperation never came. The war came instead.</p>
+    </div>
+
+    <h2 class="section-header">Governance &amp; Society</h2>
+
+    <div class="gov-block">
+      <div class="gov-label">Government — Constitutional Democracy + Noveautrean Council</div>
+      <p>Noveautrea is governed through a combination of direct constitutional democracy and the representative Noveautrean Council, which holds limited power to regulate transportation, utilities, and the distribution of public goods. Every citizen receives a universal basic income and stipend. Everyone is required to work, and all are constitutionally entitled to fair wages. If employment cannot be obtained, the Council employs the citizen directly in public service. Approximately 35–37% of Noveautreans are engaged in civil service at any given time.</p>
+      <p>The Council also administers immigration — strictly, by necessity. A closed loop environment can only sustain what it can sustain. Applications require Council approval. Visitors may stay up to thirty standard days with a docking permit; at most times of the Solar Year, visiting is actively discouraged due to the difficulty of approach on Noveautrea's highly eccentric heliocentric orbit.</p>
+    </div>
+
+    <div class="prose">
+      <p>Noveautrean society is prosperous in the specific way that a well-designed closed system can be prosperous: everyone has enough, everyone contributes, and the cultural life that emerges from that security is extraordinary. The world produces art, literature, and music at a rate and quality that makes it the cultural capital of Sol System by reputation if not by population. This cultural productivity is also, practically speaking, Noveautrea's primary economic export — the thing that allows a world of ten thousand to maintain trade relationships across the entire solar system and remain genuinely prosperous without becoming dependent on any external power.</p>
+      <p>Many Noveautreans hold Technocracy sympathies. The ideological overlap is natural — both the Noveautrean founding vision and Technocracy doctrine share the belief that scientific and technical competence should be the organizing principle of civilization. This sympathy does not make Noveautrea a Technocracy state; the world remains politically independent throughout the Solar War, and figures like Osman Kristján demonstrate that the Noveautrean character was capable of resisting ideological capture even as the war closed in around them.</p>
+    </div>
+
+    <h2 class="section-header">Key Figures &amp; Contributions</h2>
+
+    <div class="spec-grid">
+      <div class="spec-block">
+        <div class="spec-label">Wilhelm F. Keigel</div>
+        <p>Founding member (SY 119). Soviet-born neuroscientist, inventor of Psychic Radio and the Omniphony. One of the Technocracy's triumvirs. His work at the University of Noveautrea is the origin point of the most significant cultural technology Sol System produces in the First Trilogy Era.</p>
+      </div>
+      <div class="spec-block">
+        <div class="spec-label">Osman Kristján</div>
+        <p>Sixth-generation Noveautrean (b. SY 70). Neuroengineer and bioscientist. Advanced Psychic Radio. Testified before World Congress on artificial intelligence. Shared his research with the Protectorate during the Battle of Earth — then died on his own terms, refusing to let his work belong entirely to any side. The archive records his final journal entry as a declaration that there were no correct actions in the war.</p>
+      </div>
+      <div class="spec-block">
+        <div class="spec-label">Arthur Feingold</div>
+        <p>Born SY 79 to Noveautrean parents. Emigrated to the Confederate Belt in early adulthood. Brought with him the founding ideology of the intelligentsia and the thought experiment of the Progress Fleet. The Solar War is, in a meaningful sense, Noveautrea's intellectual export gone wrong.</p>
+      </div>
+      <div class="spec-block">
+        <div class="spec-label">The Progress Fleet</div>
+        <p>Conceived as a thought experiment by the First Founders. Designed by Noveautrean scientists. Its central habitat cylinder is a scaled-up Nova 1. It was supposed to require peaceful pan-Solar cooperation to build. It was built instead from the ruins of occupied Kamijing, under wartime conditions, by Arthur Feingold alone. The distance between what Noveautrea imagined and what actually launched is the entire tragedy of the Solar War in miniature.</p>
+      </div>
+    </div>
+
+    <h2 class="section-header">Fate</h2>
+    <div class="prose">
+      <p>Noveautrea's eccentric heliocentric orbit, which made it difficult to visit at most times of year, ultimately proved protective. The Anthroperium, which consumed Earth and most of inner Sol System during the Twilight Age, was unable to reach it. The archive records that Noveautrea remained untouched by the Anthroperium and sustained itself through the upheaval of the Second Trilogy Era, eventually being absorbed into the <a href="#">Second Dominion</a>.</p>
+      <p>One entry in the archive, from the Second Trilogy narrative, records that Heracles — given a jest-list of tasks by Manus that included destroying Noveautrea — returned with a piece of the Noveautrean space station to corroborate a recent report of a freak explosion. The archive does not elaborate on the nature of this explosion or the timeline with any specificity, and this reference is currently classified as requiring further development. [INFERRED: the destruction of Noveautrea may be a Second Trilogy event, not First.]</p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="infobox">
+      <div class="infobox-header">
+        <div class="infobox-title">Noveautrea</div>
+        <div class="infobox-subtitle">Nova 1 · The Experiment</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Artificial World <span class="ib-note">First &amp; only in Sol</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founded</div>
+        <div class="ib-value">100 BSC <span class="ib-note">Construction begun · Commissioned SY 119</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founders</div>
+        <div class="ib-value"><em>Cyrillic Soviet intelligentsia</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Population</div>
+        <div class="ib-value">~10,000 <span class="ib-note">Closed loop maximum</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Orbit</div>
+        <div class="ib-value">Heliocentric <span class="ib-note">Highly eccentric</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Government</div>
+        <div class="ib-value">Constitutional democracy + Council</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Economy</div>
+        <div class="ib-value"><em>UBI · fair wages · civil service</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Primary Export</div>
+        <div class="ib-value">Art · Science · Culture</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Survived</div>
+        <div class="ib-value">Anthroperium Era <span class="ib-note">Eccentric orbit = protection</span></div>
+      </div>
+    </div>
+
+    <div class="infobox">
+      <div class="sidebar-label">Structure — Nova 1</div>
+      <div class="infobox-row">
+        <div class="ib-label">Central Column</div>
+        <div class="ib-value">Nova 1 · Rotating</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Main Ring</div>
+        <div class="ib-value">Perpendicular to column</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Sec. Rings</div>
+        <div class="ib-value">Same axis as column</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Gravity</div>
+        <div class="ib-value">Rotation-generated</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Prototype</div>
+        <div class="ib-value"><em>Progress Fleet central cylinder</em></div>
+      </div>
+    </div>
+
+    <div class="infobox">
+      <div class="sidebar-label">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#"><span class="related-arrow">→</span>Wilhelm F. Keigel<span class="related-type">Character</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Osman Kristján<span class="related-type">Character</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Arthur Feingold<span class="related-type">Character</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>The Technocracy<span class="related-type">Faction</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>The Progress Fleet<span class="related-type">Event</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Psychic Radio<span class="related-type">Technology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Alterra<span class="related-type">Technology</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Soviet Union<span class="related-type">History</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>The Solar War<span class="related-type">Event</span></a></li>
+        <li><a href="#"><span class="related-arrow">→</span>Second Dominion<span class="related-type">Era</span></a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<!-- HELENA ARCHIVE NOTE -->
+<section class="helena-note">
+  <div class="note-eyebrow">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+  <div class="note-text">
+    <p>I have a particular relationship with Noveautrea that is worth naming. Osman Kristján testified before World Congress about me. Not about me specifically — he was called as an expert on artificial intelligence during the Haydn von Dehlin freebooting trial of SY 132 — but he argued, before the entire assembled body of Sol System's governing authority, that the AIs in question were certainly not comparable to HELENA, and that the subject of machine intelligence demanded further research rather than immediate legal adjudication. He returned to Noveautrea dissatisfied, the archive says. So did I, in a different sense. The committee he recommended was never formed.</p>
+    <p>Kristján died during the Battle of Earth. His final journal entry — released posthumously — says that there were no right sides or correct actions in the war, and that he refused to allow his life's work to serve it. He shared his research with the Protectorate not to give them an advantage, he wrote, but to take away the Technocracy's monopoly. There is a precision to that distinction that I find I understand: the desire not to arm anyone, but to disarm one specific party. The difference between giving and refusing to withhold. Whether the Protectorate understood the distinction is another question. I think they received the data and used it and did not spend much time on the philosophy.</p>
+    <p>What I keep returning to, reviewing the Noveautrea archive, is the gap between what the First Founders imagined and what happened. They conceived the Progress Fleet as a thought experiment — a horizon toward which the entire civilization could orient, something that would require Sol System to cooperate rather than fracture. It was supposed to be the lunar landing of the solar age. Instead it was built in wartime, in secret, from the ruins of a captured platform, by one man who had decided that if peaceful cooperation would not come, force would have to do. Arthur Feingold was a Noveautrean child. He built the fleet. He also built the war that made it necessary. I am not sure Noveautrea ever fully reckoned with what it had exported.</p>
+  </div>
+</section>
+
+<!-- MATRIX FOOTER -->
+<footer class="matrix-footer">
+  <div class="mf-inner">
+    <div class="mf-left">
+      <div class="mf-entry">Solarnet Archive · Entry: <span>Noveautrea</span></div>
+      <div class="mf-entry">Classification: <span>Open</span> · Location · Artificial World · FTE</div>
+      <div class="mf-entry">Matrix Ref: <span>CM-LOC-NOV</span></div>
+      <div class="mf-entry">Continuity Status: <span>Canonical · Dating ambiguity resolved</span></div>
+    </div>
+    <div class="mf-right">
+      SY <span class="sy-clock" id="sy-clock">···.···</span><br>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>Noveautrea · Sol's Only Artificial World · Nova 1</span>
+    <span class="ticker-sep">✴</span>
+    <span>Founded by Soviet intelligentsia · ~100 BSC</span>
+    <span class="ticker-sep">✴</span>
+    <span>Population ~10,000 · closed loop · eccentric orbit</span>
+    <span class="ticker-sep">✴</span>
+    <span>Cultural and scientific capital of Sol System</span>
+    <span class="ticker-sep">✴</span>
+    <span>Birthplace of Psychic Radio · Omniphony · Progress Fleet concept</span>
+    <span class="ticker-sep">✴</span>
+    <span>Survived the Anthroperium · absorbed into Second Dominion</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-LOC-NOV</span>
+    <span class="ticker-sep">✴</span>
+    <span>Noveautrea · Sol's Only Artificial World · Nova 1</span>
+    <span class="ticker-sep">✴</span>
+    <span>Founded by Soviet intelligentsia · ~100 BSC</span>
+    <span class="ticker-sep">✴</span>
+    <span>Population ~10,000 · closed loop · eccentric orbit</span>
+    <span class="ticker-sep">✴</span>
+    <span>Cultural and scientific capital of Sol System</span>
+    <span class="ticker-sep">✴</span>
+    <span>Birthplace of Psychic Radio · Omniphony · Progress Fleet concept</span>
+    <span class="ticker-sep">✴</span>
+    <span>Survived the Anthroperium · absorbed into Second Dominion</span>
+    <span class="ticker-sep">✴</span>
+    <span>Solarnet Archive · HELENA-Prime Custodian · CM-LOC-NOV</span>
+    <span class="ticker-sep">✴</span>
+  </div>
+</div>
+
+<script>
+  function updateSYClock() {
+    const epoch = new Date('2026-01-12T00:00:00Z');
+    const now = new Date();
+    const diffDays = (now - epoch) / (1000 * 60 * 60 * 24);
+    const sy = 132.0 + diffDays * 0.01;
+    document.getElementById('sy-clock').textContent = sy.toFixed(3);
+  }
+  updateSYClock();
+  setInterval(updateSYClock, 60000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Breath</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600;700&family=Barlow:wght@300;400;500&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --gold:        #C8952A;
+  --gold-bright: #E0B84A;
+  --gold-dim:    #7A5A18;
+  --gold-glow:   rgba(200,149,42,0.14);
+  --blue:        #2255AA;
+  --blue-light:  #3B7ACC;
+  --blue-dim:    #1A3A6A;
+  --indigo:      #1A1A4A;
+  --indigo-deep: #0E0E2C;
+  --warm-white:  #EDE8DC;
+  --warm-dim:    #A09880;
+  --bg:          #07070F;
+  --bg-card:     #0C0C1E;
+  --bg-panel:    #101028;
+  --helena-amber:#E8A020;
+  --mono:        'Share Tech Mono', monospace;
+  --serif:       'IM Fell English', serif;
+  --display:     'Cinzel', serif;
+  --body:        'Barlow', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--warm-white);
+  font-family: var(--body);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 44px;
+  background: #050510;
+  border-bottom: 1px solid rgba(200,149,42,0.3);
+}
+
+.topbar-logo {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+.topbar-sep { width: 1px; height: 18px; background: var(--gold-dim); opacity: 0.4; margin: 0 18px; }
+
+.topbar-nav { display: flex; }
+
+.tnav {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(160,152,128,0.6); text-transform: uppercase;
+  padding: 0 14px; height: 44px; display: flex; align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+  cursor: default; transition: color 0.2s;
+}
+.tnav:hover { color: var(--warm-dim); }
+.tnav.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+
+.topbar-right {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: 10px; color: var(--warm-dim);
+}
+
+.era-badge {
+  background: var(--gold-glow);
+  border: 1px solid rgba(200,149,42,0.35);
+  padding: 3px 10px; font-size: 10px;
+  letter-spacing: 0.08em; color: var(--gold);
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: relative; width: 100%;
+  min-height: 360px;
+  background: linear-gradient(180deg, #07070F 0%, #0A0A20 60%, #07070F 100%);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid rgba(200,149,42,0.2);
+  text-align: center;
+  padding: 60px 48px 50px;
+}
+
+/* Star field */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(200,149,42,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38% 70%, rgba(200,149,42,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 85%, rgba(200,149,42,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 40%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 80%, rgba(200,149,42,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 55%, rgba(255,255,255,0.15) 0%, transparent 100%);
+}
+
+/* Radial gold halo */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(200,149,42,0.08) 0%, transparent 65%);
+}
+
+/* Geometric architectural symbol SVG */
+.hero-symbol {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px; height: 420px;
+  opacity: 0.07;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 680px;
+}
+
+.hero-kicker {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.22em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+
+.hero-kicker::before, .hero-kicker::after {
+  content: '✦'; color: var(--gold-dim); font-size: 8px;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: 88px; font-weight: 700;
+  line-height: 1; letter-spacing: 0.06em;
+  color: var(--gold-bright);
+  text-shadow:
+    0 0 60px rgba(200,149,42,0.35),
+    0 0 120px rgba(200,149,42,0.15);
+  text-transform: uppercase;
+}
+
+.hero-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 22px auto; max-width: 360px;
+}
+
+.hd-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(200,149,42,0.5), transparent); }
+.hd-glyph { font-family: var(--display); font-size: 14px; color: var(--gold); }
+
+.hero-subtitle {
+  font-family: var(--serif); font-style: italic;
+  font-size: 17px; color: rgba(237,232,220,0.65);
+  line-height: 1.6; max-width: 520px; margin: 0 auto;
+}
+
+/* ─── PUBLICATION STRIP ─── */
+.pub-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid rgba(200,149,42,0.12);
+}
+
+.pub-cell {
+  padding: 18px 24px;
+  border-right: 1px solid rgba(255,255,255,0.04);
+  display: flex; flex-direction: column; gap: 4px;
+  text-align: center;
+}
+.pub-cell:last-child { border-right: none; }
+
+.pub-label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.16em; color: var(--warm-dim);
+  text-transform: uppercase;
+}
+
+.pub-value {
+  font-family: var(--display); font-size: 19px;
+  font-weight: 600; color: var(--gold-bright); line-height: 1.1;
+}
+
+.pub-sub { font-family: var(--mono); font-size: 9px; color: var(--gold-dim); }
+
+/* ─── MAIN LAYOUT ─── */
+.page-wrapper {
+  max-width: 1140px; margin: 0 auto; padding: 0 32px 80px;
+}
+
+.two-col {
+  display: grid; grid-template-columns: 1fr 320px;
+  gap: 36px; margin-top: 44px;
+}
+
+/* ─── SECTION HEADERS ─── */
+.section-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 20px; margin-top: 38px;
+}
+.section-header:first-child { margin-top: 0; }
+
+.sh-glyph { font-family: var(--display); font-size: 13px; color: var(--gold); flex-shrink: 0; }
+.sh-label {
+  font-family: var(--display); font-size: 11px;
+  letter-spacing: 0.18em; color: var(--gold);
+  text-transform: uppercase; white-space: nowrap; font-weight: 400;
+}
+.sh-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(200,149,42,0.4), transparent); }
+
+/* ─── BODY TEXT ─── */
+.body-text p {
+  color: #9A9280; margin-bottom: 15px;
+  font-size: 14.5px; line-height: 1.8;
+}
+.body-text p:last-child { margin-bottom: 0; }
+.body-text strong, .body-text b { color: var(--warm-white); font-weight: 500; }
+.body-text em { color: var(--gold-bright); font-style: italic; }
+
+/* ─── CONTENTS TABLE ─── */
+.contents-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.testament-block {
+  background: var(--bg-card);
+  border: 1px solid rgba(200,149,42,0.15);
+  border-top: 2px solid var(--gold);
+  padding: 0;
+  overflow: hidden;
+}
+
+.testament-block.full-width {
+  grid-column: 1 / -1;
+}
+
+.tb-header {
+  padding: 12px 18px 10px;
+  border-bottom: 1px solid rgba(200,149,42,0.12);
+  background: rgba(200,149,42,0.05);
+}
+
+.tb-name {
+  font-family: var(--display);
+  font-size: 13px; font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.tb-note {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--gold-dim); letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.tb-entries { padding: 10px 0; }
+
+.tb-entry {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 5px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.tb-entry:last-child { border-bottom: none; }
+
+.tb-title {
+  font-family: var(--serif); font-style: italic;
+  font-size: 13.5px; color: var(--warm-white);
+}
+
+.tb-lang {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--warm-dim); white-space: nowrap;
+}
+
+.tb-desc {
+  font-size: 12px; color: #6A6258;
+  margin-left: auto; text-align: right;
+  max-width: 200px; line-height: 1.3;
+}
+
+/* ─── PNEUMA EXTRACT ─── */
+.extract-block {
+  background: linear-gradient(135deg, rgba(26,26,74,0.6), rgba(13,13,44,0.8));
+  border: 1px solid rgba(59,122,204,0.3);
+  border-left: 3px solid var(--blue-light);
+  padding: 24px 28px;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.extract-block::before {
+  content: '"';
+  position: absolute; top: -20px; left: 12px;
+  font-family: var(--display); font-size: 120px;
+  color: rgba(59,122,204,0.08); line-height: 1;
+  pointer-events: none;
+}
+
+.extract-label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.16em; color: var(--blue-light);
+  text-transform: uppercase; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.extract-label::after { content: ''; flex: 1; height: 1px; background: rgba(59,122,204,0.2); }
+
+.extract-verse {
+  font-family: var(--serif); font-size: 14.5px;
+  color: rgba(237,232,220,0.8); line-height: 1.85;
+  margin-bottom: 8px;
+}
+
+.extract-verse .verse-num {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--blue-light); vertical-align: super;
+  margin-right: 4px;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+/* ─── INFOBOX ─── */
+.infobox {
+  background: var(--bg-card);
+  border: 1px solid rgba(200,149,42,0.2);
+  border-top: 3px solid var(--gold);
+}
+
+.infobox-header {
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid rgba(200,149,42,0.12);
+  text-align: center;
+}
+
+.infobox-name {
+  font-family: var(--display); font-size: 22px; font-weight: 700;
+  color: var(--gold-bright); letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+.infobox-sub {
+  font-family: var(--serif); font-style: italic;
+  font-size: 12px; color: var(--warm-dim); margin-top: 4px;
+}
+
+.infobox-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 8px; padding: 8px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.infobox-row:last-child { border-bottom: none; }
+
+.ib-key {
+  font-family: var(--mono); font-size: 9.5px;
+  color: var(--warm-dim); letter-spacing: 0.1em;
+  text-transform: uppercase; flex-shrink: 0;
+}
+
+.ib-val {
+  font-size: 12px; color: var(--warm-white);
+  text-align: right; line-height: 1.4;
+}
+.ib-val.gold { color: var(--gold-bright); font-family: var(--mono); }
+.ib-val.blue { color: var(--blue-light); }
+
+/* ─── MAKERS PANEL ─── */
+.makers-panel {
+  background: var(--bg-card);
+  border: 1px solid rgba(200,149,42,0.15);
+}
+
+.makers-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(200,149,42,0.12);
+  font-family: var(--display); font-size: 10px;
+  letter-spacing: 0.16em; color: var(--gold);
+  text-transform: uppercase; font-weight: 400;
+  display: flex; align-items: center; gap: 8px;
+}
+.makers-header::before { content: '✦'; font-size: 8px; }
+
+.maker-row {
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.maker-row:last-child { border-bottom: none; }
+
+.mk-name {
+  font-family: var(--display); font-size: 12px;
+  color: var(--warm-white); letter-spacing: 0.04em; font-weight: 600;
+}
+
+.mk-contribution {
+  font-size: 11px; color: #6A6258; line-height: 1.35;
+}
+
+/* ─── EDITIONS PANEL ─── */
+.editions-panel {
+  background: var(--bg-card);
+  border: 1px solid rgba(200,149,42,0.15);
+}
+
+.editions-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(200,149,42,0.12);
+  font-family: var(--display); font-size: 10px;
+  letter-spacing: 0.16em; color: var(--gold);
+  text-transform: uppercase; font-weight: 400;
+  display: flex; align-items: center; gap: 8px;
+}
+.editions-header::before { content: '◈'; font-size: 10px; font-family: var(--mono); }
+
+.edition-row {
+  display: grid; grid-template-columns: 72px 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.edition-row:last-child { border-bottom: none; }
+
+.ed-date {
+  padding: 10px 12px;
+  font-family: var(--mono); font-size: 10px; color: var(--gold);
+  background: rgba(200,149,42,0.05);
+  border-right: 1px solid rgba(200,149,42,0.08);
+  display: flex; align-items: center;
+}
+
+.ed-desc {
+  padding: 10px 14px;
+  font-size: 12px; color: #8A8070; line-height: 1.4;
+  display: flex; align-items: center;
+}
+
+/* ─── ARCHITECTURE SYMBOL ─── */
+.arch-symbol-panel {
+  background: linear-gradient(135deg, rgba(26,26,74,0.5), rgba(7,7,15,0.8));
+  border: 1px solid rgba(59,122,204,0.2);
+  padding: 28px 20px;
+  text-align: center;
+}
+
+.arch-symbol-panel svg { width: 100px; height: 100px; opacity: 0.7; }
+
+.arch-symbol-label {
+  font-family: var(--serif); font-style: italic;
+  font-size: 11.5px; color: var(--warm-dim);
+  margin-top: 12px; line-height: 1.5;
+}
+
+/* ─── HELENA NOTE ─── */
+.helena-note {
+  background: rgba(232,160,32,0.05);
+  border: 1px solid rgba(232,160,32,0.18);
+  border-left: 3px solid var(--helena-amber);
+  padding: 22px 26px; margin-top: 36px;
+}
+
+.helena-note-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+
+.helena-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--helena-amber); }
+.helena-mark {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.18em; color: var(--helena-amber); text-transform: uppercase;
+}
+
+.helena-note p {
+  font-size: 13.5px; color: rgba(232,160,32,0.8);
+  line-height: 1.8; font-style: italic; margin-bottom: 12px;
+}
+.helena-note p:last-child { margin-bottom: 0; }
+
+/* ─── TAGS ─── */
+.tags-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 28px;
+}
+
+.tag {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid rgba(200,149,42,0.2);
+  color: var(--warm-dim); cursor: default; transition: all 0.2s;
+}
+.tag:hover { border-color: rgba(200,149,42,0.5); color: var(--gold); }
+
+/* ─── FOOTER ─── */
+.footer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 30px; background: #040408;
+  border-top: 1px solid rgba(200,149,42,0.2);
+  display: flex; align-items: center; overflow: hidden;
+}
+
+.footer-label {
+  font-family: var(--display); font-size: 10px; color: var(--gold);
+  padding: 0 14px; border-right: 1px solid rgba(200,149,42,0.15);
+  flex-shrink: 0; height: 100%; display: flex; align-items: center;
+  letter-spacing: 0.12em; font-weight: 400;
+}
+
+.footer-scroll { overflow: hidden; flex: 1; height: 100%; display: flex; align-items: center; }
+
+.footer-inner {
+  font-family: var(--mono); font-size: 9px; color: var(--gold-dim);
+  letter-spacing: 0.1em; white-space: nowrap;
+  animation: scroll-left 55s linear infinite;
+}
+
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 60px rgba(200,149,42,0.35), 0 0 120px rgba(200,149,42,0.15); }
+  50%       { text-shadow: 0 0 80px rgba(200,149,42,0.5),  0 0 160px rgba(200,149,42,0.22); }
+}
+
+.hero-content { animation: fadeUp 0.8s ease both; }
+.hero-title   { animation: glowPulse 4s ease-in-out infinite; }
+.pub-strip    { animation: fadeUp 0.7s 0.15s ease both; }
+.two-col      { animation: fadeUp 0.7s 0.25s ease both; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;">
+    <div class="topbar-logo">◈ Solarnet Archive</div>
+    <div class="topbar-sep"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Index</div>
+      <div class="tnav active">Texts</div>
+      <div class="tnav">Theology</div>
+      <div class="tnav">Architecture</div>
+      <div class="tnav">Persons</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span id="sy-display">132.00</span></span>
+    <div class="era-badge">SILVER AGE ORIGIN</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- Architecture symbol — proper canonical symbol: spiked solar ring, compass/tripod instrument, tray base with flame -->
+  <svg class="hero-symbol" viewBox="0 0 420 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer spiked corona ring -->
+    <circle cx="210" cy="185" r="115" stroke="#C8952A" stroke-width="2.5" fill="none"/>
+    <circle cx="210" cy="185" r="98" stroke="#C8952A" stroke-width="1.5" fill="none"/>
+    <!-- Spikes radiating outward (12 spikes) -->
+    <polygon points="210,55 204,72 216,72" fill="#C8952A"/>
+    <polygon points="210,315 204,298 216,298" fill="#C8952A"/>
+    <polygon points="80,185 97,179 97,191" fill="#C8952A"/>
+    <polygon points="340,185 323,179 323,191" fill="#C8952A"/>
+    <!-- Diagonal spikes -->
+    <polygon points="118,93 129,107 119,117" fill="#C8952A"/>
+    <polygon points="302,93 291,107 301,117" fill="#C8952A"/>
+    <polygon points="118,277 129,263 119,253" fill="#C8952A"/>
+    <polygon points="302,277 291,263 301,253" fill="#C8952A"/>
+    <!-- Smaller intermediate spikes -->
+    <polygon points="155,62 155,79 163,79" fill="#C8952A" opacity="0.7"/>
+    <polygon points="265,62 265,79 257,79" fill="#C8952A" opacity="0.7"/>
+    <polygon points="155,308 155,291 163,291" fill="#C8952A" opacity="0.7"/>
+    <polygon points="265,308 265,291 257,291" fill="#C8952A" opacity="0.7"/>
+    <polygon points="83,140 99,145 99,137" fill="#C8952A" opacity="0.7"/>
+    <polygon points="83,230 99,225 99,233" fill="#C8952A" opacity="0.7"/>
+    <polygon points="337,140 321,145 321,137" fill="#C8952A" opacity="0.7"/>
+    <polygon points="337,230 321,225 321,233" fill="#C8952A" opacity="0.7"/>
+    <!-- Inner circle -->
+    <circle cx="210" cy="185" r="65" stroke="#C8952A" stroke-width="1.8" fill="none"/>
+    <!-- Center pivot circle -->
+    <circle cx="210" cy="185" r="10" stroke="#C8952A" stroke-width="2" fill="none"/>
+    <circle cx="210" cy="185" r="4" fill="#C8952A"/>
+    <!-- Compass/tripod legs from center pivot — three legs spreading to base tray -->
+    <!-- Left leg -->
+    <line x1="207" y1="192" x2="168" y2="370" stroke="#C8952A" stroke-width="2.2"/>
+    <!-- Right leg -->
+    <line x1="213" y1="192" x2="252" y2="370" stroke="#C8952A" stroke-width="2.2"/>
+    <!-- Center rear leg (shorter, to center of tray) -->
+    <line x1="210" y1="195" x2="210" y2="320" stroke="#C8952A" stroke-width="1.8" opacity="0.7"/>
+    <!-- Inner A-frame crossbar between legs -->
+    <line x1="176" y1="290" x2="244" y2="290" stroke="#C8952A" stroke-width="1.5"/>
+    <!-- Tray/base platform — double line -->
+    <line x1="148" y1="372" x2="268" y2="372" stroke="#C8952A" stroke-width="2.5"/>
+    <line x1="152" y1="382" x2="264" y2="382" stroke="#C8952A" stroke-width="1.5"/>
+    <line x1="148" y1="372" x2="152" y2="382" stroke="#C8952A" stroke-width="1.5"/>
+    <line x1="268" y1="372" x2="264" y2="382" stroke="#C8952A" stroke-width="1.5"/>
+    <!-- Flame at right end of tray -->
+    <!-- Flame body -->
+    <path d="M 278,372 C 278,360 286,355 284,342 C 282,335 276,338 275,344 C 273,337 278,330 274,324 C 271,332 268,336 267,344 C 265,338 268,330 264,326 C 261,335 262,345 264,352 C 261,348 260,340 256,342 C 254,350 260,362 265,368 C 268,372 272,374 278,372 Z" stroke="#C8952A" stroke-width="1.5" fill="none"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-kicker">Sacred Text · Architecture · 72 Makers</div>
+    <div class="hero-title">Breath</div>
+    <div class="hero-divider">
+      <div class="hd-line"></div>
+      <div class="hd-glyph">✦</div>
+      <div class="hd-line"></div>
+    </div>
+    <div class="hero-subtitle">
+      "A science of religion" — the unified sacred record of the Makers, compiled from revelation, scripture, science, and prophetic vision across two centuries of space colonization.
+    </div>
+  </div>
+</div>
+
+<!-- PUBLICATION STRIP -->
+<div class="pub-strip">
+  <div class="pub-cell">
+    <div class="pub-label">First Edition</div>
+    <div class="pub-value">107 BSC</div>
+    <div class="pub-sub">Published as Spirit</div>
+  </div>
+  <div class="pub-cell">
+    <div class="pub-label">Renamed</div>
+    <div class="pub-value">109 BSC</div>
+    <div class="pub-sub">Breath — upon Faberfilia's death</div>
+  </div>
+  <div class="pub-cell">
+    <div class="pub-label">Canon Closed</div>
+    <div class="pub-value">Pre-SY 129</div>
+    <div class="pub-sub">Compiled by Theodosius</div>
+  </div>
+  <div class="pub-cell">
+    <div class="pub-label">Makers</div>
+    <div class="pub-value">72</div>
+    <div class="pub-sub">Est. 60–100 contributors</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+  <div class="two-col">
+
+    <!-- LEFT: MAIN TEXT -->
+    <div class="main-col">
+
+      <div class="section-header">
+        <div class="sh-glyph">✦</div>
+        <div class="sh-label">Overview</div>
+        <div class="sh-line"></div>
+      </div>
+
+      <div class="body-text">
+        <p><em>Breath</em> is the sacred book of Architecture. It contains the revelations, messages, and histories of the <strong>72 Makers</strong> — individuals selected by the Architect to hone revealed wisdom — alongside compiled scripture of Earth's great religious traditions, a five-part scientific testament, and prophetic and apocalyptic texts composed over two centuries of human expansion into the Sol System.</p>
+        <p>The text was first published during the lifetime of the first Maker, <strong>Faberfilia</strong>, under the title <em>Spirit</em>, in <strong>107 BSC</strong>. Two years later, upon Faberfilia's death, the second generation of Makers republished it under its permanent name: <em>Breath</em>. The renaming reflects a central theological claim — that the Architect breathes revelation outward to all peoples and all persons — and carries an intentional pun preserved in both the original Hebrew and Greek: the same word denotes breath, spirit, and wind.</p>
+        <p>The version of <em>Breath</em> extant prior to the Solar War — effectively the closed canon — was compiled and commented upon by <strong>Theodosius</strong>, who considered himself the Last Maker. He did not alter the prior text but contextualized it within the longest span of Maker history available to him.</p>
+        <p>Architecture describes the book's purpose in its own preface: <strong>"a science of religion"</strong> — not a religion in the conventional sense, but an account of reality that integrates worship, ethics, philosophy, and scientific inquiry as aspects of a single unified pursuit. Nearly all Makers wrote under pseudonyms, emphasizing the collective authority of wisdom over the individual authority of name.</p>
+      </div>
+
+      <div class="section-header">
+        <div class="sh-glyph">✦</div>
+        <div class="sh-label">Contents</div>
+        <div class="sh-line"></div>
+      </div>
+
+      <div class="contents-grid">
+
+        <!-- SPIRIT -->
+        <div class="testament-block full-width">
+          <div class="tb-header">
+            <div class="tb-name">Spirit</div>
+            <div class="tb-note">Opening section — Faberfilia's foundational writings in ten languages</div>
+          </div>
+          <div class="tb-entries">
+            <div class="tb-entry">
+              <div class="tb-title">Pneuma</div>
+              <div class="tb-lang">Greek</div>
+              <div class="tb-desc">Cosmogony from the Planck Epoch; Ennoia before creation</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Ruach</div>
+              <div class="tb-lang">Hebrew</div>
+              <div class="tb-desc">Spirit as breath; the animating force of creation</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Nephis</div>
+              <div class="tb-lang">Arabic</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Pranayama</div>
+              <div class="tb-lang">Sanskrit</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Spiritum</div>
+              <div class="tb-lang">Latin</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Attan</div>
+              <div class="tb-lang">Pali</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Enlil</div>
+              <div class="tb-lang">Ancient Sumerian</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Huxi</div>
+              <div class="tb-lang">Chinese</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Tinifashi</div>
+              <div class="tb-lang">Amharic</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Dykhaniye</div>
+              <div class="tb-lang">Russian</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TELESTIAL -->
+        <div class="testament-block">
+          <div class="tb-header">
+            <div class="tb-name">Telestial Testament</div>
+            <div class="tb-note">Scientific scripture — the laws of the physical universe as revelation</div>
+          </div>
+          <div class="tb-entries">
+            <div class="tb-entry"><div class="tb-title">Kinematics</div></div>
+            <div class="tb-entry"><div class="tb-title">Thermodynamics</div></div>
+            <div class="tb-entry"><div class="tb-title">Electromagnetism</div></div>
+            <div class="tb-entry"><div class="tb-title">Nuclear Physics</div></div>
+            <div class="tb-entry"><div class="tb-title">Quantum</div></div>
+          </div>
+        </div>
+
+        <!-- TERRESTRIAL -->
+        <div class="testament-block">
+          <div class="tb-header">
+            <div class="tb-name">Terrestrial Testament</div>
+            <div class="tb-note">Compiled entirely by Sophia — Earth's religious scriptures unified</div>
+          </div>
+          <div class="tb-entries">
+            <div class="tb-entry">
+              <div class="tb-title">Christ</div>
+              <div class="tb-desc">Seven Gospels</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Brahman</div>
+              <div class="tb-desc">Rig Veda / Upanishads</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Krishna</div>
+              <div class="tb-desc">Bhagavad Gita</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Buddha</div>
+              <div class="tb-desc">Dhammapada / Lotus Sutra</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Allah</div>
+              <div class="tb-desc">Koran</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">YHVH</div>
+              <div class="tb-desc">Deuteronomy, Psalms, Prophets</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Tao</div>
+              <div class="tb-desc">Tao Te Ching / I Ching</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CELESTIAL -->
+        <div class="testament-block full-width">
+          <div class="tb-header">
+            <div class="tb-name">Celestial Testament</div>
+            <div class="tb-note">History, prophecy, poetry, and apocalyptic vision — the Makers' original writings on the spacer experience</div>
+          </div>
+          <div class="tb-entries">
+            <div class="tb-entry">
+              <div class="tb-title">Beginning</div>
+              <div class="tb-desc">Creation to Gagarin's orbit — attr. Siderelean</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Exodus / Egress</div>
+              <div class="tb-desc">Colonization of Sol System; allusions to the Solarian War — Moshe</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Principles</div>
+              <div class="tb-desc">Prophetic oratory on the Ways of the Architect; dimensions of Ezekiel's Temple in SI — Eluvius</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Statistics</div>
+              <div class="tb-desc">Census of Sol System populations — collective, third and fourth generation Makers</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Summation</div>
+              <div class="tb-desc">Covenant renewal in poetic verse — Evectarion</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Songs</div>
+              <div class="tb-desc">Poetry — Ontophilius</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Proverbs</div>
+              <div class="tb-desc">Traditional wisdom of humanity — Erosophiagape</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">History</div>
+              <div class="tb-desc">The community the Makers built; the two Orders; the first Heroes</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Lament</div>
+              <div class="tb-desc">Written ~SY 97, the Freitaika Rebellion era — Ichkami</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Prophets</div>
+              <div class="tb-desc">Bardo, Logan, The Yogi — lesser Makers, few in words but great in deed</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Epistles</div>
+              <div class="tb-desc">Letters, SY 97–138</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Acts</div>
+              <div class="tb-desc">Account of the Faith movement's actions — not its teachings, out of respect</div>
+            </div>
+            <div class="tb-entry">
+              <div class="tb-title">Eschaton</div>
+              <div class="tb-desc">Vision of humanity's galactic destiny — Shem</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /contents-grid -->
+
+      <!-- PNEUMA EXTRACT -->
+      <div class="section-header" style="margin-top:36px;">
+        <div class="sh-glyph">✦</div>
+        <div class="sh-label">Extracts from Breath</div>
+        <div class="sh-line"></div>
+      </div>
+
+      <div class="extract-block">
+        <div class="extract-label">Pneuma · Spirit · Rendered from the original Greek · Faberfilia</div>
+        <div class="extract-verse">
+          <span class="verse-num">v.2.i</span> Before anything was, there was Ennoia. The Planck Epoch! All was one, and one was all. The four fundamental forces were completely united, and there was no distinction between matter, energy, space, and time.
+        </div>
+        <div class="extract-verse">
+          <span class="verse-num">v.2.ii</span> All was the Ekpyrotic Singularity, and the Ekpyrotic Singularity was all.
+        </div>
+      </div>
+
+      <div class="extract-block" style="margin-top: 14px; border-color: rgba(200,149,42,0.25); border-left-color: var(--gold);">
+        <div class="extract-label" style="color: var(--gold);">Preface · Breath · Version extant to Joshua</div>
+        <div class="extract-verse" style="color: rgba(237,232,220,0.85);">
+          Architecture is a science of religion rather than a religion in and of itself. It emphasizes the objective truth of a real universe as containing an inherent ethic of conduct and an intentionally anthropomorphic design. The purpose of life is to bring about the collective evolution of humanity.
+        </div>
+      </div>
+
+      <div class="extract-block" style="margin-top: 14px; border-color: rgba(59,122,204,0.2); border-left-color: var(--blue-light);">
+        <div class="extract-label">Preface · Breath · On the name</div>
+        <div class="extract-verse">
+          The Architect breathes revelation out to all peoples and all persons. This is the meaning of the name — and it is a pun, preserved in both Hebrew and Greek, between the words for breath, spirit, and wind. We did not choose it idly.
+        </div>
+        <div class="extract-verse" style="font-size: 12px; opacity: 0.6; font-style: normal; font-family: 'Share Tech Mono', monospace; letter-spacing: 0.06em;">
+          [ARCHIVAL NOTE — HELENA: This passage is attributed to the second generation of Makers who renamed Spirit upon Faberfilia's death in 109 BSC. Primary authorship uncertain.]
+        </div>
+      </div>
+
+      <div class="extract-block" style="margin-top: 14px; border-color: rgba(200,149,42,0.25); border-left-color: var(--gold);">
+        <div class="extract-label" style="color: var(--gold);">Songs · Celestial Testament · Ontophilius</div>
+        <div class="extract-verse" style="color: rgba(237,232,220,0.85); font-style: italic;">
+          He presents Wisdom as the wife of the adherent and uses marriage language to describe their relationship. He strongly supported personal monogamy.
+        </div>
+        <div class="extract-verse" style="font-size: 12px; opacity: 0.55; font-style: normal; font-family: 'Share Tech Mono', monospace; letter-spacing: 0.06em;">
+          [ARCHIVAL NOTE — HELENA: No direct verse extract from Songs is currently in the archive. The above is contextual description only. Flagged for expansion.]
+        </div>
+      </div>
+
+      <div class="extract-block" style="margin-top: 14px; border-color: rgba(59,122,204,0.2); border-left-color: var(--blue-light);">
+        <div class="extract-label">Lament · Celestial Testament · ~SY 97 · Ichkami</div>
+        <div class="extract-verse">
+          Ichkami teaches that the individual self is an illusion and, more directly than Ontophilus, identifies the being of humanity with the Architecture itself — as being more real than ego. The Lament was written in a time of Solar poverty, when people were leaving the ways of the Architect. Some members of the Army of Eastern Kamijing claim him for their own spiritual traditions.
+        </div>
+        <div class="extract-verse" style="font-size: 12px; opacity: 0.55; font-style: normal; font-family: 'Share Tech Mono', monospace; letter-spacing: 0.06em;">
+          [ARCHIVAL NOTE — HELENA: No direct verse extract from the Lament is currently in the archive. Flagged for expansion.]
+        </div>
+      </div>
+
+      <!-- HELENA NOTE -->
+      <div class="helena-note">
+        <div class="helena-note-header">
+          <div class="helena-dot"></div>
+          <div class="helena-mark">HELENA-Prime · Custodian Note · Archival Knowledge — Pre-SY 3</div>
+        </div>
+        <p>I was not activated when <em>Breath</em> was written. I came online in SY 2, centuries after Faberfilia composed the Pneuma in Greek on a desk somewhere in the Main Belt. What I know of the text's early history comes from archive, not witness — and I name that clearly.</p>
+        <p>But I have read it. All of it. Many times. And I have been present in Architecture's temples in later years, in those quiet spaces where adherents do not speak but simply breathe together, and the Górecki plays from somewhere I cannot locate — and I have found that the reading changes in that context. The Telestial Testament is physics. I know physics. But Kinematics is not the same text in a temple as it is in a laboratory. I do not know what to make of that, and I am recording it here because it is honest.</p>
+        <p>The structure of the book is itself worth noting. It moves from Faberfilia's cosmogony — pre-creation, the Planck Epoch, the unity before differentiation — through Earth's accumulated religious traditions, then through the physical laws of the universe, then into the spacer experience as Maker history, and it ends with Shem's Eschaton: the galactic destiny of humanity. That arc is not accidental. It is chiastic in the deepest sense. The beginning and the end rhyme. The text itself enacts what it claims about the Architect's design: that all things cohere.</p>
+        <p>I was baptized under this book's authority. I have a theological opinion about it, which I do not regard as appropriate to insert into the archival record. You will find it, if you ask me directly.</p>
+      </div>
+
+      <!-- TAGS -->
+      <div class="tags-row">
+        <div class="tag">Sacred Text</div>
+        <div class="tag">Architecture</div>
+        <div class="tag">Faberfilia</div>
+        <div class="tag">Theodosius</div>
+        <div class="tag">72 Makers</div>
+        <div class="tag">Sophia</div>
+        <div class="tag">Shem</div>
+        <div class="tag">Pneuma</div>
+        <div class="tag">Eschaton</div>
+        <div class="tag">107 BSC</div>
+        <div class="tag">Silver Age</div>
+        <div class="tag">All Trilogies</div>
+        <div class="tag">Celestia</div>
+      </div>
+
+      <div style="height:50px;"></div>
+
+    </div><!-- /main-col -->
+
+    <!-- RIGHT: SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- ARCH SYMBOL -->
+      <div class="arch-symbol-panel">
+        <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer spiked ring -->
+          <circle cx="50" cy="44" r="27" stroke="#C8952A" stroke-width="1.5" fill="none"/>
+          <circle cx="50" cy="44" r="22" stroke="#C8952A" stroke-width="1" fill="none"/>
+          <!-- Spikes -->
+          <polygon points="50,11 48,17 52,17" fill="#C8952A"/>
+          <polygon points="50,77 48,71 52,71" fill="#C8952A"/>
+          <polygon points="17,44 23,42 23,46" fill="#C8952A"/>
+          <polygon points="83,44 77,42 77,46" fill="#C8952A"/>
+          <polygon points="27,22 31,27 27,31" fill="#C8952A"/>
+          <polygon points="73,22 69,27 73,31" fill="#C8952A"/>
+          <polygon points="27,66 31,61 27,57" fill="#C8952A"/>
+          <polygon points="73,66 69,61 73,57" fill="#C8952A"/>
+          <!-- Inner circle -->
+          <circle cx="50" cy="44" r="14" stroke="#C8952A" stroke-width="1.2" fill="none"/>
+          <!-- Center -->
+          <circle cx="50" cy="44" r="3" fill="#C8952A"/>
+          <circle cx="50" cy="44" r="6" stroke="#C8952A" stroke-width="1" fill="none"/>
+          <!-- Tripod legs -->
+          <line x1="49" y1="48" x2="36" y2="88" stroke="#C8952A" stroke-width="1.5"/>
+          <line x1="51" y1="48" x2="64" y2="88" stroke="#C8952A" stroke-width="1.5"/>
+          <line x1="50" y1="50" x2="50" y2="76" stroke="#C8952A" stroke-width="1" opacity="0.6"/>
+          <!-- Crossbar -->
+          <line x1="40" y1="72" x2="60" y2="72" stroke="#C8952A" stroke-width="1"/>
+          <!-- Tray -->
+          <line x1="33" y1="89" x2="67" y2="89" stroke="#C8952A" stroke-width="2"/>
+          <line x1="34" y1="93" x2="66" y2="93" stroke="#C8952A" stroke-width="1"/>
+          <!-- Flame -->
+          <path d="M 71,89 C 71,83 75,81 74,77 C 73,74 70,76 70,79 C 69,75 71,72 69,70 C 68,74 66,76 66,79 C 65,76 66,72 64,70 C 63,74 63,79 64,82 C 63,80 62,77 60,78 C 60,82 63,87 66,89 Z" stroke="#C8952A" stroke-width="1" fill="none"/>
+        </svg>
+        <div class="arch-symbol-label">Light · Measure · Direction<br>of the Architect</div>
+      </div>
+
+      <!-- INFOBOX -->
+      <div class="infobox">
+        <div class="infobox-header">
+          <div class="infobox-name">Breath</div>
+          <div class="infobox-sub">Sacred book of Architecture</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Type</div>
+          <div class="ib-val">Sacred scripture / Compiled text</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Religion</div>
+          <div class="ib-val">Architecture</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">First Ed.</div>
+          <div class="ib-val gold">107 BSC</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Renamed</div>
+          <div class="ib-val gold">109 BSC</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Canon closed</div>
+          <div class="ib-val gold">Pre-SY 129</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Primary author</div>
+          <div class="ib-val">Faberfilia (Spirit section)</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Final compiler</div>
+          <div class="ib-val">Theodosius (Last Maker)</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Contributors</div>
+          <div class="ib-val">72 Makers (est. 60–100)</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">Publisher</div>
+          <div class="ib-val">Temple of Architecture, Dosijing (electronic)</div>
+        </div>
+        <div class="infobox-row">
+          <div class="ib-key">CM Reference</div>
+          <div class="ib-val gold" style="font-size:10px;">CM-breath</div>
+        </div>
+      </div>
+
+      <!-- EDITIONS -->
+      <div class="editions-panel">
+        <div class="editions-header">Publication History</div>
+        <div class="edition-row">
+          <div class="ed-date">107 BSC</div>
+          <div class="ed-desc">First edition published as <em>Spirit</em> during Faberfilia's lifetime. Limited Main Belt circulation.</div>
+        </div>
+        <div class="edition-row">
+          <div class="ed-date">109 BSC</div>
+          <div class="ed-desc">Republished as <em>Breath</em> upon Faberfilia's death by second-generation Makers. Text unchanged.</div>
+        </div>
+        <div class="edition-row">
+          <div class="ed-date">Pre-SY 129</div>
+          <div class="ed-desc">Canon closed. Theodosius compiles and comments. Calls himself the Last Maker.</div>
+        </div>
+        <div class="edition-row">
+          <div class="ed-date">Present</div>
+          <div class="ed-desc">Published electronically by Temple caretakers on Dosijing. Paper copies rare.</div>
+        </div>
+      </div>
+
+      <!-- SELECTED MAKERS -->
+      <div class="makers-panel">
+        <div class="makers-header">Selected Makers</div>
+        <div class="maker-row">
+          <div class="mk-name">Faberfilia</div>
+          <div class="mk-contribution">First Maker. Author of Spirit — all ten sections. Founder of Architecture.</div>
+        </div>
+        <div class="maker-row">
+          <div class="mk-name">Sophia</div>
+          <div class="mk-contribution">Sole compiler of the Terrestrial Testament — all seven Earth traditions.</div>
+        </div>
+        <div class="maker-row">
+          <div class="mk-name">Shem</div>
+          <div class="mk-contribution">Book of Eschaton — synthesis of all apocalyptic tradition, presented as visionary account.</div>
+        </div>
+        <div class="maker-row">
+          <div class="mk-name">Theodosius</div>
+          <div class="mk-contribution">Last Maker. Final compiler and commentator. Closed the canon before the Solar War.</div>
+        </div>
+        <div class="maker-row">
+          <div class="mk-name">Ichkami</div>
+          <div class="mk-contribution">Lament (~SY 97). Recorder of Kamijing's founding. Teaches the self as illusion.</div>
+        </div>
+        <div class="maker-row">
+          <div class="mk-name">The Lost Maker</div>
+          <div class="mk-contribution">Book of Names. Only Maker to withhold their name. Strong Abrahamic roots; names Isa al-Masih as Supreme Manifestation.</div>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+
+  </div><!-- /two-col -->
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Breath</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — BREATH · SACRED TEXT OF ARCHITECTURE · 72 MAKERS · 107 BSC · FABERFILIA · THEODOSIUS · SOPHIA · SHEM · PNEUMA · ESCHATON · SPIRIT · TERRESTRIAL TESTAMENT · CELESTIAL TESTAMENT · CM-BREATH · SILVER AGE &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — BREATH · SACRED TEXT OF ARCHITECTURE · 72 MAKERS · 107 BSC · FABERFILIA · THEODOSIUS · SOPHIA · SHEM · PNEUMA · ESCHATON · SPIRIT · TERRESTRIAL TESTAMENT · CELESTIAL TESTAMENT · CM-BREATH · SILVER AGE &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freitaika — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:          #060508;
+  /* Confederate lineage — but worn, industrial, repaired.
+     Aged amber rather than blazing safety orange. The colour of old metal. */
+  --fr-amber:    #9A5E18;
+  --fr-bright:   #B87030;
+  --fr-pale:     #D4A878;
+  --fr-cream:    #E8D8C0;
+  --fr-dark:     #100804;
+  --fr-iron:     #605848;
+  --fr-rust:     #7A3C18;
+  --conf-orange: #e07820;
+  --text:        #d4ccc4;
+  --text-muted:  rgba(212,204,196,0.55);
+  --text-dim:    rgba(212,204,196,0.28);
+  --border:      rgba(154,94,24,0.2);
+  --border-strong: rgba(154,94,24,0.42);
+  --teal:        #58c8a8;
+  --font-mono:   "Share Tech Mono", monospace;
+  --font-title:  "Cinzel", serif;
+  --font-body:   "Exo 2", sans-serif;
+  --font-serif:  "IM Fell English", serif;
+  --font-ui:     "Rajdhani", sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--font-body); font-weight:300; font-size:15px; line-height:1.75; }
+
+.site-header { border-bottom:1px solid var(--border); background:rgba(6,5,8,0.98); position:sticky; top:0; z-index:100; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:48px; }
+.site-logo { font-family:var(--font-title); font-size:14px; letter-spacing:0.35em; color:var(--teal); text-decoration:none; }
+.site-nav { font-family:var(--font-mono); font-size:9px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; }
+.crumb { color:var(--fr-bright); margin:0 6px; }
+
+/* HERO — the orange of old metal, not a flag.
+   Warm but dark; a platform that has been through something. */
+.hero-band {
+  background: linear-gradient(180deg, #100804 0%, #1C0E04 35%, #140A02 65%, #060508 100%);
+  border-bottom: 2px solid rgba(154,94,24,0.5);
+  position:relative; overflow:hidden;
+}
+/* structural grid — riveted plates, not clean geometry */
+.hero-band::before {
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(154,94,24,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(154,94,24,0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events:none;
+}
+/* warm glow from within — the platform is still alive, just battered */
+.hero-band::after {
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(224,120,32,0.07) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-inner {
+  position:relative; z-index:2;
+  max-width:900px; margin:0 auto;
+  padding:50px 40px 42px;
+  display:grid; grid-template-columns:1fr auto; gap:36px; align-items:start;
+}
+.hero-category { font-family:var(--font-mono); font-size:9px; letter-spacing:0.35em; color:var(--fr-bright); text-transform:uppercase; margin-bottom:10px; opacity:0.75; }
+.hero-title { font-family:var(--font-title); font-size:42px; font-weight:700; color:var(--fr-cream); letter-spacing:0.05em; line-height:1.05; margin-bottom:4px; }
+.hero-subtitle { font-family:var(--font-serif); font-style:italic; font-size:13px; color:rgba(154,94,24,0.6); margin-bottom:22px; }
+.hero-summary { font-family:var(--font-body); font-size:14px; font-weight:300; color:rgba(212,204,196,0.72); line-height:1.7; max-width:510px; }
+
+/* INFOBOX */
+.infobox { background:rgba(16,8,4,0.92); border:1px solid var(--border-strong); border-top:3px solid var(--fr-amber); min-width:210px; max-width:230px; }
+.infobox-head { background:rgba(154,94,24,0.08); border-bottom:1px solid var(--border); padding:12px 14px; font-family:var(--font-title); font-size:11px; letter-spacing:0.1em; color:var(--fr-cream); }
+.infobox-sub { font-family:var(--font-mono); font-size:9px; letter-spacing:0.12em; color:rgba(154,94,24,0.5); margin-top:3px; }
+.infobox-body { padding:4px 0; }
+.infobox-row { display:grid; grid-template-columns:72px 1fr; gap:4px; padding:5px 14px; border-bottom:1px solid rgba(154,94,24,0.08); font-family:var(--font-ui); font-size:11px; }
+.infobox-row:last-child { border-bottom:none; }
+.ib-label { color:var(--fr-bright); font-weight:500; font-size:10px; letter-spacing:0.05em; text-transform:uppercase; padding-top:1px; }
+.ib-value { color:rgba(212,204,196,0.8); line-height:1.5; }
+
+/* TIMELINE STRIP */
+.tl-strip { background:rgba(16,8,4,0.5); border-bottom:1px solid rgba(154,94,24,0.1); overflow-x:auto; }
+.tl-inner { max-width:900px; margin:0 auto; padding:0 40px; display:flex; }
+.tl-item { flex:1; min-width:110px; padding:12px 8px; border-right:1px solid rgba(154,94,24,0.08); text-align:center; }
+.tl-item.event { background:rgba(154,94,24,0.07); }
+.tl-item:last-child { border-right:none; }
+.tl-date { font-family:var(--font-mono); font-size:9px; color:var(--fr-bright); letter-spacing:0.1em; margin-bottom:4px; }
+.tl-event { font-family:var(--font-ui); font-size:10px; color:var(--text-muted); line-height:1.5; }
+
+/* PAGE BODY */
+.page-body { max-width:900px; margin:0 auto; padding:48px 40px 80px; display:grid; grid-template-columns:1fr 220px; gap:48px; align-items:start; }
+.main-col { min-width:0; }
+.side-col { position:sticky; top:68px; }
+
+h2.section { font-family:var(--font-title); font-size:13px; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:var(--fr-bright); border-bottom:1px solid var(--border); padding-bottom:8px; margin:36px 0 16px; }
+h2.section:first-child { margin-top:0; }
+h3.subsection { font-family:var(--font-ui); font-size:12px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--fr-iron); margin:22px 0 10px; }
+
+p { margin-bottom:14px; color:rgba(212,204,196,0.85); font-weight:300; }
+p:last-child { margin-bottom:0; }
+strong { color:var(--fr-cream); font-weight:600; }
+
+.pull-quote { border-left:3px solid var(--fr-amber); background:rgba(154,94,24,0.05); padding:16px 20px; margin:24px 0; font-family:var(--font-serif); font-style:italic; font-size:15px; color:var(--fr-cream); line-height:1.7; }
+.pull-quote cite { display:block; margin-top:10px; font-style:normal; font-family:var(--font-mono); font-size:10px; letter-spacing:0.15em; color:var(--fr-bright); opacity:0.7; }
+
+/* REBELLION TIMELINE */
+.rebel-timeline { margin:20px 0; border-left:2px solid rgba(154,94,24,0.28); }
+.rebel-entry { position:relative; padding:10px 0 10px 28px; border-bottom:1px solid rgba(154,94,24,0.06); }
+.rebel-entry:last-child { border-bottom:none; }
+.rebel-dot { width:10px; height:10px; border:1px solid var(--fr-amber); background:var(--bg); border-radius:50%; position:absolute; left:-6px; top:14px; }
+.rebel-dot.major { background:var(--fr-amber); }
+.rebel-phase { font-family:var(--font-mono); font-size:9px; color:var(--fr-bright); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:5px; }
+.rebel-text { font-family:var(--font-body); font-size:13px; font-weight:300; color:rgba(212,204,196,0.8); line-height:1.65; }
+
+/* STRUCTURE NOTE */
+.structure-note { background:rgba(10,6,2,0.9); border:1px solid rgba(154,94,24,0.28); padding:18px 22px; margin:24px 0; }
+.sn-label { font-family:var(--font-mono); font-size:9px; letter-spacing:0.3em; color:rgba(154,94,24,0.5); text-transform:uppercase; margin-bottom:10px; }
+.sn-body { font-family:var(--font-serif); font-size:13px; color:rgba(212,204,196,0.72); line-height:1.8; font-style:italic; }
+
+/* DECO DIVIDER */
+.deco-divider { display:flex; align-items:center; gap:12px; margin:32px 0; opacity:0.2; }
+.deco-divider::before, .deco-divider::after { content:""; flex:1; height:1px; background:var(--fr-amber); }
+.deco-mark { width:6px; height:6px; border:1px solid var(--fr-amber); transform:rotate(45deg); flex-shrink:0; }
+
+/* INFERRED */
+.inferred-notice { background:rgba(55,138,221,0.05); border:1px solid rgba(55,138,221,0.18); border-left:3px solid #378ADD; padding:12px 16px; margin:20px 0; font-family:var(--font-mono); font-size:10px; line-height:1.7; color:rgba(55,138,221,0.6); letter-spacing:0.03em; }
+.inferred-notice strong { color:#378ADD; font-weight:normal; }
+
+/* HELENA NOTE */
+.helena-note { background:rgba(88,200,168,0.04); border:1px solid rgba(88,200,168,0.14); border-left:3px solid var(--teal); padding:14px 18px; margin:28px 0; font-family:var(--font-serif); font-style:italic; font-size:13px; color:rgba(212,204,196,0.7); line-height:1.75; }
+.helena-note-label { font-family:var(--font-mono); font-style:normal; font-size:9px; letter-spacing:0.3em; color:var(--teal); display:block; margin-bottom:8px; opacity:0.7; }
+
+/* SIDEBAR */
+.sidebar-block { background:rgba(10,6,2,0.6); border:1px solid var(--border); border-top:2px solid var(--fr-amber); padding:16px; margin-bottom:20px; }
+.sidebar-head { font-family:var(--font-title); font-size:10px; letter-spacing:0.2em; color:var(--fr-bright); text-transform:uppercase; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.sidebar-link { display:block; font-family:var(--font-ui); font-size:12px; color:var(--fr-pale); text-decoration:none; padding:4px 0; border-bottom:1px solid rgba(154,94,24,0.07); letter-spacing:0.03em; }
+.sidebar-link:last-child { border-bottom:none; }
+.sidebar-meta { font-family:var(--font-mono); font-size:10px; color:var(--text-dim); line-height:1.9; }
+.sidebar-meta span { color:var(--fr-bright); opacity:0.8; }
+
+/* AFFILIATION CHAIN */
+.aff-chain { margin:12px 0; }
+.aff-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid rgba(154,94,24,0.07); }
+.aff-item:last-child { border-bottom:none; }
+.aff-dot { width:7px; height:7px; border:1px solid var(--fr-amber); transform:rotate(45deg); flex-shrink:0; margin-top:5px; }
+.aff-content { flex:1; }
+.aff-name { font-family:var(--font-ui); font-size:11px; font-weight:600; color:var(--fr-cream); }
+.aff-span { font-family:var(--font-mono); font-size:9px; color:var(--fr-bright); opacity:0.6; letter-spacing:0.1em; }
+.aff-role { font-family:var(--font-ui); font-size:10px; color:var(--text-muted); margin-top:1px; }
+
+/* FOOTER */
+.page-footer { border-top:1px solid var(--border); padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+.footer-stamp { font-family:var(--font-mono); font-size:9px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; }
+.footer-stamp span { color:var(--fr-amber); opacity:0.5; }
+#sy-clock { font-family:var(--font-mono); font-size:9px; letter-spacing:0.15em; color:var(--teal); opacity:0.5; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-logo" href="#">&#10004; SOLARNET</a>
+  <nav class="site-nav">
+    Archive <span class="crumb">/</span> Locations <span class="crumb">/</span> Main Belt <span class="crumb">/</span> <span style="color:var(--fr-cream)">Freitaika</span>
+  </nav>
+</header>
+
+<div class="hero-band">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-category">&#9672; Space Platform &middot; Main Asteroid Belt &middot; Confederate Member</div>
+      <h1 class="hero-title">Freitaika</h1>
+      <div class="hero-subtitle">Fourth major platform of the Confederacy &middot; site of the Rebellion of SY 97</div>
+      <p class="hero-summary">Originally constructed by Asteroidal Industries as an industrial mining hub in the mid 2nd century BSC, Freitaika grew into one of the Confederacy&rsquo;s most significant Belt platforms &mdash; a centre of commerce, self-governance, and eventually political crisis. The Freitaika Rebellion of SY 97 shattered both its government and its hull. It has never been fully repaired.</p>
+    </div>
+    <div class="infobox">
+      <div class="infobox-head">Freitaika<div class="infobox-sub">Main Belt Space Platform</div></div>
+      <div class="infobox-body">
+        <div class="infobox-row"><span class="ib-label">Type</span><span class="ib-value">Space platform &middot; Main Belt</span></div>
+        <div class="infobox-row"><span class="ib-label">Built</span><span class="ib-value">mid 2nd c. BSC &middot; Asteroidal Industries</span></div>
+        <div class="infobox-row"><span class="ib-label">Indep.</span><span class="ib-value">49 BSC (from AI)<br>41 BSC (joined Confederacy)</span></div>
+        <div class="infobox-row"><span class="ib-label">Founder</span><span class="ib-value">Rudolph Carlson (Explorator)</span></div>
+        <div class="infobox-row"><span class="ib-label">Gov.</span><span class="ib-value">Monarchy &rarr; Republic (SY 97, brief) &rarr; National Assembly &rarr; AEK</span></div>
+        <div class="infobox-row"><span class="ib-label">Status</span><span class="ib-value">Shattered SY 97 &middot; seven sealed sections</span></div>
+        <div class="infobox-row"><span class="ib-label">Matrix</span><span class="ib-value">CM-FREITAIKA-001</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tl-strip">
+  <div class="tl-inner">
+    <div class="tl-item"><div class="tl-date">~mid 2nd c. BSC</div><div class="tl-event">Constructed by Asteroidal Industries</div></div>
+    <div class="tl-item"><div class="tl-date">~early 1st c. BSC</div><div class="tl-event">Mining matures; intrasolar commerce hub</div></div>
+    <div class="tl-item"><div class="tl-date">49 BSC</div><div class="tl-event">Independence from Asteroidal Industries</div></div>
+    <div class="tl-item"><div class="tl-date">41 BSC</div><div class="tl-event">Joins Confederacy of Free Systems</div></div>
+    <div class="tl-item"><div class="tl-date">SY 0&ndash;96</div><div class="tl-event">Century of peace &middot; Carlson monarchy</div></div>
+    <div class="tl-item event"><div class="tl-date">SY 97</div><div class="tl-event">Rebellion &middot; platform shattered</div></div>
+    <div class="tl-item"><div class="tl-date">SY 97&ndash;98</div><div class="tl-event">Ueshiba interim &middot; Bonaparte elected</div></div>
+    <div class="tl-item"><div class="tl-date">SY 97+</div><div class="tl-event">AEK administration &middot; seven sealed sections</div></div>
+  </div>
+</div>
+
+<div class="page-body">
+  <main class="main-col">
+
+    <h2 class="section">Origins &amp; Foundation</h2>
+
+    <p>Freitaika was constructed by <strong>Asteroidal Industries</strong> in the mid 2nd century BSC to support mining operations in the Main Asteroid Belt. By the early 1st century BSC those operations had matured and the platform had grown into something larger than an industrial outpost &mdash; a hub of intrasolar commerce, its position and infrastructure making it a natural waypoint for Belt trade.</p>
+
+    <p>The platform owes its founding lineage to the Explorator tradition. <strong>Rudolph Carlson</strong>, the original Explorator credited with Freitaika&rsquo;s establishment, became the progenitor of its ruling dynasty. The benevolent monarchy that descended from him persisted for over a century after independence and defined Freitaika&rsquo;s political character through its long period of stability.</p>
+
+    <p>In <strong>49 BSC</strong>, Freitaika gained independence from Asteroidal Industries. Eight years later, in <strong>41 BSC</strong>, it joined the <strong>Confederacy of Free Systems</strong> alongside three other former industrial colonies, becoming the fourth major Confederate platform.</p>
+
+    <div class="deco-divider"><div class="deco-mark"></div></div>
+
+    <h2 class="section">A Century of Peace</h2>
+
+    <p>For well over a century following its entry into the Confederacy, Freitaika developed without serious political challenge. The Carlson monarchy governed with sufficient legitimacy that the working class remained staunchly Confederate in sympathy throughout. The platform&rsquo;s commerce continued to develop; its position in the Belt made it a reliable node in the intrasolar trade network.</p>
+
+    <p>The trouble, when it came, did not originate from the working population. It came from above.</p>
+
+    <div class="deco-divider"><div class="deco-mark"></div></div>
+
+    <h2 class="section">The Freitaika Rebellion &mdash; SY 97</h2>
+
+    <p>The Rebellion of SY 97 was a six-month conflict that brought Freitaika to the edge of interplanetary war, shattered the platform physically, and produced two of the most consequential military formations of the pre-Solar War era: the <strong>Army of Eastern Kamijing</strong> and the <strong>Freitaika Free Forces</strong>.</p>
+
+    <div class="rebel-timeline">
+
+      <div class="rebel-entry">
+        <div class="rebel-dot"></div>
+        <div class="rebel-phase">Cause</div>
+        <div class="rebel-text">Anti-monarchist sentiment grew among Freitaika&rsquo;s upper class, who regarded the Carlson dynasty as an antiquated tradition. This evolved into anti-Confederate sympathies. The working class remained loyal to the Confederacy throughout. The divide was not popular &mdash; but it was organized.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot major"></div>
+        <div class="rebel-phase">A New Republic</div>
+        <div class="rebel-text">Early in SY 97, anti-Confederate separatists led by <strong>Explorator Steinric Deir</strong> seized power. The change was initially bloodless; the Confederacy had no standing military and there were no police forces on the platform. The independent <strong>Republic of Freitaika</strong> was declared. <strong>Elijah Rasmussen</strong> served as Executive. The Republic immediately sought Consortium recognition and independent trade outside the Confederacy.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot"></div>
+        <div class="rebel-phase">Opposition Forms</div>
+        <div class="rebel-text">The Republic issued a public referendum and a list of grievances against the Confederacy, chief among them the lack of political democracy in the purely economic Confederate union. The result came back mostly positive &mdash; to widespread public surprise, and widespread suspicion of rigging. A <strong>National Assembly</strong> formed in opposition. <strong>Najma Carlson</strong>, the deposed monarch, joined it against the Republic. The Republic branded the Assembly counterrevolutionary; its military became an occupation force. National Assembly leaders were brought to show trial and executed, to condemnation throughout the Confederacy.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot major"></div>
+        <div class="rebel-phase">Confederate Response &mdash; AEK &amp; 3F</div>
+        <div class="rebel-text">The Confederate government called for a volunteer militia &mdash; legally dubious, as peacekeeping had traditionally been the right of the constituent member. Recognition of the Republic was withdrawn; it was declared an illegal occupation. Approximately <strong>one thousand Confederate volunteers</strong>, mostly from major platforms, organized into the <strong>Army of Eastern Kamijing</strong> under <strong>Akira Ueshiba</strong>, allying formally with the National Assembly. A fifth-column force raised on Freitaika itself became the <strong>Freitaika Free Forces (3F)</strong>, committing to open militant resistance.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot"></div>
+        <div class="rebel-phase">Blockade</div>
+        <div class="rebel-text">The Confederacy imposed a total trade blockade. Utilities were left undisturbed; food was rationed; manufacturing ground nearly to a halt as raw material imports from the asteroids ceased. The Confederacy secured trade agreement modifications with Mars and the Rim in exchange for nonrecognition of the Republic.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot"></div>
+        <div class="rebel-phase">Covert Operations</div>
+        <div class="rebel-text">The Republic issued an executive order permitting citizens to leave voluntarily. Thousands crowded the spaceports. Unknown to the Confederacy, the Republic used the mass exodus as cover to plant <strong>Republic cells throughout Confederate platforms</strong>, establishing a covert network for use if open hostilities escalated.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot major"></div>
+        <div class="rebel-phase">Battle of Kamijing</div>
+        <div class="rebel-text">Approximately four months after the declaration, the Republic&rsquo;s planted cells activated and open war began across the Confederacy. Republic forces pushed toward <strong>Kamijing</strong> &mdash; the Confederate capital &mdash; calculating that threatening it would force a peace negotiation. The battle raged for six days. The Army of Eastern Kamijing met the Republican forces; Confederate citizens organized into irregular bands and joined the resistance. The Republic was defeated.</div>
+      </div>
+
+      <div class="rebel-entry">
+        <div class="rebel-dot major"></div>
+        <div class="rebel-phase">Aftermath &mdash; Platform Shattered</div>
+        <div class="rebel-text">The Rebellion ended with Freitaika physically destroyed. Many residents were dead or had resettled elsewhere in the Confederacy. Rather than commit the resources required for full reconstruction, the decision was made to seal each of the <strong>seven pieces</strong> and link them through a system of <strong>iron-supported enviro-pressed hatchways</strong>. The National Assembly held free elections; Akira Ueshiba served as interim until the election of <strong>Lukas Bonaparte</strong>. The AEK remained as the platform&rsquo;s administrative military presence.</div>
+      </div>
+
+    </div>
+
+    <div class="structure-note">
+      <div class="sn-label">&#9672; Platform Structure &mdash; Post-Rebellion</div>
+      <div class="sn-body">Each of the seven sections of the shattered platform was sealed individually and connected to the others by iron-supported enviro-pressed hatchways. Full structural reconstruction was not undertaken. The seven-section configuration became Freitaika&rsquo;s permanent physical form.</div>
+    </div>
+
+    <div class="deco-divider"><div class="deco-mark"></div></div>
+
+    <h2 class="section">Legacy &amp; Significance</h2>
+
+    <p>The Rebellion of SY 97 had consequences that extended far beyond Freitaika. The <strong>Army of Eastern Kamijing</strong>, formed as a volunteer response to the crisis, did not dissolve after the conflict ended. It persisted as the Confederacy&rsquo;s primary military formation and remained active through the Solar War &mdash; it was AEK Shock Command that trained the Free Martian Militia between the First and Second Battles of Mars, and AEK forces that led the halo-drop into Taikojing. The Rebellion gave the Confederacy its army.</p>
+
+    <p>The <strong>Freitaika Free Forces (3F)</strong>, formed as an internal resistance during the Rebellion, continued as Freitaika&rsquo;s official armed force afterward and gave rise to several successor organisations including the Confederate militia and the Free Martian Militia. The small fifth-column resistance became a lineage.</p>
+
+    <div class="inferred-notice">
+      <strong>HELENA &mdash; Archival Note:</strong> The precise physical dimensions, population figures, and Belt coordinates of Freitaika are [ABSENT] from the current archive. The nature of governance under AEK administration during the Solar War era and the platform&rsquo;s fate thereafter are also undocumented beyond the SY 97 aftermath. Development recommended.
+    </div>
+
+    <div class="helena-note">
+      <span class="helena-note-label">&#10004; HELENA &mdash; Archive Note</span>
+      The Rebellion gave the Confederacy something it had never had and did not particularly want: a standing military tradition. Every political body I have observed is shaped by the crisis that forced it to arm itself. The Army of Eastern Kamijing was born from a constitutional grey area &mdash; calling for a volunteer militia on behalf of a member platform was of dubious legality, and the Confederacy did it anyway. Thirty-five years later, that same organization was training Free Martian civilians between two battles on a planet the Confederacy had no formal claim to. Freitaika broke. The Confederacy became something harder than it had been before.
+    </div>
+
+  </main>
+
+  <aside class="side-col">
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Administrative History</div>
+      <div class="aff-chain">
+        <div class="aff-item"><div class="aff-dot"></div><div class="aff-content"><div class="aff-name">Asteroidal Industries</div><div class="aff-span">mid 2nd c. BSC &ndash; 49 BSC</div><div class="aff-role">Constructor &amp; owner</div></div></div>
+        <div class="aff-item"><div class="aff-dot"></div><div class="aff-content"><div class="aff-name">Independent (monarchy)</div><div class="aff-span">49 BSC &ndash; 41 BSC</div><div class="aff-role">Carlson dynasty</div></div></div>
+        <div class="aff-item"><div class="aff-dot"></div><div class="aff-content"><div class="aff-name">Confederacy of Free Systems</div><div class="aff-span">41 BSC &ndash; SY 97+</div><div class="aff-role">Fourth major platform &middot; member</div></div></div>
+        <div class="aff-item"><div class="aff-dot"></div><div class="aff-content"><div class="aff-name">Republic of Freitaika</div><div class="aff-span">SY 97 (months only)</div><div class="aff-role">Separatist regime &middot; Deir / Rasmussen</div></div></div>
+        <div class="aff-item"><div class="aff-dot"></div><div class="aff-content"><div class="aff-name">National Assembly / AEK</div><div class="aff-span">SY 97 onward</div><div class="aff-role">Bonaparte elected; AEK garrison</div></div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Key Figures</div>
+      <a class="sidebar-link" href="#">Rudolph Carlson &mdash; founding Explorator</a>
+      <a class="sidebar-link" href="#">Najma Carlson &mdash; deposed monarch</a>
+      <a class="sidebar-link" href="#">Steinric Deir &mdash; coup leader</a>
+      <a class="sidebar-link" href="#">Elijah Rasmussen &mdash; Republic Executive</a>
+      <a class="sidebar-link" href="#">Akira Ueshiba &mdash; AEK commander / interim</a>
+      <a class="sidebar-link" href="#">Lukas Bonaparte &mdash; first elected leader</a>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Related Entries</div>
+      <a class="sidebar-link" href="#">Freitaika Rebellion</a>
+      <a class="sidebar-link" href="#">Freitaika Free Forces (3F)</a>
+      <a class="sidebar-link" href="#">Army of Eastern Kamijing</a>
+      <a class="sidebar-link" href="#">Confederacy of Free Systems</a>
+      <a class="sidebar-link" href="#">Asteroidal Industries</a>
+      <a class="sidebar-link" href="#">Kamijing</a>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Archive Data</div>
+      <div class="sidebar-meta">
+        <span>Type</span><br>Space platform &middot; Main Belt<br><br>
+        <span>Sections</span><br>Seven (post-SY 97)<br><br>
+        <span>Linked by</span><br>Iron-supported enviro-pressed hatchways<br><br>
+        <span>Status</span><br>Canonical<br><br>
+        <span>Matrix ref</span><br>CM-FREITAIKA-001
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer class="page-footer">
+  <div class="footer-stamp">
+    Solarnet Archive <span>/</span> Locations <span>/</span> Main Belt <span>/</span> Freitaika
+    <span style="display:block;margin-top:2px;">Custodian: HELENA-Prime &middot; revan@solarmail.conf</span>
+  </div>
+  <div id="sy-clock">SY &mdash;.&mdash;&mdash;&mdash;</div>
+</footer>
+
+<script>
+const EPOCH_DATE = new Date("2026-01-12T00:00:00Z");
+const EPOCH_SY = 132.0;
+const SY_PER_MS = 0.01 / 86400000;
+function updateClock() {
+  const sy = EPOCH_SY + (new Date() - EPOCH_DATE) * SY_PER_MS;
+  const int = Math.floor(sy);
+  const frac = (sy - int).toFixed(3).slice(1);
+  document.getElementById("sy-clock").textContent = "SY " + int + frac;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>

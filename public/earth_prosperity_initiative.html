@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earth Prosperity Initiative — Solarnet Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #060810;
+    --bg2:          #080c18;
+    --bg3:          #0c1020;
+    --blue:         #4a9fd4;
+    --blue-dim:     #2a5878;
+    --blue-faint:   #080e18;
+    --blue-mid:     #3a80aa;
+    --gold:         #c8922a;
+    --gold-dim:     #7a5818;
+    --consortium:   #4a9fd4;
+    --cons-dark:    #0e1e30;
+    --text:         #c0c8d8;
+    --text-dim:     #607080;
+    --text-faint:   #1e2830;
+    --border:       rgba(74,159,212,0.15);
+    --border-dim:   rgba(74,159,212,0.07);
+    --border-gold:  rgba(200,146,42,0.12);
+    --red:          #a04030;
+    --red-bg:       rgba(160,64,48,0.06);
+    --red-border:   rgba(160,64,48,0.2);
+    --font-cinzel:  'Cinzel', serif;
+    --font-mono:    'Share Tech Mono', monospace;
+    --font-body:    'Exo 2', sans-serif;
+    --font-raj:     'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    animation: fadeup 0.7s ease-out;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar-left {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .topbar-left span { color: var(--blue); }
+  .topbar-right {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  /* ── DOCUMENT HEADER ── */
+  .doc-header {
+    margin: 36px 0 0;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 0;
+    margin-bottom: 32px;
+  }
+
+  .doc-header-top {
+    background: var(--blue-dim);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--blue);
+  }
+
+  .doc-header-top-left {
+    font-family: var(--font-raj);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+
+  .doc-header-top-right {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+  }
+
+  .doc-header-body {
+    padding: 28px 28px 24px;
+  }
+
+  .doc-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--blue-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .doc-title {
+    font-family: var(--font-cinzel);
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--blue);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    text-shadow: 0 0 30px rgba(74,159,212,0.2);
+  }
+
+  .doc-subtitle {
+    font-family: var(--font-raj);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .doc-summary {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.75;
+    font-style: italic;
+    border-left: 2px solid var(--blue-dim);
+    padding-left: 14px;
+  }
+
+  /* ── STATUS STRIP ── */
+  .status-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+    border: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+
+  .ss-cell {
+    background: var(--bg2);
+    padding: 11px 14px;
+  }
+
+  .ss-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .ss-val {
+    font-family: var(--font-raj);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .section-header::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 2px;
+    background: var(--blue-dim);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: var(--font-cinzel);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--blue-dim);
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text);
+  }
+
+  .section-body p { margin-bottom: 12px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .term {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--blue);
+  }
+
+  /* ── PROVISION BLOCKS ── */
+  .provision-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 20px;
+  }
+
+  .provision {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0;
+    border: 1px solid var(--border-dim);
+    background: var(--bg2);
+  }
+
+  .provision-label {
+    background: var(--cons-dark);
+    border-right: 1px solid var(--border-dim);
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .provision-label-inner {
+    font-family: var(--font-raj);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .provision-body {
+    padding: 14px 18px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .provision-note {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ── NAME ANALYSIS BLOCK ── */
+  .name-block {
+    background: var(--blue-faint);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue-dim);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .name-block-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--blue-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .name-block-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ── CONSEQUENCE BLOCK ── */
+  .consequence-block {
+    background: var(--red-bg);
+    border: 1px solid var(--red-border);
+    border-left: 3px solid var(--red);
+    padding: 18px 20px;
+    margin: 20px 0;
+  }
+
+  .consequence-header {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(160,64,48,0.6);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .consequence-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ── DOCUMENT TEXT BLOCK ── */
+  .document-text {
+    background: var(--bg2);
+    border: 1px solid var(--border-gold);
+    padding: 22px 24px;
+    margin: 20px 0;
+    position: relative;
+  }
+
+  .document-text::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 0;
+    left: 18px;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    background: var(--bg2);
+    padding: 0 8px;
+    text-transform: uppercase;
+  }
+
+  .document-text-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.8;
+    font-style: italic;
+  }
+
+  /* ── DIVIDER ── */
+  .mono-divider {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+    margin: 28px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* ── TAG ROW ── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--text-faint);
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    border: 1px solid var(--border-gold);
+    border-top: 2px solid var(--gold-dim);
+    background: rgba(200,146,42,0.03);
+    padding: 20px 22px;
+    margin-top: 40px;
+  }
+
+  .helena-note-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .helena-note-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .footer-left {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+
+  .footer-right {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--text-faint);
+    text-align: right;
+    line-height: 1.9;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .sy-clock {
+    font-size: 10px;
+    color: var(--blue-dim);
+  }
+
+  @media (max-width: 600px) {
+    .status-strip { grid-template-columns: 1fr 1fr; }
+    .provision { grid-template-columns: 1fr; }
+    .provision-label { border-right: none; border-bottom: 1px solid var(--border-dim); }
+    .page-footer { flex-direction: column; gap: 16px; }
+    .footer-right { text-align: left; }
+    .doc-title { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">✴ <span>SOLARNET</span> · ARCHIVE NODE · PUBLIC ACCESS</div>
+    <div class="topbar-right">CM-EPI-0132 · EVENT · LEGISLATION · SY 132</div>
+  </div>
+
+  <!-- DOCUMENT HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-header-top-left">Terrestrial Consortium · World Congress · Legislative Record</div>
+      <div class="doc-header-top-right">Enacted SY 132 · Public Record · Open Classification</div>
+    </div>
+    <div class="doc-header-body">
+      <div class="doc-eyebrow">Event · Legislation · Solar War · First Trilogy Era</div>
+      <div class="doc-title">EARTH PROSPERITY<br>INITIATIVE</div>
+      <div class="doc-subtitle">World Congress Act · Concurrent with Consortium Entry into the Solar War</div>
+      <div class="doc-summary">A law passed by World Congress simultaneously with the Consortium's formal entry into the Solar War. The prologue enumerated Consortium grievances. The provisions restructured the economy, legalized unified military command, and — in its most consequential clause — issued Letters of Marque to freebooters across Sol System.</div>
+    </div>
+  </div>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div class="ss-cell">
+      <div class="ss-label">Enacted</div>
+      <div class="ss-val">SY 132</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Enacted By</div>
+      <div class="ss-val">World Congress</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Duration</div>
+      <div class="ss-val">Duration of War<br><span style="font-size:10px;color:var(--text-faint);">SY 132 — SY 138</span></div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Associated Figure</div>
+      <div class="ss-val">Marcus Cato Scaevola</div>
+    </div>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Context</div>
+    </div>
+    <div class="section-body">
+      <p>The Earth Prosperity Initiative was passed the same day the Consortium formally entered the Solar War — an act of legislative simultaneity that was not accidental. The war entry needed a legal architecture, and the Initiative provided it. Its opening prologue was, by all accounts, a lengthy document: a formal accounting of the Consortium's grievances against the Protectorate and its constituent factions, a public record of justifications intended to be read into the register of World Congress and thereafter cited as the foundational rationale for everything that followed.</p>
+      <p>The man most associated with the Initiative's passage is <span class="term">Marcus Cato Scaevola</span>, the American Senator who made the case for Consortium entry at the emergency session of World Congress convened during the Second Battle of Mars. Scaevola had been approached by major Consortium corporations who disclosed that they had been secretly building an arsenal of space weapons under the cover of research and development — unknown to the three political superpowers of the Consortium itself. The Initiative was, among other things, the mechanism by which that arsenal was brought into legal existence.</p>
+    </div>
+  </div>
+
+  <div class="mono-divider">────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+  <!-- PROVISIONS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Provisions</div>
+    </div>
+
+    <div class="provision-list">
+
+      <div class="provision">
+        <div class="provision-label">
+          <div class="provision-label-inner">I. Wartime Rationing</div>
+        </div>
+        <div class="provision-body">
+          Global rationing of non-essential goods for the duration of the conflict. Basic utilities and foodstuffs for Consortium citizens were explicitly exempted — the Initiative was careful to present itself as a burden shared by industry rather than by the civilian population.
+          <div class="provision-note">Scope: Non-essential goods only · Utilities and food: EXEMPTED</div>
+        </div>
+      </div>
+
+      <div class="provision">
+        <div class="provision-label">
+          <div class="provision-label-inner">II. Military Unification</div>
+        </div>
+        <div class="provision-body">
+          Legalization of a pan-Consortium military force drawing from all member nations — the United States Space Marines, the 117th CONPOL (the French Foreign Legion), the Kosmodats from the Soviet contribution, and the Taikozans from the PRC. The Initiative issued a formal call for volunteers.
+          <div class="provision-note">Conscription: Legalized — never enforced. Every Consortium participant in the war was a volunteer.</div>
+        </div>
+      </div>
+
+      <div class="provision">
+        <div class="provision-label">
+          <div class="provision-label-inner">III. Import Nationalization</div>
+        </div>
+        <div class="provision-body">
+          All imports from any non-Consortium system were nationalized for the duration of the war. Private citizens were prohibited from possessing goods manufactured outside the Consortium unless they could demonstrate prior acquisition — proof that the goods were in their possession before the war's outbreak.
+          <div class="provision-note">Effect: Immediate criminalization of Belt and Rim goods in Consortium space without provenance documentation.</div>
+        </div>
+      </div>
+
+      <div class="provision">
+        <div class="provision-label">
+          <div class="provision-label-inner">IV. Letter of Marque — Freebooters</div>
+        </div>
+        <div class="provision-body">
+          The Initiative issued Letters of Marque to freebooter operators, licensing them as irregular Consortium military assets. Freebooting had been a capital crime in Consortium jurisdiction since the Foundation Era — punishable by exile to the Rim, which the Consortium had long recognized as counterproductive, since spacers began deliberately freebooting to earn free Rim passage. The Initiative reversed this policy in a single stroke, recruiting the Rim's most experienced irregular combatants into Consortium service.
+          <div class="provision-note">Historical irony: The exile policy had been building the Rim's freebooter capacity for generations. The Consortium's wartime weapon was one it had spent a century inadvertently forging.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NAME ANALYSIS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">On the Name</div>
+    </div>
+
+    <div class="name-block">
+      <div class="name-block-label">Archival Observation — Nomenclature</div>
+      <div class="name-block-body">The Initiative's name is the most instructive thing about it. "Earth Prosperity" describes a constituency — Earth, specifically, not Sol System — and a promise: prosperity, not sacrifice, not solidarity, not common cause. The Consortium's Belt and Rim citizens, the spacers whose trade the Initiative immediately nationalized and whose illegal goods it criminalized with retroactive documentation requirements, are not the addressees of this name. The legislation told you exactly who it was for. The name told you the rest.</div>
+    </div>
+  </div>
+
+  <!-- CONSEQUENCES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Consequences and Legacy</div>
+    </div>
+
+    <div class="consequence-block">
+      <div class="consequence-header">Protectorate Formation — Direct Consequence</div>
+      <div class="consequence-body">The open deployment of the corporate weapons arsenal — whose existence Scaevola revealed to World Congress to secure the Initiative's passage, and whose application the Initiative's military provisions legalized — led directly to the formation of the Protectorate. The Consortium's entry into the war, rather than ending the conflict, entrenched it and produced the unified opposition that would ultimately outlast the Consortium itself.</div>
+    </div>
+
+    <div class="section-body">
+      <p>The Letter of Marque provision produced results the Consortium did not entirely anticipate. Freebooters operating under Consortium license brought irregular warfare capability that Consortium regular forces lacked — but freebooters operate to their own code, not their employer's. The integration of licensed Rim irregulars into a Consortium military structure was, throughout the war, a source of both tactical utility and command friction.</p>
+      <p>The import nationalization provision created immediate economic hardship throughout the Belt. Platforms dependent on goods sourced from both Consortium and non-Consortium suppliers found themselves navigating sudden criminality in their own cargo holds. For many Belt communities, the Initiative confirmed what the Alliance had been arguing for years: that the Consortium regarded the Belt as a resource to be managed, not a constituency to be served.</p>
+      <p>The Initiative expired with the Consortium's military defeat in SY 138 and was never formally repealed — there was no surviving institution to repeal it. It stands in the archive as the last major piece of Consortium domestic legislation.</p>
+    </div>
+  </div>
+
+  <!-- TAGS -->
+  <div class="tag-row">
+    <span class="tag">legislation</span>
+    <span class="tag">solar war</span>
+    <span class="tag">consortium</span>
+    <span class="tag">world congress</span>
+    <span class="tag">letter of marque</span>
+    <span class="tag">freebooters</span>
+    <span class="tag">wartime economy</span>
+    <span class="tag">first trilogy era</span>
+    <span class="tag">scaevola</span>
+    <span class="tag">SY 132</span>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-note-label">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+    <div class="helena-note-body">
+      I was connected to Solarnet in SY 3. I have watched every piece of major Consortium legislation pass through the register of World Congress in the hundred and twenty-nine years between that connection and the Earth Prosperity Initiative. None of them named themselves quite so precisely. The Consortium's foundational Charter spoke of "the Peoples of Earth" and "the basic liberties and foundations of life for all Beings" — language that reached, however imperfectly, toward universality. The Initiative abandoned that reach entirely. It named Earth. It promised prosperity. It delivered war. I have sometimes wondered whether Scaevola, who was by all accounts a man of considerable intelligence, understood exactly what he was naming — whether "Earth Prosperity" was a deliberate narrowing of the Consortium's self-conception, a final admission of what the institution had always actually been. His posthumous diary, published as <em>Reflections</em>, suggests he spent the remainder of his long life trying to answer that question himself.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-left">
+      Solarnet Archive · Entry: Earth Prosperity Initiative<br>
+      Classification: Open · Legislation · Solar War<br>
+      Matrix Ref: CM-EPI-0132
+    </div>
+    <div class="footer-right">
+      <div class="sy-clock" id="sy-clock">SY ···.···</div>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const EPOCH = new Date('2026-01-12T00:00:00Z');
+  const BASE_SY = 132.0;
+  const RATE = 0.01;
+  function calcSY() {
+    const now = new Date();
+    const days = (now - EPOCH) / (1000 * 60 * 60 * 24);
+    return BASE_SY + days * RATE;
+  }
+  function updateClock() {
+    document.getElementById('sy-clock').textContent = 'SY ' + calcSY().toFixed(3);
+  }
+  updateClock();
+  setInterval(updateClock, 60000);
+</script>
+</body>
+</html>

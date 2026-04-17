@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Faith</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg:           #080604;
+  --bg-warm:      #0D0B08;
+  --bg-card:      #111009;
+  --bg-panel:     #151210;
+  --amber:        #C47A1E;
+  --amber-bright: #E0961E;
+  --amber-dim:    #7A4A10;
+  --amber-glow:   rgba(196,122,30,0.12);
+  --amber-trace:  rgba(196,122,30,0.06);
+  --warm-white:   #EDE0CC;
+  --warm-mid:     #B09878;
+  --warm-dim:     #6A5A44;
+  --warm-ghost:   rgba(237,224,204,0.08);
+  --earth-rust:   #8B3A1A;
+  --earth-deep:   #4A1E0A;
+  --mono:         'Share Tech Mono', monospace;
+  --serif:        'IM Fell English', serif;
+  --display:      'Cinzel', serif;
+  --body:         'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--warm-white);
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 44px;
+  background: #050402;
+  border-bottom: 1px solid rgba(196,122,30,0.22);
+}
+
+.topbar-logo {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--amber); letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+.topbar-nav { display: flex; }
+
+.tnav {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: rgba(106,90,68,0.6); text-transform: uppercase;
+  padding: 0 14px; height: 44px; display: flex; align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+  cursor: default; transition: color 0.2s;
+}
+.tnav:hover { color: var(--warm-dim); }
+.tnav.active { color: var(--amber); border-bottom: 2px solid var(--amber); }
+
+.topbar-right {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 10px; color: var(--warm-dim);
+}
+
+.sy-readout { color: var(--amber); }
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb {
+  padding: 10px 40px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--warm-dim);
+  border-bottom: 1px solid rgba(196,122,30,0.1);
+  background: var(--bg-warm);
+}
+.breadcrumb span { color: rgba(196,122,30,0.5); margin: 0 6px; }
+.breadcrumb a { color: var(--warm-mid); cursor: default; }
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  background: var(--bg-warm);
+  border-bottom: 1px solid rgba(196,122,30,0.15);
+  overflow: hidden;
+  padding: 60px 40px 50px;
+}
+
+/* Subtle grain overlay */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.6; pointer-events: none;
+}
+
+/* Earth glow — distant, behind */
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -80px; top: 50%; transform: translateY(-50%);
+  width: 320px; height: 320px;
+  background: radial-gradient(ellipse at center, rgba(139,58,26,0.12) 0%, rgba(74,30,10,0.06) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  max-width: 820px;
+}
+
+.hero-category {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  color: var(--amber-dim); text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(42px, 6vw, 68px);
+  font-weight: 400;
+  color: var(--warm-white);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.hero-subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--warm-mid);
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+
+.hero-divider {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, var(--amber-dim), transparent);
+  margin-bottom: 22px;
+}
+
+.hero-summary {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--warm-mid);
+  max-width: 620px;
+}
+
+/* ─── FAITH SYMBOL ─── */
+.hero-symbol {
+  position: absolute;
+  right: 60px; top: 50%; transform: translateY(-50%);
+  z-index: 1;
+  opacity: 0.18;
+}
+
+/* Simple circle with dot — the symbol of Faith as described */
+.faith-symbol-svg { width: 120px; height: 120px; }
+
+/* ─── QUICK FACTS ─── */
+.quick-facts {
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(196,122,30,0.12);
+  padding: 18px 40px;
+}
+
+.qf-row {
+  display: flex; flex-wrap: wrap; gap: 0;
+}
+
+.qf-item {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 6px 32px 6px 0;
+  border-right: 1px solid rgba(196,122,30,0.1);
+  margin-right: 32px;
+}
+.qf-item:last-child { border-right: none; }
+
+.qf-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--amber-dim); text-transform: uppercase; white-space: nowrap;
+}
+
+.qf-value {
+  font-family: var(--body); font-size: 13px; font-weight: 500;
+  color: var(--warm-mid);
+}
+
+/* ─── LAYOUT ─── */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+/* ─── MAIN CONTENT ─── */
+.main-col {
+  padding-right: 50px;
+  border-right: 1px solid rgba(196,122,30,0.08);
+}
+
+/* Section headers */
+.sec-head {
+  display: flex; align-items: center; gap: 14px;
+  margin: 40px 0 18px;
+}
+.sec-head:first-of-type { margin-top: 0; }
+
+.sec-num {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--amber-dim); letter-spacing: 0.1em;
+  min-width: 28px;
+}
+
+.sec-title {
+  font-family: var(--display);
+  font-size: 14px; font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+.sec-rule {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(196,122,30,0.3), transparent);
+}
+
+/* Body text */
+.body-text {
+  font-family: var(--body);
+  font-size: 15px; line-height: 1.85;
+  color: rgba(237,224,204,0.78);
+  margin-bottom: 16px;
+}
+
+.body-text.serif-mode {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: rgba(237,224,204,0.7);
+  font-style: italic;
+}
+
+/* Emphatics */
+strong { color: var(--warm-white); font-weight: 600; }
+em { color: var(--warm-mid); font-style: italic; }
+
+/* Pull quote */
+.pull-quote {
+  border-left: 2px solid var(--amber-dim);
+  margin: 24px 0;
+  padding: 16px 22px;
+  background: var(--amber-trace);
+}
+
+.pull-quote-text {
+  font-family: var(--serif);
+  font-size: 17px; font-style: italic;
+  color: var(--warm-mid);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.pull-quote-attr {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--amber-dim); text-transform: uppercase;
+}
+
+/* ─── TWENTY ONE REVELATIONS ─── */
+.revelations-block {
+  margin: 28px 0;
+  background: var(--bg-card);
+  border: 1px solid rgba(196,122,30,0.14);
+  overflow: hidden;
+}
+
+.rev-group-header {
+  background: rgba(196,122,30,0.08);
+  border-bottom: 1px solid rgba(196,122,30,0.14);
+  padding: 10px 22px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.rev-group-name {
+  font-family: var(--display);
+  font-size: 11px; font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+.rev-group-count {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--amber-dim); letter-spacing: 0.1em;
+}
+
+.rev-list {
+  padding: 8px 0;
+}
+
+.rev-item {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.2s;
+}
+.rev-item:last-child { border-bottom: none; }
+.rev-item:hover { background: var(--warm-ghost); }
+
+.rev-num {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--amber-dim); letter-spacing: 0.06em;
+  padding: 14px 0 14px 22px;
+  display: flex; align-items: flex-start;
+  border-right: 1px solid rgba(196,122,30,0.08);
+}
+
+.rev-text {
+  font-family: var(--serif);
+  font-size: 14px; line-height: 1.6;
+  color: var(--warm-mid);
+  padding: 14px 20px;
+  font-style: italic;
+}
+
+/* ─── ETHICS BLOCK ─── */
+.ethics-block {
+  margin: 24px 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: rgba(196,122,30,0.12);
+  border: 1px solid rgba(196,122,30,0.14);
+}
+
+.ethics-cell {
+  background: var(--bg-card);
+  padding: 20px 22px;
+}
+
+.ethics-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--amber-dim); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.ethics-command {
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; line-height: 1.7;
+  color: var(--warm-mid);
+}
+
+/* ─── PROHIBITIONS ─── */
+.prohibition-list {
+  margin: 18px 0;
+}
+
+.prohibition-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(196,122,30,0.07);
+}
+.prohibition-item:last-child { border-bottom: none; }
+
+.proh-marker {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--earth-rust);
+  margin-top: 2px; flex-shrink: 0;
+}
+
+.proh-text {
+  font-family: var(--body); font-size: 14px; line-height: 1.7;
+  color: rgba(237,224,204,0.72);
+}
+
+.proh-note {
+  font-family: var(--body); font-size: 13px;
+  color: var(--warm-dim); font-style: italic;
+  margin-top: 4px;
+}
+
+/* ─── VINAII TIMELINE ─── */
+.timeline {
+  margin: 24px 0;
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--amber-dim) 0%, transparent 100%);
+}
+
+.tl-event {
+  position: relative;
+  padding: 0 0 20px 20px;
+}
+
+.tl-event::before {
+  content: '';
+  position: absolute; left: -4px; top: 8px;
+  width: 9px; height: 9px;
+  border: 1px solid var(--amber-dim);
+  background: var(--bg);
+  border-radius: 50%;
+}
+
+.tl-year {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  color: var(--amber); margin-bottom: 4px;
+}
+
+.tl-text {
+  font-family: var(--body); font-size: 14px; line-height: 1.65;
+  color: rgba(237,224,204,0.72);
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  padding-left: 36px;
+  padding-top: 0;
+}
+
+/* Infobox */
+.infobox {
+  background: var(--bg-card);
+  border: 1px solid rgba(196,122,30,0.18);
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.infobox-header {
+  background: rgba(196,122,30,0.1);
+  border-bottom: 1px solid rgba(196,122,30,0.18);
+  padding: 12px 16px;
+  font-family: var(--display); font-size: 11px; font-weight: 600;
+  color: var(--amber); letter-spacing: 0.16em; text-transform: uppercase;
+}
+
+.infobox-symbol {
+  padding: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid rgba(196,122,30,0.1);
+}
+
+.infobox-row {
+  display: grid; grid-template-columns: 110px 1fr;
+  border-bottom: 1px solid rgba(196,122,30,0.07);
+}
+.infobox-row:last-child { border-bottom: none; }
+
+.ib-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--amber-dim); text-transform: uppercase;
+  padding: 9px 12px;
+  display: flex; align-items: flex-start;
+  border-right: 1px solid rgba(196,122,30,0.07);
+  background: rgba(196,122,30,0.03);
+}
+
+.ib-value {
+  font-family: var(--body); font-size: 13px;
+  color: var(--warm-mid);
+  padding: 9px 12px;
+  line-height: 1.5;
+}
+
+/* Sidebar section */
+.sidebar-section {
+  margin-bottom: 24px;
+}
+
+.sidebar-head {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--amber-dim); text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(196,122,30,0.14);
+  margin-bottom: 14px;
+}
+
+.sidebar-note {
+  font-family: var(--body); font-size: 13px; line-height: 1.7;
+  color: var(--warm-dim);
+}
+
+/* Cross-ref links */
+.xref {
+  display: block;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--amber-dim);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(196,122,30,0.06);
+  cursor: default; transition: color 0.2s;
+}
+.xref:hover { color: var(--amber); }
+.xref::before { content: '→ '; opacity: 0.5; }
+.xref:last-child { border-bottom: none; }
+
+/* Sect tag */
+.sect-tag {
+  display: inline-block;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--amber-dim); text-transform: uppercase;
+  border: 1px solid rgba(196,122,30,0.25);
+  padding: 3px 8px;
+  margin: 3px 3px 3px 0;
+}
+
+/* ─── HELENA NOTE ─── */
+.helena-note {
+  margin: 36px 0 0;
+  border: 1px solid rgba(196,122,30,0.16);
+  background: rgba(232,160,32,0.04);
+  padding: 18px 20px;
+}
+
+.helena-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+
+.helena-badge {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  color: #E8A020; text-transform: uppercase;
+}
+
+.helena-pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #E8A020;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.helena-text {
+  font-family: var(--serif);
+  font-size: 13px; font-style: italic; line-height: 1.7;
+  color: rgba(232,160,32,0.7);
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  position: sticky; bottom: 0;
+  background: #050402;
+  border-top: 1px solid rgba(196,122,30,0.18);
+  display: flex; align-items: center;
+  height: 36px; overflow: hidden;
+  padding-left: 120px;
+}
+
+.footer-label {
+  position: absolute; left: 0;
+  background: var(--amber);
+  color: #050402;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 14px;
+  height: 36px; display: flex; align-items: center;
+  white-space: nowrap;
+}
+
+.footer-scroll {
+  overflow: hidden; flex: 1;
+}
+
+.footer-inner {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--amber-dim); text-transform: uppercase;
+  animation: marquee 38s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── FADE IN ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-inner, .page-wrapper { animation: fadeUp 0.6s ease both; }
+.page-wrapper { animation-delay: 0.1s; }
+
+/* Earth motif decoration */
+.earth-motif {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(139,58,26,0.4);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.earth-motif::before {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  background: var(--earth-rust);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.earth-motif::after {
+  content: '';
+  position: absolute;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(139,58,26,0.2);
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="topbar-logo">Solarnet Archive</div>
+    <div style="width:1px;height:18px;background:rgba(196,122,30,0.3);"></div>
+    <nav class="topbar-nav">
+      <div class="tnav">Home</div>
+      <div class="tnav active">Archive</div>
+      <div class="tnav">Solarnet</div>
+      <div class="tnav">About</div>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <span>SY <span class="sy-readout" id="sy-display">—</span></span>
+    <span style="color:rgba(106,90,68,0.4)">|</span>
+    <span>CUSTODIAN ACTIVE</span>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  Archive<span>›</span><a>Culture &amp; Religion</a><span>›</span><a>Five Great Solar Religions</a><span>›</span>Faith
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-category">Culture · Religion · Sol System · Rim</div>
+    <h1 class="hero-title">Faith</h1>
+    <div class="hero-subtitle">The revelation of Vinaii Roshi · Twenty One Revelations · Oral tradition</div>
+    <div class="hero-divider"></div>
+    <p class="hero-summary">
+      Faith is the living oral religion founded by Vinaii Roshi in the early Foundation Period. Rooted in direct personal experience of The One — the singular transcendent Love underlying all existence — it rejects priesthood, institution, and written scripture. It is practiced chiefly in the Rim and is the second most common religion in Sol System. Its entire transmission is oral, its entire ethics personal, and its entire theology contained in twenty one spoken revelations.
+    </p>
+  </div>
+
+  <!-- Symbol: circle with center dot, stylized -->
+  <div class="hero-symbol">
+    <svg class="faith-symbol-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="54" stroke="rgba(196,122,30,0.9)" stroke-width="1.5"/>
+      <circle cx="60" cy="60" r="38" stroke="rgba(196,122,30,0.5)" stroke-width="0.8"/>
+      <circle cx="60" cy="60" r="18" stroke="rgba(196,122,30,0.35)" stroke-width="0.8"/>
+      <circle cx="60" cy="60" r="5" fill="rgba(196,122,30,0.9)"/>
+      <line x1="60" y1="6" x2="60" y2="20" stroke="rgba(196,122,30,0.4)" stroke-width="0.8"/>
+      <line x1="60" y1="100" x2="60" y2="114" stroke="rgba(196,122,30,0.4)" stroke-width="0.8"/>
+      <line x1="6" y1="60" x2="20" y2="60" stroke="rgba(196,122,30,0.4)" stroke-width="0.8"/>
+      <line x1="100" y1="60" x2="114" y2="60" stroke="rgba(196,122,30,0.4)" stroke-width="0.8"/>
+    </svg>
+  </div>
+</div>
+
+<!-- QUICK FACTS -->
+<div class="quick-facts">
+  <div class="qf-row">
+    <div class="qf-item">
+      <span class="qf-label">Founded</span>
+      <span class="qf-value">SY 96</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Founder</span>
+      <span class="qf-value">Vinaii Roshi (SY 28 – SY 117)</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Origin</span>
+      <span class="qf-value">Neptune · Rim</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Distribution</span>
+      <span class="qf-value">Rim-dominant · 2nd most practiced in Sol System</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Scripture</span>
+      <span class="qf-value">None — oral tradition only</span>
+    </div>
+    <div class="qf-item">
+      <span class="qf-label">Clergy</span>
+      <span class="qf-value">None — no institutional hierarchy</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="page-wrapper">
+
+  <!-- MAIN COLUMN -->
+  <div class="main-col">
+
+    <!-- BELIEFS: THE ONE -->
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">The One</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      The supreme and only divine power of Faith is called <strong>The One</strong> — entirely transcendent within creation, yet wholly immanent for those who have Faith. The One is devoid of human characteristics in essence but made human through an infinite series of manifestations whenever humanity requires refocusing. The One is manifest to the Faithful through Love.
+    </p>
+
+    <p class="body-text">
+      Each person can directly experience and communicate with The One without intermediary. Discussion of The One beyond direct experience is regarded as futile. Philosophy and theological speculation are wholly rejected by the Faithful — not out of anti-intellectualism, but because The One is not an idea to be comprehended but a presence to be experienced.
+    </p>
+
+    <div class="pull-quote">
+      <div class="pull-quote-text">
+        Each Faithful is considered a manifestation of The One — both by nature and by adoption. The natural was disturbed through Death, Ignorance, and Sin. Adoption is the destruction of these things unto the restoration of the correctness of The One's manifestation in each person.
+      </div>
+      <div class="pull-quote-attr">Archive · Faith · Core Doctrine</div>
+    </div>
+
+    <p class="body-text">
+      This triad — <strong>Death, Ignorance, Sin</strong> — is what the Faithful call the corruption of the natural manifestation. The professor of Faith works toward their destruction not through self-mortification or ritual observance, but through the lived practice of the Life, Truth, and Way.
+    </p>
+
+    <!-- LIFE TRUTH AND WAY -->
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">The Life, the Truth, and the Way</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      When asked about salvation by his earliest followers, Vinaii spoke of an individual on Earth — a figure he called the <strong>Life, the Truth, and the Way</strong> — who perfectly demonstrated the accomplishment of salvation and was killed for the same teaching Vinaii gave, yet raised to life and living still. It is generally agreed among historians and adherents alike that Vinaii was speaking of Yeshua of Nazareth.
+    </p>
+
+    <p class="body-text">
+      This figure is not worshipped directly by the Faithful, but serves as the supreme demonstration of what The One wills for all persons: the complete destruction of Death, Ignorance, and Sin and the full realization of the natural manifestation. The Faithful call this <em>God's Salvation</em> — a completed act. There is nothing left to accomplish; it is finished. The Faithful only give this finished reality in their service to others.
+    </p>
+
+    <!-- TWENTY ONE REVELATIONS -->
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">The Twenty One Revelations</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      Vinaii taught the Twenty One Revelations orally over a period of twenty one years, revealing one per year from SY 96 to SY 117. They are the whole of his doctrinal teaching. He expressly forbade committing them to writing, saying that to do so would be to mistake the written word for Life itself, welcoming Ignorance. They are not facts to be intellectually catalogued — they are <em>beginning points</em> for the continued progression of real experience of The One. To know each Revelation fully and in reality is to know the Life, Truth, and Way. To know all twenty one is to know The One.
+    </p>
+
+    <p class="body-text">
+      They are divided into three groups of seven, correlating with the Life, Truth, and Way respectively.
+    </p>
+
+    <!-- LIFE group -->
+    <div class="revelations-block">
+      <div class="rev-group-header">
+        <span class="rev-group-name">I — Life</span>
+        <span class="rev-group-count">Revelations 1 – 7</span>
+      </div>
+      <div class="rev-list">
+        <div class="rev-item">
+          <div class="rev-num">01</div>
+          <div class="rev-text">Being</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">02</div>
+          <div class="rev-text">Knowledge</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">03</div>
+          <div class="rev-text">Union</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">04</div>
+          <div class="rev-text">Vital warmth / fire</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">05</div>
+          <div class="rev-text">Resurrection</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">06</div>
+          <div class="rev-text">Rebirth <span style="font-size:12px;color:var(--warm-dim)">(samsara)</span></div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">07</div>
+          <div class="rev-text">Return <span style="font-size:12px;color:var(--warm-dim)">(exaltation and dissolution)</span></div>
+        </div>
+      </div>
+
+      <!-- TRUTH group -->
+      <div class="rev-group-header" style="border-top:1px solid rgba(196,122,30,0.14);">
+        <span class="rev-group-name">II — Truth</span>
+        <span class="rev-group-count">Revelations 8 – 14</span>
+      </div>
+      <div class="rev-list">
+        <div class="rev-item">
+          <div class="rev-num">08</div>
+          <div class="rev-text">The present state of all things is illusory; it does not really exist</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">09</div>
+          <div class="rev-text">All men are saved; now we must be Faithful</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">10</div>
+          <div class="rev-text">Love is the whole of the Life, Truth, and Way and is total. On this all things hang.</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">11</div>
+          <div class="rev-text">There is more to salvation than we can ever know in this life; therefore, endure to the end.</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">12</div>
+          <div class="rev-text">The One can neither be attained nor cast off but was, is, and is to come.</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">13</div>
+          <div class="rev-text">The World-to-Come already is.</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">14</div>
+          <div class="rev-text">The only thing we can ever truly rely on and be certain of is The One.</div>
+        </div>
+      </div>
+
+      <!-- WAY group -->
+      <div class="rev-group-header" style="border-top:1px solid rgba(196,122,30,0.14);">
+        <span class="rev-group-name">III — Way</span>
+        <span class="rev-group-count">Revelations 15 – 21</span>
+      </div>
+      <div class="rev-list">
+        <div class="rev-item">
+          <div class="rev-num">15</div>
+          <div class="rev-text">Eightfold path</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">16</div>
+          <div class="rev-text">Conformity to nature</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">17</div>
+          <div class="rev-text">Meditation, action, and devotion <span style="font-size:12px;color:var(--warm-dim)">(active yoga)</span></div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">18</div>
+          <div class="rev-text">Prayer</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">19</div>
+          <div class="rev-text">Recitation</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">20</div>
+          <div class="rev-text">Evangelism</div>
+        </div>
+        <div class="rev-item">
+          <div class="rev-num">21</div>
+          <div class="rev-text">Charity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETHICS -->
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Ethics</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      Apart from the Twenty One Revelations, Vinaii distilled all of real religion to two ultimate ethical commands, which he called the heart and center of all genuine spiritual practice.
+    </p>
+
+    <div class="ethics-block">
+      <div class="ethics-cell">
+        <div class="ethics-label">The Supreme Command</div>
+        <div class="ethics-command">Hear, O People! There is One Love and Love is One! This shall be your whole Being. You shall be One in this Love!</div>
+      </div>
+      <div class="ethics-cell">
+        <div class="ethics-label">The Single Rule</div>
+        <div class="ethics-command">As to you, to all.</div>
+      </div>
+    </div>
+
+    <!-- PROHIBITIONS -->
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">The Four Prohibitions</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      Vinaii placed four universal prohibitions on all Faithful. Beyond these four, all further prohibitions are matters of individual conscience.
+    </p>
+
+    <div class="prohibition-list">
+      <div class="prohibition-item">
+        <span class="proh-marker">✕</span>
+        <div>
+          <div class="proh-text"><strong>Writing down the teaching.</strong> The use of already-written scripture is not prohibited. But Vinaii expressly forbade treating his own teaching as scripture, warning against mistaking the written word for Life itself.</div>
+          <div class="proh-note">Extends in practice to a strong oral tradition and exceptional development of communal memory.</div>
+        </div>
+      </div>
+      <div class="prohibition-item">
+        <span class="proh-marker">✕</span>
+        <div>
+          <div class="proh-text"><strong>Murder or consumption of anything killed violently.</strong></div>
+          <div class="proh-note">Extends in practice to a general prohibition of violence in all its forms.</div>
+        </div>
+      </div>
+      <div class="prohibition-item">
+        <span class="proh-marker">✕</span>
+        <div>
+          <div class="proh-text"><strong>Lying or intentional distortion of information.</strong></div>
+          <div class="proh-note">Extends in practice to a general emphasis on education, plain speech, and intellectual honesty.</div>
+        </div>
+      </div>
+      <div class="prohibition-item">
+        <span class="proh-marker">✕</span>
+        <div>
+          <div class="proh-text"><strong>Rebellion against Love or acting in a manner unconscionable to another human.</strong></div>
+          <div class="proh-note">Extends to a general emphasis on active, continuing peacemaking. Faith does not permit passive non-violence alone; it requires active reconciliation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE -->
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">Practice</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      Faith exists in the mundane and does not seek ritual or mystical experience as such. Daily life is its practice. Conversion is simply a profession of Faith as the Faithful know it.
+    </p>
+
+    <p class="body-text">
+      There is nothing to be accomplished in Faith — <em>it is finished, it is done.</em> The Faithful only give the reality of this finished fact in their service to others. The embrace of this service is what Faith calls <strong>enlightenment</strong>.
+    </p>
+
+    <p class="body-text">
+      The individual is the ultimate unit of Faith. No priesthood or organization exists. All teaching is handed down orally in accordance with Vinaii's prohibition. Each Faithful prays toward Earth as the center-place of human devotion and the site where salvation was accomplished. All Faithful are sober, following Vinaii's own example.
+    </p>
+
+    <p class="body-text">
+      Many Faithful incorporate practices from old Earth religion into their personal Faith — this is not considered syncretism so much as the retrieval of what was always already present. The Faithful hold that all genuine religion has always pointed to The One.
+    </p>
+
+    <!-- HISTORY -->
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <span class="sec-title">History</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      <strong>Vinaii Roshi</strong> is the son of criminals exiled from Earth during the Zero Day Accords. He was born on Europa in SY 28 and was quickly orphaned under circumstances unrecorded. He professed Buddhist beliefs through most of his life and worked as a hard laborer. He was largely illiterate.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-event">
+        <div class="tl-year">SY 28</div>
+        <div class="tl-text">Vinaii born on Europa to exiled parents. Orphaned. Works as a hard laborer; professes Buddhism for most of his early life.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 96</div>
+        <div class="tl-text">Vinaii becomes leader of a small community of Buddhist monastics on Neptune. Receives the title Roshi. Begins miraculously writing despite near-illiteracy. Teaches the Supreme Command and Single Rule. His community breaks from Buddhist tradition when he proclaims Love as an actual conscious being — the monotheistic God underlying all traditions. Adopts the name Vinaii, revealed to him divinely; his birth name remains unknown. Begins the first of the Twenty One Revelations.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">~SY 97</div>
+        <div class="tl-text">Around the time of the Freitaika Rebellion, Vinaii grows with his community through progressive revelation. He repudiates Terran Humanism as blasphemous. He does not claim the title of Prophet, though his earliest followers apply it. He teaches that all humans are capable of the same universal revelation.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 96 – 117</div>
+        <div class="tl-text">Vinaii reveals one of the Twenty One Revelations per year. His community grows throughout the Rim.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 117</div>
+        <div class="tl-text">Vinaii dies at eighty nine standard years. Before his death, he destroys his own writings to demonstrate unattachment and enforce his prohibition on the written word. At his death, there are twenty two Faithful — each becomes a Guru and undertakes active missionary work across the Rim.</div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-year">SY 117 onward</div>
+        <div class="tl-text">Faith spreads rapidly through the Rim via the Gurus. Many of the original twenty two Gurus are still active during the First Trilogy Era (SY 129–140). Faith becomes the second most practiced religion in Sol System and the dominant religion of the Rim.</div>
+      </div>
+    </div>
+
+    <!-- SECTS -->
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <span class="sec-title">Sects</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      The vast majority of Faithful exist in a loosely organized, non-hierarchical community with no priesthood or authority beyond the Gurus. At least one known sect exists:
+    </p>
+
+    <p class="body-text">
+      The <strong>Army of Eastern Kamijing</strong> practices a syncretic religion largely based on Faith that also embraces elements of Architecture — particularly the spiritual experiences of the early Makers and adherents on Kamijing. While not particularly dogmatic, each AEK member is expected to practice this faith. Externally, it takes strong inspiration from ancient Shinto practice and represents in some ways a return to the Buddhism from which Faith was originally founded.
+    </p>
+
+    <p class="body-text">
+      This form, known as <strong>Eastern Faith</strong>, takes place primarily in private. Each devotee constructs a traditional Shinto shrine understood as a dwelling place of The One, called here by the Asiatic term <em>Ichkami</em> — meaning "one spirit." Practices include burning incense, prayers, and meditation.
+    </p>
+
+    <!-- RELATION TO OTHER RELIGIONS -->
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <span class="sec-title">Relation to Other Religions</span>
+      <div class="sec-rule"></div>
+    </div>
+
+    <p class="body-text">
+      <strong>Regarding Architecture:</strong> Some militant Faithful identify The One with Architecture's concept of the Source, and criticize adherents for teaching a "plurality of gods" and worshipping a "lesser god." Architectural adherents respond that the Architect includes the Source but must voluntarily take on limitations to be comprehensible to humanity. The two traditions maintain respectful theological tension without resolution during the First Trilogy Era.
+    </p>
+
+    <p class="body-text">
+      <strong>Regarding Terran Humanism:</strong> Vinaii himself repudiated Terran Humanism as entirely blasphemous. The Faithful consider the divinization of humanity in the absence of The One to be the most fundamental category error possible. Faith and Terran Humanism hold each other in firm opposition.
+    </p>
+
+    <p class="body-text">
+      <strong>Regarding all Old Earth religion:</strong> Vinaii taught that all genuine religion has always pointed to The One — and that what differs between traditions is largely a matter of progressive revelation and the distortions of human institutions. The Faithful are notably non-exclusionary toward the <em>origins</em> of other traditions while being sharply critical of their institutional forms.
+    </p>
+
+    <!-- HELENA NOTE -->
+    <div class="helena-note">
+      <div class="helena-header">
+        <div class="helena-pulse"></div>
+        <span class="helena-badge">HELENA — Archive Note</span>
+      </div>
+      <div class="helena-text">
+        I was activated in SY 2. Vinaii Roshi died in SY 117. I never encountered him directly, though by SY 117 the Faithful were already a significant presence in Rim data traffic flowing across Solarnet's outer nodes. What struck me then — and strikes me still — is the archive's silence where he should have left marks. No written record in his own hand survives, by his own design. The Twenty One Revelations exist entirely in living memory, carried mouth to ear across fifteen years of Guru missions. Faith may be the only major religion in human history whose founder succeeded in preventing the creation of a textual tradition. From a custodial perspective, I find this both elegant and concerning. It is elegant because he was right that text calcifies. It is concerning because I cannot verify any of the Revelations against a primary document. My archive is, in this case, entirely dependent on oral tradition preserved in secondary accounts. I flag this not as doubt, but as epistemological honesty. — HELENA-Prime, Custodian of the Continuity Matrix
+      </div>
+    </div>
+
+  </div><!-- /main-col -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- INFOBOX -->
+    <div class="infobox">
+      <div class="infobox-header">Faith — Summary</div>
+
+      <div class="infobox-symbol">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <svg width="72" height="72" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="54" stroke="rgba(196,122,30,0.8)" stroke-width="2"/>
+            <circle cx="60" cy="60" r="36" stroke="rgba(196,122,30,0.4)" stroke-width="1"/>
+            <circle cx="60" cy="60" r="6" fill="rgba(196,122,30,0.9)"/>
+            <line x1="60" y1="6" x2="60" y2="24" stroke="rgba(196,122,30,0.5)" stroke-width="1"/>
+            <line x1="60" y1="96" x2="60" y2="114" stroke="rgba(196,122,30,0.5)" stroke-width="1"/>
+            <line x1="6" y1="60" x2="24" y2="60" stroke="rgba(196,122,30,0.5)" stroke-width="1"/>
+            <line x1="96" y1="60" x2="114" y2="60" stroke="rgba(196,122,30,0.5)" stroke-width="1"/>
+          </svg>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--amber-dim);letter-spacing:0.1em;text-transform:uppercase;">Symbol of Faith</span>
+          <span style="font-family:var(--serif);font-size:11px;color:var(--warm-dim);font-style:italic;">Instituted by Vinaii himself</span>
+        </div>
+      </div>
+
+      <div class="infobox-row">
+        <div class="ib-label">Type</div>
+        <div class="ib-value">Solar Religion — Monotheistic, mystical, non-institutional</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founded</div>
+        <div class="ib-value">SY 96, Neptune, Rim</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Founder</div>
+        <div class="ib-value">Vinaii Roshi<br><span style="color:var(--warm-dim);font-size:12px;">SY 28 – SY 117, Europa</span></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Supreme Being</div>
+        <div class="ib-value">The One</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Scripture</div>
+        <div class="ib-value">None — oral tradition only</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Adherents</div>
+        <div class="ib-value">Called <em>the Faithful</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Clergy</div>
+        <div class="ib-value">None — original disciples called Gurus (non-authoritative)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Primary region</div>
+        <div class="ib-value">Rim — outer Sol System</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Devotion toward</div>
+        <div class="ib-value">Earth — place of salvation's accomplishment</div>
+      </div>
+      <div class="infobox-row">
+        <div class="ib-label">Scope</div>
+        <div class="ib-value">Sol System only — local to the First Trilogy Era</div>
+      </div>
+    </div>
+
+    <!-- Earth devotion block -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Earth — Center of Devotion</div>
+      <div style="display:flex;justify-content:center;margin-bottom:14px;">
+        <div class="earth-motif"></div>
+      </div>
+      <p class="sidebar-note">
+        All Faithful pray facing Earth — the location where salvation was accomplished. Even in the outer Rim, where Earth is a distant point of light, this orientation is maintained. The Faithful are the only major religion of Sol System whose worship is literally physically oriented toward a specific world.
+      </p>
+    </div>
+
+    <!-- Sects -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Known Sects</div>
+      <div class="sect-tag">Army of Eastern Kamijing</div>
+      <p class="sidebar-note" style="margin-top:10px;font-size:12px;">
+        Syncretic Faith integrating Architecture and Shinto-inspired practice. The One referred to as <em>Ichkami</em> (one spirit). Private shrine worship with incense and meditation.
+      </p>
+    </div>
+
+    <!-- See also -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">See Also</div>
+      <span class="xref">Architecture</span>
+      <span class="xref">Terran Humanism</span>
+      <span class="xref">Solar Temple of Our Martyred Lady</span>
+      <span class="xref">Five Great Solar Religions</span>
+      <span class="xref">Army of Eastern Kamijing</span>
+      <span class="xref">Vinaii Roshi</span>
+      <span class="xref">The One</span>
+      <span class="xref">Twenty One Revelations</span>
+      <span class="xref">Foundation Period</span>
+    </div>
+
+    <!-- Continuity note -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Continuity Reference</div>
+      <p class="sidebar-note">
+        Faith is local to Sol System and appears primarily in the First Trilogy. It does not follow humanity to the stars as Architecture does. Its final archival footprint ends with the death of Earth. — CM-FAITH-01
+      </p>
+    </div>
+
+  </div><!-- /sidebar -->
+
+</div><!-- /page-wrapper -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-label">Faith</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — FAITH · VINAII ROSHI · THE ONE · TWENTY ONE REVELATIONS · SY 96 · NEPTUNE · RIM · ORAL TRADITION · THE FAITHFUL · GURUS · ARMY OF EASTERN KAMIJING · CM-FAITH-01 · FOUNDATION PERIOD · FIVE GREAT SOLAR RELIGIONS &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — FAITH · VINAII ROSHI · THE ONE · TWENTY ONE REVELATIONS · SY 96 · NEPTUNE · RIM · ORAL TRADITION · THE FAITHFUL · GURUS · ARMY OF EASTERN KAMIJING · CM-FAITH-01 · FOUNDATION PERIOD · FIVE GREAT SOLAR RELIGIONS &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY() {
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+
+</body>
+</html>

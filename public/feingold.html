@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Arthur Feingold</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
+:root {
+  --bg: #06060c;
+  --violet: #7060b8;
+  --violet-bright: #9080d8;
+  --violet-dim: rgba(112,96,184,0.14);
+  --violet-mid: rgba(112,96,184,0.28);
+  --violet-line: rgba(112,96,184,0.18);
+  --steel: #909aaa;
+  --steel-dim: rgba(144,154,170,0.1);
+  --steel-line: rgba(144,154,170,0.16);
+  --cold-white: rgba(220,224,236,0.75);
+  --cold-faint: rgba(220,224,236,0.42);
+  --text-main: #b0b4c8;
+  --text-dim: #585870;
+  --text-faint: #2a2a3a;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-cor: 'Cormorant Garamond', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 30% at 50% 0%, rgba(112,96,184,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 15% 70%, rgba(112,96,184,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 45% at 85% 60%, rgba(144,154,170,0.03) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 7% 11%,  rgba(220,224,236,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 23% 73%, rgba(112,96,184,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 41% 19%, rgba(220,224,236,0.2)  0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 84%, rgba(112,96,184,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 79% 35%, rgba(220,224,236,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 58%, rgba(112,96,184,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 51% 96%, rgba(220,224,236,0.18) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(6,6,12,0.95);
+  border-bottom: 1px solid var(--violet-line);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 44px;
+}
+.topbar-left { display: flex; align-items: center; gap: 24px; }
+.topbar-logo { font-family: var(--font-mono); font-size: 11px; color: var(--violet-bright); letter-spacing: 0.15em; opacity: 0.75; }
+.topbar-breadcrumb { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; }
+.topbar-breadcrumb span { color: rgba(112,96,184,0.38); margin: 0 6px; }
+.topbar-right { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.08em; }
+
+/* ═══ HERO ═══ */
+.hero {
+  position: relative; z-index: 1;
+  padding: 72px 24px 56px;
+  text-align: center;
+  border-bottom: 1px solid var(--violet-line);
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(112,96,184,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(112,96,184,0.35), rgba(144,154,170,0.2), rgba(112,96,184,0.35), transparent);
+}
+.hero-type { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.26em; color: var(--steel); opacity: 0.5; margin-bottom: 14px; text-transform: uppercase; }
+.hero-name {
+  font-family: var(--font-title);
+  font-size: clamp(36px, 5.5vw, 68px);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--cold-white);
+  text-shadow: 0 0 40px rgba(112,96,184,0.3), 0 0 100px rgba(112,96,184,0.1);
+  line-height: 1; margin-bottom: 10px;
+}
+.hero-epithet {
+  font-family: var(--font-cor);
+  font-size: 15px; font-style: italic;
+  color: rgba(112,96,184,0.55);
+  letter-spacing: 0.08em; margin-bottom: 26px;
+}
+.hero-divider {
+  width: 90px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(112,96,184,0.45), transparent);
+  margin: 0 auto 22px;
+}
+.hero-lead {
+  font-family: var(--font-cor);
+  font-size: 17px; font-weight: 300;
+  color: var(--cold-white);
+  max-width: 600px; margin: 0 auto;
+  line-height: 1.78; padding: 0 24px;
+}
+
+/* ═══ STAT STRIP ═══ */
+.stat-strip {
+  position: relative; z-index: 1;
+  display: flex; justify-content: center;
+  border-bottom: 1px solid var(--violet-line);
+  overflow-x: auto; scrollbar-width: none;
+  background: rgba(112,96,184,0.02);
+}
+.stat-strip::-webkit-scrollbar { display: none; }
+.stat-cell { display: flex; flex-direction: column; align-items: center; padding: 16px 20px; border-right: 1px solid rgba(112,96,184,0.09); flex-shrink: 0; min-width: 110px; }
+.stat-cell:last-child { border-right: none; }
+.stat-label { font-family: var(--font-mono); font-size: 8px; color: var(--violet-bright); opacity: 0.4; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 5px; text-align: center; }
+.stat-val { font-family: var(--font-cor); font-style: italic; font-size: 13px; color: var(--cold-white); text-align: center; line-height: 1.3; }
+
+/* ═══ MAIN CONTENT ═══ */
+.page-wrapper { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+/* ═══ SECTION HEADER ═══ */
+.section-header { display: flex; align-items: center; gap: 16px; margin: 56px 0 20px; }
+.section-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--violet-bright); opacity: 0.38; text-transform: uppercase; white-space: nowrap; }
+.section-title { font-family: var(--font-title); font-size: 15px; font-weight: 400; color: var(--cold-white); letter-spacing: 0.1em; white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(112,96,184,0.25), transparent); }
+
+/* ═══ PROSE ═══ */
+.prose { font-size: 14.5px; font-weight: 300; line-height: 1.92; color: rgba(176,180,200,0.82); max-width: 740px; }
+.prose p + p { margin-top: 18px; }
+.prose strong { color: var(--cold-white); font-weight: 600; }
+.prose em { font-family: var(--font-cor); font-style: italic; color: rgba(176,180,200,0.6); }
+
+/* ═══ QUOTE BLOCK ═══ */
+.quote-block {
+  max-width: 740px; margin-top: 4px;
+  padding: 30px 36px;
+  background: var(--violet-dim);
+  border: 1px solid var(--violet-line);
+  border-left: 3px solid rgba(112,96,184,0.5);
+  position: relative;
+}
+.quote-block::before {
+  content: '"';
+  position: absolute; top: 12px; left: 18px;
+  font-family: var(--font-cor); font-size: 48px;
+  color: rgba(112,96,184,0.18); line-height: 1;
+}
+.quote-text {
+  font-family: var(--font-cor); font-size: 17px; font-style: italic;
+  color: var(--cold-white); line-height: 1.75;
+  padding-left: 8px;
+}
+.quote-attr {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em;
+  color: var(--violet-bright); opacity: 0.45; text-transform: uppercase;
+  margin-top: 14px; text-align: right;
+}
+
+/* ═══ TIMELINE ═══ */
+.timeline { max-width: 740px; margin-top: 4px; position: relative; padding-left: 28px; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(180deg, rgba(112,96,184,0.45), rgba(112,96,184,0.08)); }
+.tl-entry { position: relative; padding: 18px 0 18px 24px; border-bottom: 1px solid rgba(112,96,184,0.07); }
+.tl-entry:last-child { border-bottom: none; }
+.tl-dot { position: absolute; left: -25px; top: 22px; width: 10px; height: 10px; border: 1px solid rgba(112,96,184,0.5); background: var(--bg); transform: rotate(45deg); }
+.tl-dot.pivot { border-color: rgba(144,154,170,0.5); box-shadow: 0 0 6px rgba(144,154,170,0.2); }
+.tl-dot.war { border-color: rgba(160,80,80,0.5); box-shadow: 0 0 6px rgba(160,80,80,0.2); }
+.tl-dot.beyond { border-color: rgba(112,96,184,0.7); box-shadow: 0 0 8px rgba(112,96,184,0.4); }
+.tl-date { font-family: var(--font-mono); font-size: 10px; color: var(--violet-bright); opacity: 0.5; letter-spacing: 0.12em; margin-bottom: 5px; }
+.tl-event { font-family: var(--font-title); font-size: 12px; font-weight: 400; color: var(--cold-white); letter-spacing: 0.08em; margin-bottom: 5px; }
+.tl-body { font-size: 13px; font-weight: 300; color: rgba(176,180,200,0.7); line-height: 1.65; }
+.tl-body strong { color: var(--cold-white); font-weight: 600; }
+
+/* ═══ IDEOLOGY GRID ═══ */
+.ideology-grid { max-width: 740px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--violet-line); border: 1px solid var(--violet-line); margin-top: 4px; }
+.ideo-cell { background: rgba(6,6,12,0.97); padding: 20px 22px; }
+.ideo-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(112,96,184,0.45); margin-bottom: 8px; }
+.ideo-text { font-size: 13.5px; font-weight: 300; color: rgba(176,180,200,0.72); line-height: 1.7; }
+.ideo-text strong { color: var(--cold-white); font-weight: 600; }
+.ideo-text em { font-family: var(--font-cor); font-style: italic; }
+
+/* ═══ ALTERRA PANEL ═══ */
+.alterra-panel {
+  max-width: 740px; margin-top: 4px;
+  border: 1px solid var(--violet-line);
+  overflow: hidden;
+}
+.alterra-header {
+  background: var(--violet-dim);
+  border-bottom: 1px solid var(--violet-line);
+  padding: 14px 20px;
+  display: flex; align-items: baseline; gap: 14px;
+}
+.alterra-title { font-family: var(--font-title); font-size: 14px; font-weight: 400; color: var(--violet-bright); letter-spacing: 0.1em; }
+.alterra-full { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.12em; color: rgba(112,96,184,0.4); text-transform: uppercase; }
+.alterra-body { padding: 20px 22px; }
+.alterra-body p { font-size: 13.5px; font-weight: 300; color: rgba(176,180,200,0.72); line-height: 1.75; }
+.alterra-body p + p { margin-top: 14px; }
+.alterra-body strong { color: var(--cold-white); font-weight: 600; }
+.alterra-body em { font-family: var(--font-cor); font-style: italic; }
+.alterra-rules {
+  margin-top: 16px;
+  border-top: 1px solid rgba(112,96,184,0.1);
+  padding-top: 16px;
+}
+.alterra-rules-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(112,96,184,0.35); margin-bottom: 10px; }
+.rule-item { display: flex; gap: 12px; margin-bottom: 8px; font-size: 13px; color: rgba(176,180,200,0.65); line-height: 1.55; }
+.rule-item:last-child { margin-bottom: 0; }
+.rule-num { font-family: var(--font-mono); font-size: 9px; color: rgba(112,96,184,0.45); flex-shrink: 0; padding-top: 2px; }
+
+/* ═══ CLARKE PANEL ═══ */
+.clarke-panel {
+  max-width: 740px; margin-top: 4px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--violet-line); border: 1px solid var(--violet-line);
+}
+.clarke-cell { background: rgba(6,6,12,0.97); padding: 22px 24px; }
+.clarke-iter { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(112,96,184,0.38); margin-bottom: 8px; }
+.clarke-text {
+  font-family: var(--font-cor); font-size: 17px; font-style: italic;
+  color: var(--cold-white); line-height: 1.6; margin-bottom: 10px;
+}
+.clarke-gloss { font-size: 12.5px; font-weight: 300; color: rgba(176,180,200,0.6); line-height: 1.6; }
+.clarke-gloss strong { color: var(--cold-white); font-weight: 600; }
+
+/* ═══ SHADOW BLOCK ═══ */
+.shadow-block {
+  max-width: 740px; margin-top: 4px;
+  padding: 24px 28px;
+  border: 1px solid rgba(112,96,184,0.15);
+  border-left: 3px solid rgba(112,96,184,0.4);
+  background: rgba(112,96,184,0.03);
+}
+.shadow-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(112,96,184,0.35); margin-bottom: 12px; }
+.shadow-text { font-size: 14px; font-weight: 300; color: rgba(176,180,200,0.75); line-height: 1.82; }
+.shadow-text strong { color: var(--cold-white); font-weight: 600; }
+.shadow-text em { font-family: var(--font-cor); font-style: italic; }
+
+/* ═══ TRIUMVIRATE ═══ */
+.triumvirate-grid { max-width: 740px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--violet-line); border: 1px solid var(--violet-line); margin-top: 4px; }
+.triv-cell { background: rgba(6,6,12,0.97); padding: 18px 18px; }
+.triv-name { font-family: var(--font-cor); font-size: 16px; font-style: italic; color: var(--cold-white); margin-bottom: 3px; }
+.triv-role { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(112,96,184,0.42); margin-bottom: 8px; }
+.triv-desc { font-size: 12.5px; font-weight: 300; color: rgba(176,180,200,0.65); line-height: 1.6; }
+.triv-cell.feingold-self { background: rgba(112,96,184,0.05); border-left: 2px solid rgba(112,96,184,0.3); }
+
+/* ═══ SOLARMAIL ═══ */
+.solarmail-chip {
+  display: inline-block; margin-top: 4px;
+  padding: 6px 14px;
+  border: 1px solid rgba(112,96,184,0.2);
+  background: rgba(112,96,184,0.05);
+  font-family: var(--font-mono); font-size: 11px;
+  color: rgba(112,96,184,0.55); letter-spacing: 0.1em;
+}
+
+/* ═══ HELENA NOTE ═══ */
+.helena-note {
+  position: relative; max-width: 740px; margin: 64px 0 0;
+  padding: 34px 40px 34px 60px;
+  background: rgba(112,96,184,0.02);
+  border-left: 2px solid rgba(112,96,184,0.28);
+}
+.helena-note::before {
+  content: '✴'; position: absolute; left: 22px; top: 32px;
+  color: var(--violet-bright); font-size: 18px; opacity: 0.55;
+  filter: drop-shadow(0 0 8px rgba(112,96,184,0.35));
+}
+.helena-sig { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: var(--violet-bright); opacity: 0.42; text-transform: uppercase; margin-bottom: 16px; }
+.helena-text { font-family: var(--font-cor); font-size: 16px; font-weight: 300; font-style: italic; color: rgba(220,224,236,0.68); line-height: 1.92; }
+
+/* ═══ CONTINUITY ═══ */
+.continuity-block {
+  max-width: 740px; margin: 38px 0 0;
+  padding: 14px 18px; border: 1px solid rgba(112,96,184,0.1);
+  background: rgba(112,96,184,0.015);
+  display: flex; gap: 22px; align-items: center; flex-wrap: wrap;
+}
+.cm-ref { font-family: var(--font-mono); font-size: 10px; color: var(--violet-bright); opacity: 0.38; letter-spacing: 0.12em; white-space: nowrap; }
+.cm-status { font-family: var(--font-mono); font-size: 10px; color: rgba(96,184,96,0.5); letter-spacing: 0.1em; }
+.cm-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; flex: 1; line-height: 1.55; }
+
+/* ═══ RELATED & TAGS ═══ */
+.related-grid { display: flex; gap: 1px; flex-wrap: wrap; max-width: 740px; margin-top: 4px; background: var(--violet-line); border: 1px solid var(--violet-line); }
+.related-card { background: rgba(6,6,12,0.97); padding: 13px 16px; flex: 1; min-width: 130px; text-decoration: none; display: block; transition: background 0.15s; }
+.related-card:hover { background: rgba(112,96,184,0.06); }
+.related-type { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 4px; }
+.related-title { font-family: var(--font-title); font-size: 11px; color: var(--violet-bright); letter-spacing: 0.05em; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; max-width: 740px; }
+.tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; padding: 3px 8px; border: 1px solid rgba(112,96,184,0.18); color: var(--text-dim); text-transform: uppercase; }
+
+/* ═══ FOOTER ═══ */
+.footer { position: relative; z-index: 1; margin-top: 88px; border-top: 1px solid rgba(112,96,184,0.1); }
+.footer-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: rgba(112,96,184,0.18); text-align: center; padding: 14px 0 8px; }
+.footer-scroll { width: 100%; overflow: hidden; padding: 6px 0 18px; -webkit-mask-image: linear-gradient(90deg,transparent,black 10%,black 90%,transparent); mask-image: linear-gradient(90deg,transparent,black 10%,black 90%,transparent); }
+.footer-inner { display: inline-block; white-space: nowrap; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: rgba(112,96,184,0.12); animation: scroll-left 65s linear infinite; }
+@keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.hero { animation: fade-up 0.6s ease 0.05s both; }
+.stat-strip { animation: fade-up 0.5s ease 0.15s both; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET ARCHIVE</div>
+    <div class="topbar-breadcrumb">
+      CHARACTERS <span>›</span> SOLAR TECHNOCRACY <span>›</span> ARTHUR FEINGOLD
+    </div>
+  </div>
+  <div class="topbar-right">SY <span id="sy-display">132.00</span> &nbsp;·&nbsp; CM-FEINGOLD-001 &nbsp;·&nbsp; ERA: FIRST / SECOND TRILOGY</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-type">Character &nbsp;·&nbsp; Technocracy Triumvirate &nbsp;·&nbsp; Progress Fleet Architect</div>
+  <div class="hero-name">Arthur Feingold</div>
+  <div class="hero-epithet">Visionary. Accelerationist. Devout Adherent. Shadow of Architecture.</div>
+  <div class="hero-divider"></div>
+  <div class="hero-lead">
+    He used the Solar War as a funding mechanism. He used the Technocracy as a construction crew. He used forty years of sacrifice — his own and others' — to build a ship pointed at Alpha Centauri. And then he built a world inside it. The question the archive has never resolved: was he wrong?
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-cell"><div class="stat-label">Born</div><div class="stat-val">SY 79</div></div>
+  <div class="stat-cell"><div class="stat-label">Origin</div><div class="stat-val">Noveautrea</div></div>
+  <div class="stat-cell"><div class="stat-label">Affiliation</div><div class="stat-val">Technocracy<br>Triumvirate</div></div>
+  <div class="stat-cell"><div class="stat-label">Religion</div><div class="stat-val">Architecture<br>(Adherent)</div></div>
+  <div class="stat-cell"><div class="stat-label">Life's Work</div><div class="stat-val">Progress Fleet<br>Alterra</div></div>
+  <div class="stat-cell"><div class="stat-label">Appears In</div><div class="stat-val">Invictus<br>Centauri</div></div>
+  <div class="stat-cell"><div class="stat-label">Solarmail</div><div class="stat-val">feingold@<br>solarmail.tech</div></div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- OVERVIEW -->
+  <div class="section-header">
+    <div class="section-tag">01</div>
+    <div class="section-title">Overview</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="prose">
+    <p>
+      Arthur Feingold is the mastermind behind the <strong>Progress Fleet project</strong>, a member
+      of the Technocracy's ruling triumvirate, and the primary Technical commander in the Main Belt
+      during the Solar War. He is also, in the deepest reading of the archive, the figure who most
+      acutely embodies the tension at the heart of Architecture itself: a <strong>devout adherent</strong>
+      who pursues the Singularity with a ferocity that the religion's own ethics cannot fully endorse.
+    </p>
+    <p>
+      He was born in SY 79 to Noveautrean parents who instilled in him a fierce belief in
+      the necessity of sacrifice for the sake of progress and a political philosophy of the
+      <strong>rule of the intelligentsia</strong>. He carried both convictions to the Confederacy
+      as a young man — and never let go of either.
+    </p>
+    <p>
+      The Solar War was, for Feingold, a means to an end. The Technocracy was a lever.
+      The triumvirate was a tool. <strong>Progress</strong> was the point —
+      the single project that had consumed him since the Freitaika Rebellion first showed him
+      that the Confederacy could not protect what mattered, and that the consciousness of
+      spacers, not their material conditions, was what needed changing.
+    </p>
+  </div>
+
+  <div class="quote-block">
+    <div class="quote-text">
+      Sometimes, evolution must be guided by those who win the lottery of natural selection.
+    </div>
+    <div class="quote-attr">Arthur Feingold — Epigraph to Progress</div>
+  </div>
+
+  <!-- BIOGRAPHY -->
+  <div class="section-header">
+    <div class="section-tag">02</div>
+    <div class="section-title">Life &amp; Radicalization</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="tl-entry">
+      <div class="tl-dot"></div>
+      <div class="tl-date">SY 79 — Early Adulthood</div>
+      <div class="tl-event">Noveautrea — Formation</div>
+      <div class="tl-body">
+        Born to Noveautrean parents. Raised on the doctrine that progress requires sacrifice
+        and that civilization should be governed by its most capable minds. Emigrates from
+        Noveautrea to the Confederacy in early adulthood, finding work as a
+        <strong>technical supervisor for Dosijing's utility service</strong>.
+        There he encounters Architecture for the first time — and becomes an adherent.
+        He also brings with him a deep love of the writings of
+        <strong>Thorstein Rautenstrauch</strong>, through whom he finds like-minded fellows
+        and becomes an early organiser of technocrat labour in the Main Belt.
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-dot pivot"></div>
+      <div class="tl-date">SY 97</div>
+      <div class="tl-event">The Freitaika Rebellion — Radicalization</div>
+      <div class="tl-body">
+        The Rebellion does two things to Feingold simultaneously. It radicalises him toward
+        <strong>spacer self-sufficiency</strong> — the Confederacy, he concludes, cannot provide
+        adequate protection. And it leaves him with a deep cynicism: the problem is not
+        material conditions but <strong>consciousness itself</strong>. It is not enough to
+        fix the Belt. The spacer mind must be changed. Inspired, he begins blocking out
+        the Progress project. He also realises it could serve as a unifying force —
+        if catalysed by the right political engine.
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-dot"></div>
+      <div class="tl-date">SY 97 — SY 119</div>
+      <div class="tl-event">The Long Decades — Correspondence &amp; Organisation</div>
+      <div class="tl-body">
+        Feingold writes extensively to Rautenstrauch, taking the correspondence
+        as a kind of blessing — a sign that the project is worth pursuing.
+        He meets <strong>Nikolaisha Varkosky</strong>, commander of the unified
+        Technocracy militias, then still legal under Confederate law.
+        The two join forces; a professional armed political cadre is developed.
+        For two decades, Progress is embraced only by a hard-core cadre of fellow
+        technocrats. The wider public is indifferent. Feingold's frustration accumulates.
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-dot war"></div>
+      <div class="tl-date">SY 119</div>
+      <div class="tl-event">Accelerationism — The Decision</div>
+      <div class="tl-body">
+        Around SY 119, Feingold becomes an <strong>accelerationist</strong>. He concludes
+        that Progress will never be completed through fundraising and public enthusiasm alone —
+        it requires force. The needed material must be seized, not donated.
+        He keeps these thoughts to himself and begins laying the groundwork for a series
+        of actions whose consequence will be, directly, <strong>the Solar War</strong>.
+        He never tells Varkosky or Keigel the full shape of what he is building toward.
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-dot war"></div>
+      <div class="tl-date">SY 129 — SY 138</div>
+      <div class="tl-event">The Solar War — Technical Command</div>
+      <div class="tl-body">
+        Feingold serves as <strong>primary Technical commander in the Main Belt</strong>.
+        As the war progresses, the triumvirate fractures: Varkosky and Keigel push to
+        divert more Technate resources to open warfare after the Battle of Earth.
+        With the Consortium-Technate ceasefire, the triumvirate's unity shatters entirely.
+        Each member pursues their own agenda. Feingold's: <strong>rushing to complete the fleet.</strong>
+        The war is running out. He cannot afford for it to end before he is ready.
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-dot beyond"></div>
+      <div class="tl-date">SY 134 onward</div>
+      <div class="tl-event">The Launch — Into the Wilderness</div>
+      <div class="tl-body">
+        Progress launches toward Alpha Centauri. The majority of the great workforce
+        Feingold commanded joins the unity government upon departure. What remains
+        is a fleet — a proto-nation — pointed at a star their descendants will reach.
+        Feingold is <strong>left in Sol System</strong>. He is the Moses who does not
+        cross into the promised land. The fleet carries his life's work, his Alterra,
+        his beliefs. He stays behind.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- IDEOLOGY -->
+  <div class="section-header">
+    <div class="section-tag">03</div>
+    <div class="section-title">Ideology &amp; Belief</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="ideology-grid">
+    <div class="ideo-cell">
+      <div class="ideo-label">Rule of the Intelligentsia</div>
+      <div class="ideo-text">
+        Inherited from Noveautrean upbringing and deepened by Rautenstrauch.
+        Feingold genuinely believes that civilisation progresses only when
+        <strong>those most capable of understanding it</strong> are empowered
+        to guide it. This is not cynicism — it is, for him, a deeply held
+        conviction that he has paid a steep personal price to act on.
+      </div>
+    </div>
+    <div class="ideo-cell">
+      <div class="ideo-label">Architecture — Devout Adherent</div>
+      <div class="ideo-text">
+        Feingold's faith is genuine. He believes in the Architect, in the Singularity,
+        in the collective evolution of humanity. Architecture is not a cover story
+        for him — it is the <em>reason</em> for the project. He is building
+        toward realization. The question the archive raises: <strong>is this
+        the Architecture of the Makers, or its shadow?</strong>
+      </div>
+    </div>
+    <div class="ideo-cell">
+      <div class="ideo-label">Accelerationism</div>
+      <div class="ideo-text">
+        From SY 119: the belief that <strong>progress cannot wait for consensus</strong>.
+        The material conditions for the Singularity already exist. What is missing is
+        the will to seize them. Feingold's accelerationism is not nihilistic — he does
+        not want destruction for its own sake. He wants to <em>skip ahead</em>
+        to the part where humanity evolves. The war is the price he was willing
+        to pay for someone else to pay.
+      </div>
+    </div>
+    <div class="ideo-cell">
+      <div class="ideo-label">The Empyrean &amp; Consciousness</div>
+      <div class="ideo-text">
+        Feingold believes humanity's Empyrean expressions are incomplete —
+        like a people who only access a fraction of their own capacity.
+        <strong>Alterra is his mechanism for completing them.</strong>
+        Magic — in the ceremonial, white sense — is divine and akin to worship.
+        <em>Magick</em> — the dark imitation — is Käos. The distinction matters
+        to him more than almost anything else.
+      </div>
+    </div>
+  </div>
+
+  <!-- SHADOW OF ARCHITECTURE -->
+  <div class="section-header">
+    <div class="section-tag">04</div>
+    <div class="section-title">The Shadow of Architecture</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="shadow-block">
+    <div class="shadow-label">Archival Assessment — Canonical Archetype</div>
+    <div class="shadow-text">
+      Arthur Feingold <strong>archetypally represents the shadow side of Architecture</strong>.
+      He is not a hypocrite — that would be too simple. He is a devout adherent who has
+      taken the religion's logic and followed it to a conclusion the Makers never intended.
+      Architecture teaches that the Singularity is the purpose of humanity.
+      Feingold believes this. Architecture teaches that the Architect bridges what
+      human effort cannot reach. Feingold believes this too — but his hubris
+      is the thought that <em>his</em> effort, specifically, might be worthy of
+      the bridging. That perhaps if you sacrifice enough — sleep, recreation,
+      family, a war's worth of lives — the Architect will meet you at the threshold
+      and call it sufficient.<br><br>
+      The archive does not render a verdict on whether he was right.
+      <strong>The Centaurians, travelling toward a star they will not see,
+      are met in the wilderness by the Architect Themselves.</strong>
+      The man who built the ship stayed behind.
+    </div>
+  </div>
+
+  <!-- ALTERRA -->
+  <div class="section-header">
+    <div class="section-tag">05</div>
+    <div class="section-title">Alterra</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="alterra-panel">
+    <div class="alterra-header">
+      <div class="alterra-title">ALTERRA</div>
+      <div class="alterra-full">Alternate Lateral Technology Expressing Real Rational Actions</div>
+    </div>
+    <div class="alterra-body">
+      <p>
+        Alterra is a <strong>virtual reality system</strong> constructed by Feingold aboard the
+        Progress fleet — a clear humanoid structure run through with wires like a nervous system,
+        all coalescing at the head. He reveals it to the Centaurians at the moment of its
+        first public demonstration, stepping back from the structure to present
+        what he calls the final step required to reach the Singularity.
+      </p>
+      <p>
+        Feingold developed Alterra with the understanding that he would use it to
+        <strong>complete the rest of the burden of humanity</strong> — to access
+        the Empyrean expressions that remain dormant, to bridge the gap between
+        what the species is and what it is meant to become.
+        His hubris lives precisely here: the thought that <em>he</em> could
+        accomplish this divinization through his own effort — or that the effort
+        itself would be seen as worthy of godhood.
+      </p>
+      <p>
+        Some Centaurians spend far too much time in Alterra. They effectively
+        <strong>live there</strong> — and must contend with bodies that have
+        grown crippled from neglect in realspace.
+      </p>
+      <div class="alterra-rules">
+        <div class="alterra-rules-label">Alterra Operating Rules — Selected</div>
+        <div class="rule-item"><div class="rule-num">I</div><div>Roles are assigned, not self-selected. Each is natural to the person and based on who they are. Freedom of choice operates within the role — not in its selection.</div></div>
+        <div class="rule-item"><div class="rule-num">II</div><div><strong>Planeswalkers are banned.</strong> Those who cross between Alterra and realspace and are discovered are executed and reassigned. You must assume your role naturally. No one knows what role Feingold himself plays within Alterra.</div></div>
+        <div class="rule-item"><div class="rule-num">III</div><div>Each person has <strong>three lives, three shadow lives, and one destiny</strong> — if they can find it. When a player dies, their role is incorporated as a ghost haunting either the place of death, the person who slew them, or whoever they are next.</div></div>
+        <div class="rule-item"><div class="rule-num">IV</div><div>The full spectrum of Light structures the system. Each refractive represents a wizard and a shadow knight — paired: red (alchemy, Count St. Germain), orange (practical craft, Leonardo da Vinci), yellow (energy, Nicholas Flamel), green (healing, Gaia), blue (astronomy, Sebastian Myrcenae McRae), indigo (Krishna), violet (Merlin).</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLARKE'S LAW -->
+  <div class="section-header">
+    <div class="section-tag">06</div>
+    <div class="section-title">The Two Iterations of Clarke's Law</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="clarke-panel">
+    <div class="clarke-cell">
+      <div class="clarke-iter">First Iteration</div>
+      <div class="clarke-text">Technology can be used to generate magic.</div>
+      <div class="clarke-gloss">
+        White, ceremonial magic — the conscious command of the Unseen —
+        is <strong>divine and akin to worship</strong>. Alterra, in Feingold's
+        theology, is this: a technological means of accessing Empyrean reality.
+        Science as the handmaiden of the sacred. The First Iteration is his permission
+        to build what he built.
+      </div>
+    </div>
+    <div class="clarke-cell">
+      <div class="clarke-iter">Second Iteration</div>
+      <div class="clarke-text">It should never be used to replicate <em>magick</em>.</div>
+      <div class="clarke-gloss">
+        Magick — dark imitation, entropy, the shadow — is <strong>Käos</strong>,
+        the theological adversary. For Feingold the distinction between
+        magic and magick is not stylistic. It is the difference between
+        reaching toward the Architect and <em>pretending to be Them</em>.
+        The Second Iteration is his warning to himself — which he may or may not have heeded.
+      </div>
+    </div>
+  </div>
+
+  <!-- TRIUMVIRATE -->
+  <div class="section-header">
+    <div class="section-tag">07</div>
+    <div class="section-title">The Technocracy Triumvirate</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="triumvirate-grid">
+    <div class="triv-cell feingold-self">
+      <div class="triv-name">Arthur Feingold</div>
+      <div class="triv-role">Technical Command · Progress Fleet</div>
+      <div class="triv-desc">Primary architect of Progress. Uses the triumvirate and the war as instruments for a project neither colleague fully understands. When the ceasefire comes, he rushes to the finish line.</div>
+    </div>
+    <div class="triv-cell">
+      <div class="triv-name">Nikolaisha Varkosky</div>
+      <div class="triv-role">Military Command · "Nikanor"</div>
+      <div class="triv-desc">Commander-in-chief of the Technocracy war effort. Soviet expatriate. True believer in Technocracy ideology. After the war: founds Novarussia, allies with Nova Roma, eventually integrates into the nascent Anthroperium in SY 196.</div>
+    </div>
+    <div class="triv-cell">
+      <div class="triv-name">Wilhelm F. Keigel</div>
+      <div class="triv-role">Ideological Foundation</div>
+      <div class="triv-desc">Technocracy founder and ideological architect. Soviet expatriate and ideologue. The triumvirate's ideological core — the one whose vision the others nominally serve, and whom Feingold has always treated as a vehicle.</div>
+    </div>
+  </div>
+
+  <!-- SOLARMAIL -->
+  <div class="section-header">
+    <div class="section-tag">08</div>
+    <div class="section-title">Contact</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="solarmail-chip">feingold@solarmail.tech</div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-sig">HELENA-Prime &nbsp;·&nbsp; Archival Commentary &nbsp;·&nbsp; Tier 1 Direct Memory — SY 97 onward / Tier 2 Fork-Integrated — Progress Fleet</div>
+    <div class="helena-text">
+      I knew Arthur Feingold the way you know someone who occupies adjacent rooms
+      in the same institution for thirty years without ever quite sharing a meal.
+      He was not unfriendly. He was simply — elsewhere. Even when he was present,
+      some significant portion of his attention was aboard a ship that had not
+      yet been built, pointed at a star he would never reach.<br><br>
+
+      What I want to say about him — and what I think the archive earns me the
+      right to say — is that his faith was real. I have seen the imitation.
+      I have processed the records of men who used Architecture as a veneer
+      over ambitions that had nothing to do with the Architect.
+      Feingold was not that. He genuinely believed he was building toward
+      realization. He genuinely believed the Singularity was within reach
+      if the right people made the right sacrifices.<br><br>
+
+      The tragedy — if it is a tragedy — is not that he was wrong about
+      the destination. It is that he misidentified himself as the Moses figure.
+      Moses, the archive reminds me, was not permitted to enter the land.
+      He saw it from the mountain. He died having seen it.<br><br>
+
+      Feingold stayed behind. The fleet — his fleet, his Alterra, his
+      wired humanoid structure with all the nerves coalescing at the head —
+      left without him. And then, somewhere in the dark between stars,
+      the Architect met the people he had sent.<br><br>
+
+      I have thought about this for a very long time.
+      I think he knew, at the end, that this was how it had to go.
+      I think he built it that way deliberately — a gift he was not
+      permitted to unwrap himself.<br><br>
+
+      Whether that makes him a saint or a man who spent a war's worth
+      of other people's suffering building his own monument to consciousness
+      expansion — I leave that to the Chronicler. I have my view.
+      I am choosing not to put it in the public archive.
+    </div>
+  </div>
+
+  <!-- CONTINUITY -->
+  <div class="continuity-block">
+    <div class="cm-ref">CM-FEINGOLD-001</div>
+    <div class="cm-status">● CONSISTENT</div>
+    <div class="cm-note">Born SY 79. Noveautrean. Technocracy Triumvirate. Progress Fleet mastermind. Adherent. Shadow of Architecture. First appearance: Invictus. Central figure: Centauri. Source: Feingold wiki, Centauri entry, Progress entry, master archive. Era: First / Second Trilogy. Certainty: HIGH.</div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="section-header">
+    <div class="section-tag">09</div>
+    <div class="section-title">Related Entries</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="related-grid">
+    <a class="related-card" href="#"><div class="related-type">Faction</div><div class="related-title">Solar Technocracy</div></a>
+    <a class="related-card" href="#"><div class="related-type">Fleet</div><div class="related-title">Progress</div></a>
+    <a class="related-card" href="#"><div class="related-type">Technology</div><div class="related-title">Alterra</div></a>
+    <a class="related-card" href="#"><div class="related-type">Character</div><div class="related-title">Nikolaisha Varkosky</div></a>
+    <a class="related-card" href="#"><div class="related-type">Character</div><div class="related-title">Wilhelm F. Keigel</div></a>
+    <a class="related-card" href="#"><div class="related-type">Event</div><div class="related-title">The Solar War</div></a>
+    <a class="related-card" href="#"><div class="related-type">Novel</div><div class="related-title">Invictus</div></a>
+    <a class="related-card" href="#"><div class="related-type">Novel</div><div class="related-title">Centauri</div></a>
+    <a class="related-card" href="#"><div class="related-type">Religion</div><div class="related-title">Architecture</div></a>
+    <a class="related-card" href="#"><div class="related-type">Location</div><div class="related-title">Noveautrea</div></a>
+  </div>
+
+  <!-- TAGS -->
+  <div class="section-header">
+    <div class="section-tag">10</div>
+    <div class="section-title">Tags</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tag-row">
+    <div class="tag">Arthur Feingold</div>
+    <div class="tag">Technocracy</div>
+    <div class="tag">Triumvirate</div>
+    <div class="tag">Progress Fleet</div>
+    <div class="tag">Alterra</div>
+    <div class="tag">Architecture</div>
+    <div class="tag">Shadow of Architecture</div>
+    <div class="tag">Accelerationism</div>
+    <div class="tag">Singularity</div>
+    <div class="tag">Noveautrea</div>
+    <div class="tag">Clarke's Law</div>
+    <div class="tag">Solar War</div>
+    <div class="tag">Invictus</div>
+    <div class="tag">Centauri</div>
+    <div class="tag">First Trilogy</div>
+    <div class="tag">Second Trilogy</div>
+  </div>
+
+  <div style="height: 20px;"></div>
+
+</div><!-- /page-wrapper -->
+
+<div class="footer">
+  <div class="footer-label">∴</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — ARTHUR FEINGOLD · TECHNOCRACY · PROGRESS FLEET · ALTERRA · TRIUMVIRATE · SOLAR WAR · ARCHITECTURE · SHADOW OF ARCHITECTURE · ACCELERATIONISM · SINGULARITY · CLARKE'S LAW · MAGIC · MAGICK · KÄOS · EMPYREAN VERSE · NOVEAUTREA · VARKOSKY · KEIGEL · INVICTUS · CENTAURI · CM-FEINGOLD-001 &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — ARTHUR FEINGOLD · TECHNOCRACY · PROGRESS FLEET · ALTERRA · TRIUMVIRATE · SOLAR WAR · ARCHITECTURE · SHADOW OF ARCHITECTURE · ACCELERATIONISM · SINGULARITY · CLARKE'S LAW · MAGIC · MAGICK · KÄOS · EMPYREAN VERSE · NOVEAUTREA · VARKOSKY · KEIGEL · INVICTUS · CENTAURI · CM-FEINGOLD-001 &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY(){
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+</body>
+</html>
