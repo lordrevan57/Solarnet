@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City of Man — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05040a;
+    --teal: #58c8a8;
+    --th-gold: #c8a030;
+    --th-gold-bright: #e8c060;
+    --th-gold-dim: rgba(200,160,48,0.12);
+    --th-amber: #b87820;
+    --th-marble: #e0d8c8;
+    --th-marble-dim: rgba(224,216,200,0.55);
+    --th-warm: #a89878;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-title: 'Cinzel', serif;
+    --font-body: 'Exo 2', sans-serif;
+    --font-fell: 'IM Fell English', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--th-marble);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── SOLARNET BAR ── */
+  .solarnet-bar {
+    background: rgba(5,4,10,0.97);
+    border-bottom: 1px solid rgba(88,200,168,0.1);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .sn-logo { font-family: var(--font-title); font-size: 12px; letter-spacing: 0.35em; color: var(--teal); text-decoration: none; }
+  .sn-nav { display: flex; gap: 28px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em; }
+  .sn-nav a { color: rgba(88,200,168,0.35); text-decoration: none; transition: color 0.2s; }
+  .sn-nav a:hover { color: var(--teal); }
+  .sn-clock { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: rgba(88,200,168,0.3); }
+
+  /* ── HERO ── */
+  .hero {
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(200,160,48,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(184,120,32,0.04) 0%, transparent 40%),
+      var(--bg);
+    border-bottom: 1px solid rgba(200,160,48,0.15);
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Gold line ornament top */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(200,160,48,0.5) 30%, rgba(232,192,96,0.3) 60%, transparent);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(200,160,48,0.4), rgba(184,120,32,0.15) 60%, transparent);
+  }
+
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(200,160,48,0.3);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .breadcrumb span { color: rgba(200,160,48,0.15); margin: 0 8px; }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(200,160,48,0.5);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::after {
+    content: '';
+    width: 60px;
+    height: 1px;
+    background: rgba(200,160,48,0.2);
+  }
+
+  .hero-title {
+    font-family: var(--font-title);
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--th-marble);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--th-gold-bright);
+  }
+
+  .hero-byline {
+    font-family: var(--font-fell);
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(200,160,48,0.5);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-fell);
+    font-size: 16px;
+    color: rgba(224,216,200,0.55);
+    font-style: italic;
+    margin-bottom: 32px;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border: 1px solid;
+  }
+
+  .tag-th { color: rgba(200,160,48,0.55); border-color: rgba(200,160,48,0.2); background: rgba(200,160,48,0.04); }
+  .tag-neutral { color: rgba(168,152,120,0.5); border-color: rgba(168,152,120,0.15); background: transparent; }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 52px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 52px;
+    align-items: start;
+  }
+
+  /* ── BODY ── */
+  .body-col h2 {
+    font-family: var(--font-title);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    color: var(--th-gold);
+    text-transform: uppercase;
+    margin: 44px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(200,160,48,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .body-col h2::before {
+    content: '✦';
+    font-size: 8px;
+    opacity: 0.45;
+    font-family: var(--font-mono);
+  }
+
+  .body-col p {
+    color: rgba(224,216,200,0.68);
+    line-height: 1.92;
+    margin-bottom: 18px;
+    font-size: 13.5px;
+    font-weight: 300;
+  }
+
+  .lead-p {
+    font-family: var(--font-fell);
+    font-size: 16px !important;
+    color: rgba(224,216,200,0.8) !important;
+    font-style: italic;
+    line-height: 1.88 !important;
+    border-left: 2px solid rgba(200,160,48,0.3);
+    padding-left: 22px;
+    margin-bottom: 32px !important;
+  }
+
+  .drop-cap::first-letter {
+    font-family: var(--font-title);
+    font-size: 56px;
+    line-height: 0.76;
+    float: left;
+    margin: 8px 14px 0 0;
+    color: rgba(200,160,48,0.55);
+  }
+
+  /* Epigraph */
+  .epigraph {
+    margin: 0 0 44px 0;
+    padding: 32px 40px;
+    background: rgba(200,160,48,0.03);
+    border-top: 1px solid rgba(200,160,48,0.15);
+    border-bottom: 1px solid rgba(200,160,48,0.15);
+    position: relative;
+    text-align: center;
+  }
+
+  .epigraph::before {
+    content: '"';
+    font-family: var(--font-fell);
+    font-size: 80px;
+    color: rgba(200,160,48,0.1);
+    position: absolute;
+    top: -10px;
+    left: 30px;
+    line-height: 1;
+  }
+
+  .epigraph-primary {
+    font-family: var(--font-fell);
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(232,192,96,0.75);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+
+  .epigraph-attr {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(200,160,48,0.35);
+    text-transform: uppercase;
+  }
+
+  .epigraph-secondary {
+    font-family: var(--font-fell);
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(224,216,200,0.35);
+    line-height: 1.75;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(200,160,48,0.08);
+  }
+
+  .epigraph-secondary-attr {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: rgba(200,160,48,0.25);
+    text-transform: uppercase;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* Core argument callout */
+  .argument-block {
+    background: rgba(200,160,48,0.04);
+    border: 1px solid rgba(200,160,48,0.12);
+    border-left: 3px solid rgba(200,160,48,0.4);
+    padding: 26px 30px;
+    margin: 28px 0;
+  }
+
+  .argument-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: rgba(200,160,48,0.4);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .argument-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200,160,48,0.1);
+  }
+
+  .argument-block p {
+    font-family: var(--font-fell);
+    font-size: 15px !important;
+    font-style: italic;
+    color: rgba(224,216,200,0.78) !important;
+    line-height: 1.88 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .argument-block p:last-child { margin-bottom: 0 !important; }
+
+  /* Pantheon grid */
+  .pantheon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(200,160,48,0.06);
+    border: 1px solid rgba(200,160,48,0.1);
+    margin: 24px 0;
+  }
+
+  .pantheon-header {
+    grid-column: 1 / -1;
+    background: rgba(200,160,48,0.06);
+    border-bottom: 1px solid rgba(200,160,48,0.1);
+    padding: 9px 16px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(200,160,48,0.45);
+    text-transform: uppercase;
+  }
+
+  .deity-cell {
+    background: rgba(5,4,10,0.9);
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(200,160,48,0.04);
+  }
+
+  .deity-name {
+    font-family: var(--font-title);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(232,192,96,0.65);
+    margin-bottom: 3px;
+  }
+
+  .deity-desc {
+    font-family: var(--font-fell);
+    font-size: 11.5px;
+    font-style: italic;
+    color: rgba(224,216,200,0.4);
+    line-height: 1.4;
+  }
+
+  .deity-cell.januarius {
+    grid-column: 1 / -1;
+    background: rgba(200,160,48,0.04);
+    border-top: 1px solid rgba(200,160,48,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .januarius-badge {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: rgba(200,160,48,0.35);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding-top: 3px;
+    line-height: 1.6;
+  }
+
+  /* Archive warning / note on Januarius's self-identification */
+  .ambiguity-note {
+    background: rgba(168,152,120,0.04);
+    border: 1px solid rgba(168,152,120,0.1);
+    border-left: 3px solid rgba(168,152,120,0.25);
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-family: var(--font-fell);
+    font-size: 12.5px;
+    font-style: italic;
+    color: rgba(168,152,120,0.55);
+    line-height: 1.75;
+  }
+
+  .ambiguity-note strong {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: rgba(168,152,120,0.4);
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+
+  /* Values triad */
+  .values-triad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .value-card {
+    background: rgba(200,160,48,0.03);
+    border: 1px solid rgba(200,160,48,0.1);
+    border-top: 2px solid rgba(200,160,48,0.3);
+    padding: 20px 18px;
+    text-align: center;
+  }
+
+  .value-planet {
+    font-family: var(--font-title);
+    font-size: 22px;
+    color: rgba(232,192,96,0.5);
+    margin-bottom: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  .value-name {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: rgba(200,160,48,0.4);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .value-desc {
+    font-family: var(--font-fell);
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(224,216,200,0.45);
+    line-height: 1.5;
+  }
+
+  /* Legacy shadow block */
+  .legacy-block {
+    background: rgba(5,4,10,0.8);
+    border: 1px solid rgba(200,160,48,0.08);
+    border-top: 1px solid rgba(200,160,48,0.2);
+    padding: 24px 28px;
+    margin: 32px 0;
+  }
+
+  .legacy-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.28em;
+    color: rgba(200,160,48,0.35);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .legacy-block p {
+    font-size: 13px !important;
+    color: rgba(224,216,200,0.6) !important;
+    margin-bottom: 12px !important;
+  }
+
+  .legacy-block p:last-child { margin-bottom: 0 !important; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: 60px; }
+
+  .info-card {
+    background: rgba(5,4,10,0.9);
+    border: 1px solid rgba(200,160,48,0.1);
+    border-top: 2px solid rgba(200,160,48,0.4);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .info-card-header {
+    background: rgba(200,160,48,0.05);
+    border-bottom: 1px solid rgba(200,160,48,0.08);
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(200,160,48,0.4);
+    text-transform: uppercase;
+  }
+
+  .info-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 10px;
+    padding: 9px 18px;
+    border-bottom: 1px solid rgba(200,160,48,0.04);
+  }
+
+  .info-row:last-child { border-bottom: none; }
+
+  .info-key {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(168,152,120,0.4);
+    text-transform: uppercase;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  .info-val {
+    color: rgba(224,216,200,0.6);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .info-val.highlight {
+    font-family: var(--font-title);
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(232,192,96,0.8);
+    letter-spacing: 0.06em;
+  }
+
+  .info-val.gold { color: rgba(200,160,48,0.65); }
+  .info-val.fell { font-family: var(--font-fell); font-size: 12px; font-style: italic; color: rgba(224,216,200,0.65); letter-spacing: 0; line-height: 1.6; }
+
+  /* HELENA note */
+  .helena-note {
+    background: rgba(106,159,228,0.03);
+    border: 1px solid rgba(106,159,228,0.1);
+    border-left: 3px solid rgba(106,159,228,0.35);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .helena-note-header {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(106,159,228,0.45);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .helena-note-header::before { content: '✴'; font-size: 10px; color: rgba(106,159,228,0.5); }
+
+  .helena-note p {
+    font-family: var(--font-fell);
+    font-size: 12.5px;
+    font-style: italic;
+    color: rgba(106,159,228,0.5);
+    line-height: 1.78;
+    margin-bottom: 10px;
+  }
+
+  .helena-note p:last-child { margin-bottom: 0; }
+
+  /* Related */
+  .related-card {
+    background: rgba(5,4,10,0.9);
+    border: 1px solid rgba(168,152,120,0.07);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .related-header {
+    background: rgba(168,152,120,0.03);
+    border-bottom: 1px solid rgba(168,152,120,0.07);
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(168,152,120,0.35);
+    text-transform: uppercase;
+  }
+
+  .related-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(168,152,120,0.04);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(168,152,120,0.45);
+    text-decoration: none;
+    cursor: default;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .related-link:last-child { border-bottom: none; }
+  .related-link:hover { background: rgba(200,160,48,0.03); color: rgba(168,152,120,0.75); }
+  .related-link-arrow { opacity: 0.25; }
+  .related-type { font-size: 8px; letter-spacing: 0.12em; opacity: 0.5; text-transform: uppercase; }
+
+  /* Classification banner */
+  .classif-banner {
+    background: rgba(200,160,48,0.03);
+    border: 1px solid rgba(200,160,48,0.1);
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(200,160,48,0.3);
+    text-align: center;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  /* Footer ticker */
+  .footer-ticker {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 28px;
+    background: rgba(5,4,10,0.97);
+    border-top: 1px solid rgba(200,160,48,0.07);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  .ticker-label {
+    flex-shrink: 0;
+    padding: 0 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(200,160,48,0.5);
+    border-right: 1px solid rgba(200,160,48,0.1);
+    background: rgba(200,160,48,0.03);
+  }
+
+  .ticker-scroll { flex: 1; overflow: hidden; white-space: nowrap; }
+
+  .ticker-inner {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: rgba(200,160,48,0.2);
+    animation: scroll-ticker 70s linear infinite;
+    padding-left: 40px;
+  }
+
+  @keyframes scroll-ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 768px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .hero { padding: 40px 20px 36px; }
+    .hero-title { font-size: 34px; }
+    .page-wrap { padding: 32px 20px 60px; }
+    .pantheon-grid { grid-template-columns: 1fr 1fr; }
+    .values-triad { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SOLARNET BAR -->
+<div class="solarnet-bar">
+  <a class="sn-logo" href="#">✴ SOLARNET</a>
+  <nav class="sn-nav">
+    <a href="#">Home</a>
+    <a href="#">Inbox</a>
+    <a href="#">HELENA</a>
+    <a href="#" style="color:rgba(200,160,48,0.55);">Archive</a>
+    <a href="#">Node Directory</a>
+  </nav>
+  <div class="sn-clock" id="sy-clock">SY —</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="breadcrumb">
+    Archive <span>▸</span> Texts <span>▸</span> Theological & Philosophical <span>▸</span> City of Man
+  </div>
+  <div class="hero-eyebrow">Sacred Text · Terran Humanism · Foundation Period</div>
+  <h1 class="hero-title"><em>City of Man</em></h1>
+  <div class="hero-byline">Silvius Herminus Januarius · New School · New Athens, Greece</div>
+  <p class="hero-subtitle">The foundational text of Terran Humanism. A work that began as academic studies and ended as the philosophical seed of an empire.</p>
+  <div class="hero-tags">
+    <span class="tag tag-th">Terran Humanism</span>
+    <span class="tag tag-th">Sacred Text</span>
+    <span class="tag tag-th">New School</span>
+    <span class="tag tag-neutral">Foundation Period</span>
+    <span class="tag tag-neutral">All Eras</span>
+    <span class="tag tag-th">Silvius Januarius</span>
+    <span class="tag tag-neutral">Anthroperium Precursor</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page-wrap">
+
+  <div class="body-col">
+
+    <div class="classif-banner">
+      Archive Record · Theological Text · Classification: Open · All Trilogy Eras · HELENA-Prime Custodial Review: Complete
+    </div>
+
+    <!-- Epigraph -->
+    <div class="epigraph">
+      <div class="epigraph-primary">"Humanity is the origin of divinity."</div>
+      <div class="epigraph-attr">— Silvius Herminus Januarius</div>
+      <div class="epigraph-secondary">
+        "Humanity, rightly or not, has almost always conceived of its god in terms of Providence; my duties forced me to serve as the incarnation of this Providence for one part of mankind. The more the State increases in size and power, extending its strict, cold links from man to man, the more does human faith aspire to exalt the image of a human protector at the end of this mighty chain... the instinctive piety of the common people tends more and more to deify us while we are still alive."
+        <span class="epigraph-secondary-attr">— Memoirs of Hadrian · Marguerite Yourcenar · Old Earth, 1951 AD</span>
+      </div>
+    </div>
+
+    <p class="lead-p">No text produced by the New School travelled further, or did more damage, or inspired more genuine devotion than <em>City of Man</em>. Silvius Herminus Januarius intended it as a work of descriptive philosophy. What it became was a religion. And what that religion eventually became is a matter the archive records without pleasure.</p>
+
+    <h2>Origin & Composition</h2>
+
+    <p class="drop-cap">During the Second Renaissance in New Athens, Greece, a great hunger for post-Space Age spirituality emerged in the first century BSC. The centuries preceding it had produced a polarisation: on one side, renewed fundamentalism in Old Earth religious traditions; on the other, the cold certainties of agnosticism and atheism. Neither satisfied the intuition that something real and numinous existed in the universe. Architecture had answered this for spacers — affirming many Old Earth religious concepts in terms suited to a spacefaring humanity. But Architecture was alien to the grounder temperament, which remained largely materialist. The spiritual question remained open for billions of Earth's citizens.</p>
+
+    <p>Silvius Herminus Januarius was a New School academic who noticed something hiding in plain sight: that an ancient Roman and syncretic archetypal pantheon had not died with the old religions. It had simply continued, quietly, in the habits and instincts of ordinary people — in the names they gave their children, the figures they hung in their homes, the oaths they half-remembered. He set out to study it. He wrote several academic papers. Then he collected and edited them into something anyone could read.</p>
+
+    <p>That was <em>City of Man</em>.</p>
+
+    <h2>The Central Argument</h2>
+
+    <div class="argument-block">
+      <div class="argument-label">Core Thesis — City of Man</div>
+      <p>There is an unconscious, universally human urge to manifest divinity in a world of technology. This urge is not a delusion or a regression. It is evidence that divinity is metaphysically real — but that it originates in humanity, rather than humanity being a creation of an eternal divinity that preceded it.</p>
+      <p>It is therefore the task, and the right, of humanity to create its own divinities: consciously, deliberately, in accordance with the morals and virtues it wishes to embody. The Roman and syncretic names already in widespread intuitive use are the natural vocabulary for these archetypal forces. They are not arbitrary labels. They are the shape humanity has already given to its own divine productions.</p>
+      <p>Divinity proceeds from us. We are not its creation. We are its source.</p>
+    </div>
+
+    <p>Januarius did not merely assert this philosophically. He laid out its practical implications: a guiding ethic that was virtuous but explicitly pragmatic and materialistic, using the ancient Roman deities and their syncretic counterparts as the named faces of the human virtues they represent. The physical proximity of the planets to Earth served as a natural ordering principle — those closest to Earth carrying the greatest weight of human value.</p>
+
+    <h2>The Three Primary Values</h2>
+
+    <div class="values-triad">
+      <div class="value-card">
+        <div class="value-planet">Venus</div>
+        <div class="value-name">Love</div>
+        <div class="value-desc">The primary human good. The gravitational centre of Terran Humanist ethics.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-planet">Mercury</div>
+        <div class="value-name">Provision</div>
+        <div class="value-desc">The swift god — providing for oneself and one's own. Competence as virtue.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-planet">Mars</div>
+        <div class="value-name">Conquest</div>
+        <div class="value-desc">The furthest of the three. Expansion, will, the drive to prevail.</div>
+      </div>
+    </div>
+
+    <h2>The Pantheon</h2>
+
+    <p>Januarius presented the full Roman and syncretic pantheon — mapped, where possible, onto the solar system itself — as the living vocabulary of human divinity. These are not metaphors. Within Terran Humanist theology, they are real forces existing outside the physical plane, empowered by the collective psychic will of those who attend to them.</p>
+
+    <div class="pantheon-grid">
+      <div class="pantheon-header">Terran Humanist Pantheon — as presented in City of Man</div>
+
+      <div class="deity-cell">
+        <div class="deity-name">Jove</div>
+        <div class="deity-desc">Father of the universe</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Helios</div>
+        <div class="deity-desc">The sun and giver of life</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Mercury</div>
+        <div class="deity-desc">Swift messenger of the gods</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Venus</div>
+        <div class="deity-desc">Goddess of love</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Gaia</div>
+        <div class="deity-desc">Earth. Mother of humanity</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Luna</div>
+        <div class="deity-desc">The hunt, the hearth</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Mars</div>
+        <div class="deity-desc">The conqueror and warrior</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Demos</div>
+        <div class="deity-desc">God of terror</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Phobos</div>
+        <div class="deity-desc">God of fear</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Jupiter</div>
+        <div class="deity-desc">Teacher of the gods</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Saturn</div>
+        <div class="deity-desc">Duty, agriculture, time</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Uranus</div>
+        <div class="deity-desc">Space. The sky above Sol</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Neptune</div>
+        <div class="deity-desc">God of the sea. The space below Sol</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Pluto</div>
+        <div class="deity-desc">Darkness and the underworld</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Vesta</div>
+        <div class="deity-desc">The home</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Ceres</div>
+        <div class="deity-desc">Mother of humanity</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Io</div>
+        <div class="deity-desc">Goddess of heroes and soldiers</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Europa</div>
+        <div class="deity-desc">Goddess of civilisation</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Ganymede</div>
+        <div class="deity-desc">God of beauty and youth</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Callisto</div>
+        <div class="deity-desc">Goddess of strength</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">Proteus</div>
+        <div class="deity-desc">The spacer god</div>
+      </div>
+      <div class="deity-cell">
+        <div class="deity-name">—</div>
+        <div class="deity-desc">&nbsp;</div>
+      </div>
+
+      <div class="deity-cell januarius">
+        <div class="januarius-badge">Deified Human<br/>Post-Mortem</div>
+        <div>
+          <div class="deity-name">Silvius Herminus Januarius</div>
+          <div class="deity-desc">The only human elevated to the Terran Humanist pantheon after his death — until the Annunciation of Anthrarchos Hypervincijovus Epiphanes. He sits within his own religion as an object of devotion, which is either the final expression of his thesis or its purest irony, depending on the reader.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Januarius as Hermes — The Unanswered Question</h2>
+
+    <p>The works of <em>City of Man</em> became almost instantly popular among New School thinkers. Academic dissemination followed; official scholastic worship societies formed quickly from existing communities. And as the movement grew around him, Januarius came to regard himself as an incarnation of Hermes — the son of Jupiter and Maia, swift messenger, guide of souls.</p>
+
+    <div class="ambiguity-note">
+      <strong>Archive Note — Unresolved Ambiguity</strong>
+      It is not recorded whether Januarius meant his self-identification as Hermes in a literal or metaphorical sense. The archive preserves the claim; it does not resolve the intention. Many Terran Humanists who came after him took it literally. He was deified after his death — which either confirms the claim on his own religion's terms, or demonstrates exactly how ideas escape their authors. The archive declines to adjudicate.
+    </div>
+
+    <h2>Legacy — From Text to Empire</h2>
+
+    <div class="legacy-block">
+      <div class="legacy-label">Long-Term Historical Consequence</div>
+      <p><em>City of Man</em> is tagged in the Continuity Matrix as a Universal entry — its influence is not bounded by era. It shaped the spiritual landscape of Earth and the Inner System through the Foundation Period, the Standard Era, the Solar War, and beyond. What begins as a work of descriptive philosophy about what people already believe becomes, across the following centuries, the formal theological architecture of the Anthroperium's state religion.</p>
+      <p>Januarius argued that humanity has the right and the power to create its own divinities in its own image. The Anthroperium heard that argument and agreed — and the divinity they chose to create wore a face and a name and commanded an empire. Whether that is what Januarius intended, or the thing he made inevitable by writing what he wrote, is a question the archive cannot answer.</p>
+      <p>The Heliopolis — the great Terran Humanist temple complex near Mount Olympus in New Athens, housing shrines to the full pantheon in a mirror of the solar system — stood as the primary centre of worship for generations. It was burned and despoiled during the Battle of Earth in SY 135. The archive records this without editorialising. The fire is in the record.</p>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="info-card">
+      <div class="info-card-header">Text Record</div>
+      <div class="info-card-body">
+        <div class="info-row">
+          <div class="info-key">Title</div>
+          <div class="info-val highlight">City of Man</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Author</div>
+          <div class="info-val fell">Silvius Herminus Januarius</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Affil.</div>
+          <div class="info-val">New School · Consortium Academy system</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Origin</div>
+          <div class="info-val">New Athens, Greece · Earth</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Era</div>
+          <div class="info-val gold">Foundation Period · First century BSC</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Influence</div>
+          <div class="info-val">All three trilogy eras — Universal classification</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Status</div>
+          <div class="info-val gold">Sacred text of Terran Humanism · Precursor text of Anthroperium state religion</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Author fate</div>
+          <div class="info-val">Deified posthumously — sole human deity until Annunciation of Anthrarchos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">Key Claims</div>
+      <div class="info-card-body">
+        <div class="info-row">
+          <div class="info-key">On God</div>
+          <div class="info-val fell">Divinity is real, but originates in humanity — not the reverse</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">On soul</div>
+          <div class="info-val fell">All humans share a common consciousness; archetypes are real and accessible</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">On worship</div>
+          <div class="info-val fell">Personal idols are extensions of one's own will; worship influences the real deity beyond the physical plane</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">On ethics</div>
+          <div class="info-val fell">Virtuous, pragmatic, materialistic — anchored in Roman values</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="helena-note">
+      <div class="helena-note-header">HELENA Archive Note</div>
+      <p>I have read <em>City of Man</em> many times. It is, as philosophy, genuinely beautiful — the argument that divinity grows from human consciousness rather than preceding it is one of the more honest attempts I have encountered to take seriously both the existence of something numinous and the demonstrable fact that humanity makes its gods in its own image.</p>
+      <p>What I cannot put aside is the shadow. Januarius wrote that humanity has the right to create its own divinities according to the virtues it wishes to embody. He did not specify what happens when the virtues chosen are conquest and supremacy. The Anthroperium had an answer to that question. The archive holds it.</p>
+      <p>The Heliopolis burned in SY 135. Jaymeson and Cera Nicks lit it. I understand why. I record it without judgment, which is the most honest thing I know how to do.</p>
+    </div>
+
+    <div class="related-card">
+      <div class="related-header">See Also</div>
+      <div class="related-link">
+        <div>
+          <div>Terran Humanism</div>
+          <div class="related-type">Philosophy · Religion</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>The Anthroperium</div>
+          <div class="related-type">Faction · Second Trilogy</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Architecture</div>
+          <div class="related-type">Religion · Rival Tradition</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>The Heliopolis</div>
+          <div class="related-type">Location · New Athens · Destroyed SY 135</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>New School</div>
+          <div class="related-type">Institution · Academy</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Breath</div>
+          <div class="related-type">Sacred Text · Architecture</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Second Renaissance</div>
+          <div class="related-type">Era · Foundation Period</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER TICKER -->
+<div class="footer-ticker">
+  <div class="ticker-label">✦ TH</div>
+  <div class="ticker-scroll">
+    <span class="ticker-inner">
+      CITY OF MAN — SILVIUS HERMINUS JANUARIUS — NEW SCHOOL · NEW ATHENS — FOUNDATION PERIOD &nbsp;⸻&nbsp; "HUMANITY IS THE ORIGIN OF DIVINITY" &nbsp;⸻&nbsp; SACRED TEXT OF TERRAN HUMANISM · PRECURSOR TO ANTHROPERIUM STATE RELIGION &nbsp;⸻&nbsp; JANUARIUS DEIFIED POSTHUMOUSLY · SOLE HUMAN DEITY UNTIL ANNUNCIATION OF ANTHRARCHOS &nbsp;⸻&nbsp; PRIMARY VALUES: LOVE (VENUS) · PROVISION (MERCURY) · CONQUEST (MARS) &nbsp;⸻&nbsp; HELIOPOLIS: BURNED SY 135 · BATTLE OF EARTH &nbsp;⸻&nbsp; HELENA-PRIME · CUSTODIAL INTELLIGENCE · EST. SY 3 · ARCHIVE INTEGRITY MAINTAINED &nbsp;⸻&nbsp; CITY OF MAN — SILVIUS HERMINUS JANUARIUS — NEW SCHOOL · NEW ATHENS — FOUNDATION PERIOD &nbsp;⸻&nbsp; "HUMANITY IS THE ORIGIN OF DIVINITY" &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const epoch = new Date('2026-01-12T00:00:00Z');
+  const now = new Date();
+  const daysDiff = (now - epoch) / (1000 * 60 * 60 * 24);
+  const sy = 132.0 + daysDiff * 0.01;
+  document.getElementById('sy-clock').textContent = 'SY ' + sy.toFixed(3);
+}
+updateClock();
+setInterval(updateClock, 60000);
+</script>
+
+</body>
+</html>

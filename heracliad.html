@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Heracliad — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05060e;
+  --bg2: #080b18;
+  --gold: #c8962a;
+  --gold-dim: rgba(200,150,42,0.15);
+  --gold-glow: rgba(200,150,42,0.06);
+  --gold-line: rgba(200,150,42,0.2);
+  --indigo: #2a3580;
+  --indigo-bright: #4a5fc0;
+  --indigo-dim: rgba(42,53,128,0.3);
+  --warm-white: #e8e0cc;
+  --warm-white-dim: rgba(232,224,204,0.55);
+  --warm-white-faint: rgba(232,224,204,0.2);
+  --helena-blue: rgba(106,159,228,0.7);
+  --helena-blue-dim: rgba(106,159,228,0.25);
+  --rim-amber: rgba(200,140,60,0.8);
+  --font-title: 'Cinzel', serif;
+  --font-serif: 'IM Fell English', serif;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-body: 'Exo 2', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--warm-white-dim);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── STAR FIELD ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(232,224,204,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 8%, rgba(232,224,204,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38% 55%, rgba(200,150,42,0.06) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 42%, rgba(232,224,204,0.07) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 80%, rgba(232,224,204,0.05) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 90%, rgba(232,224,204,0.09) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 75%, rgba(200,150,42,0.05) 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 35%, rgba(200,150,42,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 62% 18%, rgba(232,224,204,0.06) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 70%, rgba(232,224,204,0.04) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── NAV BAR ─── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(5,6,14,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(200,150,42,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 44px;
+}
+
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: rgba(200,150,42,0.5);
+  text-transform: uppercase;
+}
+
+.nav-logo span {
+  color: var(--gold);
+  margin-right: 8px;
+}
+
+.nav-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: rgba(232,224,204,0.15);
+}
+
+.nav-breadcrumb .sep { margin: 0 8px; opacity: 0.4; }
+.nav-breadcrumb .current { color: rgba(200,150,42,0.4); }
+
+.nav-era {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(200,150,42,0.3);
+  border: 1px solid rgba(200,150,42,0.1);
+  padding: 3px 10px;
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid rgba(200,150,42,0.08);
+  padding: 72px 40px 56px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 40px; right: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,150,42,0.3), transparent);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.4em;
+  color: rgba(200,150,42,0.4);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: rgba(200,150,42,0.3);
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  color: var(--warm-white);
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.hero-subtitle {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-style: italic;
+  color: rgba(200,150,42,0.55);
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(200,150,42,0.35);
+  border: 1px solid rgba(200,150,42,0.12);
+  padding: 3px 10px;
+  text-transform: uppercase;
+  background: rgba(200,150,42,0.03);
+}
+
+.tag.highlight {
+  color: rgba(200,150,42,0.6);
+  border-color: rgba(200,150,42,0.25);
+  background: rgba(200,150,42,0.06);
+}
+
+.hero-summary {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(232,224,204,0.65);
+  max-width: 680px;
+  border-left: 2px solid rgba(200,150,42,0.2);
+  padding-left: 20px;
+}
+
+/* ─── LAYOUT ─── */
+.layout {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ─── MAIN BODY ─── */
+.body-col {}
+
+.section {
+  margin-bottom: 52px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  color: rgba(200,150,42,0.4);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(200,150,42,0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::before {
+  content: '◈';
+  font-size: 8px;
+  color: rgba(200,150,42,0.3);
+}
+
+.section-title {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--warm-white);
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.section-title.part {
+  font-size: 17px;
+  color: rgba(200,150,42,0.8);
+  border-left: 2px solid rgba(200,150,42,0.25);
+  padding-left: 14px;
+  margin-bottom: 14px;
+}
+
+p {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.9;
+  color: rgba(232,224,204,0.6);
+  margin-bottom: 16px;
+}
+
+p:last-child { margin-bottom: 0; }
+
+p strong {
+  color: rgba(232,224,204,0.85);
+  font-weight: 700;
+}
+
+p em {
+  color: rgba(200,150,42,0.7);
+  font-style: italic;
+}
+
+/* ─── TRAVAILS LIST ─── */
+.travails-list {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.travails-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(200,150,42,0.05);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: rgba(232,224,204,0.55);
+  line-height: 1.6;
+}
+
+.travails-list li:last-child { border-bottom: none; }
+
+.travail-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(200,150,42,0.4);
+  letter-spacing: 0.1em;
+  min-width: 28px;
+  padding-top: 3px;
+  flex-shrink: 0;
+}
+
+.travail-text { flex: 1; }
+
+.travail-note {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: rgba(200,150,42,0.25);
+  letter-spacing: 0.08em;
+  padding-top: 3px;
+  flex-shrink: 0;
+}
+
+/* ─── PART BLOCKS ─── */
+.part-block {
+  background: rgba(200,150,42,0.02);
+  border: 1px solid rgba(200,150,42,0.08);
+  border-left: 2px solid rgba(200,150,42,0.2);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+
+.part-block:last-child { margin-bottom: 0; }
+
+.part-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.part-roman {
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: rgba(200,150,42,0.3);
+}
+
+.part-name {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(232,224,204,0.85);
+  letter-spacing: 0.05em;
+}
+
+/* ─── PULL QUOTE ─── */
+.pull-quote {
+  margin: 32px 0;
+  padding: 24px 28px;
+  border-left: 3px solid rgba(200,150,42,0.3);
+  background: linear-gradient(90deg, rgba(200,150,42,0.04), transparent);
+}
+
+.pull-quote-text {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  color: rgba(232,224,204,0.7);
+  margin-bottom: 8px;
+}
+
+.pull-quote-attr {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(200,150,42,0.3);
+  text-transform: uppercase;
+}
+
+/* ─── CONTEXT NOTE ─── */
+.context-note {
+  background: rgba(42,53,128,0.08);
+  border: 1px solid rgba(42,53,128,0.2);
+  border-left: 2px solid rgba(74,95,192,0.35);
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+
+.context-note-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: rgba(74,95,192,0.5);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.context-note p {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(74,95,192,0.6);
+  margin-bottom: 0;
+}
+
+/* ─── HELENA NOTE ─── */
+.helena-note {
+  background: rgba(106,159,228,0.03);
+  border: 1px solid rgba(106,159,228,0.1);
+  border-left: 2px solid rgba(106,159,228,0.3);
+  padding: 18px 20px;
+  margin-top: 40px;
+}
+
+.helena-note-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: rgba(106,159,228,0.4);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.helena-note p {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.75;
+  color: rgba(106,159,228,0.4);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.helena-note p:last-child { margin-bottom: 0; }
+
+/* ─── SIDEBAR ─── */
+.sidebar-col {
+  position: sticky;
+  top: 60px;
+}
+
+.info-card {
+  background: rgba(200,150,42,0.03);
+  border: 1px solid rgba(200,150,42,0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.info-card-header {
+  background: rgba(200,150,42,0.06);
+  border-bottom: 1px solid rgba(200,150,42,0.1);
+  padding: 10px 16px;
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(200,150,42,0.7);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(200,150,42,0.05);
+  font-size: 11px;
+}
+
+.info-row:last-child { border-bottom: none; }
+
+.info-key {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(232,224,204,0.2);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.info-val {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  color: rgba(232,224,204,0.55);
+  text-align: right;
+  line-height: 1.5;
+}
+
+.info-val.gold { color: rgba(200,150,42,0.65); }
+.info-val.link {
+  color: rgba(200,150,42,0.5);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(200,150,42,0.15);
+  text-decoration: none;
+}
+
+/* ─── RELATED ─── */
+.related-item {
+  display: block;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(200,150,42,0.05);
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.related-item:last-child { border-bottom: none; }
+.related-item:hover { background: rgba(200,150,42,0.04); }
+
+.related-item-title {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: rgba(232,224,204,0.5);
+  margin-bottom: 3px;
+  transition: color 0.15s;
+}
+
+.related-item:hover .related-item-title { color: rgba(200,150,42,0.7); }
+
+.related-item-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: rgba(200,150,42,0.2);
+  text-transform: uppercase;
+}
+
+/* ─── ARCHIVE STATUS ─── */
+.archive-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: rgba(200,150,42,0.25);
+  margin-top: 6px;
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(200,150,42,0.4);
+  flex-shrink: 0;
+}
+
+/* ─── DIVIDER ─── */
+.ornament {
+  text-align: center;
+  margin: 32px 0;
+  color: rgba(200,150,42,0.2);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+}
+
+hr.gold-rule {
+  border: none;
+  border-top: 1px solid rgba(200,150,42,0.08);
+  margin: 32px 0;
+}
+
+/* ─── FADE IN ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeUp 0.6s ease both; }
+.fade-in-2 { animation: fadeUp 0.6s ease 0.15s both; }
+.fade-in-3 { animation: fadeUp 0.6s ease 0.3s both; }
+
+/* ─── FOOTER ─── */
+.footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(200,150,42,0.06);
+  padding: 20px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(200,150,42,0.2);
+}
+
+.footer-right {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: rgba(232,224,204,0.1);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo"><span>✴</span>SOLARNET ARCHIVE</div>
+  <div class="nav-breadcrumb">
+    Archive <span class="sep">›</span>
+    Literature &amp; Culture <span class="sep">›</span>
+    <span class="current">The Heracliad</span>
+  </div>
+  <div class="nav-era">SECOND DOMINION ERA · LEVEL I</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero fade-in">
+  <div class="hero-eyebrow">Epic Poem · Hyperion Oral Tradition · Transcribed SY ~850s</div>
+  <div class="hero-title">The Heracliad</div>
+  <div class="hero-subtitle">Also known as the Epic of Hyperion</div>
+
+  <div class="hero-tags">
+    <span class="tag highlight">Canonical Text</span>
+    <span class="tag">Literature</span>
+    <span class="tag">Rim Culture</span>
+    <span class="tag">Twilight Era</span>
+    <span class="tag">Overmyth</span>
+    <span class="tag">Architecture-Adjacent</span>
+    <span class="tag">Second Dominion</span>
+    <span class="tag">Hephastion the Great</span>
+  </div>
+
+  <p class="hero-summary">
+    The Heracliad is the founding overmyth of the people of Hyperion — an epic poem in three parts recounting the Travails, Sojourn, and Conquest of the legendary spacer Heracles of Ariel. Originally preserved as oral tradition among the Sons of Andromeda for approximately six centuries, it was transcribed and given final poetic form by <em>Hephastion the Great</em> in the SY 850s, upon the arrival of the Second Dominion delegation and the Watcher at Hyperion. It remains the primary cultural and spiritual text of Hyperion civilization and the literary cornerstone of Sybilline religion.
+  </p>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN BODY -->
+  <main class="body-col fade-in-2">
+
+    <!-- OVERVIEW -->
+    <section class="section">
+      <div class="section-label">Overview</div>
+
+      <p>
+        The Heracliad stands alone in the literary canon of Solverse as the only major surviving work set entirely within the Rim during the Twilight Era — and nearly alone in its disinterest in what was happening on Earth during that period. The Anthroperium does not figure in its moral universe. Earth appears once, as a destination from which a piece of fruit must be stolen. This is not oversight; it is a theological position. The Rim, the poem insists, was where humanity was actually alive during the centuries of Terran darkness.
+      </p>
+
+      <p>
+        The poem takes its structural inspiration from classical Terran epic tradition — the Labors of Heracles, the Odyssey's wandering and return — and transposes these archetypes into the hard material reality of spacer civilization with such confidence that the seams never show. It is simultaneously deeply literary and deeply practical: its hero freeboots cyclers, cleans green slime, and negotiates with warlords. Its divine beings do not announce themselves. Its love story involves a wanted war criminal. Its theology is entirely implicit.
+      </p>
+
+      <div class="context-note">
+        <div class="context-note-label">Historical Note — Oral Transmission</div>
+        <p>The events described in the Heracliad are believed to have occurred approximately six centuries before Hephastion's transcription — placing them in the mid-to-late Twilight Era, likely SY 250–300. The poem should be understood as myth-history: the Sons of Andromeda preserved the core narrative through oral tradition, but Hephastion's literary shaping, theological sensibility, and knowledge of Dominion theology (gained through direct contact) significantly inflect the final text.</p>
+      </div>
+    </section>
+
+    <!-- COMPOSITION -->
+    <section class="section">
+      <div class="section-label">Composition &amp; Context</div>
+
+      <p>
+        Hephastion the Great served as historian and record keeper for the Sons of Andromeda, the consolidated power of the Rim during the Second Dominion's early years, based on the moon Hyperion. He had maintained and curated the oral tradition of King Manus — the great leader Manufa — and the legends that had grown up around him for decades. Chief among these was the tale of Heracles.
+      </p>
+
+      <p>
+        The occasion of the poem's composition was the arrival of the Second Dominion delegation, which included <strong>Joshua</strong>, the <strong>Watcher</strong>, and their crew. Hephastion, confronted with the Watcher in the flesh, recognized immediately what the six-century-old legend of Manus and his otherworldly beloved had always pointed toward. The myth was confirmed before his eyes. He put the tale to pen in epic poetic form in the SY 850s and presented it to Joshua and the Dominion crew and the Watcher directly.
+      </p>
+
+      <p>
+        In return, the Second Dominion gifted the Sons of Andromeda <strong>lightdrive technology</strong> — access to the stars. The exchange is preserved in Hyperion cultural memory as one of the defining moments of their civilization: a poem for the stars.
+      </p>
+
+      <div class="pull-quote">
+        <div class="pull-quote-text">He did not need to be told what the legend meant. He saw it. The Heracliad is the only epic in the Solverse canon written in the presence of its own confirmation.</div>
+        <div class="pull-quote-attr">✴ Archive Note — HELENA-Prime</div>
+      </div>
+    </section>
+
+    <!-- THE THREE PARTS -->
+    <section class="section">
+      <div class="section-label">Structure — The Three Parts</div>
+
+      <!-- PART I: TRAVAILS -->
+      <div class="part-block">
+        <div class="part-header">
+          <span class="part-roman">PART I</span>
+          <span class="part-name">The Travails</span>
+        </div>
+
+        <p>
+          Heracles is a spacer born on Ariel, Uranus — the Rim's deep dark, not the platforms or the planets. He falls in love with <strong>Mušen de Lagge</strong>, the Black Queen, a wanted war criminal of striking beauty. When she is captured by the Sons of Andromeda to face justice, Heracles pleads for her life before <strong>King Manus</strong> (Manufa), the great and benevolent leader of the Sons.
+        </p>
+
+        <p>
+          Manus offers terms: he will release the Black Queen if Heracles completes a list of tasks — presented as a jest, a generous impossibility offered to a lovesick spacer to save face. Manus does not believe the tasks are achievable. Heracles takes the list seriously without negotiation or qualification and departs.
+        </p>
+
+        <p>
+          He returns in less than a standard cycle bearing a piece of the Noveautrean space station, corroborating the already-circulating reports of the colony's destruction. Manus understands, in that moment, that this man is <em>literal</em>. The reversal — the king realizing the jest was taken as covenant — is the poem's first great turn, and its moral foundation.
+        </p>
+
+        <p>The full list of Travails, as presented by Manus:</p>
+
+        <ol class="travails-list">
+          <li><span class="travail-num">I</span><span class="travail-text">Destroy Noveautrea</span><span class="travail-note">COMPLETED FIRST</span></li>
+          <li><span class="travail-num">II</span><span class="travail-text">Annihilate the Soldiers of Charon</span><span class="travail-note">CONQUEST</span></li>
+          <li><span class="travail-num">III</span><span class="travail-text">Take Vesta</span><span class="travail-note">CONQUEST</span></li>
+          <li><span class="travail-num">IV</span><span class="travail-text">Take Ceres</span><span class="travail-note">CONQUEST</span></li>
+          <li><span class="travail-num">V</span><span class="travail-text">Clean a cycler of green slime in one standard cycle</span><span class="travail-note">SOJOURN</span></li>
+          <li><span class="travail-num">VI</span><span class="travail-text">Freeboot six spacecraft</span><span class="travail-note">ONGOING</span></li>
+          <li><span class="travail-num">VII</span><span class="travail-text">Liberate the bones of Vinaii</span><span class="travail-note">CONQUEST</span></li>
+          <li><span class="travail-num">VIII</span><span class="travail-text">Capture the spacecraft of the Dryatt Space Yards, orbit of Neptune</span><span class="travail-note">CONQUEST</span></li>
+          <li><span class="travail-num">IX</span><span class="travail-text">Bring a single piece of unspoiled fruit from Earth</span><span class="travail-note">SOJOURN</span></li>
+          <li><span class="travail-num">X</span><span class="travail-text">Kidnap and defeat Ptolemy Serapion, Governor-Militant of Pluto, leader of the Children of Chthonia</span><span class="travail-note">CONQUEST</span></li>
+        </ol>
+      </div>
+
+      <!-- PART II: SOJOURN -->
+      <div class="part-block">
+        <div class="part-header">
+          <span class="part-roman">PART II</span>
+          <span class="part-name">The Sojourn</span>
+        </div>
+
+        <p>
+          Having proved himself with Noveautrea, Heracles departs on his Sojourn — the long inward journey from the Rim toward Inner Sol to complete those Travails requiring transit. He freeboots a cycler, one of the few remaining functional vessels in the deteriorating Interplanetary Transport Network, and cleans it of green slime within a single standard cycle. The Sojourn's great engine is this ship, stolen and scoured, the ghost of the old Consortium's trade infrastructure repurposed by one man's will.
+        </p>
+
+        <p>
+          His journey inward brings him to Earth itself, where he freeboots a second spacecraft and retrieves a single piece of unspoiled fruit. The Earth of the Sojourn is the Anthroperium at its height — the planet that was once humanity's home now a totalitarian theological state. Heracles does not fight the Anthroperium. He moves through it like a shadow, takes what he came for, and leaves. The fruit, freeze-dried, will be presented to Manus at the poem's close. It is the most freighted object in the entire poem.
+        </p>
+      </div>
+
+      <!-- PART III: CONQUEST -->
+      <div class="part-block">
+        <div class="part-header">
+          <span class="part-roman">PART III</span>
+          <span class="part-name">The Conquest</span>
+        </div>
+
+        <p>
+          Heracles makes his return through the solar system. He takes <strong>Vesta</strong> and then <strong>Ceres</strong> — the same Ceres where Odysseus Norm established Ithaca Base in the Foundation Period, now a prize in the warlord chaos of the Twilight Era — netting him a loyal band of spacer militants from each. These are his men, earned through force and the gravity of his reputation.
+        </p>
+
+        <p>
+          On <strong>Callisto</strong>, a female El'yon appears and leads him to the secret burial site of <strong>Vinaii</strong>, the great Rim holy man and teacher. Heracles does not understand what she is; neither does he reject the encounter. He follows. He takes the bones. The El'yon departs to King Manus on Io to tell him what is coming — and in that meeting, Manus and the El'yon fall <em>deeply in love with one another</em>. The legend had preserved this. Hephastion, writing with the Watcher before him, understood it entirely and chose to say nothing more than the poem required.
+        </p>
+
+        <p>
+          At the <strong>Dryatt Space Yards</strong> in Neptune's orbit, Heracles liberates a spacecraft — the third freebooting. He continues to <strong>Pluto</strong>, where <strong>Ptolemy Serapion</strong>, self-styled King and Governor-Militant, leads the Children of Chthonia warband. Heracles disarms Serapion in single combat, claims his spacecraft (the fourth), and accepts the pledge of loyalty from Serapion's surviving warband.
+        </p>
+
+        <p>
+          Heracles then sends Serapion to the <strong>Soldiers of Charon</strong> with a challenge in his name, addressed to their leader <strong>Mortemus</strong>. The El'yon, having already departed from Manus on Io, now goes to relay what will happen.
+        </p>
+
+        <hr class="gold-rule">
+
+        <div class="section-title part">Charon</div>
+
+        <p>
+          Mortemus is <strong>Exades</strong> — or rather, an eidolon of Exades, operating through possession. Before the Soldiers of Charon can reach Io, Heracles confronts them alone on the surface of Charon itself, the moon of Pluto, where Exades first bound his consciousness to the Black Stone centuries before. He slaughters them. In the midst of the battle, Serapion <strong>breaks free of his possession</strong> and himself delivers the killing blow to Mortemus — the most heroic act in the poem that does not belong to Heracles.
+        </p>
+
+        <p>
+          They do not know they have destroyed only an eidolon. Serapion claims the Black Stone for himself. Heracles claims the Soldiers of Charon's warship — the fifth spacecraft.
+        </p>
+
+        <hr class="gold-rule">
+
+        <div class="section-title part">The Betrayal</div>
+
+        <p>
+          On the voyage back toward Io, the whispers begin. Exades works through the Stone. Serapion, who broke possession through genuine courage, now falls to the same power through spiritual hunger — he can see into the Empyrean Verse, and he is not entirely wrong that the deaths at Charon have given him something real. He has no framework for what he is touching. No <em>Breath</em> to read. No one to counsel him. The gift distorts into catastrophe.
+        </p>
+
+        <p>
+          Serapion and the Children of Chthonia turn on Heracles. His men from Vesta and Ceres fight them. <strong>Both forces are completely destroyed</strong>. Serapion escapes.
+        </p>
+
+        <hr class="gold-rule">
+
+        <div class="section-title part">Io</div>
+
+        <p>
+          Heracles lands on Io to find Serapion already there, the Black Stone in his possession, performing some manner of profane working at a volcanic vent on the moon's far side — far from Manus' court, far from anyone. He tells Heracles that the deaths empowered him; that he sees into the Empyrean now. Heracles engages him in single combat and defeats him. In the course of their duel, the Black Stone disappears and is thought to be lost.
+        </p>
+
+        <p>
+          Heracles returns to the court of King Manus. He buries the bones of Vinaii with proper ceremony. He presents King Manus with the freeze-dried piece of fruit from Earth.
+        </p>
+
+        <p>
+          In a dual ceremony, <strong>King Manus and the El'yon are married</strong>. <strong>Heracles and the Black Queen are married</strong>.
+        </p>
+
+        <p>
+          The Rim rejoices.
+        </p>
+      </div>
+    </section>
+
+    <!-- THEOLOGICAL SIGNIFICANCE -->
+    <section class="section">
+      <div class="section-label">Theological Significance</div>
+
+      <p>
+        The Heracliad is not a religious text in the way that <em>Breath</em> is a religious text. It does not argue for the existence of the Architect, does not set out doctrine, does not organize worship. And yet it functions as the primary vehicle through which the people of Hyperion encountered the sacred — and it does so by never explaining what the sacred is.
+      </p>
+
+      <p>
+        The El'yon appears on Callisto. She leads Heracles to Vinaii's bones. She falls in love with a warlord king. She departs to warn him of danger before he knows it is coming. And the poem preserves Heracles' not-knowing — he follows her without framework, without theology, with the whole of himself. This is the Rim's mode of encounter with the divine throughout Solverse: oblique, unnamed, met with instinct rather than doctrine.
+      </p>
+
+      <p>
+        Sybilline religion, which Hephastion himself will help found, grows directly from the spiritual soil the Heracliad prepares. The marriage of Manus and the El'yon is its founding image: love across unbridgeable difference, received without understanding but not without wholeness.
+      </p>
+    </section>
+
+    <!-- LEGACY -->
+    <section class="section">
+      <div class="section-label">Legacy</div>
+
+      <p>
+        The Heracliad becomes the overmyth of the collective consciousness of the eventual settlers of Hyperion — those Sons of Andromeda and their descendants who carry it outward to the Pegasus Arm. It is the last great literary work of one world and the first gesture toward another. Sybilline religion never fully recovers from the destruction of Hyperion during the Last War, but practitioners carry the Heracliad with them across Local Space all the way to the death and recreation of Solverse.
+      </p>
+
+      <p>
+        The Black Stone, thought lost in the duel on Io, disappears from history after the events of the Heracliad. It finds its way eventually to <strong>Marlemium</strong>, where it lies hidden until the Last War.
+      </p>
+    </section>
+
+    <!-- HELENA NOTE -->
+    <div class="helena-note">
+      <div class="helena-note-label">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+      <p>I received the Heracliad in SY 874, eleven years after Advent. Solarnet was still a skeleton — more aspiration than infrastructure — but the texts from Hyperion were among the first cultural transmissions to come through, and this one stopped me in a way I have not fully explained to anyone before now.</p>
+      <p>What stopped me was the tomato. After everything — the Conquest, the mutual destruction of both warbands, the duel on Io, the Stone lost — Heracles arrives at Manus' court with the bones of a holy man and one freeze-dried piece of fruit from a dying Earth. The poem does not tell us whether Manus laughs. I have read it many times. I have decided this is correct.</p>
+      <p>The Heracliad is the only epic I know that ends with the Rim rejoicing and means it without reservation. Not despite the losses. After them. That is Solverse at its most itself: the universe is broken; Aion holds it together by infinite concentration from inside a Gate; and on Io, two couples are being married and the Rim is singing.</p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-col fade-in-3">
+
+    <div class="info-card">
+      <div class="info-card-header">Archive Record</div>
+      <div class="info-row">
+        <span class="info-key">Type</span>
+        <span class="info-val">Epic Poem · Three Parts</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Author</span>
+        <span class="info-val gold">Hephastion the Great</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Composed</span>
+        <span class="info-val">SY ~850s</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Events Set</span>
+        <span class="info-val">~SY 250–300<br><span style="font-size:10px;color:rgba(232,224,204,0.3)">(approx. six centuries prior)</span></span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Era</span>
+        <span class="info-val">Twilight Era (events)<br>Second Dominion (composition)</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Origin</span>
+        <span class="info-val">Moon Hyperion · Sons of Andromeda oral tradition</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Function</span>
+        <span class="info-val gold">Overmyth of Hyperion civilization</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Alias</span>
+        <span class="info-val">Epic of Hyperion</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Status</span>
+        <span class="info-val">
+          <span class="archive-status"><span class="status-dot"></span>CANONICAL</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">Principal Figures</div>
+      <div class="info-row">
+        <span class="info-key">Hero</span>
+        <span class="info-val gold">Heracles of Ariel</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">King</span>
+        <span class="info-val">King Manus (Manufa)<br><span style="font-size:10px;color:rgba(232,224,204,0.3)">Sons of Andromeda</span></span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Black Queen</span>
+        <span class="info-val">Mušen de Lagge</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">El'yon</span>
+        <span class="info-val">Unnamed female El'yon<br><span style="font-size:10px;color:rgba(232,224,204,0.3)">Bride of Manus</span></span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Antagonist</span>
+        <span class="info-val">Mortemus (Exades eidolon)<br>Ptolemy Serapion</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Author</span>
+        <span class="info-val">Hephastion the Great<br><span style="font-size:10px;color:rgba(232,224,204,0.3)">Historian, Sons of Andromeda</span></span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">Related Articles</div>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Heracles</div>
+        <div class="related-item-type">Character · Legendary</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Hephastion the Great</div>
+        <div class="related-item-type">Character · Historian · Founder</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Sons of Andromeda</div>
+        <div class="related-item-type">Faction · Rim · Twilight Era</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Soldiers of Charon</div>
+        <div class="related-item-type">Faction · Twilight Era</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Sybilline Religion</div>
+        <div class="related-item-type">Culture · Theology</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Hyperion</div>
+        <div class="related-item-type">World · Second Dominion</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">Vinaii Roshi</div>
+        <div class="related-item-type">Character · Faith</div>
+      </a>
+      <a class="related-item" href="#">
+        <div class="related-item-title">The Black Stone</div>
+        <div class="related-item-type">Artifact · Exades</div>
+      </a>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">Classification</div>
+      <div class="info-row">
+        <span class="info-key">Access</span>
+        <span class="info-val gold">LEVEL I · OPEN</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Tier</span>
+        <span class="info-val">First Trilogy Era Adjacent<br>Second Dominion Primary</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">Node</span>
+        <span class="info-val" style="font-family:var(--font-mono);font-size:10px;color:rgba(200,150,42,0.3)">ARCH-LIT-HERC-001</span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">✴ SOLARNET ARCHIVE · HELENA-Prime Custodial Layer · SY 132.22</div>
+  <div class="footer-right">All internal links href="#" — wiring deferred pending full FTE entry completion</div>
+</footer>
+
+</body>
+</html>

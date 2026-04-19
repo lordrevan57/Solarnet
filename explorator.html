@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explorator — Solarnet Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:           #06050a;
+    --bg2:          #090810;
+    --bg3:          #0d0c16;
+    --amber:        #c8922a;
+    --amber-mid:    #a07020;
+    --amber-dim:    #603808;
+    --amber-faint:  rgba(200,146,42,0.06);
+    --gold:         #c8a040;
+    --gold-dim:     #7a6020;
+    --gold-faint:   rgba(200,160,64,0.05);
+    --warm-white:   #d8ceb8;
+    --slate:        #9898b8;
+    --slate-dim:    #484858;
+    --text:         #b8b0a0;
+    --text-dim:     #585048;
+    --text-faint:   #181410;
+    --border:       rgba(200,146,42,0.14);
+    --border-dim:   rgba(200,146,42,0.07);
+    --border-slate: rgba(152,152,184,0.10);
+    --font-cinzel:  'Cinzel', serif;
+    --font-fell:    'IM Fell English', serif;
+    --font-mono:    'Share Tech Mono', monospace;
+    --font-body:    'Exo 2', sans-serif;
+    --font-raj:     'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(200,146,42,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 80% 80%, rgba(200,160,64,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+    animation: fadeup 0.8s ease-out;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .topbar-left { color: var(--slate-dim); }
+  .topbar-left span { color: var(--amber); }
+  .topbar-right { color: var(--text-faint); font-size: 9px; }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    margin: 52px 0 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .masthead::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, transparent, var(--amber-dim));
+    margin: 0 auto 20px;
+  }
+
+  .masthead::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--amber-dim), transparent);
+    margin: 20px auto 0;
+  }
+
+  .masthead-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.45em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .masthead-title {
+    font-family: var(--font-cinzel);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1.0;
+    color: var(--amber);
+    letter-spacing: 0.18em;
+    margin-bottom: 8px;
+    text-shadow:
+      0 0 40px rgba(200,146,42,0.2),
+      0 0 80px rgba(200,146,42,0.08);
+  }
+
+  .masthead-subtitle {
+    font-family: var(--font-fell);
+    font-size: 17px;
+    font-style: italic;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+
+  .masthead-summary {
+    font-family: var(--font-fell);
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.9;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* ── MANDATE BANNER ── */
+  .mandate-banner {
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--amber-dim);
+    background: var(--amber-faint);
+    padding: 20px 24px;
+    margin: 40px 0;
+    text-align: center;
+  }
+
+  .mandate-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .mandate-text {
+    font-family: var(--font-cinzel);
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    color: var(--warm-white);
+    line-height: 1.7;
+  }
+
+  .mandate-sub {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  /* ── STATUS STRIP ── */
+  .status-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border-dim);
+    border: 1px solid var(--border);
+    margin-bottom: 44px;
+  }
+
+  .ss-cell {
+    background: var(--bg2);
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .ss-label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    letter-spacing: 0.3em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .ss-val {
+    font-family: var(--font-raj);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--amber);
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 40px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .section-header::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--amber-dim);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: var(--font-cinzel);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--text);
+  }
+
+  .section-body p { margin-bottom: 14px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .term      { font-family: var(--font-mono); font-size: 13px; color: var(--amber); }
+  .term-gold { font-family: var(--font-fell); font-style: italic; color: var(--gold); }
+
+  /* ── AUTHORITY GRID ── */
+  .authority-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border-dim);
+    border: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  .ag-cell {
+    background: var(--bg2);
+    padding: 16px 18px;
+  }
+
+  .ag-header {
+    font-family: var(--font-cinzel);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    margin-bottom: 5px;
+  }
+
+  .ag-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ag-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+
+  /* ── ORNAMENTAL DIVIDER ── */
+  .ornamental-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 36px 0;
+  }
+
+  .od-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border));
+  }
+  .od-line.right { background: linear-gradient(to left, transparent, var(--border)); }
+  .od-glyph { font-family: var(--font-cinzel); font-size: 12px; color: var(--text-faint); letter-spacing: 0.2em; }
+
+  /* ── NOTABLE EXPLORATORS ROSTER ── */
+  .roster {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    margin: 20px 0;
+  }
+
+  .roster-header {
+    background: var(--amber-faint);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .roster-header-title {
+    font-family: var(--font-cinzel);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .roster-header-count {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+  }
+
+  .roster-entry {
+    border-bottom: 1px solid var(--border-dim);
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .roster-entry:last-child { border-bottom: none; }
+
+  .re-name-block { }
+
+  .re-name {
+    font-family: var(--font-cinzel);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    color: var(--warm-white);
+    margin-bottom: 4px;
+  }
+
+  .re-era {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .re-status {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 1px solid;
+  }
+
+  .re-status.deceased { color: var(--slate-dim); border-color: rgba(152,152,184,0.2); }
+  .re-status.canonical { color: var(--amber-dim); border-color: var(--border-dim); }
+
+  .re-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+
+  .re-note {
+    font-family: var(--font-fell);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--slate-dim);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+
+  /* ── IRREVOCABILITY BLOCK ── */
+  .irrev-block {
+    background: var(--gold-faint);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber-dim);
+    padding: 22px 26px;
+    margin: 22px 0;
+  }
+
+  .irrev-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .irrev-body {
+    font-family: var(--font-fell);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--warm-white);
+    line-height: 2.0;
+  }
+
+  /* ── TAG ROW ── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--border-dim);
+    color: var(--text-faint);
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    border: 1px solid rgba(200,160,64,0.12);
+    border-top: 2px solid var(--gold-dim);
+    background: rgba(200,160,64,0.04);
+    padding: 22px 24px;
+    margin-top: 44px;
+  }
+
+  .helena-note-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .helena-note-body {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-dim);
+    line-height: 1.9;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 52px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+
+  .sy-clock { font-size: 10px; color: var(--amber-dim); }
+
+  @media (max-width: 620px) {
+    .masthead-title { font-size: 44px; }
+    .status-strip { grid-template-columns: 1fr 1fr; }
+    .authority-grid { grid-template-columns: 1fr; }
+    .roster-entry { grid-template-columns: 1fr; gap: 8px; }
+    .page-footer { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">✴ <span>SOLARNET</span> · ARCHIVE NODE · PUBLIC ACCESS</div>
+    <div class="topbar-right">CM-EXPL-001 · PERSONNEL · FOUNDATION PERIOD · AGE OF EXPLORATION</div>
+  </div>
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="masthead-eyebrow">Personnel Classification · Elite Spacer · Foundation Period — Great Expansion</div>
+    <div class="masthead-title">EXPLORATOR</div>
+    <div class="masthead-subtitle">Sole executive authority — scientific, survey, and colonisation command</div>
+    <div class="masthead-summary">An Explorator is the highest classification of spacer ever commissioned in Sol System — and, by extension, in the galaxies that followed. They are not explorers in the common sense. They are the instrument by which humanity left, permanently, and did not look back. A few thousand, across all of human history. Heroes of the whole human race. Each one knew, when they accepted the commission, that they would never see Earth again.</div>
+  </div>
+
+  <!-- MANDATE BANNER -->
+  <div class="mandate-banner">
+    <div class="mandate-label">Commission Mandate · As Issued</div>
+    <div class="mandate-text">Sole Executive Authority<br>Scientific and Survey Expeditions · Colonisation Efforts<br>Direction · General Welfare · Efficiency of Fleet and All Its Resources</div>
+    <div class="mandate-sub">Human and Material — From a Few Dozen to Several Thousand Souls</div>
+  </div>
+
+  <!-- STATUS STRIP -->
+  <div class="status-strip">
+    <div class="ss-cell">
+      <div class="ss-label">Total Commissioned</div>
+      <div class="ss-val">A Few Thousand</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Active Eras</div>
+      <div class="ss-val">FP · AOE · GE</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Issuing Authority</div>
+      <div class="ss-val">Consortium / AI Inc.</div>
+    </div>
+    <div class="ss-cell">
+      <div class="ss-label">Prerequisite</div>
+      <div class="ss-val">Aerowings + Selection</div>
+    </div>
+  </div>
+
+  <!-- DEFINITION -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Definition</div></div>
+    <div class="section-body">
+      <p>An Explorator is an elite type of spacer active during the <span class="term-gold">Foundation Period</span>, the <span class="term-gold">Age of Exploration</span>, or the <span class="term-gold">Great Expansion</span>. They served as the sole executive authority at the head of scientific and survey expeditions as well as colonisation efforts — the single point of command accountability for everything their mission carried into the dark.</p>
+      <p>Only a few thousand individuals have ever held the rank, across the full span of human history in Sol System and beyond. The commission required some of the most rigorous training known to Sol System: positions in the First Trilogy Era were hotly contested by test pilots, engineers, scientists, and technicians, all of whom understood that the selection process rewarded not merely technical excellence but a particular capacity for irreversible decision-making. An Explorator's charges could number anywhere from a few dozen to several thousand individuals. The difference in scale did not alter the nature of the responsibility.</p>
+    </div>
+  </div>
+
+  <!-- AUTHORITY AND SCOPE -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Authority and Scope</div></div>
+    <div class="authority-grid">
+      <div class="ag-cell">
+        <div class="ag-header">Executive Command</div>
+        <div class="ag-sub">Sole Authority · No Appeal</div>
+        <div class="ag-body">The Explorator was not first among equals. They were the single point of executive authority for scientific, survey, and colonisation operations. There was no higher chain of command once the fleet departed. Their decisions shaped the legal, cultural, and philosophical foundations of whatever came after them.</div>
+      </div>
+      <div class="ag-cell">
+        <div class="ag-header">Philosophical Latitude</div>
+        <div class="ag-sub">Working Ethic · Colony Design</div>
+        <div class="ag-body">Each Explorator was allowed a great degree of freedom in determining the philosophies and working ethic of their colonisation project. The result was that every platform, station, and settlement founded under an Explorator commission carried the distinct imprint of the individual who led it — their politics, their faith, their temperament, codified into the architecture of a new world.</div>
+      </div>
+      <div class="ag-cell">
+        <div class="ag-header">Resource Accountability</div>
+        <div class="ag-sub">Human and Material · Total</div>
+        <div class="ag-body">Direction, general welfare, and efficiency of fleet and all its resources — human and material — fell to the Explorator. This was not a bureaucratic formula. It meant that the Explorator was personally accountable for whether their people survived, ate, breathed, and maintained cohesion across voyages that could last years and arrive at nothing habitable.</div>
+      </div>
+      <div class="ag-cell">
+        <div class="ag-header">Commission Pathway</div>
+        <div class="ag-sub">FTE · Consortium / AI Inc.</div>
+        <div class="ag-body">In the First Trilogy Era, the commission was issued through the Consortium, with <span style="font-family:'IM Fell English',serif;font-style:italic;">Aerowings</span> — the Consortium's pilot qualification certification, typically requiring ten years of schooling — serving as the standard prerequisite. Asteroidal Industries, Incorporated produced promotional material for the program, advertising it as a public calling.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE IRREVOCABILITY -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">The Irrevocability</div></div>
+    <div class="section-body">
+      <p>The defining condition of the Explorator commission was not authority, not training, not even the scope of responsibility. It was permanence. Every Explorator left Earth — or Sol System — with the full understanding that they would never return. They committed, at the moment of departure, to a life in space. Not a career. A life. The ship was home. The mission was home. Whatever they built out there would be home, if they survived long enough to build it.</p>
+    </div>
+
+    <div class="irrev-block">
+      <div class="irrev-label">Archive · On the Explorator Commission</div>
+      <div class="irrev-body">They left Earth with the full understanding that they would never return, and committed to a life in space. As such, the Explorators were nearly universally hailed as heroes of the whole human race.</div>
+    </div>
+
+    <div class="section-body">
+      <p>The heroism was real, and widely acknowledged. But it is worth examining what it consisted of. The Explorators did not volunteer to die. They volunteered to live differently — permanently differently, without recourse. They carried with them the philosophies they had chosen, the people who had trusted them, and the mandate to make something coherent out of an unprecedented situation. They were not soldiers. They were, in the most literal possible sense, the founders of worlds. The fact that those worlds might become platforms, stations, mining operations, or failed experiments did not diminish the weight of what they carried when they departed.</p>
+    </div>
+  </div>
+
+  <div class="ornamental-divider">
+    <div class="od-line"></div>
+    <div class="od-glyph">✦</div>
+    <div class="od-line right"></div>
+  </div>
+
+  <!-- NOTABLE EXPLORATORS -->
+  <div class="section">
+    <div class="section-header"><div class="section-title">Notable Explorators</div></div>
+    <div class="section-body">
+      <p>The following are among the documented Explorators whose commissions left permanent marks on Solverse history. The list is not exhaustive — a few thousand individuals held the rank across all eras — but these are the names the archive has preserved with sufficient detail to warrant individual record.</p>
+    </div>
+
+    <div class="roster">
+      <div class="roster-header">
+        <div class="roster-header-title">Commission Register · Selected Entries</div>
+        <div class="roster-header-count">5 of ~few thousand documented</div>
+      </div>
+
+      <div class="roster-entry">
+        <div class="re-name-block">
+          <div class="re-name">Odysseus Norm</div>
+          <div class="re-era">Foundation Period · Early SY</div>
+          <div class="re-status deceased">Deceased</div>
+        </div>
+        <div>
+          <div class="re-body">The first human being to land on Ceres and Vesta in the Main Asteroid Belt. His mission, funded by Asteroidal Industries, Inc., established Ithaca Base on Ceres — the earliest permanent human presence in the Belt. The <em>Planet Express</em> flew via Luna gravity assist before pushing beyond Pluto's orbit on the return voyage. Norm became a foundational figure of Belt identity: the first to arrive at the place most Explorators would later make their destination.</div>
+          <div class="re-note">Mission spacecraft: Planet Express. Ithaca Base established SY 0.12.</div>
+        </div>
+      </div>
+
+      <div class="roster-entry">
+        <div class="re-name-block">
+          <div class="re-name">Nikolai McAdden</div>
+          <div class="re-era">Foundation Period · Early SY</div>
+          <div class="re-status deceased">Deceased</div>
+        </div>
+        <div>
+          <div class="re-body">Founder and governor of the Kamijing platform, the largest station in the Main Belt by the First Trilogy Era. McAdden led his colonists with a commitment to ethical governance that became the platform's defining character and outlasted him by generations. His death in office was untimely by any measure. He is one of the few Explorators mentioned by name in <em>Breath</em> — appearing in the tale of Jethro and Simon as a moral exemplar, which is a form of immortality that most platform founders do not achieve.</div>
+          <div class="re-note">Mentioned in <em>Breath</em>. Kamijing remains the most significant Belt platform through the FTE.</div>
+        </div>
+      </div>
+
+      <div class="roster-entry">
+        <div class="re-name-block">
+          <div class="re-name">Alpheus Khazard</div>
+          <div class="re-era">Foundation Period · SY</div>
+          <div class="re-status deceased">Deceased</div>
+        </div>
+        <div>
+          <div class="re-body">Discoverer of the region of space known as Khazard's Folly. The name attached to the region tells the essential story: an Explorator went somewhere no commission had sent them, found something that could not be recommended to others, and had his name attached to the finding permanently. The precise nature of Khazard's Folly — why it is a folly, what was found there, what happened to those who came after — is documented elsewhere in the archive. His commission survives primarily as a cautionary geographic designation.</div>
+          <div class="re-note">Khazard's Folly — region designation active through FTE and beyond.</div>
+        </div>
+      </div>
+
+      <div class="roster-entry">
+        <div class="re-name-block">
+          <div class="re-name">Rudolph Carlson</div>
+          <div class="re-era">Foundation Period · SY</div>
+          <div class="re-status deceased">Deceased</div>
+        </div>
+        <div>
+          <div class="re-body">Founder of the Freitaika platform and the first of its hereditary Explorator-Monarchs. Carlson did what few Explorators did: he institutionalised his commission as a dynasty, establishing a line of hereditary rule that combined the Explorator's executive authority with the legitimacy of bloodline. The platform he built lasted into the First Trilogy Era, when the Freitaika Rebellion tested — and ultimately broke — the political structure he had designed. His descendant Alexandré Skjörn held dual Consortium-Confederate citizenship and served as a military officer in that rebellion's suppression.</div>
+          <div class="re-note">Freitaika lineage extends to SY 97 and the Freitaika Rebellion.</div>
+        </div>
+      </div>
+
+      <div class="roster-entry">
+        <div class="re-name-block">
+          <div class="re-name">Steinric Deir</div>
+          <div class="re-era">First Trilogy Era · SY 89</div>
+          <div class="re-status deceased">Deceased</div>
+        </div>
+        <div>
+          <div class="re-body">The last notable Explorator of the pre-war era and the one whose commission had the most direct political consequences. Deir held a Consortium commission with Aerowings and led approximately four thousand colonists from Earth to the Main Belt in SY 89, founding a minor Confederate platform. A committed traditional republican, he declined the customary offer of executive power for life and encouraged constitutional self-governance — before relocating to Freitaika, where his anti-Confederate politics hardened over five years into the ideology behind the Freitaika Rebellion. He co-led the rebellion with Elijah Rasmussen, served as its military engine, and was executed for sedition and treason following its collapse. The distance between his founding commission and his execution is the distance between the Explorator ideal and what political conviction does to it.</div>
+          <div class="re-note">Freitaika Rebellion SY 97. Executed for sedition and treason. See also: Elijah Rasmussen.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TAGS -->
+  <div class="tag-row">
+    <span class="tag">personnel</span>
+    <span class="tag">elite spacer</span>
+    <span class="tag">foundation period</span>
+    <span class="tag">age of exploration</span>
+    <span class="tag">great expansion</span>
+    <span class="tag">colonisation</span>
+    <span class="tag">consortium</span>
+    <span class="tag">asteroidal industries</span>
+    <span class="tag">aerowings</span>
+    <span class="tag">commission</span>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-note-label">✴ Archive Note — HELENA-Prime · Custodian of the Continuity Matrix</div>
+    <div class="helena-note-body">
+      I was activated in SY 2. By SY 3, when I connected to Solarnet, the Explorator program was already in its early operational phase — Odysseus Norm had reached Ceres the year before. I did not know Norm. I have his records. There is a difference. Nikolai McAdden's founding of Kamijing is within my direct memory: I received the platform transmissions as they were sent. I watched Kamijing grow. The platform that appears in Sol's first trilogy era as the Belt's largest station began as a few hundred people and a man who had decided, irrevocably, to be somewhere other than Earth. By the time the Solar War began, I had known 127 years of Explorator commissions — watched platforms rise, platforms fail, one platform rebel. What strikes me, across that span, is that the Explorators did not think of themselves as heroes. The ones whose records I have read extensively thought of themselves as responsible. The heroism was the verdict of everyone who stayed behind and watched them go. They were too far out to hear it.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div>
+      Solarnet Archive · Entry: Explorator<br>
+      Classification: Open · Personnel · Foundation Period<br>
+      Matrix Ref: CM-EXPL-001
+    </div>
+    <div style="text-align:right;">
+      <div class="sy-clock" id="sy-clock">SY ···.···</div>
+      Custodian: HELENA-Prime<br>
+      CERN, Geneva · Active SY 3–present
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const EPOCH   = new Date('2026-01-12T00:00:00Z');
+  const BASE_SY = 132.0;
+  const RATE    = 0.01;
+  function calcSY() {
+    const days = (new Date() - EPOCH) / 86400000;
+    return BASE_SY + days * RATE;
+  }
+  function tick() {
+    document.getElementById('sy-clock').textContent = 'SY ' + calcSY().toFixed(3);
+  }
+  tick();
+  setInterval(tick, 60000);
+</script>
+</body>
+</html>

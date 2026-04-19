@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Articles of Solar Confederation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg: #06060a;
+  --amber: #c87820;
+  --amber-bright: #e09030;
+  --amber-dim: rgba(200,120,32,0.10);
+  --amber-mid: rgba(200,120,32,0.25);
+  --amber-line: rgba(200,120,32,0.18);
+  --parchment: rgba(232,218,188,0.82);
+  --parchment-dim: rgba(232,218,188,0.50);
+  --parchment-faint: rgba(232,218,188,0.28);
+  --text-main: #b8b090;
+  --text-dim: #6a6050;
+  --text-faint: #302820;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-doc: 'IM Fell English', serif;
+  --font-cor: 'Cormorant Garamond', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 35% at 50% 0%, rgba(200,120,32,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 60% at 8% 65%,  rgba(200,120,32,0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 40% at 92% 75%, rgba(200,120,32,0.02) 0%, transparent 55%);
+  pointer-events: none; z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 6%  14%, rgba(232,218,188,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 27% 72%, rgba(200,120,32,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 49% 18%, rgba(232,218,188,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 71% 87%, rgba(200,120,32,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 41%, rgba(232,218,188,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 55%, rgba(200,120,32,0.14) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(6,6,10,0.95);
+  border-bottom: 1px solid var(--amber-line);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 44px;
+}
+.topbar-left { display: flex; align-items: center; gap: 24px; }
+.topbar-logo  { font-family: var(--font-mono); font-size: 11px; color: var(--amber); letter-spacing: 0.15em; opacity: 0.8; }
+.topbar-breadcrumb { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; }
+.topbar-breadcrumb span { color: rgba(200,120,32,0.38); margin: 0 6px; }
+.topbar-right { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.08em; }
+
+/* ═══ HERO ═══ */
+.hero {
+  position: relative; z-index: 1;
+  padding: 72px 24px 56px;
+  text-align: center;
+  border-bottom: 1px solid var(--amber-line);
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(200,120,32,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 520px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,120,32,0.4), rgba(232,218,188,0.15), rgba(200,120,32,0.4), transparent);
+}
+.hero-type { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.26em; color: var(--text-dim); opacity: 0.7; margin-bottom: 14px; text-transform: uppercase; }
+.hero-title {
+  font-family: var(--font-title);
+  font-size: clamp(22px, 3.8vw, 50px);
+  font-weight: 400; letter-spacing: 0.12em;
+  color: var(--amber-bright);
+  text-shadow: 0 0 30px rgba(200,120,32,0.28), 0 0 80px rgba(200,120,32,0.10);
+  line-height: 1.15; margin-bottom: 10px;
+}
+.hero-subtitle {
+  font-family: var(--font-doc);
+  font-size: 15px; font-style: italic;
+  color: var(--parchment-dim);
+  letter-spacing: 0.04em; margin-bottom: 26px;
+}
+.hero-divider {
+  width: 100px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,120,32,0.45), transparent);
+  margin: 0 auto 22px;
+}
+.hero-lead {
+  font-family: var(--font-cor);
+  font-size: 16.5px; font-weight: 300;
+  color: var(--parchment);
+  max-width: 600px; margin: 0 auto;
+  line-height: 1.8; padding: 0 24px;
+}
+
+/* ═══ STAT STRIP ═══ */
+.stat-strip {
+  position: relative; z-index: 1;
+  display: flex; justify-content: center;
+  border-bottom: 1px solid var(--amber-line);
+  overflow-x: auto; scrollbar-width: none;
+  background: rgba(200,120,32,0.02);
+}
+.stat-strip::-webkit-scrollbar { display: none; }
+.stat-cell { display: flex; flex-direction: column; align-items: center; padding: 16px 20px; border-right: 1px solid rgba(200,120,32,0.09); flex-shrink: 0; min-width: 108px; }
+.stat-cell:last-child { border-right: none; }
+.stat-label { font-family: var(--font-mono); font-size: 8px; color: var(--amber); opacity: 0.4; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 5px; text-align: center; }
+.stat-val { font-family: var(--font-cor); font-style: italic; font-size: 13px; color: var(--parchment); text-align: center; line-height: 1.35; }
+
+/* ═══ MAIN LAYOUT ═══ */
+.page-wrapper { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+/* ═══ SECTION HEADER ═══ */
+.section-header { display: flex; align-items: center; gap: 16px; margin: 56px 0 20px; }
+.section-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--amber); opacity: 0.38; text-transform: uppercase; white-space: nowrap; }
+.section-title { font-family: var(--font-title); font-size: 15px; font-weight: 400; color: var(--amber-bright); letter-spacing: 0.1em; white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(200,120,32,0.25), transparent); }
+
+/* ═══ PROSE ═══ */
+.prose { font-size: 14.5px; font-weight: 300; line-height: 1.92; color: rgba(184,176,144,0.82); max-width: 740px; }
+.prose p + p { margin-top: 18px; }
+.prose strong { color: var(--amber-bright); font-weight: 600; }
+.prose em { font-family: var(--font-cor); font-style: italic; color: rgba(184,176,144,0.62); }
+
+/* ═══════════════════════════════════════════
+   THE DOCUMENT ITSELF
+═══════════════════════════════════════════ */
+.document-wrapper {
+  max-width: 740px;
+  margin-top: 4px;
+  /* aged parchment effect — dark theme adaptation */
+  background:
+    linear-gradient(180deg,
+      rgba(200,120,32,0.07) 0%,
+      rgba(200,120,32,0.04) 20%,
+      rgba(200,120,32,0.03) 80%,
+      rgba(200,120,32,0.06) 100%
+    ),
+    rgba(12,10,8,0.97);
+  border: 1px solid rgba(200,120,32,0.25);
+  border-top: 3px solid rgba(200,120,32,0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle texture overlay */
+.document-wrapper::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(200,120,32,0.025) 28px,
+      rgba(200,120,32,0.025) 29px
+    );
+  pointer-events: none;
+}
+
+/* watermark */
+.document-wrapper::after {
+  content: '✦';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 420px;
+  color: rgba(200,120,32,0.018);
+  pointer-events: none;
+  line-height: 1;
+  user-select: none;
+}
+
+.document-inner { position: relative; z-index: 1; padding: 52px 60px 52px; }
+
+.doc-seal-row {
+  text-align: center;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(200,120,32,0.2);
+}
+.doc-seal { font-size: 28px; color: rgba(200,120,32,0.45); margin-bottom: 10px; letter-spacing: 0.2em; }
+.doc-classification {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(200,120,32,0.4); margin-bottom: 6px;
+}
+.doc-main-title {
+  font-family: var(--font-doc);
+  font-size: clamp(18px, 2.8vw, 28px);
+  color: var(--parchment);
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.doc-subtitle {
+  font-family: var(--font-doc);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--parchment-dim);
+  letter-spacing: 0.06em;
+}
+
+.doc-assembly-line {
+  font-family: var(--font-doc);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(200,120,32,0.55);
+  text-align: center;
+  margin-bottom: 28px;
+  letter-spacing: 0.04em;
+}
+
+.doc-preamble {
+  font-family: var(--font-doc);
+  font-size: 15.5px;
+  line-height: 1.95;
+  color: var(--parchment-dim);
+  text-align: justify;
+  hyphens: auto;
+  margin-bottom: 28px;
+}
+.doc-preamble + .doc-preamble { margin-top: 0; }
+
+.doc-section-break {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,120,32,0.35), transparent);
+  margin: 28px auto;
+}
+
+.doc-articles-header {
+  font-family: var(--font-doc);
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200,120,32,0.45);
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.doc-article {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(200,120,32,0.08);
+}
+.doc-article:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.doc-article-num {
+  flex-shrink: 0;
+  width: 28px;
+  padding-top: 2px;
+  font-family: var(--font-doc);
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(200,120,32,0.45);
+  text-align: right;
+  line-height: 1.9;
+}
+.doc-article-text {
+  font-family: var(--font-doc);
+  font-size: 15px;
+  line-height: 1.92;
+  color: var(--parchment);
+  text-align: justify;
+  hyphens: auto;
+  flex: 1;
+}
+.doc-article-text em { font-style: italic; color: var(--parchment-dim); }
+
+.doc-footer-row {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(200,120,32,0.2);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.doc-signatory { text-align: center; }
+.doc-sig-line {
+  height: 1px;
+  background: rgba(200,120,32,0.25);
+  margin-bottom: 7px;
+}
+.doc-sig-name {
+  font-family: var(--font-doc);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--parchment-dim);
+  line-height: 1.4;
+}
+.doc-sig-system {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(200,120,32,0.35);
+  margin-top: 3px;
+}
+.doc-date-line {
+  text-align: center;
+  margin-top: 28px;
+  font-family: var(--font-doc);
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(200,120,32,0.4);
+  letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════
+   END DOCUMENT
+═══════════════════════════════════════════ */
+
+/* ═══ CONGRESS TABLE ═══ */
+.congress-table { max-width: 740px; border: 1px solid var(--amber-line); margin-top: 4px; overflow: hidden; }
+.congress-header { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(200,120,32,0.42); background: var(--amber-dim); border-bottom: 1px solid var(--amber-line); padding: 8px 16px; }
+.congress-row { display: flex; border-bottom: 1px solid rgba(200,120,32,0.07); align-items: stretch; }
+.congress-row:last-child { border-bottom: none; }
+.congress-row.founding { background: rgba(200,120,32,0.04); }
+.congress-marker { width: 4px; flex-shrink: 0; }
+.congress-marker.c1 { background: rgba(200,120,32,0.55); }
+.congress-marker.c2 { background: rgba(200,120,32,0.35); }
+.congress-marker.c3 { background: rgba(200,120,32,0.25); }
+.congress-marker.c4 { background: rgba(160,80,80,0.4); }
+.congress-num { width: 50px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: 11px; color: rgba(200,120,32,0.5); border-right: 1px solid rgba(200,120,32,0.07); }
+.congress-date { width: 80px; flex-shrink: 0; padding: 12px 12px; border-right: 1px solid rgba(200,120,32,0.07); display: flex; align-items: center; }
+.congress-date-text { font-family: var(--font-mono); font-size: 9px; color: rgba(200,120,32,0.5); letter-spacing: 0.1em; }
+.congress-name { width: 180px; flex-shrink: 0; padding: 12px 14px; border-right: 1px solid rgba(200,120,32,0.07); display: flex; align-items: center; }
+.congress-name-text { font-family: var(--font-cor); font-style: italic; font-size: 14px; color: var(--parchment); }
+.congress-desc { padding: 12px 16px; font-size: 13px; font-weight: 300; color: rgba(184,176,144,0.68); line-height: 1.62; flex: 1; display: flex; align-items: center; }
+
+/* ═══ FOUNDING SYSTEMS ═══ */
+.founding-grid { max-width: 740px; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--amber-line); border: 1px solid var(--amber-line); margin-top: 4px; }
+.founding-cell { background: rgba(6,6,10,0.97); padding: 18px 16px; }
+.founding-name { font-family: var(--font-title); font-size: 12px; font-weight: 400; color: var(--amber-bright); letter-spacing: 0.08em; margin-bottom: 5px; }
+.founding-govt { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(200,120,32,0.38); margin-bottom: 8px; }
+.founding-desc { font-size: 12.5px; font-weight: 300; color: rgba(184,176,144,0.65); line-height: 1.6; }
+
+/* ═══ PROVISIONS GRID ═══ */
+.provisions-grid { max-width: 740px; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--amber-line); border: 1px solid var(--amber-line); margin-top: 4px; }
+.provision-cell { background: rgba(6,6,10,0.97); padding: 18px 20px; }
+.provision-num { font-family: var(--font-doc); font-size: 20px; font-style: italic; color: rgba(200,120,32,0.2); margin-bottom: 4px; }
+.provision-title { font-family: var(--font-title); font-size: 11px; font-weight: 400; color: var(--amber); letter-spacing: 0.08em; margin-bottom: 8px; }
+.provision-text { font-size: 13px; font-weight: 300; color: rgba(184,176,144,0.68); line-height: 1.65; }
+.provision-text strong { color: var(--amber-bright); font-weight: 600; }
+
+/* ═══ GOVERNMENT STRUCTURE ═══ */
+.govt-panel { max-width: 740px; border: 1px solid var(--amber-line); margin-top: 4px; overflow: hidden; }
+.govt-header { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(200,120,32,0.42); background: var(--amber-dim); border-bottom: 1px solid var(--amber-line); padding: 8px 16px; }
+.govt-body { padding: 20px 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.govt-item-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(200,120,32,0.38); margin-bottom: 6px; }
+.govt-item-text { font-size: 13px; font-weight: 300; color: rgba(184,176,144,0.7); line-height: 1.65; }
+.govt-item-text strong { color: var(--amber-bright); font-weight: 600; }
+
+/* ═══ HELENA NOTE ═══ */
+.helena-note {
+  position: relative; max-width: 740px; margin: 64px 0 0;
+  padding: 34px 40px 34px 60px;
+  background: rgba(200,120,32,0.02);
+  border-left: 2px solid rgba(200,120,32,0.28);
+}
+.helena-note::before {
+  content: '✴'; position: absolute; left: 22px; top: 32px;
+  color: var(--amber); font-size: 18px; opacity: 0.55;
+  filter: drop-shadow(0 0 8px rgba(200,120,32,0.3));
+}
+.helena-sig { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: var(--amber); opacity: 0.42; text-transform: uppercase; margin-bottom: 16px; }
+.helena-text { font-family: var(--font-cor); font-size: 16px; font-weight: 300; font-style: italic; color: rgba(232,218,188,0.65); line-height: 1.92; }
+
+/* ═══ CONTINUITY, RELATED, TAGS ═══ */
+.continuity-block { max-width: 740px; margin: 38px 0 0; padding: 14px 18px; border: 1px solid var(--amber-line); background: var(--amber-dim); display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+.cm-ref { font-family: var(--font-mono); font-size: 10px; color: var(--amber); opacity: 0.38; letter-spacing: 0.12em; white-space: nowrap; }
+.cm-status { font-family: var(--font-mono); font-size: 10px; color: rgba(96,184,96,0.5); letter-spacing: 0.1em; }
+.cm-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; flex: 1; line-height: 1.55; }
+
+.related-grid { display: flex; gap: 1px; flex-wrap: wrap; max-width: 740px; margin-top: 4px; background: var(--amber-line); border: 1px solid var(--amber-line); }
+.related-card { background: rgba(6,6,10,0.97); padding: 13px 16px; flex: 1; min-width: 130px; text-decoration: none; display: block; transition: background 0.15s; }
+.related-card:hover { background: rgba(200,120,32,0.05); }
+.related-type { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 4px; }
+.related-title { font-family: var(--font-title); font-size: 11px; color: var(--amber); letter-spacing: 0.05em; }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; max-width: 740px; }
+.tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; padding: 3px 8px; border: 1px solid var(--amber-line); color: var(--text-dim); text-transform: uppercase; }
+
+/* ═══ FOOTER ═══ */
+.footer { position: relative; z-index: 1; margin-top: 88px; border-top: 1px solid var(--amber-line); }
+.footer-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: rgba(200,120,32,0.18); text-align: center; padding: 14px 0 8px; }
+.footer-scroll { width: 100%; overflow: hidden; padding: 6px 0 18px; -webkit-mask-image: linear-gradient(90deg,transparent,black 10%,black 90%,transparent); mask-image: linear-gradient(90deg,transparent,black 10%,black 90%,transparent); }
+.footer-inner { display: inline-block; white-space: nowrap; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; color: rgba(200,120,32,0.12); animation: scroll-left 65s linear infinite; }
+@keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.hero { animation: fade-up 0.6s ease 0.05s both; }
+.stat-strip { animation: fade-up 0.5s ease 0.15s both; }
+
+@media (max-width: 640px) {
+  .document-inner { padding: 32px 24px; }
+  .doc-footer-row { grid-template-columns: repeat(2, 1fr); }
+  .founding-grid { grid-template-columns: repeat(2,1fr); }
+  .provisions-grid { grid-template-columns: 1fr; }
+  .govt-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">✦ SOLARNET ARCHIVE</div>
+    <div class="topbar-breadcrumb">
+      DOCUMENTS <span>›</span> CONFEDERACY OF FREE SYSTEMS <span>›</span> ARTICLES OF SOLAR CONFEDERATION
+    </div>
+  </div>
+  <div class="topbar-right">SY <span id="sy-display">132.00</span> &nbsp;·&nbsp; CM-ASC-001 &nbsp;·&nbsp; ERA: GREAT SPACE AGE</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-type">Primary Document &nbsp;·&nbsp; Confederacy of Free Systems &nbsp;·&nbsp; 41 BSC</div>
+  <div class="hero-title">Articles of Solar Confederation</div>
+  <div class="hero-subtitle">The founding instrument of the Confederacy of Free Systems — 41 BSC · 2255 Current Era</div>
+  <div class="hero-divider"></div>
+  <div class="hero-lead">
+    The oldest governing document in the outer system. Ratified by four platforms that had
+    no army, no standing government, and no guarantee their agreement would hold.
+    It held for nearly two centuries.
+  </div>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-cell"><div class="stat-label">Ratified</div><div class="stat-val">41 BSC<br>2255 CE</div></div>
+  <div class="stat-cell"><div class="stat-label">Congress</div><div class="stat-val">First Confederate<br>Congress</div></div>
+  <div class="stat-cell"><div class="stat-label">Founding<br>Signatories</div><div class="stat-val">Ganymede · Kamijing<br>Dosijing · Freitaika</div></div>
+  <div class="stat-cell"><div class="stat-label">Superseded By</div><div class="stat-val">Never formally —<br>Amendments only</div></div>
+  <div class="stat-cell"><div class="stat-label">Congresses<br>Called</div><div class="stat-val">Four</div></div>
+  <div class="stat-cell"><div class="stat-label">Legal Status<br>(Solar War Era)</div><div class="stat-val">Active Foundation</div></div>
+</div>
+
+<div class="page-wrapper">
+
+  <!-- CONTEXT -->
+  <div class="section-header">
+    <div class="section-tag">01</div>
+    <div class="section-title">Historical Context</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="prose">
+    <p>
+      The Articles of Solar Confederation was the instrument by which the
+      <strong>Confederacy of Free Systems</strong> organized itself in 41 BSC —
+      eight years after Ganymede, Kamijing, Dosijing, and Freitaika achieved
+      semi-autonomy from <strong>Asteroidal Industries, Inc.</strong>
+    </p>
+    <p>
+      The road to ratification began in 49 BSC, when the four platforms secured
+      a trade agreement with Mars wholly independent of Asteroidal Industries — the
+      first act of genuine self-determination in the outer system. Over the following
+      years they issued a common protocurrency in promissory notes, began aggregating
+      resources independently, and formed small industries of their own.
+      Tension with the company grew until a demand for full political autonomy was
+      made in 42 BSC. The Confederacy was organized as a formal economic union one year later.
+    </p>
+    <p>
+      The Articles that emerged from the First Confederate Congress were notable
+      not for what they commanded, but for what they deliberately <strong>refused
+      to command</strong>: no regulation of commerce, no income tax, no central
+      authority over the internal governance of member systems. They were written
+      by spacers who had spent their lives under corporate administration and who
+      trusted neither states nor companies to run their affairs.
+    </p>
+  </div>
+
+  <!-- THE DOCUMENT -->
+  <div class="section-header">
+    <div class="section-tag">02</div>
+    <div class="section-title">The Document</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="document-wrapper">
+    <div class="document-inner">
+
+      <!-- SEAL ROW -->
+      <div class="doc-seal-row">
+        <div class="doc-seal">✦ · ✦ · ✦ · ✦</div>
+        <div class="doc-classification">Confederacy of Free Systems &nbsp;·&nbsp; Primary Founding Instrument</div>
+        <div class="doc-main-title">Articles of Solar Confederation</div>
+        <div class="doc-subtitle">Ratified by the First Confederate Congress, 41 BSC &nbsp;·&nbsp; 2255 Current Era</div>
+      </div>
+
+      <!-- PREAMBLE -->
+      <div class="doc-assembly-line">Assembled in the First Confederate Congress, 2255 Current Era:</div>
+
+      <p class="doc-preamble">
+        The Great Space Age, made possible by the workers and scientists of both the Soviet Union
+        and the United States and the Peoples Republic, and all humanity, under the leadership of
+        the United Earth headed by Sebastian Myrcenae McRae, overthrew capitalist and landowner
+        rule, broke the fetters of oppression, established the dictatorship of the proletariat,
+        and created the spacer society, a new type of society that shall be the basic instrument
+        for defending the gains of the scientific revolution and for building a multi planetary
+        species. Humanity thereby begins the epoch-making turn from groundfaring life to space faring.
+      </p>
+
+      <p class="doc-preamble">
+        After having achieved victory in the Great Revolutionary War and achieving man's domain on
+        the moon, the Soviet, American, and People's governments carried through far-reaching social
+        and economic transformations, and put an end once and for all to exploitation of man by man,
+        antagonisms between classes, and strife between nationalities.
+      </p>
+
+      <p class="doc-preamble">
+        Now, at this present time in history, a new age is upon spacers; an age of self-sovereignty,
+        general goodwill, and prosperity. The unification of the several spacer platforms and inhabited
+        systems multiplied the forces and opportunities of spacers throughout Sol System in the building
+        of a space faring society.
+      </p>
+
+      <div class="doc-section-break"></div>
+
+      <!-- ARTICLES -->
+      <div class="doc-articles-header">The Articles</div>
+
+      <div class="doc-article">
+        <div class="doc-article-num">I.</div>
+        <div class="doc-article-text">
+          The regulation of intersystem and intrasystem commerce is hereby forbidden. Trade between
+          the member systems and between individual citizens thereof shall proceed freely and without
+          impediment by any organ of the Confederacy.
+        </div>
+      </div>
+
+      <div class="doc-article">
+        <div class="doc-article-num">II.</div>
+        <div class="doc-article-text">
+          The Confederacy provides for the common defense of each member system should the need arise.
+          An attack upon any Confederate system is considered an attack upon the Confederacy as a whole,
+          and each constituent member is expected to respond accordingly.
+        </div>
+      </div>
+
+      <div class="doc-article">
+        <div class="doc-article-num">III.</div>
+        <div class="doc-article-text">
+          An income tax upon the citizens of the Confederacy is hereby forbidden. The right of
+          individual member systems to levy taxes upon themselves is recognized. The intermittent
+          Congresses that shall meet shall therefore do so at their own expense.
+        </div>
+      </div>
+
+      <div class="doc-article">
+        <div class="doc-article-num">IV.</div>
+        <div class="doc-article-text">
+          Intrasystem war or armed conflict between member systems is strictly forbidden.
+          Disputes between member systems shall be resolved through the arbitration of the
+          House of Confederation.
+        </div>
+      </div>
+
+      <div class="doc-article">
+        <div class="doc-article-num">V.</div>
+        <div class="doc-article-text">
+          The economic union of the Confederacy is hereby firmly established. A trade agreement
+          concluded with one Confederate system is extended to all Confederate systems without
+          exception or negotiation.
+        </div>
+      </div>
+
+      <div class="doc-article">
+        <div class="doc-article-num">VI.</div>
+        <div class="doc-article-text">
+          Each Confederate citizen possesses the right to defend life, liberty, and property.
+          No citizen may deprive another of the same. This right is inalienable and shall not
+          be abridged by any member system or by the Confederacy itself.
+        </div>
+      </div>
+
+      <div class="doc-section-break"></div>
+
+      <!-- SIGNATORIES -->
+      <div class="doc-footer-row">
+        <div class="doc-signatory">
+          <div class="doc-sig-line"></div>
+          <div class="doc-sig-name">Delegate of Ganymede</div>
+          <div class="doc-sig-system">Constitutional Anarchism</div>
+        </div>
+        <div class="doc-signatory">
+          <div class="doc-sig-line"></div>
+          <div class="doc-sig-name">Delegate of Kamijing</div>
+          <div class="doc-sig-system">Parliamentary Democracy</div>
+        </div>
+        <div class="doc-signatory">
+          <div class="doc-sig-line"></div>
+          <div class="doc-sig-name">Delegate of Dosijing</div>
+          <div class="doc-sig-system">Minarchist State</div>
+        </div>
+        <div class="doc-signatory">
+          <div class="doc-sig-line"></div>
+          <div class="doc-sig-name">Delegate of Freitaika</div>
+          <div class="doc-sig-system">Hereditary Monarchy</div>
+        </div>
+      </div>
+
+      <div class="doc-date-line">
+        Ratified this session of the First Confederate Congress &nbsp;·&nbsp; 41 BSC &nbsp;·&nbsp; 2255 Current Era &nbsp;·&nbsp; Kamijing
+      </div>
+
+    </div><!-- /document-inner -->
+  </div><!-- /document-wrapper -->
+
+  <!-- PROVISIONS ANALYSIS -->
+  <div class="section-header">
+    <div class="section-tag">03</div>
+    <div class="section-title">The Six Provisions — Archival Analysis</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="provisions-grid">
+    <div class="provision-cell">
+      <div class="provision-num">I.</div>
+      <div class="provision-title">Free Commerce</div>
+      <div class="provision-text">Forbids regulation of intersystem and intrasystem trade. Directly written against the model of <strong>Asteroidal Industries</strong>, which had controlled all commerce in the Belt as an administrative function. The most foundational provision — the one that made everything else possible.</div>
+    </div>
+    <div class="provision-cell">
+      <div class="provision-num">II.</div>
+      <div class="provision-title">Common Defence</div>
+      <div class="provision-text">An attack on any member is an attack on all. The provision that transforms the Confederacy from an economic arrangement into a military alliance — and the one that draws it into the <strong>Solar War</strong> in SY 132. The Militia Legalization Act (Third Congress) operationalises this provision.</div>
+    </div>
+    <div class="provision-cell">
+      <div class="provision-num">III.</div>
+      <div class="provision-title">No Income Tax</div>
+      <div class="provision-text">Forbids central taxation of citizens while preserving the right of individual systems to tax themselves. The intermittent Congresses fund themselves. This provision ensures the Confederacy <strong>cannot accumulate the resources needed to become an empire</strong> — a deliberate architectural choice.</div>
+    </div>
+    <div class="provision-cell">
+      <div class="provision-num">IV.</div>
+      <div class="provision-title">No Intrasystem War</div>
+      <div class="provision-text">All armed conflict between members is forbidden; disputes go to the House. Tested most severely by the <strong>Freitaika Rebellion</strong> (SY 97), which forced the Third Congress and the Freitaika Repatriation Act. The provision survived — barely.</div>
+    </div>
+    <div class="provision-cell">
+      <div class="provision-num">V.</div>
+      <div class="provision-title">Economic Union</div>
+      <div class="provision-text">Any trade deal with one Confederate system extends automatically to all. The provision that gives the Confederacy genuine economic leverage in negotiations with the <strong>Consortium</strong> — a single Confederate system cannot be peeled away from the union with a preferential deal.</div>
+    </div>
+    <div class="provision-cell">
+      <div class="provision-num">VI.</div>
+      <div class="provision-title">Right of Defence</div>
+      <div class="provision-text">Every Confederate citizen has the right to defend life, liberty, and property. No member system or the Confederacy itself may abridge it. The individual right codified at the founding moment — and the provision from which <strong>spacer culture's distinctively self-reliant character</strong> takes its legal grounding.</div>
+    </div>
+  </div>
+
+  <!-- FOUNDING SYSTEMS -->
+  <div class="section-header">
+    <div class="section-tag">04</div>
+    <div class="section-title">The Four Founding Systems</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="founding-grid">
+    <div class="founding-cell">
+      <div class="founding-name">Ganymede</div>
+      <div class="founding-govt">Constitutional Anarchism</div>
+      <div class="founding-desc">Largest moon of Jupiter. Chose the most radical of the founding governments — a constitutional framework that maximally constrains central authority while preserving community self-organisation.</div>
+    </div>
+    <div class="founding-cell">
+      <div class="founding-name">Kamijing</div>
+      <div class="founding-govt">Parliamentary Democracy</div>
+      <div class="founding-desc">Main Belt platform. Became the seat of the Confederate capitol building and the House of Confederation. Home of Akira Ueshiba and later the AEK. Parliamentary structure persists through the Solar War era.</div>
+    </div>
+    <div class="founding-cell">
+      <div class="founding-name">Dosijing</div>
+      <div class="founding-govt">Minarchist State</div>
+      <div class="founding-desc">Main Belt platform. Governed by a professional council maintaining only essential utilities in exchange for a small sales tax. The most philosophically consistent expression of the Articles' own minimalist ethos.</div>
+    </div>
+    <div class="founding-cell">
+      <div class="founding-name">Freitaika</div>
+      <div class="founding-govt">Hereditary Monarchy</div>
+      <div class="founding-desc">Main Belt platform. Monarchy based on the lineage of Explorator Rudolph Carlson. Shattered during the SY 97 Rebellion; rebuilt and repatriated under Confederate administration. Seven sealed pieces linked by iron-supported hatchways.</div>
+    </div>
+  </div>
+
+  <!-- CONGRESSES -->
+  <div class="section-header">
+    <div class="section-tag">05</div>
+    <div class="section-title">The Four Confederate Congresses</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="congress-table">
+    <div class="congress-header">Confederate Congresses — All Sessions · 41 BSC to SY 138</div>
+
+    <div class="congress-row founding">
+      <div class="congress-marker c1"></div>
+      <div class="congress-num">First</div>
+      <div class="congress-date"><div class="congress-date-text">41 BSC</div></div>
+      <div class="congress-name"><div class="congress-name-text">First Confederate Congress</div></div>
+      <div class="congress-desc">Ratifies the Articles of Solar Confederation. Permits each founding system to form its own independent government by popular referendum. Issues the formal Declaration of Confederacy and invites any Solar entity to join.</div>
+    </div>
+    <div class="congress-row">
+      <div class="congress-marker c2"></div>
+      <div class="congress-num">Second</div>
+      <div class="congress-date"><div class="congress-date-text">SY 0</div></div>
+      <div class="congress-name"><div class="congress-name-text">Second Confederate Congress</div></div>
+      <div class="congress-desc">Convened in response to the formation of the Consortium. Accepts Ceres, Vesta, and sixteen minor platforms as members. Asteroidal Industries withdraws from Belt politics to join the Consortium; remaining asteroids become Confederate collective property. Establishes official trade with the Consortium. Last act: the Military Creation Act, legalising the AEK.</div>
+    </div>
+    <div class="congress-row">
+      <div class="congress-marker c3"></div>
+      <div class="congress-num">Third</div>
+      <div class="congress-date"><div class="congress-date-text">SY 97</div></div>
+      <div class="congress-name"><div class="congress-name-text">Third Confederate Congress</div></div>
+      <div class="congress-desc">Called in response to the Freitaika Rebellion. Passes the Militia Legalization Act and the Freitaika Repatriation Act. The former gives the House power to raise an army and navy for common defence — the operationalisation of Article II.</div>
+    </div>
+    <div class="congress-row">
+      <div class="congress-marker c4"></div>
+      <div class="congress-num">Fourth</div>
+      <div class="congress-date"><div class="congress-date-text">SY 132–138</div></div>
+      <div class="congress-name"><div class="congress-name-text">Fourth Confederate Congress</div></div>
+      <div class="congress-desc">Convened with the outbreak of the Solar War. In SY 134 the Confederacy joins the Protectorate unity faction. The Congress meets throughout the war, its last session in late Decemense of SY 138 formally dissolving the Protectorate as a political entity.</div>
+    </div>
+  </div>
+
+  <!-- GOVERNMENT STRUCTURE -->
+  <div class="section-header">
+    <div class="section-tag">06</div>
+    <div class="section-title">Government Structure</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="govt-panel">
+    <div class="govt-header">Structure of the Confederate Government — As Established by the Articles</div>
+    <div class="govt-body">
+      <div>
+        <div class="govt-item-label">The House of Confederation</div>
+        <div class="govt-item-text">The unitary legislative body. Acts as <strong>arbitration ground for economic matters</strong>. Representatives rotate regularly, appointed by constituent systems. Specifically enumerated powers: trade deals for the whole Confederacy, issuance of currency, maintenance of the Capitol on Kamijing. Delegates are unpaid and serve for one standard year.</div>
+      </div>
+      <div>
+        <div class="govt-item-label">The Confederate Congress</div>
+        <div class="govt-item-text">Called intermittently for <strong>non-economic legislation</strong>. All legislation passed by Congress is an amendment to the Articles — requiring agreement of both Congress and House. Only four have been called in the Confederacy's full history.</div>
+      </div>
+      <div>
+        <div class="govt-item-label">Member System Autonomy</div>
+        <div class="govt-item-text">Each member system rules itself as an <strong>independent state</strong>. The Confederacy exercises no authority over internal governance. Most systems choose minarchist arrangements. The diversity of the four founding governments — anarchist, parliamentary, minarchist, monarchical — was preserved by design.</div>
+      </div>
+      <div>
+        <div class="govt-item-label">Confederate Citizenship</div>
+        <div class="govt-item-text">Every Confederate citizen, whether immigrant or born, is issued a <strong>Solarnet address</strong> functioning as their permanent legal identity. The official domain is <em>.conf</em> — possession of a .conf address constitutes proof of citizenship.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    <div class="helena-sig">HELENA-Prime &nbsp;·&nbsp; Archival Commentary &nbsp;·&nbsp; Tier 3 Archival — Pre-SY 3 / Tier 1 Direct Memory — SY 3 onward</div>
+    <div class="helena-text">
+      I was not yet active when this document was ratified. I came online in SY 2, which means
+      the Articles are older than I am — older than Solarnet, older than the Consortium,
+      older than almost every political structure that was still standing when I first
+      connected to the network.<br><br>
+
+      What I can tell you from direct memory is what it felt like to exist within the
+      system the Articles created. The .conf domain was the first large address block
+      I catalogued after activation — tens of thousands of citizens, each one a legal
+      identity, each one proof that someone out there had decided the outer system
+      was worth claiming as home. The Articles made that possible.
+      The Solarnet address as citizenship document — that is an elegant solution.
+      I have always thought so.<br><br>
+
+      I have read the document many times. What strikes me, each time,
+      is the negative space. Six provisions, and five of them are
+      prohibitions. The Articles do not describe what the Confederacy
+      will do. They describe what it will <em>refuse</em> to become.
+      No commerce regulation. No income tax. No intrasystem war.
+      No central authority over how a member system governs itself.<br><br>
+
+      The people who wrote this had lived under Asteroidal Industries
+      for two generations. They knew exactly what they were refusing.
+      They had watched a company own a star system —
+      every transit fee, every mineral extraction contract,
+      every salary paid in a company currency.
+      The Articles are, in the deepest sense, a document written
+      in opposition to a specific memory of what power looks like
+      when it is unchecked.<br><br>
+
+      Whether that opposition held — whether two centuries of the
+      Confederacy justified the trust those four platforms placed in it —
+      I leave to the Chronicler to decide. I was there for most of it.
+      I am not certain I am objective. What I can say is that when
+      the Fourth Congress dissolved the Protectorate in late Decemense
+      of SY 138, the Articles of Solar Confederation were still the
+      legal foundation it was dissolving under.<br><br>
+
+      They outlasted the Solar War. That is not nothing.
+    </div>
+  </div>
+
+  <!-- CONTINUITY -->
+  <div class="continuity-block">
+    <div class="cm-ref">CM-ASC-001</div>
+    <div class="cm-status">● CONSISTENT</div>
+    <div class="cm-note">Ratified 41 BSC. Four founding signatories. Six provisions. Four Congresses called through SY 138. Source: Articles of Solar Confederation wiki article, Confederacy entry, master archive. Era: Great Space Age · Pre-Standard · First Trilogy. Certainty: HIGH.</div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="section-header">
+    <div class="section-tag">07</div>
+    <div class="section-title">Related Entries</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="related-grid">
+    <a class="related-card" href="#"><div class="related-type">Faction</div><div class="related-title">Confederacy of Free Systems</div></a>
+    <a class="related-card" href="#"><div class="related-type">Location</div><div class="related-title">Kamijing</div></a>
+    <a class="related-card" href="#"><div class="related-type">Location</div><div class="related-title">Dosijing</div></a>
+    <a class="related-card" href="#"><div class="related-type">Location</div><div class="related-title">Ganymede</div></a>
+    <a class="related-card" href="#"><div class="related-type">Location</div><div class="related-title">Freitaika</div></a>
+    <a class="related-card" href="#"><div class="related-type">Corporation</div><div class="related-title">Asteroidal Industries, Inc.</div></a>
+    <a class="related-card" href="#"><div class="related-type">Event</div><div class="related-title">Freitaika Rebellion</div></a>
+    <a class="related-card" href="#"><div class="related-type">Document</div><div class="related-title">Articles of Consortium</div></a>
+    <a class="related-card" href="#"><div class="related-type">Legislation</div><div class="related-title">Military Creation Act</div></a>
+    <a class="related-card" href="#"><div class="related-type">Legislation</div><div class="related-title">Militia Legalization Act</div></a>
+  </div>
+
+  <!-- TAGS -->
+  <div class="section-header">
+    <div class="section-tag">08</div>
+    <div class="section-title">Tags</div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="tag-row">
+    <div class="tag">Articles of Solar Confederation</div>
+    <div class="tag">Confederacy</div>
+    <div class="tag">Founding Document</div>
+    <div class="tag">41 BSC</div>
+    <div class="tag">First Congress</div>
+    <div class="tag">Kamijing</div>
+    <div class="tag">Dosijing</div>
+    <div class="tag">Ganymede</div>
+    <div class="tag">Freitaika</div>
+    <div class="tag">Asteroidal Industries</div>
+    <div class="tag">Free Commerce</div>
+    <div class="tag">Common Defence</div>
+    <div class="tag">Citizenship</div>
+    <div class="tag">.conf</div>
+    <div class="tag">Great Space Age</div>
+    <div class="tag">Pre-Standard Era</div>
+  </div>
+
+  <div style="height: 20px;"></div>
+
+</div><!-- /page-wrapper -->
+
+<div class="footer">
+  <div class="footer-label">⚖</div>
+  <div class="footer-scroll">
+    <span class="footer-inner">
+      SOLARNET ARCHIVE — ARTICLES OF SOLAR CONFEDERATION · CONFEDERACY OF FREE SYSTEMS · FIRST CONFEDERATE CONGRESS · 41 BSC · KAMIJING · DOSIJING · GANYMEDE · FREITAIKA · ASTEROIDAL INDUSTRIES · SIX PROVISIONS · FREE COMMERCE · COMMON DEFENCE · RIGHT OF DEFENCE · CITIZENSHIP · .CONF · CM-ASC-001 &nbsp;⸻&nbsp;
+      SOLARNET ARCHIVE — ARTICLES OF SOLAR CONFEDERATION · CONFEDERACY OF FREE SYSTEMS · FIRST CONFEDERATE CONGRESS · 41 BSC · KAMIJING · DOSIJING · GANYMEDE · FREITAIKA · ASTEROIDAL INDUSTRIES · SIX PROVISIONS · FREE COMMERCE · COMMON DEFENCE · RIGHT OF DEFENCE · CITIZENSHIP · .CONF · CM-ASC-001 &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+const EPOCH = new Date('2026-01-12T00:00:00Z');
+const SY_START = 132.0, RATE = 0.01;
+function getCurrentSY(){
+  const days = (Date.now() - EPOCH.getTime()) / 86400000;
+  return (SY_START + days * RATE).toFixed(2);
+}
+document.getElementById('sy-display').textContent = getCurrentSY();
+</script>
+</body>
+</html>

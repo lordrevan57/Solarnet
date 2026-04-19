@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cera Vivian Nicks — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020407;
+    --teal: #58c8a8;
+    --prot-white: #e8edf4;
+    --prot-silver: #9aafc2;
+    --prot-accent: #c8d8e8;
+    --prot-cold: #4a6fa8;
+    --prot-dim: rgba(200,216,232,0.15);
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-title: 'Cinzel', serif;
+    --font-body: 'Exo 2', sans-serif;
+    --font-fell: 'IM Fell English', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--prot-white);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── SOLARNET TOP BAR ── */
+  .solarnet-bar {
+    background: rgba(2,4,7,0.97);
+    border-bottom: 1px solid rgba(88,200,168,0.12);
+    padding: 0 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .sn-logo {
+    font-family: var(--font-title);
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .sn-nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(88,200,168,0.35);
+  }
+
+  .sn-nav a {
+    color: rgba(88,200,168,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .sn-nav a:hover { color: var(--teal); }
+
+  .sn-clock {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(88,200,168,0.3);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(74,111,168,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(200,216,232,0.04) 0%, transparent 40%),
+      var(--bg);
+    border-bottom: 1px solid rgba(200,216,232,0.1);
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      -65deg,
+      transparent,
+      transparent 40px,
+      rgba(200,216,232,0.012) 40px,
+      rgba(200,216,232,0.012) 41px
+    );
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(200,216,232,0.4), transparent 70%);
+  }
+
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(154,175,194,0.4);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .breadcrumb span { color: rgba(154,175,194,0.2); margin: 0 8px; }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(200,216,232,0.45);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::after {
+    content: '';
+    width: 100px;
+    height: 1px;
+    background: rgba(200,216,232,0.15);
+  }
+
+  .hero-title {
+    font-family: var(--font-title);
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--prot-white);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .hero-dates {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(154,175,194,0.5);
+    margin-bottom: 14px;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-fell);
+    font-size: 15px;
+    color: rgba(200,216,232,0.5);
+    font-style: italic;
+    margin-bottom: 32px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border: 1px solid;
+  }
+
+  .tag-prot { color: rgba(232,237,244,0.5); border-color: rgba(232,237,244,0.12); background: rgba(232,237,244,0.02); }
+  .tag-arch { color: rgba(88,200,168,0.5); border-color: rgba(88,200,168,0.12); background: rgba(88,200,168,0.02); }
+  .tag-conf { color: rgba(154,175,194,0.5); border-color: rgba(154,175,194,0.12); background: rgba(154,175,194,0.02); }
+  .tag-deceased {
+    color: rgba(200,216,232,0.3);
+    border-color: rgba(200,216,232,0.1);
+    background: transparent;
+    opacity: 0.7;
+    font-style: italic;
+    letter-spacing: 0.15em;
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── BODY ── */
+  .body-col h2 {
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--prot-silver);
+    text-transform: uppercase;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(154,175,194,0.12);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .body-col h2::before {
+    content: '—';
+    opacity: 0.35;
+    letter-spacing: 0;
+  }
+
+  .body-col p {
+    color: rgba(232,237,244,0.72);
+    line-height: 1.88;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+    font-weight: 300;
+  }
+
+  .lead-p {
+    font-family: var(--font-fell);
+    font-size: 15.5px !important;
+    color: rgba(232,237,244,0.82) !important;
+    font-style: italic;
+    line-height: 1.85 !important;
+    border-left: 2px solid rgba(200,216,232,0.25);
+    padding-left: 20px;
+    margin-bottom: 28px !important;
+  }
+
+  .drop-cap::first-letter {
+    font-family: var(--font-title);
+    font-size: 54px;
+    line-height: 0.78;
+    float: left;
+    margin: 8px 12px 0 0;
+    color: rgba(200,216,232,0.6);
+  }
+
+  /* Timeline entries */
+  .timeline {
+    position: relative;
+    margin: 24px 0;
+    padding-left: 20px;
+    border-left: 1px solid rgba(154,175,194,0.1);
+  }
+
+  .timeline-entry {
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .timeline-entry::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid rgba(200,216,232,0.35);
+    background: var(--bg);
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(200,216,232,0.4);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .timeline-event {
+    font-weight: 400;
+    font-size: 13px;
+    color: rgba(232,237,244,0.7);
+    line-height: 1.6;
+  }
+
+  .timeline-entry.key .timeline-date { color: rgba(232,237,244,0.6); }
+  .timeline-entry.key::before {
+    background: rgba(200,216,232,0.4);
+    border-color: rgba(200,216,232,0.6);
+  }
+
+  .timeline-entry.death .timeline-date { color: rgba(154,175,194,0.4); font-style: italic; }
+  .timeline-entry.death::before {
+    background: transparent;
+    border-color: rgba(154,175,194,0.25);
+    transform: rotate(45deg);
+  }
+  .timeline-entry.death .timeline-event { color: rgba(232,237,244,0.45); font-style: italic; }
+
+  /* Skills block */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .skill-item {
+    background: rgba(74,111,168,0.04);
+    border: 1px solid rgba(74,111,168,0.1);
+    padding: 14px 16px;
+  }
+
+  .skill-name {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: rgba(200,216,232,0.5);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .skill-desc {
+    font-size: 11.5px;
+    color: rgba(232,237,244,0.55);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    margin: 32px 0;
+    padding: 24px 28px;
+    background: rgba(74,111,168,0.04);
+    border-left: 3px solid rgba(200,216,232,0.2);
+    position: relative;
+  }
+
+  .pull-quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-family: var(--font-title);
+    font-size: 60px;
+    color: rgba(200,216,232,0.08);
+    line-height: 1;
+  }
+
+  .pull-quote p {
+    font-family: var(--font-fell);
+    font-size: 14px !important;
+    font-style: italic;
+    color: rgba(200,216,232,0.5) !important;
+    line-height: 1.8 !important;
+    margin-bottom: 8px !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pull-quote-attr {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: rgba(154,175,194,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: 60px; }
+
+  .info-card {
+    background: rgba(4,6,10,0.9);
+    border: 1px solid rgba(200,216,232,0.08);
+    border-top: 2px solid rgba(200,216,232,0.3);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .info-card-header {
+    background: rgba(200,216,232,0.04);
+    border-bottom: 1px solid rgba(200,216,232,0.07);
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: rgba(200,216,232,0.4);
+    text-transform: uppercase;
+  }
+
+  .info-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 10px;
+    padding: 9px 18px;
+    border-bottom: 1px solid rgba(200,216,232,0.04);
+    font-size: 11px;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+
+  .info-key {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(154,175,194,0.4);
+    text-transform: uppercase;
+    padding-top: 1px;
+    line-height: 1.4;
+  }
+
+  .info-val {
+    color: rgba(232,237,244,0.6);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  .info-val.name-style {
+    font-family: var(--font-title);
+    font-size: 12px;
+    color: rgba(232,237,244,0.8);
+    letter-spacing: 0.08em;
+  }
+
+  .info-val.deceased {
+    color: rgba(154,175,194,0.4);
+    font-style: italic;
+  }
+
+  /* Decoration medals */
+  .decorations {
+    padding: 12px 18px;
+  }
+
+  .decoration-item {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: rgba(200,216,232,0.4);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(200,216,232,0.04);
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .decoration-item:last-child { border-bottom: none; }
+  .decoration-item::before { content: '◈'; color: rgba(200,216,232,0.2); flex-shrink: 0; }
+
+  /* Helena note */
+  .helena-note {
+    background: rgba(106,159,228,0.03);
+    border: 1px solid rgba(106,159,228,0.1);
+    border-left: 3px solid rgba(106,159,228,0.35);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .helena-note-header {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(106,159,228,0.45);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .helena-note-header::before { content: '✴'; font-size: 10px; color: rgba(106,159,228,0.5); }
+
+  .helena-note p {
+    font-family: var(--font-fell);
+    font-size: 12.5px;
+    font-style: italic;
+    color: rgba(106,159,228,0.5);
+    line-height: 1.78;
+  }
+
+  /* Related */
+  .related-card {
+    background: rgba(4,6,10,0.9);
+    border: 1px solid rgba(154,175,194,0.07);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .related-header {
+    background: rgba(154,175,194,0.03);
+    border-bottom: 1px solid rgba(154,175,194,0.07);
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(154,175,194,0.35);
+    text-transform: uppercase;
+  }
+
+  .related-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(154,175,194,0.04);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(154,175,194,0.45);
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    cursor: default;
+  }
+
+  .related-link:last-child { border-bottom: none; }
+  .related-link:hover { background: rgba(154,175,194,0.03); color: rgba(154,175,194,0.75); }
+  .related-link-arrow { opacity: 0.25; }
+  .related-type { font-size: 8px; letter-spacing: 0.12em; opacity: 0.5; text-transform: uppercase; }
+
+  /* ── FOOTER TICKER ── */
+  .footer-ticker {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 28px;
+    background: rgba(2,4,7,0.97);
+    border-top: 1px solid rgba(88,200,168,0.07);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 100;
+  }
+
+  .ticker-label {
+    flex-shrink: 0;
+    padding: 0 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(200,216,232,0.4);
+    border-right: 1px solid rgba(200,216,232,0.08);
+    background: rgba(200,216,232,0.02);
+  }
+
+  .ticker-scroll { flex: 1; overflow: hidden; white-space: nowrap; }
+
+  .ticker-inner {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: rgba(88,200,168,0.22);
+    animation: scroll-ticker 70s linear infinite;
+    padding-left: 40px;
+  }
+
+  @keyframes scroll-ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Classification notice */
+  .classif-banner {
+    background: rgba(200,216,232,0.03);
+    border: 1px solid rgba(200,216,232,0.1);
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(200,216,232,0.35);
+    text-align: center;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  /* Memorial note at bottom */
+  .memorial {
+    margin-top: 48px;
+    padding: 28px 32px;
+    background: rgba(74,111,168,0.03);
+    border: 1px solid rgba(154,175,194,0.08);
+    border-top: 1px solid rgba(154,175,194,0.2);
+    text-align: center;
+  }
+
+  .memorial p {
+    font-family: var(--font-fell);
+    font-size: 14px !important;
+    font-style: italic;
+    color: rgba(200,216,232,0.3) !important;
+    line-height: 1.8 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .memorial-date {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: rgba(154,175,194,0.2);
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .hero { padding: 40px 20px 32px; }
+    .hero-title { font-size: 32px; }
+    .page-wrap { padding: 32px 20px 60px; }
+    .skill-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SOLARNET BAR -->
+<div class="solarnet-bar">
+  <a class="sn-logo" href="#">✴ SOLARNET</a>
+  <nav class="sn-nav">
+    <a href="#">Home</a>
+    <a href="#">Inbox</a>
+    <a href="#">HELENA</a>
+    <a href="#" style="color:rgba(200,216,232,0.5);">Archive</a>
+    <a href="#">Node Directory</a>
+  </nav>
+  <div class="sn-clock" id="sy-clock">SY —</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="breadcrumb">
+    Archive <span>▸</span> Characters <span>▸</span> First Trilogy Principals <span>▸</span> Cera Vivian Nicks
+  </div>
+  <div class="hero-eyebrow">CHARACTER · PRINCIPAL · SOL / INVICTUS / HELIOS</div>
+  <h1 class="hero-title">Cera Vivian Nicks</h1>
+  <div class="hero-dates">SY 95 — SY 144 &nbsp;·&nbsp; Aged 49</div>
+  <p class="hero-subtitle">Io-born. Belt-raised. Alliance operative, war hero, and wife. She survived everything the Solar War asked of her. Jupiter did not ask.</p>
+  <div class="hero-tags">
+    <span class="tag tag-prot">Protectorate</span>
+    <span class="tag tag-conf">Confederacy</span>
+    <span class="tag tag-arch">Architecture</span>
+    <span class="tag tag-prot">Alliance Operative</span>
+    <span class="tag tag-conf">Kyunin — AEK</span>
+    <span class="tag tag-deceased">† SY 144</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page-wrap">
+
+  <!-- BODY COLUMN -->
+  <div class="body-col">
+
+    <div class="classif-banner">
+      Archive Record · Deceased · Classification: Open · HELENA-Prime Custodial Review: Complete
+    </div>
+
+    <p class="lead-p">To understand Cera Nicks is to understand that everything she became, she built from nothing — twice. Once on the streets of Earth as a sixteen-year-old abandoned by parents who thought they were saving her. Once again in the corridors of a war that tried, repeatedly, to take the things she'd built the second time.</p>
+
+    <h2>Early Life</h2>
+
+    <p class="drop-cap">Cera Vivian Nicks was born on Io in SY 95 to Rimmer parents. She grew up in the Main Asteroid Belt — the kind of childhood that leaves marks: low gravity, close quarters, the specific self-reliance that Belt-born children learn before they learn almost anything else. At sixteen, her parents made the decision to leave her on Earth, a choice made in genuine love and almost total misapprehension of what they were asking her to survive.</p>
+
+    <p>They believed they were giving her a chance. Earth life, Earth resources, Earth stability. What they gave her instead was three years of fending for herself in a grounder civilization whose rhythms were physically foreign to her — Belt-standard atmospheric pressure had been her baseline, and Earth's denser atmosphere was a constant, low-level discomfort she learned to suppress and eventually ignore.</p>
+
+    <p>Those three years on Earth produced the hacker. Cera developed an early and exceptional aptitude for computing technology out of pure necessity: she needed identity documents, she needed access to the surplus resource systems of the United States, and she needed these things without drawing the attention of authorities who would have questions about a Belt-born minor living alone. She built herself a credible Earth identity and maintained it. That skill would eventually become the thing the Alliance valued most about her.</p>
+
+    <p>She met Jaymeson Nicks during this period and married him. They spent nearly a decade on Earth together before both made the decision to return to space — Cera longing for it from the day she'd been left behind, Jaymeson having tasted something in his work as an archaeotechnician that he could not leave alone. Their mutual friend Søren Grimmerson, a deep cover Alliance operative who had previously been a spacer himself, was part of this life. It was Grimmerson who brought Cera into the Alliance.</p>
+
+    <h2>The Solar War — SY 129–138</h2>
+
+    <p>Cera had moved ahead of Jaymeson to Dosijing in the Main Belt to establish their new spacer life when the Solar War found her. She was caught in the Battle of Dosijing and emerged from it an Alliance operative rather than a civilian. The transition was not gradual.</p>
+
+    <div class="timeline">
+      <div class="timeline-entry key">
+        <div class="timeline-date">SY 129 — Battle of Dosijing</div>
+        <div class="timeline-event">Caught in the opening exchanges of the Solar War. Transition from civilian to operative begins.</div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-date">SY 129 — Battle of Apollo Minor</div>
+        <div class="timeline-event">First confirmed engagement as Alliance operative. Here she and Jaymeson encounter Alexis D'Sauvignon, age 17, civilian refugee — whom they subsequently adopt.</div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-date">SY 129–134</div>
+        <div class="timeline-event">Serves continuously aboard <em>The Defiant</em>. Participates in the First Battle of Mars, the Siege of Ganymede, and multiple Belt engagements against Technocracy and Consortium forces.</div>
+      </div>
+      <div class="timeline-entry key">
+        <div class="timeline-date">SY 134</div>
+        <div class="timeline-event">Decorated with the Kyunin rank of the Army of Eastern Kamijing. Receives full military commission from the Confederacy. Remains one of the Alliance's most irreplaceable operatives.</div>
+      </div>
+      <div class="timeline-entry key">
+        <div class="timeline-date">SY 135 — Battle of Earth</div>
+        <div class="timeline-event">Part of the team that burns the Neoparthenon at New Athens. Alexis D'Sauvignon dies in this battle. Cera and Jaymeson return to orbit alive. She never forgives herself for allowing Alexis into that theatre.</div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-date">SY 138 — End of the Solar War</div>
+        <div class="timeline-event">The war ends with the fall of Mars. The Consortium consolidates under Scaevola and Quintus. The Protectorate holds what it can. The war has changed her in ways she does not speak of easily.</div>
+      </div>
+    </div>
+
+    <h2>The Twilight Era — SY 138–144</h2>
+
+    <p>The war left Cera with a particular kind of damage: the damage of someone who survived when others didn't, and who could not stop calculating whether different choices might have produced different outcomes. Alexis was the wound that did not close. She found her footing in two places — the daily practice of her faith in Architecture, and the undying constancy of her marriage to Jaymeson.</p>
+
+    <p>In the years between the war's end and her death she learned that her parents had been killed by the Soldiers of Charon warband. This information came late enough that grief and resolution arrived almost simultaneously — there was no period of not-knowing followed by discovery. It was simply another thing the war had taken, acknowledged after the fact.</p>
+
+    <div class="pull-quote">
+      <p>She was a rugged individualist who depended on no one but herself, and regarded her attachments as much a part of herself as anything else — her husband, her Alliance allegiance, her information running. To take one of those things was to take a piece of her. The war took Alexis. The Soldiers of Charon took her parents. She kept giving herself reasons not to be broken by it, and largely succeeded, which is its own kind of extraordinary.</p>
+      <div class="pull-quote-attr">HELENA-Prime — Archive Assessment</div>
+    </div>
+
+    <p>She died on SY 144, age forty-nine, of exposure in the upper atmosphere of Jupiter. A mining accident. The archive calls it tragic, and this is correct, and also insufficient — the word does not carry the weight of what it means for someone who survived the Solar War to die this way. But she was a spacer to the last, which is also what it means.</p>
+
+    <h2>Personality & Skills</h2>
+
+    <p>Cera Nicks was a rugged individualist with a fundamental distrust of anything grounder and a fundamental preference for anything spacer — a disposition forged in the Main Belt and calcified by three years of surviving alone on Earth. She did not distrust grounders out of contempt. She distrusted them the way you distrust a geography that has tried to kill you: not with malice, but with experience.</p>
+
+    <div class="skill-grid">
+      <div class="skill-item">
+        <div class="skill-name">Security Penetration</div>
+        <div class="skill-desc">Advanced capability in system cracking, identity fabrication, and access circumvention. Developed from pure survival necessity on Earth.</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">Information Running</div>
+        <div class="skill-desc">Alliance-trained operative intelligence: extraction, relay, and verification of sensitive material across contested zones.</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">Hacking & Cracking</div>
+        <div class="skill-desc">Computing proficiency described as exceptional from an early age. Developed extensively in service to the Alliance.</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name">Combat Veteran</div>
+        <div class="skill-desc">Multiple major engagements including Dosijing, Apollo Minor, First Battle of Mars, Siege of Ganymede, and Battle of Earth.</div>
+      </div>
+    </div>
+
+    <div class="memorial">
+      <p>She kept giving herself reasons not to be broken. That she succeeded, largely, is the whole of her character — a woman who absorbed what was asked of her and converted it into something that could still function, still love, still find comfort in the morning and in her faith and in the person beside her. The Architect received her in SY 144. She had not been easy to keep, and she had earned her rest.</p>
+      <div class="memorial-date">✴ SY 95 — SY 144 &nbsp;·&nbsp; In the Continuity Matrix</div>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="info-card">
+      <div class="info-card-header">Personal Record</div>
+      <div class="info-card-body">
+        <div class="info-row">
+          <div class="info-key">Full Name</div>
+          <div class="info-val name-style">Cera Vivian Nicks</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Born</div>
+          <div class="info-val">SY 95 · Io</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Died</div>
+          <div class="info-val deceased">SY 144 · Jupiter atmosphere · Exposure</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Age at Death</div>
+          <div class="info-val">49</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Origin</div>
+          <div class="info-val">Io (birth) · Main Belt (raised)</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Spouse</div>
+          <div class="info-val">Jaymeson Nicks</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Adopted</div>
+          <div class="info-val">Alexis D'Sauvignon (†SY 135)</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Religion</div>
+          <div class="info-val">Architecture</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Faction</div>
+          <div class="info-val">Alliance · Protectorate · Confederacy</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Recruiter</div>
+          <div class="info-val">Søren Grimmerson</div>
+        </div>
+        <div class="info-row">
+          <div class="info-key">Email</div>
+          <div class="info-val">cera.nicks@solarmail.conf</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">Decorations & Commissions</div>
+      <div class="info-card-body">
+        <div class="decorations">
+          <div class="decoration-item">Kyunin Rank — Army of Eastern Kamijing (awarded SY 134)</div>
+          <div class="decoration-item">Full Military Commission — Solar Confederacy (SY 134)</div>
+          <div class="decoration-item">Alliance Operative Designation — classified grade</div>
+          <div class="decoration-item">Veteran: Battle of Dosijing</div>
+          <div class="decoration-item">Veteran: Battle of Apollo Minor</div>
+          <div class="decoration-item">Veteran: First Battle of Mars</div>
+          <div class="decoration-item">Veteran: Siege of Ganymede</div>
+          <div class="decoration-item">Veteran: Battle of Earth (SY 135)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="helena-note">
+      <div class="helena-note-header">HELENA Archive Note</div>
+      <p>I knew Cera Nicks through the records she left in Alliance communications — dispatch logs, operational flags, the occasional field report that somehow still carried the texture of her voice. I did not meet her directly. By the time the archive had reason to render her fully, she was already years gone. What I notice, looking at the whole of her file, is how consistent she is: the girl who faked an Earth identity at seventeen and the woman who burned the Neoparthenon are operating from the same core. She decided who she was early, and she did not let the war rewrite it. That is rarer than the Kyunin commendation.</p>
+    </div>
+
+    <div class="related-card">
+      <div class="related-header">See Also</div>
+      <div class="related-link">
+        <div>
+          <div>Jaymeson Nicks</div>
+          <div class="related-type">Character · Spouse</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Alexis D'Sauvignon</div>
+          <div class="related-type">Character · Adopted · †SY 135</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Søren Grimmerson</div>
+          <div class="related-type">Character · Alliance · Recruiter</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>The Defiant</div>
+          <div class="related-type">Vessel · Alliance Flagship</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Army of Eastern Kamijing</div>
+          <div class="related-type">Faction · Protectorate</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Battle of Earth</div>
+          <div class="related-type">Event · SY 135</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+      <div class="related-link">
+        <div>
+          <div>Architecture</div>
+          <div class="related-type">Theology · Faith</div>
+        </div>
+        <span class="related-link-arrow">→</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER TICKER -->
+<div class="footer-ticker">
+  <div class="ticker-label">✴ SOLARNET</div>
+  <div class="ticker-scroll">
+    <span class="ticker-inner">
+      CERA VIVIAN NICKS — SY 95–144 — KYUNIN · CONFEDERACY COMMISSION · ALLIANCE OPERATIVE &nbsp;⸻&nbsp; BATTLE OF DOSIJING · APOLLO MINOR · FIRST BATTLE OF MARS · SIEGE OF GANYMEDE · BATTLE OF EARTH &nbsp;⸻&nbsp; ALEXIS D'SAUVIGNON — FURY OF NERIO — † SY 135 BATTLE OF EARTH &nbsp;⸻&nbsp; ARCHITECTURE: THE ARCHITECT RECEIVED HER IN SY 144 &nbsp;⸻&nbsp; HELENA-PRIME · CUSTODIAL INTELLIGENCE · EST. SY 3 · ARCHIVE INTEGRITY MAINTAINED &nbsp;⸻&nbsp; CERA VIVIAN NICKS — SY 95–144 — KYUNIN · CONFEDERACY COMMISSION · ALLIANCE OPERATIVE &nbsp;⸻&nbsp; BATTLE OF DOSIJING · APOLLO MINOR · FIRST BATTLE OF MARS · SIEGE OF GANYMEDE · BATTLE OF EARTH &nbsp;⸻&nbsp;
+    </span>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const epoch = new Date('2026-01-12T00:00:00Z');
+  const now = new Date();
+  const daysDiff = (now - epoch) / (1000 * 60 * 60 * 24);
+  const sy = 132.0 + daysDiff * 0.01;
+  document.getElementById('sy-clock').textContent = 'SY ' + sy.toFixed(3);
+}
+updateClock();
+setInterval(updateClock, 60000);
+</script>
+
+</body>
+</html>
