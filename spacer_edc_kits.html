@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solarnet Archive — Spacer EDC &amp; Professional Kits</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=Share+Tech+Mono&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+  --bg: #04080c;
+  --bg-panel: rgba(10,18,28,0.97);
+  --solar-teal: #58c8a8;
+  --solar-teal-dim: rgba(88,200,168,0.12);
+  --solar-teal-glow: rgba(88,200,168,0.06);
+  --text-primary: #ccd4f0;
+  --text-dim: rgba(204,212,240,0.55);
+  --text-faint: rgba(204,212,240,0.3);
+  --gold: #c8962a;
+  --orange: #e07820;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+  --border: 1px solid rgba(88,200,168,0.15);
+  --border-strong: 1px solid rgba(88,200,168,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg); color: var(--text-primary);
+  font-family: var(--font-body); font-weight: 300;
+  min-height: 100vh; line-height: 1.7;
+}
+
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(88,200,168,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88,200,168,0.015) 1px, transparent 1px);
+  background-size: 48px 48px; pointer-events: none; z-index: 0;
+}
+
+.site-header {
+  position: relative; z-index: 10; border-bottom: var(--border-strong);
+  background: rgba(4,8,12,0.98); padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between; height: 56px;
+}
+.header-logo {
+  font-family: var(--font-title); font-size: 16px; font-weight: 900;
+  letter-spacing: 0.3em; color: var(--solar-teal); text-decoration: none;
+  text-shadow: 0 0 30px rgba(88,200,168,0.4);
+}
+.header-nav { display: flex; gap: 28px; }
+.header-nav a {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+  color: var(--text-faint); text-decoration: none; text-transform: uppercase;
+}
+.header-nav a:hover { color: var(--solar-teal); }
+.header-tier {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  color: var(--solar-teal); border: 1px solid rgba(88,200,168,0.3);
+  padding: 3px 10px; text-transform: uppercase;
+}
+
+.breadcrumb {
+  position: relative; z-index: 5; padding: 12px 40px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  color: var(--text-faint); border-bottom: var(--border); background: rgba(4,8,12,0.5);
+}
+.breadcrumb a { color: var(--text-faint); text-decoration: none; }
+.breadcrumb a:hover { color: var(--solar-teal); }
+.breadcrumb span { color: rgba(88,200,168,0.5); margin: 0 8px; }
+
+.page-wrap {
+  position: relative; z-index: 5; max-width: 1100px; margin: 0 auto;
+  padding: 48px 40px 80px; display: grid;
+  grid-template-columns: 1fr 300px; gap: 40px;
+}
+
+.article-header {
+  grid-column: 1 / -1; border-bottom: var(--border-strong);
+  padding-bottom: 32px; margin-bottom: 8px;
+}
+.article-tag {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em;
+  color: var(--solar-teal); text-transform: uppercase;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 12px;
+}
+.article-tag::before { content: ''; display: block; width: 20px; height: 1px; background: var(--solar-teal); }
+.article-title {
+  font-family: var(--font-title); font-size: 38px; font-weight: 700;
+  color: #e8eeff; letter-spacing: 0.05em; line-height: 1.15;
+  margin-bottom: 10px; text-shadow: 0 0 60px rgba(88,200,168,0.15);
+}
+.article-subtitle {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 16px; color: var(--text-dim); margin-bottom: 20px;
+}
+.article-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+.meta-item {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.15em; color: var(--text-faint); text-transform: uppercase;
+}
+.meta-item strong { color: rgba(88,200,168,0.7); font-weight: 400; }
+
+.article-body { min-width: 0; }
+.article-body h2 {
+  font-family: var(--font-title); font-size: 16px; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--solar-teal);
+  margin: 40px 0 14px; padding-bottom: 8px;
+  border-bottom: var(--border); text-transform: uppercase;
+}
+.article-body h3 {
+  font-family: var(--font-title); font-size: 12px; font-weight: 400;
+  letter-spacing: 0.12em; color: rgba(88,200,168,0.7);
+  margin: 28px 0 10px; text-transform: uppercase;
+}
+.article-body p {
+  font-size: 15px; color: var(--text-primary);
+  margin-bottom: 16px; font-weight: 300; line-height: 1.75;
+}
+.article-body p:first-child { font-size: 16px; color: #dde4f8; }
+
+.cls-archived { display:inline-block; font-family:var(--font-mono); font-size:8px; letter-spacing:0.15em; padding:2px 7px; text-transform:uppercase; margin-right:6px; vertical-align:middle; background:rgba(88,200,168,0.1); color:var(--solar-teal); border:1px solid rgba(88,200,168,0.3); }
+.cls-proposed { display:inline-block; font-family:var(--font-mono); font-size:8px; letter-spacing:0.15em; padding:2px 7px; text-transform:uppercase; margin-right:6px; vertical-align:middle; background:rgba(224,120,32,0.1); color:var(--orange); border:1px solid rgba(224,120,32,0.3); }
+
+/* EDC universal block */
+.edc-universal {
+  background: rgba(88,200,168,0.04); border: var(--border-strong);
+  padding: 24px; margin: 20px 0 32px;
+}
+.edc-universal-head {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.25em;
+  color: var(--solar-teal); text-transform: uppercase; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.edc-universal-head::after {
+  content: ''; flex: 1; height: 1px; background: rgba(88,200,168,0.2);
+}
+
+/* Kit item list */
+.kit-list { list-style: none; margin: 0 0 8px; }
+.kit-item {
+  display: grid; grid-template-columns: 180px 1fr;
+  gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid rgba(88,200,168,0.07);
+}
+.kit-item:last-child { border-bottom: none; }
+.kit-name {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+  color: var(--solar-teal); text-transform: uppercase;
+  padding-top: 2px; line-height: 1.4;
+}
+.kit-name .kit-slang {
+  display: block; font-size: 10px; color: var(--gold);
+  letter-spacing: 0.05em; text-transform: none; margin-top: 3px;
+  font-style: italic;
+}
+.kit-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.kit-desc strong { color: var(--text-primary); font-weight: 600; }
+
+/* professional kit card */
+.prof-kit {
+  background: var(--bg-panel); border: var(--border);
+  border-top: 2px solid var(--solar-teal);
+  margin: 20px 0 32px; padding: 0;
+}
+.prof-kit-head {
+  padding: 18px 24px 14px;
+  border-bottom: var(--border);
+  background: rgba(88,200,168,0.03);
+}
+.prof-kit-title {
+  font-family: var(--font-title); font-size: 20px; font-weight: 700;
+  color: #e8eeff; letter-spacing: 0.05em; margin-bottom: 4px;
+}
+.prof-kit-sub {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  color: var(--text-faint); text-transform: uppercase;
+}
+.prof-kit-body { padding: 20px 24px; }
+.prof-kit-body p {
+  font-size: 14px; color: var(--text-dim);
+  margin-bottom: 16px; line-height: 1.7;
+}
+.prof-kit-body p:first-child { font-size: 14px; color: var(--text-dim); }
+
+.kit-section-label {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em;
+  color: rgba(88,200,168,0.5); text-transform: uppercase;
+  margin: 16px 0 8px;
+}
+
+/* variant split */
+.variant-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;
+}
+.variant-card {
+  background: rgba(88,200,168,0.03); border: var(--border); padding: 14px;
+}
+.variant-label {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 8px;
+}
+.variant-card p {
+  font-size: 12px !important; color: var(--text-dim) !important;
+  margin: 0 !important; line-height: 1.6 !important;
+}
+
+.pull-quote {
+  border-left: 2px solid var(--solar-teal); margin: 28px 0;
+  padding: 16px 24px; background: var(--solar-teal-glow);
+}
+.pull-quote p {
+  font-family: var(--font-serif); font-style: italic;
+  font-size: 16px !important; color: #dde4f8 !important;
+  margin: 0 !important; line-height: 1.6 !important;
+}
+.pull-quote cite {
+  display: block; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.15em; color: var(--text-faint);
+  margin-top: 10px; font-style: normal;
+}
+
+.helena-note {
+  background: rgba(88,200,168,0.04); border: var(--border);
+  border-left: 2px solid rgba(88,200,168,0.5);
+  padding: 16px 20px; margin: 24px 0;
+}
+.helena-note-head {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em;
+  color: rgba(88,200,168,0.5); text-transform: uppercase; margin-bottom: 8px;
+}
+.helena-note p {
+  font-size: 13px !important; color: var(--text-dim) !important;
+  margin: 0 !important; font-style: italic;
+}
+
+.warning-note {
+  background: rgba(224,120,32,0.06); border: 1px solid rgba(224,120,32,0.2);
+  border-left: 2px solid var(--orange); padding: 12px 16px; margin: 16px 0;
+  font-size: 12px; color: var(--text-dim); line-height: 1.6;
+}
+.warning-note strong { color: var(--orange); }
+
+/* sidebar */
+.sidebar { min-width: 0; }
+.info-card { background: var(--bg-panel); border: var(--border-strong); margin-bottom: 20px; }
+.info-card-head {
+  background: var(--solar-teal-dim); border-bottom: var(--border);
+  padding: 10px 16px; font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.2em; color: var(--solar-teal); text-transform: uppercase;
+}
+.info-card-body { padding: 16px; }
+.info-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 8px 0; border-bottom: 1px solid rgba(88,200,168,0.06);
+}
+.info-row:last-child { border-bottom: none; }
+.info-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em;
+  color: var(--text-faint); text-transform: uppercase; flex-shrink: 0;
+}
+.info-value { font-size: 12px; color: var(--text-primary); text-align: right; }
+.info-value.teal { color: var(--solar-teal); }
+
+.see-also-list { list-style: none; }
+.see-also-list li { padding: 6px 0; border-bottom: 1px solid rgba(88,200,168,0.06); }
+.see-also-list li:last-child { border-bottom: none; }
+.see-also-list a { font-size: 13px; color: var(--solar-teal); text-decoration: none; }
+.see-also-list span { display: block; font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); margin-top: 2px; }
+
+.site-footer {
+  position: relative; z-index: 5; border-top: var(--border);
+  padding: 20px 40px; display: flex; justify-content: space-between;
+  align-items: center; background: rgba(4,8,12,0.8);
+}
+.footer-sig {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.15em; color: var(--text-faint); text-transform: uppercase;
+}
+.footer-sig strong { color: rgba(88,200,168,0.5); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#" class="header-logo">SOLARNET</a>
+  <nav class="header-nav">
+    <a href="#">Archive</a><a href="#">Culture</a>
+    <a href="#">Technology</a><a href="#">Factions</a><a href="#">Timeline</a>
+  </nav>
+  <div class="header-tier">FTE ACCESS</div>
+</header>
+
+<div class="breadcrumb">
+  <a href="#">Solarnet</a><span>›</span>
+  <a href="#">Archive</a><span>›</span>
+  <a href="#">Culture &amp; Society</a><span>›</span>
+  <a href="#">Spacer Life</a><span>›</span>
+  EDC &amp; Professional Kits
+</div>
+
+<div class="page-wrap">
+
+  <div class="article-header">
+    <div class="article-tag">Culture &amp; Society — Spacer Life / Equipment</div>
+    <h1 class="article-title">Everyday Carry &amp; Professional Kits</h1>
+    <p class="article-subtitle">What a spacer carries, and what their profession adds to it</p>
+    <div class="article-meta">
+      <div class="meta-item">Era: <strong>First Trilogy Era</strong></div>
+      <div class="meta-item">Scope: <strong>Sol System-wide</strong></div>
+      <div class="meta-item">Domain: <strong>Culture / Equipment</strong></div>
+      <div class="meta-item">Status: <strong class="cls-proposed" style="padding:2px 6px;border:1px solid rgba(224,120,32,0.3);font-size:8px;">PROPOSED CANON</strong></div>
+    </div>
+  </div>
+
+  <main class="article-body">
+
+    <p>
+      Every spacer carries certain things as a matter of course — not because regulations require it in every case, but because the culture of space demands it. Safety rules written in blood are enforced not primarily by authority but by community: the social pressure of people who know exactly what happens when someone doesn't have their kit. On top of this universal foundation, a spacer's profession, their location, and their own preferences layer additional tools, instruments, and supplies that make their particular work possible.
+    </p>
+
+    <p>
+      The lists below are baselines, not prescriptions. Individual spacers customize their loadout constantly by preference and utility. What a twenty-year miner carries is not what a first-year miner carries. The kit is a living record of a person's experience.
+    </p>
+
+    <h2>Universal EDC — Every Spacer</h2>
+
+    <p>
+      <span class="cls-proposed">PROPOSED CANON</span>
+      Regardless of faction, profession, location, or what kind of day they are having, the following items are carried by any spacer operating in space or on a platform. The haversack is the container; everything else goes inside it or clips to it.
+    </p>
+
+    <div class="edc-universal">
+      <div class="edc-universal-head">Universal Loadout</div>
+      <ul class="kit-list">
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Haversack
+            <span class="kit-slang">the bag / kit bag</span>
+          </div>
+          <div class="kit-desc">The container itself is EDC. Worn according to personal preference and job requirements — shoulder, waist, chest-mounted on a vacsuit. Not a bag carried to go somewhere: the thing that is always on you. Configuration is deeply personal and often modified over years of use.</div>
+        </li>
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Fast Acting Reactive Thruster
+            <span class="kit-slang">FART</span>
+          </div>
+          <div class="kit-desc">Pressurized canister of gas producing several small corrective thrusts or one significant single burst — enough to return to a surface from freefall. Codified and standardized by Asteroidal Industries, Inc. from the earliest Belt operations. <strong>Non-negotiable.</strong> Social shame is the primary compliance mechanism and it works. The tragic accidents that have occurred when someone went without one are referenced flatly, by name. <em>"Korvacs didn't have his FART."</em> No elaboration considered necessary.</div>
+        </li>
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Multitool
+            <span class="kit-slang">the tool / wrench</span>
+          </div>
+          <div class="kit-desc">Leatherman-lineage consolidated tool — wrenches, cutters, drivers, wire stripper, precision measuring elements in a single compact unit. Configuration varies by profession and personal preference. By the Standard Era, standard multitool design files are available platform-wide for fab-bay printing on demand, though many spacers carry personally owned and modified tools they would not replace with a printed substitute. A well-worn multitool is a mark of experience.</div>
+        </li>
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Personal Comms Device
+            <span class="kit-slang">deck / slate / brick</span>
+          </div>
+          <div class="kit-desc">Integrated with vacsuit and spacecraft systems when suited; runs locally or via Solarnet when not. Interfaces via proximity radio with other devices — functionally Bluetooth-lineage. <strong>Belt spacers prefer physical keyboards and pressable buttons</strong> — inputs that work with gloves on. <strong>Consortium aerowing spacers prefer touchscreen</strong> — a preference that reads, in the Belt, as someone who doesn't spend enough time suited. The comms device is also typically the spacer's ID, credit access, and platform authorization token.</div>
+        </li>
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Personal Light
+            <span class="kit-slang">lamp / torch</span>
+          </div>
+          <div class="kit-desc">RGB LED, rechargeable, dozens of hours continuous illumination. Also functions as a laser pointer. <strong>Social protocol:</strong> the bright white setting is a faux pas in shared spaces — equivalent to shining a torch in someone's face. Soft white, red, and blue settings each have preferred applications: red for low-impact shared illumination; blue for certain working conditions; white reserved for genuine emergencies. The laser function sees informal social use that the safety documentation does not formally endorse.</div>
+        </li>
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Patch Kit
+            <span class="kit-slang">skins / plasters / stickers</span>
+          </div>
+          <div class="kit-desc">Adhesive sealant pads — functionally, bandages for your vacsuit. Superstrong adhesive forming an instant pressure seal on suit material. Also adheres to skin, and sees use as emergency wound dressing both before and during the Solar War. Ships and habs maintain larger rolls of the same material — <em>speedtape</em> — for bigger jobs. There are holes too large for any patch kit. Everyone knows this. The patch kit is for the holes that aren't.</div>
+        </li>
+
+        <li class="kit-item">
+          <div class="kit-name">
+            Ditty Bag
+            <span class="kit-slang">the bag / hygiene kit</span>
+          </div>
+          <div class="kit-desc">Personal hygiene kit — waterless cleansing solution, dry-process skin and hair care, chemical wipes for spot cleaning. Lives in the hab; travels in the rucksack. Inherited from Old Earth maritime tradition. Core formulations standardized by Asteroidal Industries, Inc.; numerous regional brands and platform-specific variants exist. The contents of a spacer's ditty bag are considered deeply personal.</div>
+        </li>
+
+      </ul>
+    </div>
+
+    <h3>Common But Not Universal</h3>
+
+    <ul class="kit-list" style="margin-bottom:28px;">
+      <li class="kit-item">
+        <div class="kit-name">
+          Chemstick
+          <span class="kit-slang">stick / blend / pen</span>
+        </div>
+        <div class="kit-desc">Personal neurotransmitter delivery device — engineered from the electronic cigarette lineage, dispensing synthetic forms of essential neurochemicals that allow fine-tuning of consciousness and cognitive state. Refillable in an enormous variety of cartridges; hobbyist custom-blend culture is extensive and platform-specific. Strictly regulated in Consortium space, where fewer than a tenth of a percent of the population uses them. In Belt and Rim culture, considered a personal matter — unremarkable to carry, entirely optional.</div>
+      </li>
+    </ul>
+
+    <div class="warning-note">
+      <strong>Safety note — Freefall Protection:</strong> Any interior pressurized space with greater than 1.22 meters of clearance (approximately one human wingspan) requires clip-on harness attachment to a wall anchor as standard safety protocol. This figure derives from the maximum practical reach for self-rescue in freefall. In vacuum environments, tethering is always best practice regardless of clearance distance. The FART is the backup to the backup, not a substitute for primary tethering discipline.
+    </div>
+
+    <div class="helena-note">
+      <div class="helena-note-head">HELENA-Prime annotation</div>
+      <p>Safety regulations in space are written in blood. This is doubly true compared to industrial environments on Earth, where the margin between an error and a fatality is larger. Every specific figure in Belt safety protocol — the 1.22 meter rule, the FART canister charge specifications, the patch kit adhesion ratings — has a forensic history behind it. Belters do not debate these numbers. They know what the numbers cost.</p>
+    </div>
+
+    <h2>Professional Kit — Miner</h2>
+
+    <div class="prof-kit">
+      <div class="prof-kit-head">
+        <div class="prof-kit-title">Miner</div>
+        <div class="prof-kit-sub">Extractive industry / Main Belt &amp; Ceres / Interior and vacuum environments</div>
+      </div>
+      <div class="prof-kit-body">
+
+        <p>
+          Mining is arguably the first widespread profession for the common Belt spacer — the foundational labor that the entire Confederate economy was built on, and the work that Asteroidal Industries, Inc. originally brought those first six hundred people to the Belt to do. The miner's kit reflects work conducted across two radically different environments: the pressurized interior of a platform or processing facility, and the vacuum exterior of an asteroid face.
+        </p>
+
+        <div class="kit-section-label">Supplementary Kit — All Miners</div>
+        <ul class="kit-list">
+          <li class="kit-item">
+            <div class="kit-name">Handheld Spectrometer<span class="kit-slang">reader / sniffer</span></div>
+            <div class="kit-desc">On-site composition analysis of rock faces and core samples. Reading a rock face before committing to a full extraction operation is the difference between a profitable claim and a wasted shift — or worse. A miner who can read a face is worth three who can't.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Core Drill &amp; Sampling Kit<span class="kit-slang">the bit / sample rig</span></div>
+            <div class="kit-desc">Handheld or suit-mounted boring device with sealed sample containers for assay. Drill head configurations vary by rock type. Spare cutting heads are part of every miner's kit — they wear fast, and running out mid-operation on a rock face in vacuum is a serious problem.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Charges<span class="kit-slang">bangers / poppers</span></div>
+            <div class="kit-desc">Controlled explosive or thermal fracturing devices for extraction work requiring more than mechanical boring. Handling, storage, and use of charges is the most heavily regulated aspect of mining work. Certification to handle charges is a meaningful professional credential — not every miner carries them, and those who do are certified to do so. Stored separately from other kit in dedicated sealed containers.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Heavy Patch Kit<span class="kit-slang">the big skins</span></div>
+            <div class="kit-desc">An expanded patch kit beyond the universal standard. Miners take more suit abuse than almost any other profession — rock particulate, sharp edges, thermal stress cycles. Their suits wear faster. Their patch kits are correspondingly larger and better stocked.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Tether + Extended Harness<span class="kit-slang">the leash</span></div>
+            <div class="kit-desc">Beyond the universal haversack-mounted FART, miners working exterior rock faces carry dedicated tethering equipment rated for the specific loads and angles of extraction work. The FART is the last resort. The tether is the working standard.</div>
+          </li>
+        </ul>
+
+        <div class="kit-section-label">The Prospector — A Distinct Subset</div>
+        <p>
+          Prospecting is a legally distinct activity from mining operations and requires its own kit considerations. Individual spacers have the right to prospect, discover, and file claims on asteroids — from small chunks to significant bodies — and on Ceres and Vesta. Originally a formal Asteroidal Industries, Inc. job role, prospecting was released to the free market with Confederate independence. Valid claims are sold on the open market to Asteroidal Industries, Inc., government operations, or worker collectives. Particularly valuable claims have made spacers wealthy.
+        </p>
+
+        <ul class="kit-list">
+          <li class="kit-item">
+            <div class="kit-name">Claim Filing Kit<span class="kit-slang">papers / flag</span></div>
+            <div class="kit-desc">Documentation hardware and physical claim markers — the spacer equivalent of a surveyor's stake. Claim markers must meet Confederate registration standards to be legally recognized. A prospector without proper claim documentation may do the work and lose the find.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Extended Spectrometer Suite<span class="kit-slang">the full reader</span></div>
+            <div class="kit-desc">More comprehensive than the standard miner's handheld — a prospector needs to assess a body's composition well enough to evaluate its market value before filing a claim. The difference between a marginal claim and a rich one is often the quality of the initial assessment.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Solo Navigation Kit</div>
+            <div class="kit-desc">Prospectors often work alone or in small teams at significant distance from established platforms. Extended navigation and communications capacity beyond the standard personal comms device — backup beacon, extended-range radio, orbital mapping software with claim-boundary overlay functionality.</div>
+          </li>
+        </ul>
+
+        <div class="helena-note">
+          <div class="helena-note-head">HELENA-Prime annotation</div>
+          <p>The prospector occupies a particular romantic position in Belt culture — the lone spacer with a spectrometer and a claim kit, working a body nobody else has touched. The reality is less romantic and more dangerous than the image suggests. Prospecting alone, far from platform infrastructure, with a FART as your primary emergency equipment, is genuinely hazardous work. The ones who got rich are remembered. The ones who didn't come back are also remembered, more quietly.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <h2>Professional Kit — Agronomist</h2>
+
+    <div class="prof-kit">
+      <div class="prof-kit-head">
+        <div class="prof-kit-title">Agronomist</div>
+        <div class="prof-kit-sub">Agricultural science / All worlds and platforms / The backbone of every inhabited system</div>
+      </div>
+      <div class="prof-kit-body">
+
+        <p>
+          If the miners are the foundational labor of Belt economy, the agronomists are the foundational labor of Belt survival. Without the agrarium, there is no food, no atmosphere contribution, no life. The agronomist is a food scientist first and foremost — whether they are a Callisto farmer with hands permanently stained by growing medium, or a Kamijing agro-tech who has not touched actual soil in months. Both read the same underlying chemistry. Both are watching for the same failures.
+        </p>
+
+        <p>
+          The social authority of the agronomist — in any system — typically exceeds their formal rank. This is a universal of Belt and Rim culture and is understood without needing to be stated. If the farmers aren't happy, nobody is happy.
+        </p>
+
+        <div class="kit-section-label">Supplementary Kit — All Agronomists</div>
+        <ul class="kit-list">
+          <li class="kit-item">
+            <div class="kit-name">Agricultural Almanac<span class="kit-slang">the book / the calendar</span></div>
+            <div class="kit-desc">Platform-specific growing calendars, crop cycle records, historical yield data, seasonal light and atmospheric condition logs. In digital form on the comms device for most spacers; some traditionalist zadruga agronomists maintain physical copies alongside digital backups. The almanac is also the repository of oral tradition made written — the accumulated observations of previous generations, annotated by each new one.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Sampling Kit<span class="kit-slang">probes / testers</span></div>
+            <div class="kit-desc">Soil and growth medium sampling containers with extraction tools — corers, spatulas, sealed specimen vials. Regular sampling is as routine as any other maintenance check. An agronomist who isn't sampling regularly is an agronomist who will be surprised, and surprises in an agrarium are rarely good.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">pH Test Strips<span class="kit-slang">strips / tabs</span></div>
+            <div class="kit-desc">Rapid field-testing for growing medium acidity. Inexpensive, reliable, immediate. Both the Callisto hand-farmer and the Kamijing agro-tech use them identically — the chemistry doesn't care about the automation level. Carried in quantity; consumed regularly.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Atmospheric Monitor<span class="kit-slang">sniffer / the nose</span></div>
+            <div class="kit-desc">More sensitive than platform-standard atmospheric sensors. An agronomist cares about CO₂ and O₂ ratios, humidity, particulate, trace gases, and ethylene levels at a granularity that general sensors don't capture. A plant that is stressed produces chemical signals. The agronomist's monitor reads them before the problem becomes visible to the eye.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Precision Cutting Tools<span class="kit-slang">blades / grafters</span></div>
+            <div class="kit-desc">Grafting knives, propagation scissors, harvest tools — finer and more precise than anything in a standard multitool. The work of propagating from heirloom stock, grafting new varieties, and managing plant health at the individual specimen level requires dedicated instruments. A miner's cutting tool and an agronomist's cutting tool serve entirely different masters.</div>
+          </li>
+          <li class="kit-item">
+            <div class="kit-name">Seed Stock<span class="kit-slang">the seeds / the vault</span></div>
+            <div class="kit-desc">Some portion of a zadruga or artel agronomist's personal carry includes biological material — carefully sealed, temperature-controlled, backup cultivar stock. Heirloom varieties are irreplaceable if lost. The agronomist who loses their seed stock to a hab emergency has lost something that cannot be recovered from a catalog.</div>
+          </li>
+        </ul>
+
+        <div class="kit-section-label">The Automation Spectrum — Kit Variations</div>
+        <p>
+          The agronomist's kit varies substantially based on where their work falls on the spectrum between fully manual cultivation and high automation. These represent the far ends; the average spacer-farmer uses a mixture of both approaches.
+        </p>
+
+        <div class="variant-split">
+          <div class="variant-card">
+            <div class="variant-label">Manual End — Callisto Model</div>
+            <p>Hands-in-the-medium work. The agro-lab is a workshop: soil benches, grow-light rigs, hand tools hung on wall mounts. Physical intuition — the green thumb — is the primary diagnostic instrument. The kit emphasizes physical tools, organic testing supplies, and propagation equipment. The almanac is the most-consulted document in the hab. Pruning, sowing, and harvesting are daily physical labor. Victory gardens are a personal passion, not a duty.</p>
+          </div>
+          <div class="variant-card">
+            <div class="variant-label">High Automation — Kamijing Model</div>
+            <p>Systems monitoring and machine maintenance. The agro-lab is a lab: clean surfaces, diagnostic terminals, component storage. The kit emphasizes electronic diagnostic tools, replacement components, calibration equipment, and system logs. The agronomist's primary skill is troubleshooting — why is the irrigation controller misfiring, why is the grow-light spectrum drifting, why are the yield sensors reading anomalously. The chemistry knowledge is identical to the Callisto farmer's. The hands-on relationship to the plants is attenuated.</p>
+          </div>
+        </div>
+
+        <div class="pull-quote">
+          <p>Both of them are reading the same plant. One of them is reading it with their hands. The other is reading it through a terminal. Neither of them is wrong, and neither of them would trust a harvest to the other's method alone.</p>
+          <cite>— HELENA-Prime, on the manual/automation divide in Belt agrarium culture</cite>
+        </div>
+
+        <div class="kit-section-label">The Agro-Lab</div>
+        <p>
+          Every agronomist, regardless of automation level, maintains an agro-lab for closer examination of crop and growing medium samples beyond what field testing provides. The agro-lab is not part of the personal EDC — it is a fixed facility, usually within or adjacent to the agrarium itself. Its character reflects its owner's approach: the manual farmer's lab is a workshop, warm and worn; the agro-tech's lab is clean and instrument-dense. The social heart of a zadruga's agricultural life often centers on the agro-lab — where the elder matriarch examines a soil sample and makes a decision that the whole family will follow.
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="sidebar">
+
+    <div class="info-card">
+      <div class="info-card-head">Quick Reference</div>
+      <div class="info-card-body">
+        <div class="info-row"><span class="info-label">Domain</span><span class="info-value">Equipment / Culture</span></div>
+        <div class="info-row"><span class="info-label">Era</span><span class="info-value teal">First Trilogy Era</span></div>
+        <div class="info-row"><span class="info-label">Scope</span><span class="info-value">Sol System-wide</span></div>
+        <div class="info-row"><span class="info-label">Universal items</span><span class="info-value teal">7</span></div>
+        <div class="info-row"><span class="info-label">Common items</span><span class="info-value">1+</span></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Universal Kit Summary</div>
+      <div class="info-card-body">
+        <div class="info-row"><span class="info-label">Container</span><span class="info-value">Haversack</span></div>
+        <div class="info-row"><span class="info-label">Emergency thrust</span><span class="info-value teal">FART</span></div>
+        <div class="info-row"><span class="info-label">Tools</span><span class="info-value">Multitool</span></div>
+        <div class="info-row"><span class="info-label">Comms</span><span class="info-value">Personal device</span></div>
+        <div class="info-row"><span class="info-label">Illumination</span><span class="info-value">RGB LED light</span></div>
+        <div class="info-row"><span class="info-label">Repair</span><span class="info-value">Patch kit</span></div>
+        <div class="info-row"><span class="info-label">Hygiene</span><span class="info-value">Ditty bag</span></div>
+        <div class="info-row"><span class="info-label">Common+</span><span class="info-value">Chemstick</span></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Safety Standard</div>
+      <div class="info-card-body">
+        <p style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;color:var(--orange);text-transform:uppercase;margin-bottom:8px;">Freefall Protection Threshold</p>
+        <p style="font-size:28px;font-family:var(--font-title);color:var(--solar-teal);margin-bottom:4px;">1.22 m</p>
+        <p style="font-size:11px;color:var(--text-dim);line-height:1.6;">Interior clearance requiring harness clip-on. Derived from maximum practical human reach/wingspan. Enforced by community culture as much as regulation.</p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">Professions Covered</div>
+      <div class="info-card-body">
+        <div class="info-row"><span class="info-label" style="color:var(--solar-teal);">Miner</span><span class="info-value" style="font-size:11px;">+ Prospector subset</span></div>
+        <div class="info-row"><span class="info-label" style="color:var(--solar-teal);">Agronomist</span><span class="info-value" style="font-size:11px;">Manual + automation spectrum</span></div>
+        <p style="font-size:11px;color:var(--text-faint);margin-top:10px;line-height:1.5;font-style:italic;">Additional professional kit entries forthcoming. All lists are subject to individual customization by preference and experience.</p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-head">See Also</div>
+      <div class="info-card-body">
+        <ul class="see-also-list">
+          <li><a href="#">Hygiene &amp; Bathing Culture</a><span>Ditty bag context; spacer daily life</span></li>
+          <li><a href="#">Collective Groupings</a><span>Zadruga, artel; agronomist social context</span></li>
+          <li><a href="#">Asteroidal Industries, Inc.</a><span>FART standardization; mining origins</span></li>
+          <li><a href="#">Vacsuits</a><span>Integration with personal comms; patch kit use</span></li>
+          <li><a href="#">Chemstick</a><span>Full entry; neurotransmitter delivery</span></li>
+          <li><a href="#">Manned Maneuvering Unit</a><span>MMU; advanced exterior mobility</span></li>
+          <li><a href="#">Destiny</a><span>Personal comms device; social play</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-sig">Solarnet Archive — <strong>FTE Public Access</strong> — All content subject to continuity review</div>
+  <div class="footer-sig">Curated by <strong>HELENA-Prime</strong> — helena@solarmail.geneva</div>
+</footer>
+
+</body>
+</html>

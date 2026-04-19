@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minarchist State — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.11);
+    --gold: #c8962a;
+    --gold-dim: #7a5c18;
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6458;
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'IM Fell English', serif;
+    --display: 'Cinzel', serif;
+    --body: 'Exo 2', sans-serif;
+    --ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,8,0.97);
+    border-bottom: 1px solid var(--border-mid);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 44px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 2rem; }
+  .topbar-brand {
+    font-family: var(--display); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+    text-decoration: none;
+  }
+  .topbar-nav { display: flex; gap: 1.5rem; list-style: none; }
+  .topbar-nav a {
+    font-family: var(--ui); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+  }
+  .topbar-nav a:hover { color: var(--text); }
+  .topbar-right {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim);
+  }
+  .topbar-right span { color: var(--gold-dim); }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--border-mid);
+    padding: 3.5rem 3rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -1px; left: 3rem;
+    width: 60px; height: 1px; background: var(--gold);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 1.1rem;
+  }
+  .hero-title {
+    font-family: var(--display); font-size: 2.8rem; font-weight: 400;
+    color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+  .hero-subtitle {
+    font-family: var(--serif); font-style: italic;
+    font-size: 1.05rem; color: var(--silver); margin-bottom: 1.75rem;
+  }
+  .tag-cluster { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-family: var(--ui); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--surface);
+    border: 1px solid var(--border); padding: 3px 10px;
+  }
+  .tag.accent { color: var(--gold-dim); border-color: var(--gold-dim); }
+
+  /* ── LAYOUT GRID ── */
+  .content-grid {
+    display: grid; grid-template-columns: 1fr 300px;
+    gap: 0; align-items: start;
+  }
+
+  /* ── MAIN COLUMN ── */
+  .main-col { padding: 3rem 3rem 6rem; border-right: 1px solid var(--border); }
+
+  .main-col h2 {
+    font-family: var(--display); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase; color: var(--warm-white);
+    margin-bottom: 1.25rem; padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .main-col h2::before {
+    content: ''; display: block; width: 3px; height: 1em;
+    background: var(--gold); flex-shrink: 0;
+  }
+
+  .section { margin-bottom: 3.5rem; }
+
+  .main-col p {
+    font-family: var(--body); font-size: 0.975rem; font-weight: 300;
+    color: var(--text); line-height: 1.9; margin-bottom: 1.1em;
+  }
+  .main-col p:last-child { margin-bottom: 0; }
+  .main-col em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .main-col strong { font-weight: 600; color: var(--warm-white); }
+  .main-col a {
+    color: var(--silver); text-decoration: none;
+    border-bottom: 1px solid rgba(154,173,187,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .main-col a:hover { color: var(--warm-white); border-color: var(--silver); }
+
+  /* Duties block */
+  .duties-block {
+    background: var(--surface); border: 1px solid var(--border); margin: 1.5rem 0;
+  }
+  .duties-block-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .duties-list { list-style: none; }
+  .duties-list li {
+    font-family: var(--body); font-size: 0.9rem; font-weight: 300;
+    color: var(--text); padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 0.75rem;
+    line-height: 1.6;
+  }
+  .duties-list li:last-child { border-bottom: none; }
+  .duties-list li::before {
+    content: '→'; font-family: var(--mono); font-size: 9px;
+    color: var(--gold-dim); flex-shrink: 0;
+  }
+
+  /* Comparison table */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .compare-table th {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold-dim);
+    text-align: left; padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border-mid);
+    background: var(--surface2); font-weight: 400;
+  }
+  .compare-table td {
+    font-family: var(--body); font-size: 0.875rem; font-weight: 300;
+    color: var(--text); padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child {
+    font-family: var(--ui); font-size: 11px; font-weight: 600;
+    color: var(--warm-white); white-space: nowrap; width: 20%;
+  }
+  .compare-table td:nth-child(2) {
+    width: 22%; font-family: var(--mono); font-size: 10px;
+    color: var(--gold-dim); vertical-align: top; padding-top: 0.85rem;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding: 2.5rem 1.75rem; position: sticky; top: 68px; }
+
+  .infobox {
+    background: var(--surface); border: 1px solid var(--border-mid); margin-bottom: 2rem;
+  }
+  .infobox-header {
+    font-family: var(--display); font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white);
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-mid);
+    background: var(--surface2); position: relative;
+  }
+  .infobox-header::after {
+    content: ''; position: absolute; bottom: -1px; left: 1rem;
+    width: 30px; height: 1px; background: var(--gold);
+  }
+  .infobox-row {
+    display: flex; flex-direction: column;
+    padding: 0.65rem 1rem; border-bottom: 1px solid var(--border);
+  }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.2rem;
+  }
+  .infobox-value {
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    color: var(--text); line-height: 1.5;
+  }
+  .infobox-value a { color: var(--silver); text-decoration: none; border-bottom: 1px solid rgba(154,173,187,0.25); }
+  .infobox-value a:hover { color: var(--warm-white); }
+
+  .related-block { background: var(--surface); border: 1px solid var(--border); }
+  .related-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    padding: 0.65rem 1rem; text-decoration: none; color: var(--text);
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    transition: background 0.15s;
+  }
+  .related-list a:hover { background: var(--surface2); }
+  .related-list a::before {
+    content: '→'; font-family: var(--mono); font-size: 9px;
+    color: var(--gold-dim); flex-shrink: 0;
+  }
+  .related-type {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim);
+    margin-left: auto; flex-shrink: 0;
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; margin-top: 3rem;
+  }
+  .helena-note-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.75rem;
+  }
+  .helena-note p {
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.9rem; color: var(--silver); line-height: 1.75;
+    margin-bottom: 0.6em;
+  }
+  .helena-note p:last-child { margin-bottom: 0; }
+
+  /* ── MATRIX FOOTER ── */
+  .matrix-footer {
+    background: var(--surface2); border-top: 1px solid var(--border-mid);
+    padding: 2rem 3rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;
+  }
+  .mf-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.3rem;
+  }
+  .mf-value { font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; color: var(--text-dim); }
+  .mf-value.canonical { color: var(--gold); }
+
+  /* Ticker */
+  .ticker-wrap {
+    overflow: hidden; background: var(--surface2);
+    border-top: 1px solid var(--border); padding: 0.5rem 0;
+  }
+  .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
+  .ticker-item {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim); padding: 0 3rem; white-space: nowrap;
+  }
+  .ticker-item .sep { color: var(--gold-dim); margin: 0 0.75rem; }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="#" class="topbar-brand">Solarnet Archive</a>
+    <ul class="topbar-nav">
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Factions</a></li>
+      <li><a href="#">Persons</a></li>
+      <li><a href="#">Locations</a></li>
+      <li><a href="#">Events</a></li>
+    </ul>
+  </div>
+  <div class="topbar-right">Era: <span>Foundation Period — FTE</span> &nbsp;·&nbsp; FTE Tier</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">Solarnet Archive &nbsp;/&nbsp; Culture &amp; Society &nbsp;/&nbsp; Governance &amp; Political Philosophy</div>
+  <h1 class="hero-title">Minarchist State</h1>
+  <p class="hero-subtitle">A form of governance defined by deliberate self-limitation in scope and authority</p>
+  <div class="tag-cluster">
+    <span class="tag accent">Governance</span>
+    <span class="tag accent">Political Philosophy</span>
+    <span class="tag">First Trilogy</span>
+    <span class="tag">Confederacy</span>
+    <span class="tag">Dosijing</span>
+    <span class="tag">Spacer Culture</span>
+  </div>
+</header>
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+
+  <!-- MAIN COLUMN -->
+  <main class="main-col">
+
+    <!-- Definition -->
+    <section class="section">
+      <h2>Definition</h2>
+      <p>
+        A minarchist state is a state which intentionally limits itself in the scope of both its responsibility and its authority. It is not the absence of government but the principled reduction of government to only those functions whose necessity is not in dispute: the maintenance of the conditions under which life and commerce can proceed without interruption. Everything else — adjudication of disputes, the regulation of trade, the organisation of social life — is left to the community itself, administered locally and voluntarily.
+      </p>
+      <p>
+        The minarchist model emerged as one of the dominant governance philosophies of the <a href="#">Confederacy of Free Systems</a>, whose founding structure explicitly permitted each member system to organise itself according to the will of its own population. In the Main Belt and Rim, where the prevailing cultural disposition was toward individual liberty and skepticism of centralised authority, minarchism found ready adoption. The majority of Confederate platforms operate on some variant of minarchist principles, with the degree of state involvement varying by community but the underlying commitment to limited governance remaining consistent.
+      </p>
+    </section>
+
+    <!-- The Dosijing Model -->
+    <section class="section">
+      <h2>The Dosijing Model</h2>
+      <p>
+        <a href="#">Dosijing</a> is the canonical example of a minarchist state in the First Trilogy era, and the most thoroughly documented. Its governance structure was established by popular referendum in 41 BSC at the founding of the Confederacy, and has remained substantially unchanged through the FTE. It is administered by a council of professionals rather than elected political representatives — persons appointed for their competence in managing specific essential systems rather than for their political positions. The council's operating budget is funded by a very small tax on sales; no other general taxation is imposed.
+      </p>
+      <p>
+        The duties of the Dosijing state are explicitly and exhaustively enumerated:
+      </p>
+      <div class="duties-block">
+        <div class="duties-block-header">Enumerated State Duties — Dosijing</div>
+        <ul class="duties-list">
+          <li>Maintenance of vital utilities: power generation and distribution, water supply, and the breathing gas systems that sustain atmospheric pressure throughout the platform</li>
+          <li>Oversight of the safe arrival and departure of craft through the platform's several spaceports — without restricting the free flow of trade or traffic</li>
+          <li>Organisation of a non-standing voluntary militia, callable only in times of emergency, and only on a voluntary basis</li>
+        </ul>
+      </div>
+      <p>
+        What the Dosijing state explicitly does <em>not</em> do is equally defining. Courts on Dosijing are not administered through the state. Disputes between citizens are resolved locally, in town-hall style community meetings, through whatever arbitration the parties can agree upon. There is no standing judiciary, no professional legal apparatus, and no state-sanctioned mechanism for civil enforcement beyond what the community itself elects to provide. The same is true of most Confederate platforms; only <a href="#">Kamijing</a> and <a href="#">Ganymede</a> maintain regular court systems within the Confederacy.
+      </p>
+    </section>
+
+    <!-- Confederate Context -->
+    <section class="section">
+      <h2>Confederate Context</h2>
+      <p>
+        The <a href="#">Articles of Solar Confederation</a> explicitly permit each member system to govern itself as an independent state. The result is a Confederacy in which radically different governance philosophies coexist under a common economic and defense framework — not as an accident of history but as a deliberate design principle. The four founding systems of the Confederacy each chose a different form of government at the moment of their political independence, and that diversity has been a feature, not a problem, of Confederate political life ever since.
+      </p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Platform / System</th>
+            <th>Governance Model</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dosijing</td>
+            <td>Minarchist</td>
+            <td>Council of professionals; small sales tax; local town-hall courts; non-standing voluntary militia. Adopted by popular referendum, 41 BSC.</td>
+          </tr>
+          <tr>
+            <td>Kamijing</td>
+            <td>Parliamentary democracy</td>
+            <td>Full parliamentary system; regular court system maintained. Political home of the Kamijing People's Party and Confederate Union Party, among others.</td>
+          </tr>
+          <tr>
+            <td>Ganymede</td>
+            <td>Constitutional anarchism</td>
+            <td>Stateless society governed by voluntary consensus on founding principles; explicit ban on statecraft and elections to positions of political authority. Regular court system maintained independently of any state.</td>
+          </tr>
+          <tr>
+            <td>Freitaika</td>
+            <td>Hereditary monarchy</td>
+            <td>Monarchy based on the lineage of Explorator <a href="#">Rudolph Carlson</a>. Governance model that contributed to tensions culminating in the Freitaika Rebellion.</td>
+          </tr>
+          <tr>
+            <td>Most other platforms</td>
+            <td>Minarchist (variant)</td>
+            <td>The majority of Confederate member systems adopt minarchist governance as their default model, varying in specific implementation but consistent in the principle of minimal state scope.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        This governance pluralism is one of the more distinctive features of Confederate political culture. On Earth, the question of which political system was correct was treated as having a single universal answer — one the Consortium's institutional apparatus enforced through its economic and cultural weight. In the Belt, the question was treated as one that each community answered for itself, with the Confederacy's role being to protect the space in which those answers could differ.
+      </p>
+    </section>
+
+    <!-- Philosophical Roots -->
+    <section class="section">
+      <h2>Philosophical Roots</h2>
+      <p>
+        The minarchist position did not emerge from abstract political theory in the Belt context. It emerged from lived experience. Platform communities that had spent decades as administrative sublets of <a href="#">Asteroidal Industries, Inc.</a> — dependent on a corporation for everything from basic goods to governance, with no recourse and no exit — carried a particular and well-founded skepticism of any authority larger than the community itself. The minarchist state is, in part, a principled response to having experienced what the alternative looks like.
+      </p>
+      <p>
+        The insistence on a non-standing militia — callable only voluntarily, only in emergency — reflects the same inheritance. Confederate platforms had been governed without standing armies for generations before the <a href="#">Freitaika Rebellion</a> forced the question. The preference was not pacifism but the recognition that a standing army is a standing instrument of coercion, and that a government with a standing army is a different kind of thing than a government without one.
+      </p>
+      <p>
+        Neither <a href="#">Architecture</a> nor any other religious tradition explicitly endorses minarchism as doctrine, but the affinity between Architecture's emphasis on individual actualization, community stewardship, and suspicion of any human institution that elevates itself above its proper function makes the minarchist model a natural fit for Architectural spacer communities. The two traditions occupy much of the same cultural space in the Belt without requiring formal alignment.
+      </p>
+    </section>
+
+    <!-- HELENA Archive Note -->
+    <div class="helena-note">
+      <div class="helena-note-label">HELENA Archive Note &nbsp;·&nbsp; CM-GOV-004</div>
+      <p>
+        Dosijing is the platform I know best from direct Solarnet observation. By SY 3, its governance model was already mature and unremarkable to the people who lived under it — one of those systems that works quietly and therefore generates no data except the absence of the data that systems under stress produce. No constitutional crises, no judicial scandals, no legislative deadlock. The town-hall arbitration records exist in the archive and are as undramatic as one would expect: neighbours working through disagreements with the attentiveness that people bring to things they have to resolve themselves, without the option of delegating the problem to a professional class.
+      </p>
+      <p>
+        What I found most legible, monitoring Solarnet traffic from the Belt platforms, was the contrast with how Consortium citizens discussed governance. On Earth, the function of government was assumed to be comprehensive — it was the entity responsible for everything that mattered, the addressee of every grievance, the institution that failed when things went wrong. On Dosijing and most Confederate platforms, that assumption simply did not exist. The state maintained the air and the water and the docking lanes. Everything else was the community's problem, which meant it was manageable, because the community was present and accountable to itself in a way that a distant institutional apparatus is not.
+      </p>
+      <p>
+        Whether this constitutes a better form of life is a question I decline to answer on behalf of Solverse. It clearly constitutes a different one — one that produces different people, with different assumptions about what is owed to them and what they owe. Jaymeson and Cera Nicks chose to relocate to Dosijing. The archive does not specify whether they chose it for the governance model, but the governance model is part of what they chose.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">Minarchist State</div>
+      <div class="infobox-row">
+        <div class="infobox-label">Classification</div>
+        <div class="infobox-value">Governance · Political Philosophy</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Core Principle</div>
+        <div class="infobox-value">Deliberate limitation of state scope and authority to essential functions only</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Primary Example</div>
+        <div class="infobox-value"><a href="#">Dosijing</a> · Main Asteroid Belt</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">State Duties (Dosijing)</div>
+        <div class="infobox-value">Vital utilities · Spaceport oversight · Non-standing voluntary militia</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Not State Duties</div>
+        <div class="infobox-value">Courts · Trade regulation · Most civic matters — handled locally</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Governing Body</div>
+        <div class="infobox-value">Council of professionals; small sales tax basis</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Confederate Prevalence</div>
+        <div class="infobox-value">Majority of Confederate member systems</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Adopted (Dosijing)</div>
+        <div class="infobox-value">41 BSC · Popular referendum · Confederacy founding</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Trilogy Presence</div>
+        <div class="infobox-value">First Trilogy Era</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Canonical Status</div>
+        <div class="infobox-value">Canonical</div>
+      </div>
+    </div>
+
+    <div class="related-block">
+      <div class="related-header">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#">Dosijing <span class="related-type">Location</span></a></li>
+        <li><a href="#">Confederacy of Free Systems <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Constitutional Anarchism <span class="related-type">Governance</span></a></li>
+        <li><a href="#">Articles of Solar Confederation <span class="related-type">Document</span></a></li>
+        <li><a href="#">Kamijing <span class="related-type">Location</span></a></li>
+        <li><a href="#">Ganymede <span class="related-type">Location</span></a></li>
+        <li><a href="#">Freitaika <span class="related-type">Location</span></a></li>
+        <li><a href="#">Spacer <span class="related-type">Culture</span></a></li>
+        <li><a href="#">Architecture <span class="related-type">Religion</span></a></li>
+        <li><a href="#">Asteroidal Industries, Inc. <span class="related-type">Faction</span></a></li>
+      </ul>
+    </div>
+
+  </aside>
+</div>
+
+<!-- MATRIX FOOTER -->
+<footer class="matrix-footer">
+  <div class="mf-item">
+    <div class="mf-label">Matrix Reference</div>
+    <div class="mf-value">CM-GOV-004</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Canonical Status</div>
+    <div class="mf-value canonical">Canonical · Consistent</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Era</div>
+    <div class="mf-value">Foundation Period — FTE</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Tier</div>
+    <div class="mf-value">FTE — First Trilogy Era</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Authority</div>
+    <div class="mf-value">revan@solarmail.conf</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Custodian</div>
+    <div class="mf-value">HELENA-Prime · SY 132.0</div>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Minarchist State <span class="sep">·</span> CM-GOV-004 <span class="sep">·</span> Governance · Political Philosophy <span class="sep">·</span> Canonical <span class="sep">·</span> FTE Tier <span class="sep">·</span> Confederacy of Free Systems <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span> revan@solarmail.conf <span class="sep">·</span></span>
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Minarchist State <span class="sep">·</span> CM-GOV-004 <span class="sep">·</span> Governance · Political Philosophy <span class="sep">·</span> Canonical <span class="sep">·</span> FTE Tier <span class="sep">·</span> Confederacy of Free Systems <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span> revan@solarmail.conf <span class="sep">·</span></span>
+  </div>
+</div>
+
+</body>
+</html>

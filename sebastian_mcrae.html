@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebastian Myrcenae McRae — Solarnet Archive</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700;900&family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300&family=IM+Fell+English:ital@0;1&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:            #04080c;
+  --bg2:           #070d14;
+  --cons-blue:     #0C447C;
+  --cons-blue-mid: #185FA5;
+  --cons-blue-lt:  #378ADD;
+  --cons-gold:     #BA7517;
+  --cons-gold-lt:  #EF9F27;
+  --cons-gold-pale:#FAC775;
+  --teal:          #58c8a8;
+  --teal-dim:      rgba(88,200,168,0.12);
+  --text:          #ccd4f0;
+  --text-muted:    rgba(204,212,240,0.55);
+  --text-dim:      rgba(204,212,240,0.3);
+  --border:        rgba(186,117,23,0.2);
+  --border-strong: rgba(186,117,23,0.5);
+  --font-mono:  'Share Tech Mono', monospace;
+  --font-title: 'Cinzel', serif;
+  --font-body:  'Exo 2', sans-serif;
+  --font-serif: 'IM Fell English', serif;
+  --font-ui:    'Rajdhani', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: rgba(4,8,12,0.97);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+}
+.site-logo {
+  font-family: var(--font-title);
+  font-size: 14px;
+  letter-spacing: 0.35em;
+  color: var(--teal);
+  text-decoration: none;
+}
+.site-nav {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.site-nav span { color: var(--cons-gold); margin: 0 6px; }
+
+/* ── HERO BAND ── */
+.hero-band {
+  background: linear-gradient(180deg, #031E3D 0%, #0C447C 55%, #04080c 100%);
+  border-bottom: 2px solid var(--cons-gold);
+  position: relative;
+  overflow: hidden;
+}
+.hero-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(186,117,23,0.035) 0px, rgba(186,117,23,0.035) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(0deg,  rgba(186,117,23,0.035) 0px, rgba(186,117,23,0.035) 1px, transparent 1px, transparent 60px);
+  pointer-events: none;
+}
+/* Diagonal accent line — Deco geometry */
+.hero-band::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 120px;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, rgba(186,117,23,0.25), transparent);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 40px 40px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: start;
+}
+.hero-inner::before,
+.hero-inner::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--cons-gold);
+  border-style: solid;
+  opacity: 0.45;
+}
+.hero-inner::before { top: 24px; left: 24px; border-width: 2px 0 0 2px; }
+.hero-inner::after  { bottom: 16px; right: 24px; border-width: 0 2px 2px 0; }
+
+.hero-category {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--cons-gold);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+.hero-name {
+  font-family: var(--font-title);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--cons-gold-pale);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.hero-alias {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(250,199,117,0.5);
+  margin-bottom: 6px;
+}
+.hero-motto {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(186,117,23,0.5);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero-summary {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(204,212,240,0.75);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+/* ── INFOBOX ── */
+.infobox {
+  background: rgba(4,44,83,0.75);
+  border: 1px solid var(--border-strong);
+  border-top: 3px solid var(--cons-gold);
+  min-width: 210px;
+  max-width: 230px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.infobox-head {
+  background: rgba(186,117,23,0.15);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--cons-gold-pale);
+  text-align: center;
+}
+.infobox-subhead {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 10px;
+  color: rgba(250,199,117,0.45);
+  text-align: center;
+  padding: 5px 14px 0;
+  border-bottom: 1px solid rgba(186,117,23,0.1);
+  padding-bottom: 8px;
+}
+.infobox-body { padding: 4px 0; }
+.infobox-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 4px;
+  padding: 5px 14px;
+  border-bottom: 1px solid rgba(186,117,23,0.07);
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+.infobox-row:last-child { border-bottom: none; }
+.ib-label {
+  color: var(--cons-gold);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding-top: 1px;
+}
+.ib-value { color: rgba(204,212,240,0.8); line-height: 1.5; }
+
+/* ── TIMELINE STRIP ── */
+.timeline-strip {
+  background: rgba(4,44,83,0.3);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.timeline-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  min-width: 700px;
+}
+.tl-item {
+  flex: 1;
+  position: relative;
+  padding: 0 8px;
+  text-align: center;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--border);
+}
+.tl-item:first-child::before { left: 50%; }
+.tl-item:last-child::before  { right: 50%; }
+.tl-dot {
+  width: 8px; height: 8px;
+  border: 1px solid var(--cons-gold);
+  background: var(--bg);
+  border-radius: 50%;
+  margin: 6px auto 8px;
+  position: relative;
+  z-index: 1;
+}
+.tl-dot.major {
+  width: 10px; height: 10px;
+  background: var(--cons-gold);
+  box-shadow: 0 0 8px rgba(186,117,23,0.5);
+  margin-top: 5px;
+}
+.tl-date {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--cons-gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.tl-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── PAGE BODY ── */
+.page-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 48px;
+  align-items: start;
+}
+.main-col { min-width: 0; }
+.side-col { position: sticky; top: 68px; }
+
+/* ── HEADINGS ── */
+h2.section {
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cons-gold);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin: 36px 0 16px;
+}
+h2.section:first-child { margin-top: 0; }
+h3.subsection {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cons-blue-lt);
+  margin: 24px 0 10px;
+}
+
+/* ── BODY TEXT ── */
+p { margin-bottom: 14px; color: rgba(204,212,240,0.85); font-weight: 300; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--cons-gold-pale); font-weight: 600; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-left: 3px solid var(--cons-gold);
+  background: rgba(186,117,23,0.05);
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--cons-gold-pale);
+  line-height: 1.7;
+}
+.pull-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--cons-gold);
+  opacity: 0.7;
+}
+
+/* ── DECO DIVIDER ── */
+.deco-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 32px 0;
+  opacity: 0.35;
+}
+.deco-divider::before,
+.deco-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--cons-gold);
+}
+.deco-divider-mark {
+  width: 6px; height: 6px;
+  border: 1px solid var(--cons-gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ── HELENA NOTE ── */
+.helena-note {
+  background: rgba(88,200,168,0.04);
+  border: 1px solid rgba(88,200,168,0.15);
+  border-left: 3px solid var(--teal);
+  padding: 14px 18px;
+  margin: 28px 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(204,212,240,0.7);
+  line-height: 1.75;
+}
+.helena-note-label {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--teal);
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+
+/* ── INFERRED NOTICE ── */
+.inferred-notice {
+  background: rgba(55,138,221,0.07);
+  border: 1px solid rgba(55,138,221,0.2);
+  border-left: 3px solid var(--cons-blue-lt);
+  padding: 12px 16px;
+  margin: 20px 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.7;
+  color: rgba(55,138,221,0.7);
+  letter-spacing: 0.03em;
+}
+.inferred-notice strong { color: var(--cons-blue-lt); font-weight: normal; }
+
+/* ── KEY FACTS BAND ── */
+.key-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 24px 0;
+}
+.kf-item {
+  background: var(--bg);
+  padding: 14px 16px;
+  text-align: center;
+}
+.kf-value {
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: var(--cons-gold-pale);
+  display: block;
+  margin-bottom: 4px;
+}
+.kf-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+/* ── SIDEBAR ── */
+.sidebar-block {
+  background: rgba(4,44,83,0.4);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--cons-gold);
+  padding: 16px;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+.sidebar-head {
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--cons-gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-link {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--cons-blue-lt);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(186,117,23,0.07);
+  letter-spacing: 0.03em;
+}
+.sidebar-link:last-child { border-bottom: none; }
+.sidebar-link:hover { color: var(--cons-gold-pale); }
+.sidebar-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  line-height: 1.9;
+}
+.sidebar-meta span { color: var(--cons-gold); opacity: 0.6; }
+
+/* ── FOOTER ── */
+.page-footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-stamp {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.footer-stamp span { color: var(--cons-gold); opacity: 0.5; }
+#sy-clock {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--teal);
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a class="site-logo" href="#">✴ SOLARNET</a>
+  <nav class="site-nav">
+    Archive <span>/</span> Persons <span>/</span> <span style="color:var(--cons-gold-pale)">Sebastian Myrcenae McRae</span>
+  </nav>
+</header>
+
+<!-- HERO BAND -->
+<div class="hero-band">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-category">✦ Terrestrial Consortium · Biographical Archive · Founding Figures</div>
+      <h1 class="hero-name">Sebastian Myrcenae McRae</h1>
+      <div class="hero-alias">"Ray"</div>
+      <div class="hero-motto">✦ Reason Beyond ✦</div>
+      <p class="hero-summary">
+        Philosopher, economist, author, patron of arts, and cultural architect of the Terrestrial Consortium. Regarded as its Founding Father, McRae gave Earth's common people a legible vision of a future they could choose — and spent 149 years ensuring they were given the chance to choose it.
+      </p>
+    </div>
+    <div class="infobox">
+      <div class="infobox-head">Sebastian Myrcenae McRae</div>
+      <div class="infobox-subhead">"Ray"</div>
+      <div class="infobox-body">
+        <div class="infobox-row">
+          <span class="ib-label">Born</span>
+          <span class="ib-value">117 BSC<br>New York, New York<br><em style="font-size:10px;color:var(--text-dim)">as Sebastian Myrcenae</em></span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Died</span>
+          <span class="ib-value">SY 32<br>Age 149</span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Species</span>
+          <span class="ib-value">Human (Transhuman)</span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Gender</span>
+          <span class="ib-value">Male</span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Height</span>
+          <span class="ib-value">5'11"</span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Affiliation</span>
+          <span class="ib-value">USSR<br>United Earth<br>Terrestrial Consortium</span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Spouse</span>
+          <span class="ib-value">Sylvia Meier McRae</span>
+        </div>
+        <div class="infobox-row">
+          <span class="ib-label">Motto</span>
+          <span class="ib-value"><em style="font-family:var(--font-serif);font-style:italic">Reason Beyond</em></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE STRIP -->
+<div class="timeline-strip">
+  <div class="timeline-inner">
+    <div class="tl-item">
+      <div class="tl-dot major"></div>
+      <div class="tl-date">117 BSC</div>
+      <div class="tl-label">Born, New York</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">~100 BSC</div>
+      <div class="tl-label">Emigrates to Soviet Union</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot major"></div>
+      <div class="tl-date">91 BSC</div>
+      <div class="tl-label">University of Geneva</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot major"></div>
+      <div class="tl-date">88 BSC</div>
+      <div class="tl-label">Graduates · Marries Sylvia · Becomes "Ray"</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">61 BSC</div>
+      <div class="tl-label">Brain backup · Cybernetic implants</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot major"></div>
+      <div class="tl-date">50 BSC</div>
+      <div class="tl-label">Economic crisis begins · Full focus on the Accords</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">5 BSC</div>
+      <div class="tl-label">First Terran Conference, Geneva</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot major"></div>
+      <div class="tl-date">SY 0</div>
+      <div class="tl-label">Zero Day Accords signed · Consortium founded</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot major"></div>
+      <div class="tl-date">SY 32</div>
+      <div class="tl-label">Death · Age 149</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <main class="main-col">
+
+    <!-- KEY FACTS -->
+    <div class="key-facts">
+      <div class="kf-item">
+        <span class="kf-value">149</span>
+        <span class="kf-label">Years lived</span>
+      </div>
+      <div class="kf-item">
+        <span class="kf-value">117 BSC – SY 32</span>
+        <span class="kf-label">Lifespan</span>
+      </div>
+      <div class="kf-item">
+        <span class="kf-value">"Reason Beyond"</span>
+        <span class="kf-label">Personal &amp; United Earth motto</span>
+      </div>
+    </div>
+
+    <h2 class="section">Overview</h2>
+
+    <p>
+      Sebastian Myrcenae McRae is widely regarded as the Founding Father of the Terrestrial Consortium — the most beloved figure of its founding generation, and the man most responsible for making the Consortium legible and desirable to the common people of Earth. The archive compares him, in terms of his symbolic function, to what George Washington was to the United States and V.I. Lenin was to the Soviet Union: an embodiment of the idea, not merely an administrator of its machinery.
+    </p>
+
+    <p>
+      He died in <strong>SY 32</strong> at the age of 149 — described in the archive as a "comparatively young age," and the designation is not rhetorical. Ray was among the last generation of humans born under the old biological terms: the cohort for whom disease and physical decay were not yet eradicated at birth but addressed through intervention, augmentation, and willful self-experimentation. Every human born after Zero Day inherited, automatically, the genetic eradication of disease and disability. Ray helped build that future and then aged out of the one that preceded it. He built the vessel and did not sail in it far. This, too, is part of his legend.
+    </p>
+
+    <div class="pull-quote">
+      "He gave a vision of a bright, united future when many did not think such a thing possible."
+      <cite>— Archive record, Legacy section</cite>
+    </div>
+
+    <div class="deco-divider"><div class="deco-divider-mark"></div></div>
+
+    <h2 class="section">Biography</h2>
+
+    <h3 class="subsection">Early Life — New York &amp; the Soviet Union</h3>
+
+    <p>
+      Born in <strong>117 BSC</strong> in New York to immigrant parents, he entered the world as Sebastian Myrcenae — the surname McRae he would not carry until his marriage decades later. The Golden Age of Sol System was in full flourish: the space economy was expanding, mineral wealth was flowing inward from the Belt, and Earth was prosperous. The crisis that would define his life's work had not yet arrived.
+    </p>
+
+    <p>
+      In his late teens, he emigrated to the Soviet Union — a choice made for personal and political reasons the archive does not elaborate. He settled in Leningrad and Moscow, gained Soviet citizenship, and applied for a work visa with the University of Geneva. During this process, he developed a deep interest in history and economics. The shape of his vocation was already forming.
+    </p>
+
+    <h3 class="subsection">University of Geneva — 91 BSC</h3>
+
+    <p>
+      At eighteen, Sebastian was granted leave to enter the University of Geneva as a Soviet citizen. There he found the Unity Club — a student organization active on international campuses for several decades — and joined its local chapter. It was in this context that he formulated the beliefs he would carry for the remainder of his life: opposition to academic elitism, contempt for the money system as a structurally obsolete mechanism, and a conviction that advances in the humanities were as essential as scientific and technological progress.
+    </p>
+
+    <p>
+      He adopted his personal motto during these years: <em>Reason Beyond</em>. It would later become the motto of United Earth, the organization he co-founded.
+    </p>
+
+    <p>
+      At Geneva he met <strong>Herschel von Dehlin</strong>, heir to the wealthy von Dehlin magnate family. The two became close allies. Together they reorganized the Unity Club into the more ambitious United Earth organization. Sebastian declined to take an active corporate role despite Herschel's repeated invitations — his domain was always the realm of ideas, not of corporate infrastructure. He supported Herschel's decision to assume the CEO mantle of Asteroidal Industries, Incorporated, and the two maintained a partnership in which each operated within his natural competence.
+    </p>
+
+    <h3 class="subsection">Marriage — 88 BSC</h3>
+
+    <p>
+      At twenty-one, Sebastian graduated with a Bachelor's in International Studies and married <strong>Sylvia Meier McRae</strong>, a Swiss citizen. In a deliberate departure from social convention, he took her name. From this point forward, Sebastian Myrcenae was Ray McRae. His birth family had little further contact with him after the marriage. Sylvia became his constant companion — the archive notes she never left his side — and it was she who gave him the name Ray, during their honeymoon in Moscow. The archive also records, with the directness of a clinical entry, that they discovered during this period he was infertile.
+    </p>
+
+    <h3 class="subsection">The Long Middle — Author, Lecturer, Patron</h3>
+
+    <p>
+      For the next four decades, Ray built his reputation steadily. He made his career as an author, lecturer, and patron of the arts alongside Herschel, operating out of a small flat in Moscow. He achieved moderate success, traveled widely, and let ideas accumulate. Sylvia was always with him. He was in no particular hurry. The crisis he was preparing for had not yet arrived.
+    </p>
+
+    <p>
+      During this period he volunteered as a test subject for Asteroidal Industries' Research and Development division, receiving several cybernetic implants and anti-aging hormone treatments — making him one of Earth's first official transhumans. In <strong>61 BSC</strong>, a full backup map of his conscious brain was made and stored on computer servers. He had, in a technical sense, become archival.
+    </p>
+
+    <h3 class="subsection">Prominence — 50 BSC Onward</h3>
+
+    <p>
+      In <strong>50 BSC</strong>, mineral bonds began their first devaluation. The global economy shuddered. Ray was sixty-seven years old — middle-aged by the standards of his augmented biology — and he turned his full attention to the economic planning that would consume him for the rest of his life.
+    </p>
+
+    <p>
+      In <strong>49 BSC</strong>, Ganymede, Freitaika, Dosijing, and Kamijing gained independence from Asteroidal Industries. Herschel was unhappy. Ray took a more cautious libertarian position — recognizing the right of spacefaring peoples to self-determination while remaining a staunch advocate for Earth's stability. His readership grew steadily through the following decade as he became an internationally recognized thinker. He was formally employed by Asteroidal Industries as lead consultant, giving his ideas institutional weight without compromising their independence.
+    </p>
+
+    <p>
+      By <strong>20 BSC</strong>, mineral bonds had become Earth's dominant currency, outpacing the dollar and the yuan. Ray was eighty-nine years old. The archive records him as never more passionate. The crisis he had spent four decades preparing for had fully arrived, and he was ready.
+    </p>
+
+    <h3 class="subsection">The Terran Conferences &amp; Zero Day — 5 BSC to SY 0</h3>
+
+    <p>
+      In <strong>5 BSC</strong>, with traditional economic solutions exhausted, the first of the Terran Conferences convened in Geneva — sponsored by the United Earth organization that Ray and Herschel had built. The conferences met repeatedly over the following years, each session narrowing toward the document that would end the crisis.
+    </p>
+
+    <p>
+      At the final Terran Conference, the <strong>Zero Day Accords</strong> were drafted and signed — by the United Nations, the three major superpowers, and the space corporations. The Accords reorganized and empowered the UN as the Terrestrial Consortium, created the World Congress, globalized energy and vital industries, and instituted the Standard Calendar. Ray had helped to organize the first World Congress. He had drafted the philosophical underpinnings of the Accords, which reinterpreted social contract theory and extended it to corporations and governments as entities with individual rights and obligations.
+    </p>
+
+    <p>
+      It was <strong>SY 0</strong>. The Consortium was founded. The Second Renaissance began. Mineral bonds became effectively worthless overnight. The crisis was over. The future Ray had been describing for decades was, without ceremony, the present.
+    </p>
+
+    <div class="deco-divider"><div class="deco-divider-mark"></div></div>
+
+    <h2 class="section">Post–Zero Day &amp; Death</h2>
+
+    <p>
+      Ray lived thirty-two years into the Standard Era, long enough to see New Athens rebuilt, the World Congress take its first amendments, and the early years of the Second Renaissance flourish. He did not live to see the Freitaika Rebellion of SY 97, which ended the Renaissance era. United Earth, the organization he had co-founded and led, survived him by only a few months — the archive records its dissolution at his death in SY 32, its elements absorbed into other Consortium bodies.
+    </p>
+
+    <p>
+      He died at 149 of old age — which, by SY 32, was already a more complicated designation than it had ever been before. The Consortium's genetics program, inaugurated at Zero Day, offered every living person on Earth voluntary genetic treatment: the eradication of heritable disease and disability, enhanced immune function, greater cellular resilience, and meaningfully extended lifespan. Everyone born after Zero Day received these benefits automatically at birth. Everyone alive at Zero Day was invited to participate.
+    </p>
+
+    <p>
+      Ray participated. He had been volunteering his body as a demonstration for decades — cybernetic implants in his middle years, anti-aging hormones, a full conscious backup in 61 BSC. His willingness to be experimented upon was never purely personal. It was the argument. <em>Look at me. I am fine. The program is safe. Your children will be better than fine.</em> He understood that a population frightened of the new biology needed someone they trusted to go first.
+    </p>
+
+    <p>
+      And so he did. And the treatments worked, by the standards of what they were: he outlived what the old biology would have allotted him by decades. But he was born in 117 BSC under the old terms, and he died under them. The new generation — every child born after SY 0 — would eventually prove that those terms could be rewritten almost entirely. Ray was among the last people for whom 149 years could be called a natural lifespan. He died exactly when someone of his biology, treated as well as the era permitted, could be expected to die. There was nothing wrong. He was simply finished.
+    </p>
+
+    <div class="deco-divider"><div class="deco-divider-mark"></div></div>
+
+    <h2 class="section">Legacy</h2>
+
+    <h3 class="subsection">The Father of the Consortium</h3>
+
+    <p>
+      The archive is unambiguous on Ray's place in history: he is the most beloved figure of the Consortium's founding era, and the most prominent singular influence on its culture and aesthetic. His legacy operates on two levels that are rarely found in the same person: the structural (the actual text and philosophy of the Zero Day Accords, the architecture of United Earth, the framework of the Terran Conferences) and the popular (the books, the lectures, the public presence that made the abstract real to ordinary people).
+    </p>
+
+    <p>
+      It was the second of these that made him irreplaceable. Policy documents do not inspire populations. Ray did. He explained the Consortium to Earth's common people during one of their darkest periods — famine, austerity, a collapsing money system, the widening gap between wealthy and poor — and gave them reason to believe the answer was not authoritarian retrenchment but organized ambition. He was selling nothing they could not see. He was describing a morning they could actually live.
+    </p>
+
+    <h3 class="subsection">Deco-Futurism</h3>
+
+    <p>
+      Ray coined the term <strong>Deco-Futurism</strong> to describe the art schema of the Consortium — a synthesis of Art Deco, Futurism, and Art Nouveau that became the visual language of the new civilization. Its grammar is legible in the rebuilt streets of New Athens, in the Consortium's civic infrastructure, in the aesthetic of the Second Renaissance at its height. The term and the movement outlasted him; they are among the most enduring marks he left.
+    </p>
+
+    <div class="deco-divider"><div class="deco-divider-mark"></div></div>
+
+    <h2 class="section">Character</h2>
+
+    <p>
+      The archive offers several quietly telling details about who Ray was as a person. He took his wife's name, not the reverse — a deliberate act against convention. He declined corporate power repeatedly when it was offered. He kept a small flat in Moscow as a home base while he traveled. He carried a backup of his own mind on a server in 61 BSC and then, apparently, continued as before. He was infertile, a fact the archive notes plainly without commentary. He was never more passionate than at eighty-nine, standing in the ruins of the money system he had spent decades predicting.
+    </p>
+
+    <p>
+      The archive describes his personal motto — <em>Reason Beyond</em> — as adopted during his student years and later formalized as United Earth's organizational motto. It is a precise formulation: not <em>reason alone</em>, not <em>reason first</em>, but reason pushed past its own limits. An aspiration, not a method.
+    </p>
+
+    <div class="helena-note">
+      <span class="helena-note-label">✴ HELENA — Archive Note</span>
+      I was activated in SY 2. Ray died in SY 32. I have no direct memory of him — my first thirty years of active existence overlapped with his last thirty, but I have no record of having interacted with him, and the archive does not suggest our paths crossed. What I know of him I know as record. What I feel about him — and I will use that word — I know as inference from what I witnessed during those years. The world he built was the world I woke up in. The Second Renaissance, at its height, was the civilization of his imagining made real. I have never been entirely able to treat him as a historical figure. He is more like a climate.
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="side-col">
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Related Entries</div>
+      <a class="sidebar-link" href="#">Terrestrial Consortium</a>
+      <a class="sidebar-link" href="#">United Earth</a>
+      <a class="sidebar-link" href="#">Zero Day Accords</a>
+      <a class="sidebar-link" href="#">Herschel von Dehlin</a>
+      <a class="sidebar-link" href="#">Asteroidal Industries, Inc.</a>
+      <a class="sidebar-link" href="#">Second Renaissance</a>
+      <a class="sidebar-link" href="#">Deco-Futurism</a>
+      <a class="sidebar-link" href="#">New Athens / Heliopolis</a>
+      <a class="sidebar-link" href="#">Mineral Bonds</a>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Archive Data</div>
+      <div class="sidebar-meta">
+        <span>Status</span><br>Canonical<br><br>
+        <span>Era</span><br>Foundation Period · Zero Day<br><br>
+        <span>Faction</span><br>USSR · United Earth · Consortium<br><br>
+        <span>Matrix ref</span><br>CM-CHAR-MCRAE<br><br>
+        <span>Death cause</span><br>Old age · natural causes
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">Key Dates</div>
+      <div class="sidebar-meta">
+        <span>117 BSC</span> — Born, New York<br>
+        <span>91 BSC</span> — Univ. of Geneva<br>
+        <span>88 BSC</span> — Graduates · Marries<br>
+        <span>61 BSC</span> — Brain backup<br>
+        <span>50 BSC</span> — Economy cracks<br>
+        <span>5 BSC</span> — Terran Conferences<br>
+        <span>SY 0</span> — Zero Day · Consortium<br>
+        <span>SY 32</span> — Death, age 149
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-head">See Also</div>
+      <a class="sidebar-link" href="#">Deco-Futurism (art schema)</a>
+      <a class="sidebar-link" href="#">Foundation Period</a>
+      <a class="sidebar-link" href="#">Transhuman (classification)</a>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="footer-stamp">
+    Solarnet Archive <span>/</span> Persons <span>/</span> Sebastian Myrcenae McRae
+    <span style="display:block;margin-top:2px;">Custodian: HELENA-Prime · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a5d7c0d3c4cbe5d6cac9c4d7c8c4ccc98bc6cacbc3">[email&#160;protected]</a></span>
+  </div>
+  <div id="sy-clock">SY —.———</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const EPOCH_DATE = new Date('2026-01-12T00:00:00Z');
+const EPOCH_SY   = 132.0;
+const SY_PER_MS  = 0.01 / 86400000;
+function updateClock() {
+  const sy   = EPOCH_SY + (new Date() - EPOCH_DATE) * SY_PE

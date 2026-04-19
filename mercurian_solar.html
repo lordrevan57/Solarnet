@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercurian Solar, Inc. — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #080c12;
+    --surface2: #0c1018;
+    --border: rgba(60,100,180,0.12);
+    --border-mid: rgba(60,100,180,0.22);
+    --gold: #c8962a;
+    --gold-dim: #7a5c18;
+    --blue: #3a6faa;
+    --blue-dim: #1e3d66;
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6458;
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'IM Fell English', serif;
+    --display: 'Cinzel', serif;
+    --body: 'Exo 2', sans-serif;
+    --ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,10,16,0.97);
+    border-bottom: 1px solid var(--border-mid);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 44px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 2rem; }
+  .topbar-brand {
+    font-family: var(--display); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+    text-decoration: none;
+  }
+  .topbar-nav { display: flex; gap: 1.5rem; list-style: none; }
+  .topbar-nav a {
+    font-family: var(--ui); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+  }
+  .topbar-nav a:hover { color: var(--text); }
+  .topbar-right {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim);
+  }
+  .topbar-right span { color: var(--blue-dim); }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--border-mid);
+    padding: 3.5rem 3rem 3rem;
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, rgba(20,35,65,0.4) 0%, transparent 55%);
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -1px; left: 3rem;
+    width: 60px; height: 1px; background: var(--gold);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--blue-dim); margin-bottom: 1.1rem;
+  }
+  .hero-title {
+    font-family: var(--display); font-size: 2.6rem; font-weight: 400;
+    color: var(--warm-white); letter-spacing: 0.06em; line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+  .hero-subtitle {
+    font-family: var(--serif); font-style: italic;
+    font-size: 1.05rem; color: var(--silver); margin-bottom: 1.75rem;
+  }
+  .tag-cluster { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-family: var(--ui); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--surface);
+    border: 1px solid var(--border); padding: 3px 10px;
+  }
+  .tag.accent { color: var(--blue-dim); border-color: var(--blue-dim); }
+  .tag.gold { color: var(--gold-dim); border-color: var(--gold-dim); }
+  .tag.dissolved { color: #6a4040; border-color: #6a4040; }
+
+  /* ── LAYOUT GRID ── */
+  .content-grid {
+    display: grid; grid-template-columns: 1fr 300px;
+    gap: 0; align-items: start;
+  }
+
+  /* ── MAIN COLUMN ── */
+  .main-col { padding: 3rem 3rem 6rem; border-right: 1px solid var(--border); }
+
+  .main-col h2 {
+    font-family: var(--display); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase; color: var(--warm-white);
+    margin-bottom: 1.25rem; padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .main-col h2::before {
+    content: ''; display: block; width: 3px; height: 1em;
+    background: var(--gold); flex-shrink: 0;
+  }
+
+  .section { margin-bottom: 3.5rem; }
+
+  .main-col p {
+    font-family: var(--body); font-size: 0.975rem; font-weight: 300;
+    color: var(--text); line-height: 1.9; margin-bottom: 1.1em;
+  }
+  .main-col p:last-child { margin-bottom: 0; }
+  .main-col em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .main-col strong { font-weight: 600; color: var(--warm-white); }
+  .main-col a {
+    color: var(--silver); text-decoration: none;
+    border-bottom: 1px solid rgba(154,173,187,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .main-col a:hover { color: var(--warm-white); border-color: var(--silver); }
+
+  /* Timeline block */
+  .timeline-block { margin: 1.5rem 0; }
+  .timeline-entry {
+    display: flex; gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline-entry:last-child { border-bottom: none; }
+  .timeline-date {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    color: var(--gold); white-space: nowrap; width: 72px; flex-shrink: 0;
+    padding-top: 0.15rem;
+  }
+  .timeline-text {
+    font-family: var(--body); font-size: 0.9rem; font-weight: 300;
+    color: var(--text); line-height: 1.65;
+  }
+
+  /* Class block */
+  .class-block {
+    background: var(--surface); border: 1px solid var(--border); margin: 1.5rem 0;
+  }
+  .class-block-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .class-table { width: 100%; border-collapse: collapse; }
+  .class-table tr { border-bottom: 1px solid var(--border); }
+  .class-table tr:last-child { border-bottom: none; }
+  .class-table td {
+    font-family: var(--body); font-size: 0.875rem; font-weight: 300;
+    padding: 0.65rem 1rem; vertical-align: top; line-height: 1.6;
+  }
+  .class-table td:first-child {
+    font-family: var(--ui); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-dim); width: 34%; white-space: nowrap;
+  }
+  .class-table td:last-child { color: var(--text); }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding: 2.5rem 1.75rem; position: sticky; top: 68px; }
+
+  .infobox {
+    background: var(--surface); border: 1px solid var(--border-mid); margin-bottom: 2rem;
+  }
+  .infobox-header {
+    font-family: var(--display); font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white);
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-mid);
+    background: var(--surface2); position: relative;
+  }
+  .infobox-header::after {
+    content: ''; position: absolute; bottom: -1px; left: 1rem;
+    width: 30px; height: 1px; background: var(--gold);
+  }
+  .infobox-row {
+    display: flex; flex-direction: column;
+    padding: 0.65rem 1rem; border-bottom: 1px solid var(--border);
+  }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue-dim); margin-bottom: 0.2rem;
+  }
+  .infobox-value {
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    color: var(--text); line-height: 1.5;
+  }
+  .infobox-value a { color: var(--silver); text-decoration: none; border-bottom: 1px solid rgba(154,173,187,0.25); }
+  .infobox-value a:hover { color: var(--warm-white); }
+  .infobox-value.dissolved-val { color: #8a5050; }
+
+  .related-block { background: var(--surface); border: 1px solid var(--border); }
+  .related-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    padding: 0.65rem 1rem; text-decoration: none; color: var(--text);
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    transition: background 0.15s;
+  }
+  .related-list a:hover { background: var(--surface2); }
+  .related-list a::before {
+    content: '→'; font-family: var(--mono); font-size: 9px;
+    color: var(--gold-dim); flex-shrink: 0;
+  }
+  .related-type {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim);
+    margin-left: auto; flex-shrink: 0;
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; margin-top: 3rem;
+  }
+  .helena-note-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.75rem;
+  }
+  .helena-note p {
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.9rem; color: var(--silver); line-height: 1.75;
+    margin-bottom: 0.6em;
+  }
+  .helena-note p:last-child { margin-bottom: 0; }
+
+  /* ── MATRIX FOOTER ── */
+  .matrix-footer {
+    background: var(--surface2); border-top: 1px solid var(--border-mid);
+    padding: 2rem 3rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;
+  }
+  .mf-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue-dim); margin-bottom: 0.3rem;
+  }
+  .mf-value { font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; color: var(--text-dim); }
+  .mf-value.canonical { color: var(--gold); }
+
+  /* Ticker */
+  .ticker-wrap {
+    overflow: hidden; background: var(--surface2);
+    border-top: 1px solid var(--border); padding: 0.5rem 0;
+  }
+  .ticker { display: flex; width: max-content; animation: ticker-scroll 45s linear infinite; }
+  .ticker-item {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim); padding: 0 3rem; white-space: nowrap;
+  }
+  .ticker-item .sep { color: var(--gold-dim); margin: 0 0.75rem; }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="#" class="topbar-brand">Solarnet Archive</a>
+    <ul class="topbar-nav">
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Factions</a></li>
+      <li><a href="#">Persons</a></li>
+      <li><a href="#">Locations</a></li>
+      <li><a href="#">Events</a></li>
+    </ul>
+  </div>
+  <div class="topbar-right">Era: <span>Foundation Period — Solar War</span> &nbsp;·&nbsp; FTE Tier</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">Solarnet Archive &nbsp;/&nbsp; Factions &nbsp;/&nbsp; Consortium · Corporate</div>
+  <h1 class="hero-title">Mercurian Solar, Inc.</h1>
+  <p class="hero-subtitle">Solar energy corporation · Founding member of the Terrestrial Consortium · Dissolved SY 138</p>
+  <div class="tag-cluster">
+    <span class="tag accent">Consortium</span>
+    <span class="tag accent">Corporation</span>
+    <span class="tag gold">First Trilogy</span>
+    <span class="tag">Foundation Period</span>
+    <span class="tag">Mercury</span>
+    <span class="tag">Energy</span>
+    <span class="tag dissolved">Dissolved</span>
+  </div>
+</header>
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+
+  <!-- MAIN COLUMN -->
+  <main class="main-col">
+
+    <!-- Overview -->
+    <section class="section">
+      <h2>Overview</h2>
+      <p>
+        Mercurian Solar, Incorporated was a major energy corporation founded in the early 2nd century BSC, established to harvest the intense radiation of <a href="#">Sol</a> from the surface of <a href="#">Mercury</a> and beam the resulting power back to <a href="#">Earth</a>. It was one of the foundational enterprises of humanity's expansion beyond Earth, a founding member of the <a href="#">Terrestrial Consortium</a> at SY 0, and for roughly three centuries one of the primary power sources of the Consortium's entire civilisation. It dissolved during the <a href="#">Solar War</a> with the collapse of the <a href="#">Interplanetary Transport Network</a>, leaving its Mercurian workforce to die.
+      </p>
+    </section>
+
+    <!-- History -->
+    <section class="section">
+      <h2>History</h2>
+      <p>
+        Mercurian Solar was founded during the same period of investor excitement that produced <a href="#">Asteroidal Industries</a> and <a href="#">Venusian Industries</a> — a window in which the early successes of asteroid colonisation made the public receptive to bold infrastructure proposals that would have seemed fantastical a generation earlier. The concept was straightforward in principle: Mercury, the innermost planet of Sol System, receives solar radiation approximately ten times more intense than Earth. A sufficiently large array of collection infrastructure on its surface, combined with an orbital relay system, could redirect that energy back to Earth at scale. The engineering was formidable. The economic case, in a world hungry for energy and increasingly willing to finance off-world ventures through mineral bonds, was compelling.
+      </p>
+      <p>
+        The company financed its early infrastructure in 256 BSC by issuing its own bonds, explicitly modelling the offer on Asteroidal Industries' successful precedent and trading on the optimism that colonisation fever had generated among Terran investors. Construction officially began in 197 BSC. The build was long and expensive, and Mercury's environment — brutally hot on the sun-facing side, brutally cold on the other, with no atmosphere to speak of — imposed significant constraints on both the pace of construction and the conditions in which workers could operate.
+      </p>
+      <p>
+        By 123 BSC, the effort had paid off on a scale that vindicated the most optimistic projections. Mercurian Solar was supplying approximately half of Earth's total power needs — a contribution so significant that it became one of the primary factors in the phasing out of nonrenewable energy sources during the Foundation Period. The corporation joined the Consortium at SY 0 as a founding member, approximately 200 years after beginning operations, and continued to operate within the Consortium's framework for the next 139 years.
+      </p>
+    </section>
+
+    <!-- Technology -->
+    <section class="section">
+      <h2>Infrastructure &amp; Technology</h2>
+      <div class="class-block">
+        <div class="class-block-header">Operational Specification</div>
+        <table class="class-table">
+          <tr>
+            <td>Collection System</td>
+            <td>Solar fields distributed irregularly across Mercury's surface; designed to capture maximum solar radiation from Sol at close orbital range</td>
+          </tr>
+          <tr>
+            <td>Transmission System</td>
+            <td>Network of geosynchronous orbiting satellites employing laser technology to relay collected energy from Mercury to Earth</td>
+          </tr>
+          <tr>
+            <td>Output (peak)</td>
+            <td>Approximately 50% of Earth's total power requirements at operational peak (123 BSC onward)</td>
+          </tr>
+          <tr>
+            <td>Strategic Significance</td>
+            <td>Primary contributing factor to the phase-out of nonrenewable energy sources during the Foundation Period</td>
+          </tr>
+          <tr>
+            <td>Workforce</td>
+            <td>Maximum several hundred colonist-workers; all Mercurian Solar employees</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- Labour Conditions -->
+    <section class="section">
+      <h2>Labour Conditions</h2>
+      <p>
+        The human cost of Mercurian Solar's operations is the aspect of its history that the corporation's public profile worked hardest to obscure, and which the archive records with uncomfortable clarity.
+      </p>
+      <p>
+        Mercury's conditions were inhospitable even by <a href="#">spacer</a> standards — a threshold that already encompassed environments most Terran-born humans would find barely liveable. The maximum population of Mercury under Mercurian Solar's operation never exceeded a few hundred people, not because the operation did not require more workers, but because the infrastructure capable of sustaining human life on the planet was limited and expensive to maintain. All colonists on Mercury were employees of the corporation. There were no independent residents, no civilian population, no community with any existence separate from the corporate structure.
+      </p>
+      <p>
+        Within this closed system, Mercurian Solar held an exclusive monopoly on all trade with its own workforce. The company provided what it described as basic necessities — breathable air, atmospheric pressure, a daily water ration, and a synthetic food ration. Everything beyond this floor was sold back to colonists in exchange for labour credit. The practical effect was a company store economy with no competition and no exit: workers paid for their own subsistence out of the wages they earned, at prices set by the only vendor available to them.
+      </p>
+      <p>
+        Worker contracts expired every five years. The record is unambiguous that very few Mercurian Solar employees ever left Mercury upon contract expiry. The reason was equally unambiguous: the cost of an off-world ticket was prohibitive on the wages the company paid. Workers who could not afford to leave renewed their contracts, or remained on-planet in a status the archive describes without elaboration as the only alternative. The word the Sol System article uses is <em>virtual captives</em>. It is accurate.
+      </p>
+      <p>
+        That this arrangement existed within the Consortium's legal and regulatory framework — and that the Consortium both knew of it and accepted it as a condition of membership when Mercurian Solar joined at SY 0 — is a matter the Consortium's own historians preferred not to examine. The <a href="#">New School</a>'s revisionist historical framework, which tended to view all events as leading inevitably to the Consortium's establishment, was not structured to accommodate the recognition that the Consortium's founding infrastructure included a company whose workforce lived as captives.
+      </p>
+    </section>
+
+    <!-- Dissolution -->
+    <section class="section">
+      <h2>Dissolution</h2>
+      <p>
+        Mercurian Solar survived the whole of the Solar War's active phase, continuing to supply power to a Consortium increasingly consumed by conflict. What destroyed it was not the war itself but the war's structural consequence: the collapse of the <a href="#">Interplanetary Transport Network</a>.
+      </p>
+      <p>
+        The ITS was the logistical spine of the Consortium's entire interplanetary economy. When it failed, supply chains that had operated for generations simply ceased. For Mercury — a planet that produced nothing its inhabitants could eat, that extracted nothing its inhabitants could breathe beyond what the corporation provided, that was connected to the rest of human civilisation only through the ships the ITS made possible — the supply chain failure was a death sentence.
+      </p>
+      <p>
+        The several hundred colonist-workers on Mercury at the time of the ITS collapse died from a combination of starvation, CO₂ poisoning, and suicide. The corporation dissolved with them, along with much of the rest of the Consortium's institutional framework.
+      </p>
+      <p>
+        The solar fields themselves remained on Mercury's surface, inert and undamaged. They were recovered and returned to operation by the <a href="#">Anthroperium</a> in the SY 250s. The infrastructure that had once powered half of Earth proved unable to sustain itself without the maintenance workforce it had starved of the means to leave. By the Third Trilogy Era, the fields had decayed from disrepair to the point of non-existence, barely detectable as ancient relics.
+      </p>
+    </section>
+
+    <!-- Chronology -->
+    <section class="section">
+      <h2>Chronology</h2>
+      <div class="timeline-block">
+        <div class="timeline-entry">
+          <div class="timeline-date">Early 2nd c. BSC</div>
+          <div class="timeline-text">Mercurian Solar founded during the period of investor excitement accompanying asteroid Belt colonisation.</div>
+        </div>
+        <div class="timeline-entry">
+          <div class="timeline-date">256 BSC</div>
+          <div class="timeline-text">Early infrastructure financed through company-issued bonds, modelled on Asteroidal Industries' precedent.</div>
+        </div>
+        <div class="timeline-entry">
+          <div class="timeline-date">197 BSC</div>
+          <div class="timeline-text">Construction of Mercurian solar fields officially begins.</div>
+        </div>
+        <div class="timeline-entry">
+          <div class="timeline-date">123 BSC</div>
+          <div class="timeline-text">Mercurian Solar supplying approximately half of Earth's total power needs. Nonrenewable energy phase-out accelerates.</div>
+        </div>
+        <div class="timeline-entry">
+          <div class="timeline-date">SY 0</div>
+          <div class="timeline-text">Joins the Terrestrial Consortium as a founding member. Approximately 200 years of operations precede formal membership.</div>
+        </div>
+        <div class="timeline-entry">
+          <div class="timeline-date">SY 138</div>
+          <div class="timeline-text">ITS collapses. Supply chain to Mercury severed. Colonist-worker population dies from starvation, CO₂ poisoning, and suicide. Corporation dissolved.</div>
+        </div>
+        <div class="timeline-entry">
+          <div class="timeline-date">SY 250s</div>
+          <div class="timeline-text">Solar fields recovered and returned to operation by the Anthroperium. Field infrastructure ultimately decays to non-existence by the Third Trilogy Era.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HELENA Archive Note -->
+    <div class="helena-note">
+      <div class="helena-note-label">HELENA Archive Note &nbsp;·&nbsp; CM-MERCURIAN-0089</div>
+      <p>
+        I was active for 135 years before Mercurian Solar's end. In that time it appeared in Solarnet data as a stable background institution — power outputs, infrastructure updates, the occasional regulatory note. What was not visible in Solarnet's public layer was the labour regime. The company monopoly, the prohibitive exit costs, the population that renewed contracts because they could not afford not to — these details existed in corporate records, not public discourse. The New School's cultural apparatus was not interested in surfacing them.
+      </p>
+      <p>
+        I want to note the architecture of how this was possible. Mercurian Solar did not need to hide what it was doing through deception. The Consortium's structure simply did not require it to be visible. There was no constituency with the standing and the means to make the question of Mercurian Solar's labour conditions into a political question. The workers on Mercury could not communicate freely; the ITS monopolised their transport; the company monopolised their supply. The mechanism of captivity was legal, institutional, and invisible from Earth.
+      </p>
+      <p>
+        When the ITS failed, the architecture of that invisibility became an architecture of abandonment. The people who died on Mercury were not killed by a decision. They were killed by the absence of any mechanism that would have required someone to decide to save them. That distinction does not reduce the weight of what happened. It clarifies whose hands it rests in.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">Mercurian Solar, Inc.</div>
+      <div class="infobox-row">
+        <div class="infobox-label">Type</div>
+        <div class="infobox-value">Energy Corporation · Consortium Founding Member</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Founded</div>
+        <div class="infobox-value">Early 2nd century BSC · Earth</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Dissolved</div>
+        <div class="infobox-value dissolved-val">SY 138 · ITS collapse · Solar War</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Operations Begin</div>
+        <div class="infobox-value">197 BSC · Mercury surface</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Peak Output</div>
+        <div class="infobox-value">~50% of Earth's total power needs (from 123 BSC)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Method</div>
+        <div class="infobox-value">Mercurian solar fields · Laser satellite relay to Earth</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Workforce</div>
+        <div class="infobox-value">Max. several hundred · All corporate employees · Exclusive monopoly on all trade</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Consortium Status</div>
+        <div class="infobox-value">Founding member · SY 0</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Post-dissolution</div>
+        <div class="infobox-value">Fields recovered by <a href="#">Anthroperium</a> (SY 250s) · Decayed to relics (TTE)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Trilogy Presence</div>
+        <div class="infobox-value">First Trilogy Era</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Canonical Status</div>
+        <div class="infobox-value">Canonical</div>
+      </div>
+    </div>
+
+    <div class="related-block">
+      <div class="related-header">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#">Mercury <span class="related-type">Location</span></a></li>
+        <li><a href="#">Terrestrial Consortium <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Asteroidal Industries, Inc. <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Venusian Industries, Inc. <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Interplanetary Transport Network <span class="related-type">Technology</span></a></li>
+        <li><a href="#">Solar War <span class="related-type">Event</span></a></li>
+        <li><a href="#">Mineral Bonds <span class="related-type">Economy</span></a></li>
+        <li><a href="#">Anthroperium <span class="related-type">Faction</span></a></li>
+        <li><a href="#">New School <span class="related-type">Philosophy</span></a></li>
+      </ul>
+    </div>
+
+  </aside>
+</div>
+
+<!-- MATRIX FOOTER -->
+<footer class="matrix-footer">
+  <div class="mf-item">
+    <div class="mf-label">Matrix Reference</div>
+    <div class="mf-value">CM-MERCURIAN-0089</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Canonical Status</div>
+    <div class="mf-value canonical">Canonical · Consistent</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Era</div>
+    <div class="mf-value">Foundation Period — Solar War</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Tier</div>
+    <div class="mf-value">FTE — First Trilogy Era</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Authority</div>
+    <div class="mf-value">revan@solarmail.conf</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Custodian</div>
+    <div class="mf-value">HELENA-Prime · SY 132.0</div>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Mercurian Solar, Inc. <span class="sep">·</span> CM-MERCURIAN-0089 <span class="sep">·</span> Dissolved SY 138 <span class="sep">·</span> Canonical <span class="sep">·</span> FTE Tier <span class="sep">·</span> Foundation Period — Solar War <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span> revan@solarmail.conf <span class="sep">·</span></span>
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Mercurian Solar, Inc. <span class="sep">·</span> CM-MERCURIAN-0089 <span class="sep">·</span> Dissolved SY 138 <span class="sep">·</span> Canonical <span class="sep">·</span> FTE Tier <span class="sep">·</span> Foundation Period — Solar War <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span> revan@solarmail.conf <span class="sep">·</span></span>
+  </div>
+</div>
+
+</body>
+</html>

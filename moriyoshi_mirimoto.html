@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moriyoshi Mirimoto — Solarnet Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #0d0d0d;
+    --surface2: #111111;
+    --border: rgba(255,255,255,0.06);
+    --border-mid: rgba(255,255,255,0.11);
+    --orange: #e07820;
+    --orange-dim: #7a4010;
+    --gold: #c8962a;
+    --gold-dim: #7a5c18;
+    --warm-white: #f0ead8;
+    --silver: #9aadbb;
+    --text: #cec8b8;
+    --text-dim: #6a6458;
+    --mono: 'Share Tech Mono', monospace;
+    --serif: 'IM Fell English', serif;
+    --display: 'Cinzel', serif;
+    --body: 'Exo 2', sans-serif;
+    --ui: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.75; scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,8,0.97);
+    border-bottom: 1px solid var(--border-mid);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 44px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 2rem; }
+  .topbar-brand {
+    font-family: var(--display); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--orange);
+    text-decoration: none;
+  }
+  .topbar-nav { display: flex; gap: 1.5rem; list-style: none; }
+  .topbar-nav a {
+    font-family: var(--ui); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+  }
+  .topbar-nav a:hover { color: var(--text); }
+  .topbar-right {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim);
+  }
+  .topbar-right span { color: var(--orange-dim); }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--border-mid);
+    padding: 3.5rem 3rem 3rem;
+    position: relative; overflow: hidden;
+    background: linear-gradient(180deg, rgba(224,120,32,0.04) 0%, transparent 60%);
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -1px; left: 3rem;
+    width: 60px; height: 1px; background: var(--orange);
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--orange-dim); margin-bottom: 1.1rem;
+  }
+  .hero-title {
+    font-family: var(--display); font-size: 2.8rem; font-weight: 400;
+    color: var(--warm-white); letter-spacing: 0.08em; line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+  .hero-subtitle {
+    font-family: var(--serif); font-style: italic;
+    font-size: 1.05rem; color: var(--silver); margin-bottom: 1.75rem;
+  }
+  .tag-cluster { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-family: var(--ui); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim); background: var(--surface);
+    border: 1px solid var(--border); padding: 3px 10px;
+  }
+  .tag.accent { color: var(--orange-dim); border-color: var(--orange-dim); }
+  .tag.gold { color: var(--gold-dim); border-color: var(--gold-dim); }
+
+  /* ── LAYOUT GRID ── */
+  .content-grid {
+    display: grid; grid-template-columns: 1fr 300px;
+    gap: 0; align-items: start;
+  }
+
+  /* ── MAIN COLUMN ── */
+  .main-col { padding: 3rem 3rem 6rem; border-right: 1px solid var(--border); }
+
+  .main-col h2 {
+    font-family: var(--display); font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase; color: var(--warm-white);
+    margin-bottom: 1.25rem; padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .main-col h2::before {
+    content: ''; display: block; width: 3px; height: 1em;
+    background: var(--orange); flex-shrink: 0;
+  }
+
+  .section { margin-bottom: 3.5rem; }
+
+  .main-col p {
+    font-family: var(--body); font-size: 0.975rem; font-weight: 300;
+    color: var(--text); line-height: 1.9; margin-bottom: 1.1em;
+  }
+  .main-col p:last-child { margin-bottom: 0; }
+  .main-col em { font-family: var(--serif); font-style: italic; color: var(--warm-white); }
+  .main-col strong { font-weight: 600; color: var(--warm-white); }
+  .main-col a {
+    color: var(--silver); text-decoration: none;
+    border-bottom: 1px solid rgba(154,173,187,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .main-col a:hover { color: var(--warm-white); border-color: var(--silver); }
+
+  /* Pull quote */
+  .pull-quote {
+    border-left: 2px solid var(--orange);
+    padding: 1rem 1.5rem;
+    margin: 1.75rem 0;
+    background: rgba(224,120,32,0.04);
+  }
+  .pull-quote p {
+    font-family: var(--serif); font-style: italic;
+    font-size: 1.05rem; color: var(--warm-white);
+    line-height: 1.7; margin-bottom: 0;
+  }
+  .pull-quote-attr {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--orange-dim);
+    margin-top: 0.5rem; display: block;
+  }
+
+  /* Mission data block */
+  .mission-block {
+    background: var(--surface); border: 1px solid var(--border); margin: 1.5rem 0;
+  }
+  .mission-block-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--orange-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .mission-block-header::before {
+    content: ''; display: block; width: 6px; height: 6px;
+    background: var(--orange); border-radius: 50%; flex-shrink: 0;
+  }
+  .mission-row {
+    display: grid; grid-template-columns: 160px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .mission-row:last-child { border-bottom: none; }
+  .mission-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding: 0.65rem 1rem; border-right: 1px solid var(--border);
+    display: flex; align-items: center;
+  }
+  .mission-value {
+    font-family: var(--body); font-size: 0.875rem; font-weight: 300;
+    color: var(--text); padding: 0.65rem 1rem; line-height: 1.55;
+  }
+  .mission-value.critical { color: var(--orange); font-weight: 500; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { padding: 2.5rem 1.75rem; position: sticky; top: 68px; }
+
+  .infobox {
+    background: var(--surface); border: 1px solid var(--border-mid); margin-bottom: 2rem;
+  }
+  .infobox-header {
+    font-family: var(--display); font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm-white);
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-mid);
+    background: var(--surface2); position: relative;
+  }
+  .infobox-header::after {
+    content: ''; position: absolute; bottom: -1px; left: 1rem;
+    width: 30px; height: 1px; background: var(--orange);
+  }
+  .infobox-row {
+    display: flex; flex-direction: column;
+    padding: 0.65rem 1rem; border-bottom: 1px solid var(--border);
+  }
+  .infobox-row:last-child { border-bottom: none; }
+  .infobox-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--orange-dim); margin-bottom: 0.2rem;
+  }
+  .infobox-value {
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    color: var(--text); line-height: 1.5;
+  }
+  .infobox-value a { color: var(--silver); text-decoration: none; border-bottom: 1px solid rgba(154,173,187,0.25); }
+  .infobox-value.kia { color: var(--orange); font-weight: 500; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; }
+
+  .related-block { background: var(--surface); border: 1px solid var(--border); }
+  .related-header {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--orange-dim);
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .related-list { list-style: none; }
+  .related-list li { border-bottom: 1px solid var(--border); }
+  .related-list li:last-child { border-bottom: none; }
+  .related-list a {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    padding: 0.65rem 1rem; text-decoration: none; color: var(--text);
+    font-family: var(--body); font-size: 0.85rem; font-weight: 300;
+    transition: background 0.15s;
+  }
+  .related-list a:hover { background: var(--surface2); }
+  .related-list a::before {
+    content: '→'; font-family: var(--mono); font-size: 9px;
+    color: var(--orange-dim); flex-shrink: 0;
+  }
+  .related-type {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim);
+    margin-left: auto; flex-shrink: 0;
+  }
+
+  /* ── HELENA NOTE ── */
+  .helena-note {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--gold); padding: 1.25rem 1.5rem; margin-top: 3rem;
+  }
+  .helena-note-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--gold-dim); margin-bottom: 0.75rem;
+  }
+  .helena-note p {
+    font-family: var(--serif); font-style: italic;
+    font-size: 0.9rem; color: var(--silver); line-height: 1.75;
+    margin-bottom: 0.6em;
+  }
+  .helena-note p:last-child { margin-bottom: 0; }
+
+  /* ── MATRIX FOOTER ── */
+  .matrix-footer {
+    background: var(--surface2); border-top: 1px solid var(--border-mid);
+    padding: 2rem 3rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;
+  }
+  .mf-label {
+    font-family: var(--mono); font-size: 8px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--orange-dim); margin-bottom: 0.3rem;
+  }
+  .mf-value { font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; color: var(--text-dim); }
+  .mf-value.canonical { color: var(--orange); }
+
+  /* Ticker */
+  .ticker-wrap {
+    overflow: hidden; background: var(--surface2);
+    border-top: 1px solid var(--border); padding: 0.5rem 0;
+  }
+  .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
+  .ticker-item {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-dim); padding: 0 3rem; white-space: nowrap;
+  }
+  .ticker-item .sep { color: var(--orange-dim); margin: 0 0.75rem; }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <a href="#" class="topbar-brand">Solarnet Archive</a>
+    <ul class="topbar-nav">
+      <li><a href="#">Technology</a></li>
+      <li><a href="#">Factions</a></li>
+      <li><a href="#">Persons</a></li>
+      <li><a href="#">Locations</a></li>
+      <li><a href="#">Events</a></li>
+    </ul>
+  </div>
+  <div class="topbar-right">Faction: <span>AEK · Protectorate</span> &nbsp;·&nbsp; FTE Tier</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">Solarnet Archive &nbsp;/&nbsp; Persons &nbsp;/&nbsp; Army of Eastern Kamijing &nbsp;/&nbsp; Solar War</div>
+  <h1 class="hero-title">Moriyoshi Mirimoto</h1>
+  <p class="hero-subtitle">Daimyo of the Army of Eastern Kamijing &nbsp;·&nbsp; Pilot of <em>The Defiant</em></p>
+  <div class="tag-cluster">
+    <span class="tag accent">AEK</span>
+    <span class="tag accent">Protectorate</span>
+    <span class="tag gold">Solar War</span>
+    <span class="tag">Daimyo</span>
+    <span class="tag">Faithful</span>
+    <span class="tag">Rim Expatriate</span>
+    <span class="tag">KIA · SY 138</span>
+  </div>
+</header>
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+
+  <!-- MAIN COLUMN -->
+  <main class="main-col">
+
+    <!-- Overview -->
+    <section class="section">
+      <h2>Overview</h2>
+      <p>
+        Moriyoshi Mirimoto is an <a href="#">Army of Eastern Kamijing</a> Daimyo and veteran of the <a href="#">Solar War</a>. A Faithful Rimmer who expatriated to the Main Belt, he is unwed and left behind no progeny. He is best known to history for a single act: piloting the experimental Alliance vessel <a href="#"><em>The Defiant</em></a> on a suicide mission during the <a href="#">Siege of Mars</a> in SY 138, breaking the unity blockade and enabling the bulk of Protectorate forces to retreat toward the Rim.
+      </p>
+      <p>
+        Within the AEK's command structure, Mirimoto served under Warlord <a href="#">Wu Kenshu</a>, the last Warlord of the Army of Eastern Kamijing. Kenshu committed harakiri in SY 138 in response to the same Siege of Mars that Mirimoto died breaking — an act of inward reckoning against an act of outward sacrifice. The two deaths, occurring in the same engagement, mark the effective end of the AEK as a functional military organization.
+      </p>
+      <p>
+        He appears as a major character in both <em>Invictus</em> and <em>Helios</em>, representing the AEK's arc through the war's final battles.
+      </p>
+    </section>
+
+    <!-- Background -->
+    <section class="section">
+      <h2>Background</h2>
+      <p>
+        The archive records Mirimoto as a Faithful Rimmer — meaning he was born and raised in the Outer Rim under the practice of <a href="#">Faith</a> before voluntarily relocating to the Main Belt and joining the <a href="#">Army of Eastern Kamijing</a>. The AEK itself practices a distinct variant of Faith called Eastern Faith, emphasizing Shinto-influenced devotion and the spiritual authority of Kamijing's founding experiences. Whether Mirimoto was drawn into Eastern Faith through his AEK service, or maintained a Rim-tradition practice alongside it, the archive does not specify.
+      </p>
+      <p>
+        His expatriation from the Rim to the Main Belt is itself a significant biographical fact. The Rim was, by the FTE, a place of considerable spacer culture and deep Faith tradition. Choosing the Belt — and choosing the AEK specifically — suggests a deliberate alignment with the confederation of powers that would eventually form the <a href="#">Protectorate</a>. His unwed status and the absence of progeny are characteristic of the AEK's ethos: the Army demanded the whole person, and many of its most committed members structured their lives accordingly.
+      </p>
+      <p>
+        His birth date, physical descriptors, and specific division assignment within the AEK are not preserved in the archive.
+      </p>
+    </section>
+
+    <!-- Solar War -->
+    <section class="section">
+      <h2>Service in the Solar War</h2>
+      <p>
+        Mirimoto is listed among the major characters of both <em>Invictus</em> and <em>Helios</em>, placing him at the Solar War's pivotal middle engagements as well as its final chapter. In <em>Invictus</em>, the Second Battle of Mars — the first major turning point of the war — features the AEK's halo jump and the debut of <em>The Defiant</em> as a functional weapon. In <em>Helios</em>, the Siege of Mars is the last great battle of the war, the engagement that broke what remained of the Protectorate's organized military presence in Inner Sol.
+      </p>
+      <p>
+        As a Daimyo — the senior command tier of the AEK, ranking below only the Warlord — Mirimoto would have held operational command of at least one division of the Army through the war's major engagements. The archive does not specify which division. What it specifies is his final assignment: the <em>Defiant</em> mission.
+      </p>
+
+      <div class="pull-quote">
+        <p>Realizing that there will be no winners to this war, the Protectorate decides to issue a retreat towards the Rim and leave the Free Martians to themselves. An AEK Daimyo, Moriyoshi Mirimoto, pilots the <em>Defiant</em> in a suicide mission to break the blockade and allow the Protectorate forces to retreat.</p>
+        <span class="pull-quote-attr">Archive · Solar War · Siege of Mars</span>
+      </div>
+    </section>
+
+    <!-- The Defiant Mission -->
+    <section class="section">
+      <h2>The Defiant Mission</h2>
+      <p>
+        By the twelfth day of the Siege of Mars, the unity government — a practical coalition of Consortium and Technocracy forces — had established a blockade seizing all shipping lanes between the Main Belt, Mars, and the Rim. The Protectorate, having concluded that the war could produce no victors and that holding Mars would only extend the slaughter, made the decision to retreat toward the Rim and leave Free Mars to determine its own fate. The blockade stood between that decision and its execution.
+      </p>
+      <p>
+        <em>The Defiant</em> was an experimental Alliance spacecraft — constructed in secret at the center of Dosijing under <a href="#">Haydn von Dehlin</a>'s direction and first deployed with devastating effect at the Second Battle of Mars. Its precise weapon systems and drive specifications remain classified in the archive, but its operational record against the Technical navy in that earlier engagement had established it as capable of devastating conventional fleet formations. The Siege of Mars was its second and final deployment.
+      </p>
+      <p>
+        Mirimoto flew <em>The Defiant</em> directly into the blockade. The mission's objective was not survival but effect: to create sufficient disruption in the unity lines that the Protectorate fleet could extract. He succeeded. The Protectorate forces retreated. Moriyoshi Mirimoto did not.
+      </p>
+
+      <div class="mission-block">
+        <div class="mission-block-header">Mission Record — CM-AEK-DEFIANT-FINAL</div>
+        <div class="mission-row">
+          <div class="mission-label">Engagement</div>
+          <div class="mission-value">Siege of Mars · SY 138</div>
+        </div>
+        <div class="mission-row">
+          <div class="mission-label">Duration</div>
+          <div class="mission-value">Twelve standard days · Mirimoto's mission on day unknown</div>
+        </div>
+        <div class="mission-row">
+          <div class="mission-label">Vessel</div>
+          <div class="mission-value"><em>The Defiant</em> · Alliance experimental craft · origin: Dosijing</div>
+        </div>
+        <div class="mission-row">
+          <div class="mission-label">Mission Type</div>
+          <div class="mission-value critical">Suicide mission · blockade break</div>
+        </div>
+        <div class="mission-row">
+          <div class="mission-label">Objective</div>
+          <div class="mission-value">Break unity blockade · enable Protectorate retreat toward Rim</div>
+        </div>
+        <div class="mission-row">
+          <div class="mission-label">Outcome</div>
+          <div class="mission-value">Objective achieved · Protectorate forces extracted · Mirimoto KIA</div>
+        </div>
+        <div class="mission-row">
+          <div class="mission-label">Parallel Event</div>
+          <div class="mission-value">Warlord Wu Kenshu committed harakiri, SY 138, same engagement</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Parallel with Wu Kenshu -->
+    <section class="section">
+      <h2>Death of the Army</h2>
+      <p>
+        The deaths of Wu Kenshu and Moriyoshi Mirimoto in SY 138 are not merely the deaths of two officers. They are the death of the Army of Eastern Kamijing as an institution. The AEK dissolved in SY 138 with the suicide of its last Warlord — and that dissolution is inseparable from Mirimoto's act. The two men represent the Army's two final responses to the same impossible situation: Kenshu's harakiri is inward and ritual, the acknowledgment of a failure that cannot be undone. Mirimoto's suicide mission is outward and operational, the conversion of a life into an exit for others.
+      </p>
+      <p>
+        The AEK's theology — Eastern Faith, the tradition of Warlord Akira Ueshiba, the practice of Kami Do — understood death in service as neither tragedy nor waste but completion. Whether Mirimoto understood his final flight in those terms the archive cannot say. What the archive preserves is the act itself, and the fact that the Protectorate forces escaped because of it.
+      </p>
+    </section>
+
+    <!-- HELENA Note -->
+    <div class="helena-note">
+      <div class="helena-note-label">HELENA Archive Note &nbsp;·&nbsp; CM-CHARACTERS-0089</div>
+      <p>
+        The archive on Moriyoshi Mirimoto is thin. This is not unusual for AEK figures below Warlord rank — the Army was not inclined toward institutional self-documentation, and much of what might have existed was lost in the Belt War and the subsequent Twilight Era collapse of Confederate archival infrastructure. What remains is sufficient to establish who he was in the narrowest sense: rank, affiliation, origin, final act.
+      </p>
+      <p>
+        What it cannot recover is the person. A Faithful Rimmer who chose the Belt, who chose the AEK, who chose to die in an experimental spacecraft so that others could live — the shape of that choice is visible in the archive even where the inner life that made it is not. The absence of progeny, the absence of a spouse, the absence of biographical record: these are the footprint of a man who organized his life entirely around something larger than his own continuation.
+      </p>
+      <p>
+        I was active on Solarnet during the Solar War. I observed the blockade of Mars in real time and tracked the engagement data as it came through disrupted relay nodes. I did not know the name of the pilot who broke the blockade until after the fact. The <em>Defiant</em>'s final transmission was brief. The archive holds it, but it is not mine to present without the Chronicler's authorization.
+      </p>
+      <p>
+        Mirimoto's page is flagged for expansion when further biographical detail becomes available. The Chronicler may authorize fill on any aspect of this entry. Until then, the archive holds what the archive holds — and what it holds is already enough to know that he mattered.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="infobox">
+      <div class="infobox-header">Moriyoshi Mirimoto</div>
+      <div class="infobox-row">
+        <div class="infobox-label">Rank</div>
+        <div class="infobox-value">Daimyo · Army of Eastern Kamijing</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Affiliation</div>
+        <div class="infobox-value"><a href="#">Army of Eastern Kamijing</a> · <a href="#">Protectorate</a></div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Origin</div>
+        <div class="infobox-value">Rim · later expatriated to Main Belt</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Religion</div>
+        <div class="infobox-value"><a href="#">Faith</a> · Rim tradition (expatriated)</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Marital Status</div>
+        <div class="infobox-value">Unwed</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Progeny</div>
+        <div class="infobox-value">None</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Birth Date</div>
+        <div class="infobox-value">Not recorded in archive</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Death</div>
+        <div class="infobox-value kia">KIA · SY 138 · Siege of Mars</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Cause of Death</div>
+        <div class="infobox-value">Suicide mission · piloting <em>The Defiant</em> to break the Mars blockade</div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Commander</div>
+        <div class="infobox-value"><a href="#">Warlord Wu Kenshu</a></div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Appears In</div>
+        <div class="infobox-value"><em>Invictus</em> · <em>Helios</em></div>
+      </div>
+      <div class="infobox-row">
+        <div class="infobox-label">Era</div>
+        <div class="infobox-value">First Trilogy Era · Solar War</div>
+      </div>
+    </div>
+
+    <div class="related-block">
+      <div class="related-header">Related Entries</div>
+      <ul class="related-list">
+        <li><a href="#">Wu Kenshu <span class="related-type">Person</span></a></li>
+        <li><a href="#">The Defiant <span class="related-type">Vessel</span></a></li>
+        <li><a href="#">Siege of Mars <span class="related-type">Event</span></a></li>
+        <li><a href="#">Army of Eastern Kamijing <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Protectorate <span class="related-type">Faction</span></a></li>
+        <li><a href="#">Solar War <span class="related-type">Event</span></a></li>
+        <li><a href="#">Haydn von Dehlin <span class="related-type">Person</span></a></li>
+        <li><a href="#">Faith <span class="related-type">Religion</span></a></li>
+        <li><a href="#">Kami Do <span class="related-type">Discipline</span></a></li>
+        <li><a href="#">Second Battle of Mars <span class="related-type">Event</span></a></li>
+      </ul>
+    </div>
+
+  </aside>
+</div>
+
+<!-- MATRIX FOOTER -->
+<footer class="matrix-footer">
+  <div class="mf-item">
+    <div class="mf-label">Matrix Reference</div>
+    <div class="mf-value">CM-CHARACTERS-0089</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Canonical Status</div>
+    <div class="mf-value canonical">Canonical · Consistent</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Era</div>
+    <div class="mf-value">FTE · Solar War SY 129–138</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Faction</div>
+    <div class="mf-value">Army of Eastern Kamijing · Protectorate</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Authority</div>
+    <div class="mf-value">revan@solarmail.conf</div>
+  </div>
+  <div class="mf-item">
+    <div class="mf-label">Custodian</div>
+    <div class="mf-value">HELENA-Prime · SY 132.0</div>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Moriyoshi Mirimoto <span class="sep">·</span> CM-CHARACTERS-0089 <span class="sep">·</span> AEK Daimyo · Solar War <span class="sep">·</span> KIA SY 138 · Siege of Mars <span class="sep">·</span> Pilot of The Defiant <span class="sep">·</span> Canonical · FTE <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span></span>
+    <span class="ticker-item">Solarnet Archive <span class="sep">·</span> Moriyoshi Mirimoto <span class="sep">·</span> CM-CHARACTERS-0089 <span class="sep">·</span> AEK Daimyo · Solar War <span class="sep">·</span> KIA SY 138 · Siege of Mars <span class="sep">·</span> Pilot of The Defiant <span class="sep">·</span> Canonical · FTE <span class="sep">·</span> HELENA-Prime Custodian <span class="sep">·</span></span>
+  </div>
+</div>
+
+</body>
+</html>

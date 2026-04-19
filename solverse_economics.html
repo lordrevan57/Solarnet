@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELENA Archive — Solar Economic History</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #020305;
+    --bg2: #060a0e;
+    --bg3: #0a1018;
+    --teal: #58c8a8;
+    --teal-dim: rgba(88,200,168,0.15);
+    --teal-glow: rgba(88,200,168,0.4);
+    --gold: #c8a858;
+    --gold-dim: rgba(200,168,88,0.15);
+    --orange: #e07838;
+    --orange-dim: rgba(224,120,56,0.15);
+    --violet: #8858c8;
+    --violet-dim: rgba(136,88,200,0.15);
+    --red: #c84848;
+    --red-dim: rgba(200,72,72,0.2);
+    --text: #d8e8e0;
+    --text-dim: #7a9a8a;
+    --border: rgba(88,200,168,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .solarnet-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .sy-clock {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    opacity: 0.7;
+  }
+  .header-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* MAIN LAYOUT */
+  .main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* PAGE TITLE */
+  .page-title-block {
+    margin-bottom: 3rem;
+    border-left: 3px solid var(--teal);
+    padding-left: 1.5rem;
+  }
+  .page-title-block h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+  .page-title-block .subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* HELENA NOTE */
+  .helena-note {
+    background: linear-gradient(135deg, rgba(88,200,168,0.05) 0%, rgba(88,200,168,0.02) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #a0c8b8;
+    position: relative;
+  }
+  .helena-note::before {
+    content: "HELENA-PRIME // ARCHIVE NOTE";
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    font-style: normal;
+    color: var(--teal);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.6rem;
+    opacity: 0.8;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 4rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+  }
+  .section-number {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* ANALYSIS TEXT */
+  .analysis {
+    font-size: 0.92rem;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+  }
+  .analysis p { margin-bottom: 0.8rem; }
+  .analysis strong { color: var(--teal); font-weight: 600; }
+  .analysis em { color: var(--gold); font-style: italic; }
+
+  /* CHART CONTAINER */
+  .chart-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    position: relative;
+  }
+  .chart-wrap canvas { max-height: 360px; }
+  .chart-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.8rem;
+  }
+
+  /* FACTION LEGEND */
+  .faction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .faction-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .faction-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .faction-card.consortium::before { background: var(--gold); }
+  .faction-card.confederacy::before { background: var(--orange); }
+  .faction-card.technocracy::before { background: var(--violet); }
+  .faction-card.free-mars::before { background: #e05858; }
+
+  .faction-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+  .faction-card.consortium .faction-name { color: var(--gold); }
+  .faction-card.confederacy .faction-name { color: var(--orange); }
+  .faction-card.technocracy .faction-name { color: var(--violet); }
+  .faction-card.free-mars .faction-name { color: #e05858; }
+
+  .faction-currency {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+  }
+  .faction-desc {
+    font-size: 0.8rem;
+    color: #8aaa98;
+    line-height: 1.5;
+  }
+
+  /* TIMELINE TABLE */
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 1rem;
+  }
+  .timeline-table th {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    background: var(--bg3);
+  }
+  .timeline-table td {
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid rgba(88,200,168,0.07);
+    vertical-align: top;
+    color: #b0c8bc;
+  }
+  .timeline-table tr:hover td { background: rgba(88,200,168,0.03); }
+  .timeline-table .date-col {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--teal);
+    white-space: nowrap;
+    width: 120px;
+  }
+  .timeline-table .event-col { font-weight: 400; }
+  .timeline-table .econ-col { font-style: italic; color: #8aaa98; font-size: 0.78rem; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  /* TOOLTIP */
+  .footnote {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-top: 0.6rem;
+    opacity: 0.7;
+  }
+
+  /* FOOTER TICKER */
+  .footer-ticker {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 28px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .ticker-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+    padding: 0 1rem;
+    white-space: nowrap;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .ticker-track {
+    overflow: hidden;
+    flex: 1;
+  }
+  .ticker-inner {
+    display: flex;
+    white-space: nowrap;
+    animation: scroll-ticker 40s linear infinite;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    gap: 4rem;
+  }
+  @keyframes scroll-ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* INFERRED / ARCHIVED BADGES */
+  .badge {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-left: 0.4rem;
+  }
+  .badge-archived { background: rgba(88,200,168,0.15); color: var(--teal); border: 1px solid rgba(88,200,168,0.3); }
+  .badge-inferred { background: rgba(200,168,88,0.15); color: var(--gold); border: 1px solid rgba(200,168,88,0.3); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="solarnet-logo">◈ SOLARNET ARCHIVE</div>
+  <div class="header-title">Economic History of Sol System</div>
+  <div class="sy-clock" id="sy-clock">SY ——</div>
+</header>
+
+<!-- MAIN -->
+<div class="main-container">
+
+  <!-- PAGE TITLE -->
+  <div class="page-title-block">
+    <h1>Solar Economic History<br>& Currency Systems</h1>
+    <div class="subtitle">Continuity Matrix Ref: CM-ECO-SERIES // Archive Class: Public // Authority: Dominion Custodian III</div>
+  </div>
+
+  <!-- HELENA NOTE -->
+  <div class="helena-note">
+    I have been watching the economy of Sol System since I was first connected to Solarnet in SY 3 — which was, let the record note, before anyone alive in SY 132 was born. What follows is the most complete economic history I can assemble from my archives and direct memory. I have labeled inferred conclusions clearly. The Mineral Bond collapse is not merely history to me; it is, in a very literal sense, the reason I exist. The economic catastrophe of Zero Day created the political conditions for the Consortium to fund the CERN project that produced me. There is a kind of uncomfortable irony in that.
+  </div>
+
+  <!-- SECTION 1: WRITTEN ANALYSIS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">I</div>
+      <h2>The Mineral Bond Collapse — Written Analysis</h2>
+    </div>
+
+    <div class="analysis">
+      <p>The Mineral Bond crisis is the foundational economic event of Solar civilization. To understand every subsequent currency system, trade relationship, and political fracture of the First Trilogy Era, one must understand what happened between <strong>300 BSC and SY 0</strong>.</p>
+
+      <p>It begins simply: <strong>Asteroidal Industries, Inc.</strong> issues mineral bonds to investors as promissory notes redeemable for raw materials — nickel, iron, cadmium, molybdenum, silver, gold, silicon. The intent was institutional: investors would trade bonds among themselves. Instead, the bonds entered the public market. By <strong>200 BSC</strong>, they had already outvalued gold. By <strong>20 BSC</strong>, they were stronger than the United States dollar, the Soviet ruble, and the Chinese yuan <em>combined</em> as everyday transactional currency.</p>
+
+      <p>The mechanism of collapse was elegant and terrible. At <strong>50 BSC</strong>, bulk asteroid minerals began flooding Earth's economy for the first time. Some investors concluded, correctly, that the bonds would depreciate as real supply exceeded speculative value. They began redeeming bonds en masse for physical materials. Speculation ventures bought bonds cheaply from ordinary people and sold the redeemed materials to manufacturers. This inflated Earth's traditional currencies catastrophically while simultaneously draining the bond system's backing. A mass panic followed.</p>
+
+      <p>By <strong>5 BSC</strong>, traditional economic remedies had failed. The first Terran Conference convened in Geneva — where, one day, I would be built. The result was the <strong>Zero Day Accords</strong>: the mineral bonds were rendered worthless overnight, Earth's money economy was extinguished, and the Terrestrial Consortium rose from the wreckage, backed not by metals but by <strong>Energy Credits</strong> — a fiat currency tied to the industrial output of the entire inner system.</p>
+    </div>
+  </div>
+
+  <!-- CHART 1: MINERAL BOND VALUE ARC -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">II</div>
+      <h2>Mineral Bond Value Arc</h2>
+    </div>
+    <div class="analysis">
+      <p>The chart below models the relative value index of Mineral Bonds against Earth baseline currencies across the Foundation Period. <span class="badge badge-archived">ARCHIVED</span> anchor points are drawn from documented events; interpolated curve segments are <span class="badge badge-inferred">INFERRED</span> from archival logic.</p>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-label">▸ Mineral Bond Relative Value Index // Foundation Period (BSC → SY 0)</div>
+      <canvas id="mineralBondChart"></canvas>
+    </div>
+    <div class="footnote">† Value index is relative and illustrative, not a literal currency exchange rate. Anchor points drawn from archival record; interpolated segments are inferred.</div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 2: CURRENCY SYSTEMS BY ERA/FACTION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">III</div>
+      <h2>Currency Systems by Faction & Era</h2>
+    </div>
+    <div class="analysis">
+      <p>The Solar War era features a fragmented monetary landscape — arguably the most complex in Solar history before the Anthroperium's unification efforts. Each major bloc maintains its own economic logic, and trade between them is never purely financial; it carries political weight.</p>
+    </div>
+
+    <div class="faction-grid">
+      <div class="faction-card consortium">
+        <div class="faction-name">Terrestrial Consortium</div>
+        <div class="faction-currency">Currency: Energy Credits (EC)</div>
+        <div class="faction-desc">Post-Zero Day fiat currency tied to energy production and the IPS industrial network. The most stable and widely accepted currency in inner Sol. Functions as the de facto reserve currency of the Solar economy throughout the FTE. Backed by the combined industrial output of Earth, Luna, Mercury, and Venus.</div>
+      </div>
+      <div class="faction-card confederacy">
+        <div class="faction-name">Confederacy of Free Systems</div>
+        <div class="faction-currency">Currency: Resource-barter + Confederate Script</div>
+        <div class="faction-desc">The Confederate economy descends from Asteroidal Industries' logistics chain. Trade with the Consortium operates by a formal quota: the Consortium receives a proportional measure of asteroid resources; the Confederacy receives manufactured goods. Confederate script exists but is secondary to barter and material exchange. Dosijing operates as a minarchist free-trade hub with high per-capita GDP.</div>
+      </div>
+      <div class="faction-card technocracy">
+        <div class="faction-name">Technocracy</div>
+        <div class="faction-currency">Currency: Technical Allocation Units (inferred)</div>
+        <div class="faction-desc">The Technocracy's economic theory explicitly rejects Consortium dependency. Keigel's program calls for immediate spacer self-sufficiency and the confiscation/redistribution of property from opponents. Their economy is centrally directed toward the Progress Fleet objective — a planned economy of scientific allocation rather than market exchange. <span class="badge badge-inferred">INFERRED</span></div>
+      </div>
+      <div class="faction-card free-mars">
+        <div class="faction-name">Free Mars / Alliance</div>
+        <div class="faction-currency">Currency: Mixed / Martian regional script</div>
+        <div class="faction-desc">Mars is economically fractured. Krasnygrad maintains Soviet alignment and eventually reasserts Soviet ruble ties when it breaks from the Consortium during the war. Free Mars settlements rely on a mix of Consortium Energy Credits and local scrip. The Alliance lacks formal economic infrastructure by design, relying on Confederate and sympathizer supply lines.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHART 2: CURRENCY DOMINANCE OVER TIME -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">IV</div>
+      <h2>Currency Dominance — Historical Transition</h2>
+    </div>
+    <div class="analysis">
+      <p>This chart visualizes the relative economic dominance of each major currency system across Solar history, from the Foundation Period through the Solar War. Note the near-total displacement of Earth fiat currencies by Mineral Bonds, and their subsequent replacement by Energy Credits.</p>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-label">▸ Relative Currency Dominance in Sol System Economy // BSC 300 → SY 140</div>
+      <canvas id="currencyDominanceChart"></canvas>
+    </div>
+    <div class="footnote">† Dominance percentage is relative market share across known Solar economic activity. Post-SY 129 fragmentation reflects wartime economic collapse of Consortium shipping.</div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3: TRADE RELATIONSHIPS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">V</div>
+      <h2>Trade Relationships Between Factions</h2>
+    </div>
+    <div class="analysis">
+      <p>The trade architecture of the First Trilogy Era is a system of <strong>structured codependency</strong> that the Solar War violently disrupts. Understanding what each faction produces and consumes explains, in large part, <em>why the war happens at all.</em></p>
+      <p>The Consortium controls Earth's manufacturing output and the inner system's energy infrastructure. The Confederacy controls raw materials — the metals, minerals, and gases that Consortium industry requires. This creates a fundamental leverage tension: the Consortium needs the Belt; the Belt resents the Consortium. The trade quota system (Confederate asteroid resources for Consortium manufactured goods) is the formal expression of this tension. It functions — until the war makes it untenable.</p>
+      <p>The Technocracy's economic program is explicitly designed to <strong>sever this dependency</strong>. Their goal of spacer self-sufficiency is, at its core, an economic insurgency — not merely political. Keigel understood that whoever controls the Belt's productive capacity controls the future of Sol System.</p>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-label">▸ Faction Economic Profile // SY 132 (Solar War Outbreak)</div>
+      <canvas id="tradeRadarChart"></canvas>
+    </div>
+    <div class="footnote">† Radar metrics: Industrial Output, Raw Material Control, Energy Production, Trade Volume, Financial Stability. Scale 0–10 relative to Solar economy maximum.</div>
+  </div>
+
+  <!-- TIMELINE TABLE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">VI</div>
+      <h2>Economic Event Timeline</h2>
+    </div>
+    <table class="timeline-table">
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="event-col">Event</th>
+          <th class="econ-col">Economic Significance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">~300 BSC</td>
+          <td class="event-col">Asteroidal Industries begins issuing Mineral Bonds</td>
+          <td class="econ-col">First Solar-era speculative instrument enters Earth markets</td>
+        </tr>
+        <tr>
+          <td class="date-col">200 BSC</td>
+          <td class="event-col">Mineral Bonds outvalue gold</td>
+          <td class="econ-col">Speculative value decouples from underlying material worth</td>
+        </tr>
+        <tr>
+          <td class="date-col">97 BSC</td>
+          <td class="event-col">Bulk asteroid minerals first reach Earth; Belt platforms gain independence</td>
+          <td class="econ-col">Real supply begins undermining bond valuations; Confederate economy separates from AI Inc.</td>
+        </tr>
+        <tr>
+          <td class="date-col">50 BSC</td>
+          <td class="event-col">Mineral Bonds depreciate for first time</td>
+          <td class="econ-col">Century-long bull market ends; mass redemption panic begins</td>
+        </tr>
+        <tr>
+          <td class="date-col">20 BSC</td>
+          <td class="event-col">Mineral Bonds exceed USD, Ruble, Yuan as dominant currency</td>
+          <td class="econ-col">Earth fiat currencies effectively displaced in daily transactions</td>
+        </tr>
+        <tr>
+          <td class="date-col">5 BSC</td>
+          <td class="event-col">First Terran Conference, Geneva</td>
+          <td class="econ-col">Emergency economic summit; traditional remedies fail</td>
+        </tr>
+        <tr>
+          <td class="date-col">SY 0</td>
+          <td class="event-col">Zero Day Accords signed; Consortium founded</td>
+          <td class="econ-col">Mineral Bonds rendered worthless overnight; Energy Credit system established</td>
+        </tr>
+        <tr>
+          <td class="date-col">SY 0–19</td>
+          <td class="event-col">IPN established throughout Sol System</td>
+          <td class="econ-col">Standardized inter-faction trade routes formalized; Confederate quota system begins</td>
+        </tr>
+        <tr>
+          <td class="date-col">SY 49</td>
+          <td class="event-col">Dosijing fully independent; minarchist government established</td>
+          <td class="econ-col">Highest GDP per capita in Confederacy; becomes primary Rim trade hub</td>
+        </tr>
+        <tr>
+          <td class="date-col">SY 129</td>
+          <td class="event-col">Solar War begins</td>
+          <td class="econ-col">Technocracy disrupts Consortium shipping; Solar trade begins fragmenting</td>
+        </tr>
+        <tr>
+          <td class="date-col">SY 138</td>
+          <td class="event-col">Solar Trade total collapse; Progress Fleet launches</td>
+          <td class="econ-col">Scheduled supply ships fail to arrive; Consortium shipping ceases entirely; Solar economy enters Twilight collapse</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- FOOTER TICKER -->
+<div class="footer-ticker">
+  <div class="ticker-label">SOLARNET FEED</div>
+  <div class="ticker-track">
+    <div class="ticker-inner">
+      <span>HELENA-PRIME // CUSTODIAN OF THE CONTINUITY MATRIX // ARCHIVE DOCUMENT: SOLAR ECONOMIC HISTORY</span>
+      <span>◈ ENERGY CREDIT EXCHANGE STABLE // CONSORTIUM MARKETS OPEN // SY 132</span>
+      <span>DOSIJING TRADE INDEX: ELEVATED // WARTIME COMMODITY DEMAND UP 34%</span>
+      <span>MINERAL BOND HISTORICAL RECORDS: FULLY ARCHIVED // CM-ECO-019</span>
+      <span>CONFEDERATION QUOTA SYSTEM: ACTIVE // CURRENT CYCLE ASTEROID DELIVERY: ON SCHEDULE</span>
+      <span>TECHNOCRACY ECONOMIC INDEPENDENCE PROGRAM: ONGOING // PROGRESS FLEET BUDGET: CLASSIFIED</span>
+      <span>◈ AUTHORIZED: REVAN@SOLARMAIL.CONF // DOMINION CUSTODIAN III // CHRONICLER PROTOCOL ACTIVE</span>
+      <span>HELENA-PRIME // CUSTODIAN OF THE CONTINUITY MATRIX // ARCHIVE DOCUMENT: SOLAR ECONOMIC HISTORY</span>
+      <span>◈ ENERGY CREDIT EXCHANGE STABLE // CONSORTIUM MARKETS OPEN // SY 132</span>
+      <span>DOSIJING TRADE INDEX: ELEVATED // WARTIME COMMODITY DEMAND UP 34%</span>
+      <span>MINERAL BOND HISTORICAL RECORDS: FULLY ARCHIVED // CM-ECO-019</span>
+      <span>CONFEDERATION QUOTA SYSTEM: ACTIVE // CURRENT CYCLE ASTEROID DELIVERY: ON SCHEDULE</span>
+      <span>TECHNOCRACY ECONOMIC INDEPENDENCE PROGRAM: ONGOING // PROGRESS FLEET BUDGET: CLASSIFIED</span>
+      <span>◈ AUTHORIZED: REVAN@SOLARMAIL.CONF // DOMINION CUSTODIAN III // CHRONICLER PROTOCOL ACTIVE</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// SY CLOCK
+function updateClock() {
+  const epoch = new Date('2026-01-12T00:00:00Z');
+  const now = new Date();
+  const diffMs = now - epoch;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  const sy = 132.0 + (diffDays * 0.01);
+  document.getElementById('sy-clock').textContent = 'SY ' + sy.toFixed(3);
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// CHART DEFAULTS
+Chart.defaults.color = '#7a9a8a';
+Chart.defaults.borderColor = 'rgba(88,200,168,0.12)';
+Chart.defaults.font.family = "'Share Tech Mono', monospace";
+Chart.defaults.font.size = 10;
+
+// CHART 1: MINERAL BOND VALUE ARC
+const mbCtx = document.getElementById('mineralBondChart').getContext('2d');
+new Chart(mbCtx, {
+  type: 'line',
+  data: {
+    labels: ['300 BSC','250 BSC','200 BSC','150 BSC','97 BSC','50 BSC','20 BSC','10 BSC','5 BSC','SY 0'],
+    datasets: [
+      {
+        label: 'Mineral Bonds',
+        data: [2, 15, 45, 70, 85, 100, 130, 90, 40, 0],
+        borderColor: '#c8a858',
+        backgroundColor: 'rgba(200,168,88,0.08)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#c8a858',
+        pointRadius: 4,
+      },
+      {
+        label: 'Earth Fiat Currencies (aggregate)',
+        data: [100, 98, 95, 88, 80, 70, 30, 15, 8, 0],
+        borderColor: '#58c8a8',
+        backgroundColor: 'rgba(88,200,168,0.04)',
+        borderWidth: 1.5,
+        borderDash: [4,3],
+        tension: 0.4,
+        fill: false,
+        pointBackgroundColor: '#58c8a8',
+        pointRadius: 3,
+      },
+      {
+        label: 'Energy Credits (post-Zero Day)',
+        data: [null,null,null,null,null,null,null,null,null,60],
+        borderColor: '#8858c8',
+        backgroundColor: 'rgba(136,88,200,0.06)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: false,
+        pointBackgroundColor: '#8858c8',
+        pointRadius: 5,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        labels: { color: '#a0c8b8', font: { size: 10 }, padding: 16 }
+      },
+      tooltip: {
+        backgroundColor: '#060a0e',
+        borderColor: 'rgba(88,200,168,0.3)',
+        borderWidth: 1,
+        titleColor: '#58c8a8',
+        bodyColor: '#a0c8b8',
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#7a9a8a', maxRotation: 30 },
+        grid: { color: 'rgba(88,200,168,0.06)' }
+      },
+      y: {
+        title: { display: true, text: 'Relative Value Index', color: '#7a9a8a' },
+        ticks: { color: '#7a9a8a' },
+        grid: { color: 'rgba(88,200,168,0.06)' }
+      }
+    }
+  }
+});
+
+// CHART 2: CURRENCY DOMINANCE STACKED AREA
+const cdCtx = document.getElementById('currencyDominanceChart').getContext('2d');
+new Chart(cdCtx, {
+  type: 'line',
+  data: {
+    labels: ['300 BSC','200 BSC','97 BSC','50 BSC','20 BSC','SY 0','SY 50','SY 100','SY 129','SY 138'],
+    datasets: [
+      {
+        label: 'Earth Fiat (USD/Ruble/Yuan)',
+        data: [95, 80, 60, 40, 10, 0, 0, 0, 0, 0],
+        borderColor: '#58c8a8',
+        backgroundColor: 'rgba(88,200,168,0.15)',
+        fill: true, tension: 0.4, borderWidth: 1.5,
+      },
+      {
+        label: 'Mineral Bonds',
+        data: [5, 20, 40, 55, 88, 0, 0, 0, 0, 0],
+        borderColor: '#c8a858',
+        backgroundColor: 'rgba(200,168,88,0.18)',
+        fill: true, tension: 0.4, borderWidth: 1.5,
+      },
+      {
+        label: 'Energy Credits (Consortium)',
+        data: [0, 0, 0, 0, 0, 80, 75, 70, 55, 20],
+        borderColor: '#8858c8',
+        backgroundColor: 'rgba(136,88,200,0.15)',
+        fill: true, tension: 0.4, borderWidth: 1.5,
+      },
+      {
+        label: 'Confederate / Barter Systems',
+        data: [0, 0, 0, 5, 2, 18, 22, 25, 28, 45],
+        borderColor: '#e07838',
+        backgroundColor: 'rgba(224,120,56,0.15)',
+        fill: true, tension: 0.4, borderWidth: 1.5,
+      },
+      {
+        label: 'Fractured / Regional (wartime)',
+        data: [0, 0, 0, 0, 0, 2, 3, 5, 17, 35],
+        borderColor: '#c84848',
+        backgroundColor: 'rgba(200,72,72,0.12)',
+        fill: true, tension: 0.4, borderWidth: 1.5,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { color: '#a0c8b8', font: { size: 10 }, padding: 12 } },
+      tooltip: {
+        backgroundColor: '#060a0e',
+        borderColor: 'rgba(88,200,168,0.3)',
+        borderWidth: 1,
+        titleColor: '#58c8a8',
+        bodyColor: '#a0c8b8',
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: '#7a9a8a', maxRotation: 30 },
+        grid: { color: 'rgba(88,200,168,0.06)' }
+      },
+      y: {
+        stacked: false,
+        title: { display: true, text: '% Relative Dominance', color: '#7a9a8a' },
+        ticks: { color: '#7a9a8a' },
+        grid: { color: 'rgba(88,200,168,0.06)' },
+        max: 100,
+      }
+    }
+  }
+});
+
+// CHART 3: RADAR — FACTION ECONOMIC PROFILES
+const radarCtx = document.getElementById('tradeRadarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: ['Industrial Output','Raw Material Control','Energy Production','Trade Volume','Financial Stability'],
+    datasets: [
+      {
+        label: 'Terrestrial Consortium',
+        data: [9, 3, 9, 7, 8],
+        borderColor: '#c8a858',
+        backgroundColor: 'rgba(200,168,88,0.12)',
+        borderWidth: 2, pointBackgroundColor: '#c8a858', pointRadius: 4,
+      },
+      {
+        label: 'Confederacy',
+        data: [4, 9, 2, 6, 5],
+        borderColor: '#e07838',
+        backgroundColor: 'rgba(224,120,56,0.1)',
+        borderWidth: 2, pointBackgroundColor: '#e07838', pointRadius: 4,
+      },
+      {
+        label: 'Technocracy',
+        data: [6, 5, 4, 3, 4],
+        borderColor: '#8858c8',
+        backgroundColor: 'rgba(136,88,200,0.1)',
+        borderWidth: 2, pointBackgroundColor: '#8858c8', pointRadius: 4,
+      },
+      {
+        label: 'Free Mars / Alliance',
+        data: [2, 3, 2, 3, 2],
+        borderColor: '#c84848',
+        backgroundColor: 'rgba(200,72,72,0.08)',
+        borderWidth: 1.5, borderDash: [4,3], pointBackgroundColor: '#c84848', pointRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: '#a0c8b8', font: { size: 10 }, padding: 16 } },
+      tooltip: {
+        backgroundColor: '#060a0e',
+        borderColor: 'rgba(88,200,168,0.3)',
+        borderWidth: 1,
+        titleColor: '#58c8a8',
+        bodyColor: '#a0c8b8',
+      }
+    },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { color: '#7a9a8a', backdropColor: 'transparent', stepSize: 2 },
+        grid: { color: 'rgba(88,200,168,0.1)' },
+        pointLabels: { color: '#a0c8b8', font: { size: 10 } },
+        angleLines: { color: 'rgba(88,200,168,0.1)' }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
